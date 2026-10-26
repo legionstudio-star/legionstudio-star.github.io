@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
-<link rel="icon" href="../marca/logo-legion.png">
+<link rel="icon" href="/marca/logo-legion.png">
 <style id="estilo-pagina"></style>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -97,7 +97,7 @@
 <body>
 
 <div class="panel">
-  <div class="cabecera"><img src="../marca/logo-legion.png" alt="LEGION Studio"><div><h1>Hablador QR + NFC</h1>
+  <div class="cabecera"><a href="/panel/"><img src="/marca/logo-legion.png" alt="LEGION Studio"></a><div><h1>Hablador QR + NFC</h1>
   <p>Diseño LEGION con la identidad de cada cliente: su logo, su color y su QR.</p></div></div>
   <div class="ctrls">
     <div><label for="c-neg">Negocio</label><select id="c-neg"></select></div>
@@ -153,10 +153,12 @@
 
 <div class="hoja" id="hoja"></div>
 
-<script src="../datos/negocios.js"></script>
+<script src="/datos/config.js"></script>
 <script>
+(async () => {
   const $ = (id) => document.getElementById(id);
-  const NEG = window.NEGOCIOS;
+  $("hoja").innerHTML = '<p style="color:#6B665E">Cargando negocios…</p>';
+  const NEG = await LEGION.negocios();
   const BASE = window.LEGION_URL;
   const params = new URLSearchParams(location.search);
 
@@ -305,6 +307,7 @@
   if (params.get("d")) $("c-dis").value = params.get("d");
   if (params.get("c")) $("c-tema").value = params.get("c");
   cargarIdentidad();
+})();
 </script>
 </body>
 </html>

@@ -1,10 +1,21 @@
 /* Plantilla de página por negocio — LEGION Studio Digital
-   Lee window.SLUG (lo define la página de cada negocio) y window.NEGOCIOS (datos/negocios.js). */
-(function () {
-  const N = (window.NEGOCIOS || {})[window.SLUG];
+   El negocio sale del enlace (legionestudio.com/<slug>/) y sus datos se leen de Supabase (datos/config.js). */
+(async function () {
   const raiz = document.getElementById("app");
+  window.SLUG = window.SLUG || decodeURIComponent(location.pathname.split("/").filter(Boolean)[0] || "").toLowerCase();
+  let N = null;
+  try { N = await window.LEGION.negocio(window.SLUG); }
+  catch (e) {
+    raiz.innerHTML = `<div class="cargando"><p>No hay conexión. <a href="" style="text-decoration:underline">Toca para reintentar</a></p></div>`;
+    return;
+  }
 
-  if (!N) { raiz.innerHTML = `<div class="cargando">Negocio no encontrado.</div>`; return; }
+  if (!N) {
+    document.title = "Página no encontrada";
+    raiz.innerHTML = `<div class="cargando"><p style="text-align:center;padding:24px">Este enlace no existe o ya no está activo.<br><a href="/" style="text-decoration:underline">Ir a LEGION Studio</a></p></div>`;
+    return;
+  }
+  document.title = N.nombre;
 
   // Plan básico: directo a dejar la reseña
   if (N.plan === "basico") {
@@ -56,6 +67,8 @@
   if (N.tema === "oscuro") document.body.classList.add("oscuro");
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.content = N.tema === "oscuro" ? "#0F0F10" : N.color;
+  const fav = document.querySelector('link[rel="icon"]');
+  if (fav) fav.href = N.logo || "data:image/svg+xml," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><circle cx="24" cy="24" r="24" fill="${N.color || "#E8590C"}"/><text x="24" y="32" font-family="Arial" font-weight="700" font-size="22" fill="#fff" text-anchor="middle">${iniciales(N.nombre).slice(0, 1)}</text></svg>`);
 
   /* ---------- Abierto / cerrado ---------- */
   function estado() {

@@ -1,55 +1,61 @@
-# LEGION Studio Digital — Habladores QR + NFC
+# LEGION Studio Digital — legionestudio.com
 
-Sistema de páginas por negocio para habladores acrílicos con código QR y sticker NFC.
-Nicho: restaurantes, heladerías, bares y cafeterías.
+Sitio de LEGION y sistema de **habladores QR + NFC** para restaurantes, heladerías y bares.
 
 | Página | Enlace |
 | --- | --- |
-| Página de ventas de LEGION | https://legionstudio-star.github.io/ |
-| Panel de clientes (interno) | https://legionstudio-star.github.io/panel/ |
-| Diseño del hablador para imprimir | https://legionstudio-star.github.io/hablador/ |
+| Página principal de LEGION | https://legionestudio.com/ |
+| Habladores (página de ventas) | https://legionestudio.com/habladores/ |
+| **Panel de clientes** (con usuario y contraseña) | https://legionestudio.com/panel/ |
+| Diseño del hablador para imprimir | https://legionestudio.com/hablador/ |
+| Página de cada cliente | https://legionestudio.com/&lt;slug&gt;/ |
 
 ## Cómo funciona
 
-El QR y el NFC de cada hablador llevan un **enlace fijo** del cliente (`.../<slug>/`).
-Lo que se abre depende del plan, y se cambia sin reimprimir nada:
+- Los clientes se crean y se editan en el **panel**. Los datos y las fotos se guardan en **Supabase**
+  (proyecto `legion-habladores`), así que los cambios quedan en línea al instante, sin publicar nada.
+- El QR y el NFC de cada hablador llevan el **enlace fijo** del cliente (`legionestudio.com/<slug>/`).
+  **Nunca se cambia el slug** de un cliente con hablador impreso (la base de datos no lo permite).
+- `404.html` atiende todos los enlaces de clientes: lee el slug de la dirección y carga sus datos.
 
 | Plan | Qué ve el cliente |
 | --- | --- |
-| `basico` | Va directo a dejar la reseña en Google. |
-| `plus` | Página del negocio: reseña, menú con precios, WhatsApp, reservas, ubicación, wifi, redes y promoción. |
-| `pro` | Todo lo de Plus + carrito de pedidos (domicilio, recoger o mesa) que llega armado a WhatsApp. |
+| Reseñas | Va directo a dejar la reseña en Google. |
+| Plus | Página del negocio: reseña, menú con precios, WhatsApp, reservas, ubicación, wifi, redes y promoción. |
+| Pro | Todo lo de Plus + carrito de pedidos (domicilio, recoger o mesa) que llega armado a WhatsApp. |
 
-## Agregar un cliente nuevo
+## Nuevo cliente
 
-1. Copia una entrada en `datos/negocios.js` y cambia los datos. El **slug** (la clave) va en el enlace: corto, en minúsculas, sin tildes ni espacios. **Nunca lo cambies después de imprimir.**
-2. Ejecuta `node herramientas/generar.js` (crea la carpeta del cliente).
-3. Publica (`git add -A && git commit -m "..." && git push`).
-4. Abre el **Hablador**, elige el negocio, sube su logo (toma su color solo), descarga la imagen PNG o imprime, y programa el NFC con el mismo enlace.
+1. Panel → **Nuevo cliente** → nombre, plan, enlace de reseñas, logo (el color se toma solo), contacto, horario y menú → **Guardar**.
+2. **Hablador** → elige el negocio → descarga la imagen PNG o imprime.
+3. Programa el sticker NFC (NTAG213/215) con **NFC Tools**: Escribir → URL → enlace del cliente → Escribir → Otros → Bloquear etiqueta.
+
+Si un cliente deja de pagar: apágalo con "Cliente activo" o bájalo al plan Reseñas.
 
 ### Enlace de reseñas de Google
-Perfil de Empresa de Google del cliente → **Pedir reseñas** → copiar el enlace (`https://g.page/r/.../review`) y pegarlo en `resenas`.
+Perfil de Empresa de Google del cliente → **Pedir reseñas** → copiar el enlace (`https://g.page/r/.../review`).
 No se deben filtrar reseñas (mandar a Google solo a los clientes felices): Google lo prohíbe.
 
-### Programar el sticker NFC
-NTAG213 o NTAG215 + app **NFC Tools** → Escribir → Agregar registro → URL → pegar enlace → Escribir.
-Luego **Otros → Bloquear etiqueta** para que nadie lo cambie. Como el enlace es fijo, no hace falta volver a programarlo.
+## Administradores del panel
 
-## Dominio propio
+Los usuarios se crean en Supabase → Authentication → Users → *Add user* (con "Auto confirm").
+Para darle acceso al panel, su correo debe estar en la tabla `admins`:
 
-Todos los enlaces salen de `window.LEGION_URL` en `datos/negocios.js`.
-Al comprar el dominio: configurarlo en GitHub Pages (Settings → Pages → Custom domain), cambiar esa línea y volver a generar.
-Los QR ya impresos con la dirección de GitHub siguen funcionando porque GitHub redirige al dominio nuevo.
+```sql
+insert into public.admins (email) values ('correo@ejemplo.com');
+```
 
 ## Estructura
 
 ```
-datos/negocios.js        Base de datos de clientes (lo único que se edita a diario)
-app/app.js, app/app.css  Plantilla de la página de cada negocio
-<slug>/index.html        Página de cada cliente (generada, no editar a mano)
-hablador/                Diseño imprimible del acrílico + descarga del QR en SVG
-panel/                   Lista interna de clientes y enlaces
-herramientas/generar.js  Generador de páginas
+index.html               Página principal de LEGION (con el lanzamiento de los habladores)
+habladores/              Página de ventas de los habladores
+panel/                   Panel de clientes (Supabase: login, datos y fotos)
+hablador/                Diseño imprimible del acrílico (logo del cliente, PNG 300 dpi, QR en SVG)
+404.html                 Página de cada cliente (legionestudio.com/<slug>/)
+app/app.js, app/app.css  Plantilla de la página del cliente
+datos/config.js          Dirección base y conexión a Supabase (llave pública de solo lectura)
+datos/logos/             Logos de los negocios de ejemplo
+marca/                   Logo, arte y video de LEGION
+CNAME                    Dominio de GitHub Pages
 ```
-
-Fotos de demostración: [Unsplash](https://unsplash.com/license).
