@@ -20,7 +20,7 @@
 */
 
 // Dirección base de todos los enlaces (QR y NFC). Cuando compremos el dominio, solo se cambia esta línea.
-window.LEGION_URL = "https://threecaps12-dot.github.io/legion/";
+window.LEGION_URL = "https://legionstudio-star.github.io/";
 
 // Enlace de reseñas de prueba (los negocios demo no existen en Google).
 // Para un cliente real: Perfil de Empresa de Google > "Pedir reseñas" > copiar enlace (g.page/r/.../review).

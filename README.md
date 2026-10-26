@@ -5,13 +5,13 @@ Nicho: restaurantes, heladerías, bares y cafeterías.
 
 | Página | Enlace |
 | --- | --- |
-| Página de ventas de LEGION | https://threecaps12-dot.github.io/legion/ |
-| Panel de clientes (interno) | https://threecaps12-dot.github.io/legion/panel/ |
-| Diseño del hablador para imprimir | https://threecaps12-dot.github.io/legion/hablador/ |
+| Página de ventas de LEGION | https://legionstudio-star.github.io/ |
+| Panel de clientes (interno) | https://legionstudio-star.github.io/panel/ |
+| Diseño del hablador para imprimir | https://legionstudio-star.github.io/hablador/ |
 
 ## Cómo funciona
 
-El QR y el NFC de cada hablador llevan un **enlace fijo** del cliente (`.../legion/<slug>/`).
+El QR y el NFC de cada hablador llevan un **enlace fijo** del cliente (`.../<slug>/`).
 Lo que se abre depende del plan, y se cambia sin reimprimir nada:
 
 | Plan | Qué ve el cliente |
