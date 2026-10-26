@@ -7,8 +7,10 @@
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+<link rel="icon" href="../marca/logo-legion.png">
 <style id="estilo-pagina"></style>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -22,6 +24,17 @@
   .ctrls { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 16px; }
   .ctrls label { display: block; font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #6B665E; margin-bottom: 4px; }
   .ctrls select { width: 100%; padding: 10px 11px; border-radius: 10px; border: 1.5px solid #E2DDD4; background: #FAF8F5; }
+  .cabecera { display: flex; align-items: center; gap: 14px; }
+  .cabecera img { width: 58px; height: 58px; object-fit: contain; background: #111; border-radius: 14px; padding: 4px; }
+  .cabecera p { color: #6B665E; font-size: .9rem; margin-top: 2px; }
+  .identidad { margin-top: 16px; display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); background: #F4F1EC; border-radius: 14px; padding: 14px; }
+  .identidad .t { display: block; font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #6B665E; margin-bottom: 6px; }
+  .subir { display: flex; align-items: center; gap: 10px; }
+  .subir .prev { width: 52px; height: 52px; border-radius: 12px; border: 1.5px dashed #CFC8BC; background: #fff center/contain no-repeat; flex-shrink: 0; }
+  .subir input[type=file] { display: none; }
+  .fila { display: flex; gap: 8px; align-items: center; }
+  .fila select { flex: 1; min-width: 0; padding: 10px 11px; border-radius: 10px; border: 1.5px solid #E2DDD4; background: #fff; }
+  .fila input[type=color] { width: 46px; height: 42px; border: 1.5px solid #E2DDD4; border-radius: 10px; background: #fff; padding: 3px; cursor: pointer; }
   .url { margin-top: 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; background: #F4F1EC; border-radius: 12px; padding: 12px 14px; font-size: .9rem; }
   .url code { font-family: ui-monospace, Consolas, monospace; font-weight: 600; word-break: break-all; flex: 1; min-width: 200px; }
   .acc { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
@@ -61,6 +74,15 @@
   .t-chips svg { width: calc(var(--u) * 4.2); height: calc(var(--u) * 4.2); color: var(--acento); }
   .t-estrellas { display: flex; gap: calc(var(--u) * 1.4); color: var(--acento); }
   .t-estrellas svg { width: calc(var(--u) * 8); height: calc(var(--u) * 8); }
+  .t-logo { height: calc(var(--u) * 15); max-width: 72%; display: flex; align-items: center; justify-content: center; }
+  .t-logo.placa { background: #fff; border-radius: calc(var(--u) * 3.5); padding: calc(var(--u) * 2) calc(var(--u) * 4); }
+  .t-logo img { height: 100%; width: auto; max-width: 100%; object-fit: contain; display: block; }
+  .con-logo .t-titulo { font-size: calc(var(--u) * 8.2); }
+  .con-logo .t-nombre { font-size: calc(var(--u) * 3.2); margin-top: calc(var(--u) * -2.5); }
+  .con-logo .t-sub { font-size: calc(var(--u) * 3.5); }
+  .con-logo .t-qr { width: calc(var(--u) * 43); padding: calc(var(--u) * 2.8); }
+  .con-logo .t-nfc .zona { width: calc(var(--u) * 15); height: calc(var(--u) * 15); }
+  .con-logo .t-nfc strong { font-size: calc(var(--u) * 4.4); }
   .t-legion { font-size: calc(var(--u) * 2.6); color: var(--suave); margin-top: calc(var(--u) * -2); letter-spacing: .08em; }
   .t-legion b { font-weight: 800; color: var(--texto); }
 
@@ -75,8 +97,8 @@
 <body>
 
 <div class="panel">
-  <h1>Hablador QR + NFC</h1>
-  <p>Diseño general para todos los clientes. Solo cambia el código QR (y el nombre, si lo activas).</p>
+  <div class="cabecera"><img src="../marca/logo-legion.png" alt="LEGION Studio"><div><h1>Hablador QR + NFC</h1>
+  <p>Diseño LEGION con la identidad de cada cliente: su logo, su color y su QR.</p></div></div>
   <div class="ctrls">
     <div><label for="c-neg">Negocio</label><select id="c-neg"></select></div>
     <div><label for="c-tam">Tamaño del acrílico</label>
@@ -97,9 +119,32 @@
     <div><label for="c-cop">Copias</label>
       <select id="c-cop"><option>1</option><option selected>2</option><option>4</option><option>6</option></select></div>
   </div>
+  <div class="identidad">
+    <div>
+      <span class="t">Logo del cliente</span>
+      <div class="subir">
+        <span class="prev" id="logo-prev"></span>
+        <label class="btn sec mini" for="logo-file" style="cursor:pointer">Subir logo</label>
+        <input type="file" id="logo-file" accept="image/png,image/jpeg,image/webp,image/svg+xml">
+        <button class="btn sec mini" id="logo-quitar" type="button">Quitar</button>
+      </div>
+    </div>
+    <div>
+      <label class="t" for="c-placa">Fondo del logo</label>
+      <div class="fila"><select id="c-placa"><option value="no">Sin placa</option><option value="si">Placa blanca (logos oscuros)</option></select></div>
+    </div>
+    <div>
+      <label class="t" for="c-color">Color de acento</label>
+      <div class="fila">
+        <select id="c-color"><option value="cliente">Color del cliente</option><option value="legion">Dorado LEGION</option></select>
+        <input type="color" id="c-color-val" value="#F5B942" title="Elegir color" aria-label="Elegir color">
+      </div>
+    </div>
+  </div>
   <div class="url"><span>Enlace para el QR y el NFC:</span><code id="url"></code><button class="btn sec mini" id="copiar" type="button">Copiar</button></div>
   <div class="acc">
     <button class="btn" id="imprimir" type="button">Imprimir</button>
+    <button class="btn" id="png" type="button">Descargar imagen (PNG 300 dpi)</button>
     <button class="btn sec" id="svg" type="button">Descargar QR (SVG para imprenta)</button>
   </div>
   <p class="ayuda"><b>NFC:</b> pega el sticker (NTAG213 o NTAG215) detrás de la impresión, justo en el círculo punteado. Prográmalo con la app <b>NFC Tools</b>: Escribir → Agregar registro → URL → pega el enlace de arriba → Escribir. Después usa "Otros → Bloquear etiqueta" para que nadie lo pueda cambiar.<br>
@@ -135,6 +180,60 @@
     return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${n} ${n}" shape-rendering="crispEdges"><path fill="#111" d="${d}"/></svg>`;
   }
 
+  /* ----- Identidad del cliente: logo y color ----- */
+  let logo = null; // data URL subido, o N.logo
+  const leerLogo = (slug) => { try { return localStorage.getItem("logo_" + slug); } catch (e) { return null; } };
+  const guardarLogo = (slug, v) => { try { v ? localStorage.setItem("logo_" + slug, v) : localStorage.removeItem("logo_" + slug); } catch (e) {} };
+
+  // Color dominante del logo, ignorando blancos, negros y grises
+  function colorDeLogo(src) {
+    return new Promise((ok) => {
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.onload = () => {
+        try {
+          const k = 128, c = document.createElement("canvas");
+          c.width = c.height = k;
+          const x = c.getContext("2d"); x.drawImage(img, 0, 0, k, k);
+          const d = x.getImageData(0, 0, k, k).data, cubos = {};
+          for (let i = 0; i < d.length; i += 4) {
+            const r = d[i], g = d[i + 1], b = d[i + 2], a = d[i + 3];
+            const mx = Math.max(r, g, b), mn = Math.min(r, g, b);
+            if (a < 128 || mx < 40 || mx - mn < 40 || mn > 225) continue;
+            const key = (r >> 5) + "," + (g >> 5) + "," + (b >> 5);
+            // pesa más el color vivo que los bordes oscuros o desvanecidos
+            const q = (cubos[key] = cubos[key] || { n: 0, r: 0, g: 0, b: 0, peso: 0 });
+            q.n++; q.r += r; q.g += g; q.b += b; q.peso += (mx - mn) * (mx - mn) * mx;
+          }
+          const top = Object.values(cubos).sort((p, q) => q.peso - p.peso)[0];
+          if (!top) return ok(null);
+          const hex = (v) => Math.round(v / top.n).toString(16).padStart(2, "0");
+          ok("#" + hex(top.r) + hex(top.g) + hex(top.b));
+        } catch (e) { ok(null); }
+      };
+      img.onerror = () => ok(null);
+      img.src = src;
+    });
+  }
+
+  async function cargarIdentidad() {
+    const slug = $("c-neg").value, N = NEG[slug];
+    logo = leerLogo(slug) || N.logo || null;
+    $("logo-prev").style.backgroundImage = logo ? `url("${logo}")` : "";
+    $("c-color-val").value = (logo && (await colorDeLogo(logo))) || N.color || "#F5B942";
+    generar();
+  }
+
+  $("logo-file").addEventListener("change", (e) => {
+    const f = e.target.files[0]; if (!f) return;
+    const r = new FileReader();
+    r.onload = () => { guardarLogo($("c-neg").value, r.result); cargarIdentidad(); };
+    r.readAsDataURL(f);
+    e.target.value = "";
+  });
+  $("logo-quitar").addEventListener("click", () => { guardarLogo($("c-neg").value, null); cargarIdentidad(); });
+  ["c-placa", "c-color", "c-color-val"].forEach((id) => $(id).addEventListener("input", generar));
+
   function generar() {
     const slug = $("c-neg").value, N = NEG[slug];
     const url = BASE + slug + "/";
@@ -148,8 +247,10 @@
       : `@page { size: letter; margin: 8mm; } @media print { .hoja { gap: 4mm; } .tarjeta { outline: .2mm dashed #999; } }`;
 
     const qr = qrSVG(url);
+    const acento = $("c-color").value === "legion" ? (tema === "claro" ? "#141414" : "#F5B942") : $("c-color-val").value;
     const tarjeta = `
-      <div class="tarjeta ${tema}" style="--w:${w}mm;--h:${h}mm"><div class="t-int">
+      <div class="tarjeta ${tema}${logo ? " con-logo" : ""}" style="--w:${w}mm;--h:${h}mm;--acento:${acento}"><div class="t-int">
+        ${logo ? `<div class="t-logo${$("c-placa").value === "si" ? " placa" : ""}"><img src="${logo}" alt=""></div>` : ""}
         ${nombre ? `<div class="t-nombre">${N.nombre}</div>` : ""}
         <div class="t-titulo">${dis === "resenas" ? "¿Cómo estuvo<br>todo?" : "Todo en<br>un toque"}</div>
         <div class="t-sub">${dis === "resenas" ? "Déjanos tu reseña en Google. ¡Nos ayuda muchísimo!" : "Califícanos, mira el menú y pide a domicilio"}</div>
@@ -168,7 +269,21 @@
   $("c-neg").addEventListener("change", () => {
     // Si el cliente solo tiene reseñas, sugerir el diseño de reseñas
     $("c-dis").value = NEG[$("c-neg").value].plan === "basico" ? "resenas" : "general";
-    generar();
+    cargarIdentidad();
+  });
+  $("png").addEventListener("click", async (e) => {
+    const b = e.currentTarget, txt = b.textContent;
+    b.textContent = "Generando imagen…"; b.disabled = true;
+    try {
+      const png = await htmlToImage.toPng(document.querySelector(".tarjeta"), { pixelRatio: 300 / 96, style: { boxShadow: "none" } });
+      const a = document.createElement("a");
+      a.href = png; a.download = `hablador-${$("c-neg").value}-${$("c-tam").value}.png`; a.click();
+    } catch (err) {
+      b.textContent = "No se pudo. Usa Imprimir → Guardar como PDF";
+      setTimeout(() => { b.textContent = txt; b.disabled = false; }, 3000);
+      return;
+    }
+    b.textContent = txt; b.disabled = false;
   });
   $("imprimir").addEventListener("click", () => print());
   $("copiar").addEventListener("click", (e) => {
@@ -189,7 +304,7 @@
   if (params.get("t")) $("c-tam").value = params.get("t");
   if (params.get("d")) $("c-dis").value = params.get("d");
   if (params.get("c")) $("c-tema").value = params.get("c");
-  generar();
+  cargarIdentidad();
 </script>
 </body>
 </html>

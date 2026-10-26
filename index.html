@@ -5,130 +5,164 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LEGION Studio Digital | Habladores QR + NFC para restaurantes</title>
 <meta name="description" content="Habladores acrílicos con QR y NFC para restaurantes, heladerías y bares: más reseñas en Google, menú digital y pedidos por WhatsApp.">
-<meta name="theme-color" content="#111111">
+<meta name="theme-color" content="#0B0B0C">
 <meta property="og:title" content="LEGION Studio Digital · Habladores QR + NFC">
 <meta property="og:description" content="Más reseñas en Google y más pedidos por WhatsApp para tu negocio.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='12' fill='%23111'/%3E%3Cpath d='M15 12v24h18' stroke='%23F5B942' stroke-width='5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<meta property="og:image" content="https://legionstudio-star.github.io/marca/legion-casco.jpg">
+<link rel="icon" href="marca/logo-legion.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <style>
-  :root { --negro: #0E0E0F; --negro-2: #18181A; --acento: #F5B942; --blanco: #FFFFFF; --crema: #F6F3EE; --gris: #6B665E; --gris-osc: #A3A09A; --linea: #E6E0D6; --wa: #25D366; }
+  :root {
+    --negro: #0B0B0C; --negro-2: #121214; --negro-3: #18181B; --borde: #2A2722;
+    --oro: #D4AF6A; --oro-2: #F0D59A; --bronce: #9C7A3C; --rojo: #A3212B;
+    --plata: #C9CBD0; --gris: #8E8B85; --blanco: #FFFFFF; --wa: #25D366;
+  }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
-  body { font-family: "Plus Jakarta Sans", system-ui, sans-serif; background: var(--crema); color: var(--negro); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+  body { font-family: "Plus Jakarta Sans", system-ui, sans-serif; background: var(--negro); color: var(--blanco); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: clip; }
   a { color: inherit; text-decoration: none; }
   img, svg { display: block; }
   .icon { width: 22px; height: 22px; flex-shrink: 0; }
   .wrap { max-width: 1140px; margin: 0 auto; padding: 0 16px; }
-  section { padding: 72px 0; }
-  h1, h2, h3 { letter-spacing: -.03em; line-height: 1.08; font-weight: 800; }
-  .kicker { font-size: .75rem; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: #B9830F; }
-  .h2 { font-size: clamp(2rem, 6vw, 3rem); margin: 10px 0 14px; }
-  .lead { color: var(--gris); font-size: 1.05rem; max-width: 620px; }
+  section { padding: 76px 0; position: relative; }
+  h1, h2, h3 { letter-spacing: -.02em; line-height: 1.08; font-weight: 800; }
+  .romana { font-family: "Cinzel", Georgia, serif; }
+  .kicker { font-family: "Cinzel", Georgia, serif; font-size: .8rem; font-weight: 700; letter-spacing: .28em; text-transform: uppercase; color: var(--oro); display: inline-flex; align-items: center; gap: 12px; }
+  .kicker::before, .centro .kicker::after { content: ""; width: 28px; height: 1px; background: linear-gradient(90deg, transparent, var(--oro)); }
+  .centro .kicker::after { transform: scaleX(-1); }
+  .h2 { font-size: clamp(2rem, 6vw, 3.1rem); margin: 12px 0 14px; }
+  .h2 em { font-style: normal; background: linear-gradient(180deg, var(--oro-2), var(--oro) 55%, var(--bronce)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .lead { color: var(--plata); opacity: .82; font-size: 1.05rem; max-width: 620px; }
   .centro { text-align: center; } .centro .lead { margin: 0 auto; }
-  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 15px 24px; border-radius: 999px; font-weight: 800; font-size: .95rem; border: 0; cursor: pointer; transition: transform .15s; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 15px 26px; border-radius: 999px; font-weight: 800; font-size: .95rem; border: 0; cursor: pointer; transition: transform .15s, box-shadow .2s; }
   .btn:active { transform: scale(.97); }
-  .btn-acento { background: var(--acento); color: var(--negro); }
-  .btn-linea { border: 1.5px solid rgba(255,255,255,.35); color: #fff; }
+  .btn-oro { background: linear-gradient(180deg, var(--oro-2), var(--oro) 60%, var(--bronce)); color: #1A1409; box-shadow: 0 10px 30px -10px rgba(212,175,106,.6); }
+  .btn-oro:hover { box-shadow: 0 14px 36px -10px rgba(212,175,106,.85); }
+  .btn-linea { border: 1px solid rgba(212,175,106,.5); color: var(--oro-2); }
   .btn-negro { background: var(--negro); color: #fff; }
-  .btn-wa { background: var(--wa); color: #fff; }
+
+  /* Líneas de plano (como el arte de LEGION) */
+  .plano { position: absolute; inset: 18px; pointer-events: none; border: 1px solid rgba(212,175,106,.16); }
+  .plano::before, .plano::after { content: ""; position: absolute; width: 14px; height: 14px; border: 1px solid rgba(212,175,106,.55); }
+  .plano::before { top: -7px; left: -7px; border-width: 1px 0 0 1px; }
+  .plano::after { bottom: -7px; right: -7px; border-width: 0 1px 1px 0; }
 
   /* Nav */
-  .nav { position: absolute; inset: 0 0 auto; z-index: 5; color: #fff; }
-  .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 72px; }
-  .marca { font-weight: 800; letter-spacing: .02em; font-size: 1.05rem; display: flex; align-items: center; gap: 10px; }
-  .marca i { width: 32px; height: 32px; border-radius: 9px; background: var(--acento); color: var(--negro); display: grid; place-items: center; font-style: normal; font-weight: 800; }
-  .marca small { display: block; font-size: .62rem; letter-spacing: .24em; color: var(--gris-osc); font-weight: 700; }
-  .nav .btn { padding: 10px 16px; font-size: .82rem; }
+  .nav { position: absolute; inset: 0 0 auto; z-index: 5; }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 84px; }
+  .marca { display: flex; align-items: center; gap: 12px; }
+  .marca img { width: 46px; height: 46px; border-radius: 50%; border: 1px solid rgba(212,175,106,.5); box-shadow: 0 0 24px -6px rgba(212,175,106,.5); }
+  .marca b { font-family: "Cinzel", Georgia, serif; font-size: 1.15rem; letter-spacing: .14em; display: block; line-height: 1; }
+  .marca small { display: block; font-size: .6rem; letter-spacing: .34em; color: var(--oro); font-weight: 700; margin-top: 4px; }
+  .nav .btn { padding: 11px 18px; font-size: .84rem; }
 
   /* Hero */
-  .hero { background: radial-gradient(1200px 500px at 80% 10%, #2A2416 0%, transparent 60%), var(--negro); color: #fff; padding: 120px 0 80px; overflow: hidden; }
-  .hero-grid { display: grid; gap: 50px; align-items: center; }
-  .chip { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(245,185,66,.45); color: var(--acento); border-radius: 999px; padding: 6px 13px; font-size: .78rem; font-weight: 700; }
-  .hero h1 { font-size: clamp(2.5rem, 9vw, 4.4rem); margin: 18px 0 16px; }
-  .hero h1 span { color: var(--acento); }
-  .hero p { color: #C9C6BF; font-size: 1.08rem; max-width: 540px; }
+  .hero { min-height: 100svh; display: flex; align-items: flex-end; padding: 120px 0 64px; overflow: hidden; isolation: isolate; }
+  .hero-fondo { position: absolute; inset: 0; z-index: -1; background: url("marca/legion-casco.jpg") 62% 18% / cover no-repeat; }
+  .hero-fondo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(11,11,12,.25) 0%, rgba(11,11,12,.55) 38%, var(--negro) 72%); }
+  .chispas { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+  .chispas i { position: absolute; bottom: -10px; width: 3px; height: 3px; border-radius: 50%; background: var(--oro-2); box-shadow: 0 0 8px 2px rgba(240,213,154,.6); opacity: 0; animation: sube linear infinite; }
+  @keyframes sube { 0% { transform: translateY(0); opacity: 0; } 15% { opacity: .9; } 100% { transform: translateY(-80vh) translateX(30px); opacity: 0; } }
+  .chip { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(163,33,43,.7); background: rgba(163,33,43,.18); color: #F3C9CC; border-radius: 999px; padding: 6px 14px; font-size: .78rem; font-weight: 700; }
+  .chip i { width: 7px; height: 7px; border-radius: 50%; background: #E0434F; box-shadow: 0 0 10px #E0434F; }
+  .hero h1 { font-size: clamp(2.5rem, 9vw, 4.8rem); margin: 18px 0 16px; max-width: 760px; }
+  .hero h1 span { background: linear-gradient(180deg, var(--oro-2), var(--oro) 55%, var(--bronce)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero p { color: var(--plata); font-size: 1.1rem; max-width: 560px; }
   .hero-acc { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
-  .hero-datos { display: flex; flex-wrap: wrap; gap: 26px; margin-top: 36px; }
-  .hero-datos b { display: block; font-size: 1.6rem; color: #fff; }
-  .hero-datos span { font-size: .8rem; color: var(--gris-osc); }
+  .hero-datos { display: flex; flex-wrap: wrap; gap: 14px 34px; margin-top: 40px; padding-top: 24px; border-top: 1px solid rgba(212,175,106,.2); max-width: 600px; }
+  .hero-datos b { display: block; font-family: "Cinzel", Georgia, serif; font-size: 1.6rem; color: var(--oro-2); }
+  .hero-datos span { font-size: .8rem; color: var(--gris); }
 
   /* Maqueta del hablador */
-  .maqueta { position: relative; display: flex; justify-content: center; align-items: flex-end; min-height: 460px; }
-  .acrilico { position: relative; width: 250px; padding: 12px; border-radius: 10px; background: linear-gradient(135deg, rgba(255,255,255,.28), rgba(255,255,255,.06)); border: 1px solid rgba(255,255,255,.35); box-shadow: 0 40px 60px -30px rgba(0,0,0,.8), inset 0 0 0 1px rgba(255,255,255,.08); backdrop-filter: blur(2px); transform: perspective(900px) rotateY(-12deg) rotateX(3deg); }
+  .muestra { background: radial-gradient(800px 400px at 50% 40%, rgba(212,175,106,.12), transparent 70%), var(--negro-2); }
+  .muestra-grid { display: grid; gap: 40px; align-items: center; }
+  .maqueta { position: relative; display: flex; justify-content: center; align-items: flex-end; min-height: 470px; }
+  .acrilico { position: relative; width: 250px; padding: 12px; border-radius: 10px; background: linear-gradient(135deg, rgba(255,255,255,.26), rgba(255,255,255,.05)); border: 1px solid rgba(255,255,255,.32); box-shadow: 0 40px 60px -30px rgba(0,0,0,.9), 0 0 60px -20px rgba(212,175,106,.35); transform: perspective(900px) rotateY(-12deg) rotateX(3deg); }
   .acrilico::after { content: ""; position: absolute; inset: 0; border-radius: 10px; background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,.22) 45%, transparent 55%); pointer-events: none; }
-  .base { position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%) perspective(600px) rotateX(55deg); width: 290px; height: 60px; border-radius: 8px; background: linear-gradient(180deg, rgba(255,255,255,.25), rgba(255,255,255,.05)); border: 1px solid rgba(255,255,255,.3); z-index: -1; }
-  .mini { background: #121212; border-radius: 4px; aspect-ratio: 2/3; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 18px 16px 12px; color: #fff; position: relative; }
+  .base { position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%) perspective(600px) rotateX(55deg); width: 290px; height: 60px; border-radius: 8px; background: linear-gradient(180deg, rgba(255,255,255,.22), rgba(255,255,255,.04)); border: 1px solid rgba(255,255,255,.28); z-index: -1; }
+  .mini { --c: #E8590C; background: #121212; border-radius: 4px; aspect-ratio: 2/3; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 16px 16px 10px; color: #fff; position: relative; }
   .mini::before { content: ""; position: absolute; inset: 7px; border: 1px solid rgba(255,255,255,.2); border-radius: 10px; }
-  .mini .n { font-size: .58rem; letter-spacing: .16em; color: var(--acento); font-weight: 700; }
-  .mini .t { font-size: 1.35rem; font-weight: 800; line-height: 1; margin-top: 6px; letter-spacing: -.03em; }
-  .mini .s { font-size: .6rem; color: rgba(255,255,255,.65); margin-top: 6px; }
-  .mini .q { background: #fff; border-radius: 10px; padding: 8px; width: 120px; margin-top: 12px; }
-  .mini .nfc { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: .62rem; font-weight: 700; text-align: left; }
-  .mini .nfc i { width: 34px; height: 34px; border-radius: 50%; border: 1.5px dashed var(--acento); display: grid; place-items: center; color: var(--acento); }
-  .mini .nfc svg { width: 18px; height: 18px; }
-  .mini .f { margin-top: auto; font-size: .45rem; color: rgba(255,255,255,.5); }
-  .telefono { position: absolute; right: 6%; bottom: 10px; width: 150px; height: 300px; border-radius: 26px; background: #000; border: 6px solid #2a2a2c; overflow: hidden; box-shadow: 0 30px 50px -20px rgba(0,0,0,.9); transform: rotate(8deg); display: none; }
+  .mini .lg { width: 40px; height: 40px; }
+  .mini .n { font-size: .52rem; letter-spacing: .16em; color: var(--c); font-weight: 700; margin-top: 5px; }
+  .mini .t { font-size: 1.25rem; font-weight: 800; line-height: 1; margin-top: 5px; letter-spacing: -.03em; }
+  .mini .s { font-size: .56rem; color: rgba(255,255,255,.65); margin-top: 5px; }
+  .mini .q { background: #fff; border-radius: 9px; padding: 7px; width: 104px; margin-top: 9px; }
+  .mini .nfc { display: flex; align-items: center; gap: 8px; margin-top: 9px; font-size: .6rem; font-weight: 700; text-align: left; }
+  .mini .nfc i { width: 30px; height: 30px; border-radius: 50%; border: 1.5px dashed var(--c); display: grid; place-items: center; color: var(--c); }
+  .mini .nfc svg { width: 16px; height: 16px; }
+  .mini .f { margin-top: auto; font-size: .42rem; color: rgba(255,255,255,.5); }
+  .telefono { position: absolute; right: 2%; bottom: 10px; width: 150px; height: 300px; border-radius: 26px; background: #000; border: 6px solid #2a2a2c; overflow: hidden; box-shadow: 0 30px 50px -20px rgba(0,0,0,.9); transform: rotate(8deg); display: none; }
   .telefono iframe { width: 375px; height: 750px; border: 0; transform: scale(.368); transform-origin: 0 0; pointer-events: none; }
+  .lista-ok { list-style: none; display: grid; gap: 14px; margin-top: 24px; }
+  .lista-ok li { display: flex; gap: 14px; align-items: flex-start; color: var(--plata); }
+  .lista-ok li b { color: #fff; display: block; }
+  .lista-ok .icon { width: 38px; height: 38px; padding: 9px; border-radius: 12px; background: rgba(212,175,106,.12); border: 1px solid rgba(212,175,106,.3); color: var(--oro); }
 
   /* Pasos */
-  .pasos { display: grid; gap: 16px; margin-top: 36px; }
-  .paso { background: #fff; border-radius: 20px; padding: 24px; border: 1px solid var(--linea); }
-  .paso .n { width: 40px; height: 40px; border-radius: 12px; background: var(--negro); color: var(--acento); display: grid; place-items: center; font-weight: 800; margin-bottom: 14px; }
+  .pasos { display: grid; gap: 16px; margin-top: 40px; counter-reset: paso; }
+  .paso { background: var(--negro-3); border-radius: 20px; padding: 26px; border: 1px solid var(--borde); position: relative; overflow: hidden; }
+  .paso .n { font-family: "Cinzel", Georgia, serif; font-size: 2.6rem; font-weight: 800; line-height: 1; color: transparent; -webkit-text-stroke: 1px var(--oro); margin-bottom: 14px; }
   .paso h3 { font-size: 1.2rem; margin-bottom: 6px; }
   .paso p { color: var(--gris); font-size: .94rem; }
 
   /* Beneficios */
-  .beneficios { background: var(--negro); color: #fff; }
-  .beneficios .lead { color: #C9C6BF; }
-  .beneficios .kicker { color: var(--acento); }
-  .ben-grid { display: grid; gap: 14px; margin-top: 36px; }
-  .ben { background: var(--negro-2); border: 1px solid #2A2A2D; border-radius: 20px; padding: 24px; }
-  .ben .icon { width: 30px; height: 30px; color: var(--acento); margin-bottom: 14px; }
+  .beneficios { background: var(--negro-2); }
+  .ben-grid { display: grid; gap: 14px; margin-top: 40px; }
+  .ben { background: linear-gradient(180deg, #1A1916, var(--negro-3)); border: 1px solid var(--borde); border-radius: 20px; padding: 26px; transition: border-color .2s, transform .2s; }
+  .ben:hover { border-color: rgba(212,175,106,.55); transform: translateY(-3px); }
+  .ben .icon { width: 30px; height: 30px; color: var(--oro); margin-bottom: 14px; }
   .ben h3 { font-size: 1.15rem; margin-bottom: 6px; }
-  .ben p { color: var(--gris-osc); font-size: .92rem; }
+  .ben p { color: var(--gris); font-size: .92rem; }
 
   /* Planes */
-  .planes { display: grid; gap: 16px; margin-top: 36px; }
-  .plan { background: #fff; border-radius: 24px; padding: 28px 24px; border: 1px solid var(--linea); display: flex; flex-direction: column; gap: 16px; }
-  .plan.dest { background: var(--negro); color: #fff; border-color: var(--negro); position: relative; }
-  .plan .et { position: absolute; top: -12px; left: 24px; background: var(--acento); color: var(--negro); font-size: .7rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; padding: 5px 12px; border-radius: 999px; }
-  .plan h3 { font-size: 1.5rem; }
+  .planes { display: grid; gap: 16px; margin-top: 40px; }
+  .plan { background: var(--negro-3); border-radius: 24px; padding: 30px 24px; border: 1px solid var(--borde); display: flex; flex-direction: column; gap: 16px; position: relative; }
+  .plan.dest { background: linear-gradient(180deg, #221C10, #141210); border-color: rgba(212,175,106,.7); box-shadow: 0 30px 60px -30px rgba(212,175,106,.45); }
+  .plan .et { position: absolute; top: -12px; left: 24px; background: var(--rojo); color: #fff; font-size: .7rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; padding: 5px 12px; border-radius: 999px; }
+  .plan h3 { font-family: "Cinzel", Georgia, serif; font-size: 1.6rem; letter-spacing: .04em; color: var(--oro-2); }
   .plan .para { color: var(--gris); font-size: .9rem; margin-top: -10px; }
-  .plan.dest .para { color: var(--gris-osc); }
-  .plan ul { list-style: none; display: grid; gap: 9px; font-size: .93rem; }
+  .plan ul { list-style: none; display: grid; gap: 9px; font-size: .93rem; color: var(--plata); }
   .plan li { display: flex; gap: 10px; align-items: flex-start; }
-  .plan li .icon { width: 18px; height: 18px; color: #2E9E5B; margin-top: 3px; }
-  .plan.dest li .icon { color: var(--acento); }
+  .plan li .icon { width: 18px; height: 18px; color: var(--oro); margin-top: 3px; }
   .plan .btn { margin-top: auto; }
 
   /* Demos */
-  .demos { display: grid; gap: 14px; margin-top: 36px; }
-  .demo { background: #fff; border-radius: 20px; border: 1px solid var(--linea); padding: 18px; display: flex; gap: 16px; align-items: center; }
-  .demo .qr { width: 96px; flex-shrink: 0; background: #fff; border: 1px solid var(--linea); border-radius: 12px; padding: 6px; }
-  .demo h3 { font-size: 1.05rem; }
+  .demos { display: grid; gap: 14px; margin-top: 40px; }
+  .demo { background: var(--negro-3); border-radius: 20px; border: 1px solid var(--borde); padding: 18px; display: flex; gap: 16px; align-items: center; }
+  .demo .qr { width: 96px; flex-shrink: 0; background: #fff; border-radius: 12px; padding: 7px; }
+  .demo h3 { font-size: 1.05rem; display: flex; align-items: center; gap: 8px; }
+  .demo h3 img { width: 26px; height: 26px; border-radius: 50%; }
   .demo p { color: var(--gris); font-size: .85rem; margin: 2px 0 10px; }
-  .demo .plan-et { display: inline-block; font-size: .68rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; background: var(--crema); padding: 3px 9px; border-radius: 999px; margin-bottom: 6px; }
-  .demo a.ver { font-weight: 800; font-size: .88rem; border-bottom: 2px solid var(--acento); }
+  .demo .plan-et { display: inline-block; font-size: .66rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--oro); border: 1px solid rgba(212,175,106,.4); padding: 3px 9px; border-radius: 999px; margin-bottom: 6px; }
+  .demo a.ver { font-weight: 800; font-size: .88rem; color: var(--oro-2); border-bottom: 1px solid var(--oro); }
 
   /* FAQ */
   .faq { max-width: 780px; margin: 30px auto 0; }
-  .faq details { border-bottom: 1px solid var(--linea); }
-  .faq summary { list-style: none; cursor: pointer; padding: 18px 0; font-weight: 700; display: flex; justify-content: space-between; gap: 14px; }
+  .faq details { border-bottom: 1px solid var(--borde); }
+  .faq summary { list-style: none; cursor: pointer; padding: 20px 0; font-weight: 700; display: flex; justify-content: space-between; gap: 14px; }
   .faq summary::-webkit-details-marker { display: none; }
-  .faq summary::after { content: "+"; font-size: 1.4rem; line-height: 1; color: #B9830F; }
+  .faq summary::after { content: "+"; font-size: 1.4rem; line-height: 1; color: var(--oro); }
   .faq details[open] summary::after { content: "−"; }
-  .faq p { padding-bottom: 18px; color: var(--gris); }
+  .faq p { padding-bottom: 20px; color: var(--gris); }
 
   /* CTA y pie */
-  .cta { background: var(--acento); text-align: center; }
-  .cta h2 { font-size: clamp(2rem, 7vw, 3.2rem); }
-  .cta p { margin: 12px auto 26px; max-width: 520px; color: #3D3420; }
-  .pie { background: var(--negro); color: var(--gris-osc); padding: 34px 0; font-size: .85rem; }
+  .cta { text-align: center; overflow: hidden; isolation: isolate; padding: 100px 0; }
+  .cta::before { content: ""; position: absolute; inset: 0; z-index: -1; background: url("marca/legion-casco.jpg") center 30% / cover; opacity: .28; }
+  .cta::after { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(closest-side, transparent, var(--negro)); }
+  .cta img.emblema { width: 92px; height: 92px; border-radius: 50%; margin: 0 auto 22px; border: 1px solid rgba(212,175,106,.6); box-shadow: 0 0 50px -10px rgba(212,175,106,.7); }
+  .cta h2 { font-size: clamp(2rem, 7vw, 3.4rem); }
+  .cta p { margin: 14px auto 28px; max-width: 520px; color: var(--plata); }
+  .pie { background: #070708; color: var(--gris); padding: 34px 0; font-size: .85rem; border-top: 1px solid var(--borde); }
   .pie .wrap { display: flex; flex-direction: column; gap: 10px; }
-  .pie b { color: #fff; }
+  .pie b { color: var(--oro-2); font-family: "Cinzel", Georgia, serif; letter-spacing: .08em; }
+
+  /* Aparición al hacer scroll */
+  .rev { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+  .rev.vis { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .rev { opacity: 1; transform: none; } .chispas { display: none; } }
 
   @media (min-width: 760px) {
     .pasos { grid-template-columns: repeat(3, 1fr); }
@@ -138,11 +172,14 @@
     .pie .wrap { flex-direction: row; justify-content: space-between; }
   }
   @media (min-width: 1000px) {
-    section { padding: 100px 0; }
-    .hero-grid { grid-template-columns: 1.1fr 1fr; }
+    section { padding: 110px 0; }
+    .hero { align-items: center; }
+    .hero-fondo { left: 30%; background-position: 40% center; background-size: cover; }
+    .hero h1 { max-width: 660px; }
+    .hero-fondo::after { background: linear-gradient(90deg, var(--negro) 0%, rgba(11,11,12,.75) 18%, rgba(11,11,12,.15) 50%, transparent 100%), linear-gradient(0deg, var(--negro), transparent 30%); }
+    .muestra-grid { grid-template-columns: 1fr 1fr; }
     .ben-grid { grid-template-columns: repeat(4, 1fr); }
     .telefono { display: block; }
-    .maqueta { justify-content: flex-start; padding-left: 30px; }
   }
 </style>
 </head>
@@ -150,30 +187,37 @@
 
 <header class="nav">
   <div class="wrap">
-    <a href="#" class="marca"><i>L</i><span>LEGION<small>STUDIO DIGITAL</small></span></a>
-    <a class="btn btn-acento" data-wa="Hola LEGION, quiero información de los habladores con QR y NFC.">Cotizar</a>
+    <a href="#" class="marca"><img src="marca/logo-legion.png" alt="Logo LEGION Studio"><span><b>LEGION</b><small>STUDIO DIGITAL</small></span></a>
+    <a class="btn btn-oro" data-wa="Hola LEGION, quiero información de los habladores con QR y NFC.">Cotizar</a>
   </div>
 </header>
 
 <section class="hero">
-  <div class="wrap hero-grid">
-    <div>
-      <span class="chip">Para restaurantes, heladerías y bares</span>
-      <h1>Más reseñas en Google. <span>Más pedidos por WhatsApp.</span></h1>
-      <p>Un hablador acrílico en cada mesa con código QR y NFC. Tu cliente escanea o acerca el celular y en un toque te califica, ve tu menú y te hace el pedido.</p>
-      <div class="hero-acc">
-        <a class="btn btn-acento" data-wa="Hola LEGION, quiero un hablador con QR y NFC para mi negocio.">Quiero el mío</a>
-        <a class="btn btn-linea" href="#demos">Ver ejemplos</a>
-      </div>
-      <div class="hero-datos">
-        <div><b>1 toque</b><span>Sin descargar apps</span></div>
-        <div><b>0 %</b><span>Comisión por pedido</span></div>
-        <div><b>24/7</b><span>Menú siempre actualizado</span></div>
-      </div>
+  <div class="hero-fondo" role="img" aria-label="Casco de legionario, imagen de LEGION Studio"></div>
+  <div class="chispas" id="chispas"></div>
+  <div class="wrap">
+    <span class="chip"><i></i>Para restaurantes, heladerías y bares</span>
+    <h1>Más reseñas en Google. <span>Más pedidos por WhatsApp.</span></h1>
+    <p>El hablador inteligente de LEGION: un acrílico en cada mesa con código QR y NFC. Tu cliente escanea o acerca el celular y en un toque te califica, ve tu menú y te hace el pedido.</p>
+    <div class="hero-acc">
+      <a class="btn btn-oro" data-wa="Hola LEGION, quiero un hablador con QR y NFC para mi negocio.">Quiero el mío</a>
+      <a class="btn btn-linea" href="#demos">Ver ejemplos</a>
     </div>
-    <div class="maqueta">
+    <div class="hero-datos">
+      <div><b>1 toque</b><span>Sin descargar apps</span></div>
+      <div><b>0 %</b><span>Comisión por pedido</span></div>
+      <div><b>24/7</b><span>Menú siempre actualizado</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="muestra">
+  <div class="plano"></div>
+  <div class="wrap muestra-grid">
+    <div class="maqueta rev">
       <div class="acrilico">
         <div class="mini">
+          <img class="lg" src="datos/logos/elsol.svg" alt="">
           <div class="n">ASADERO EL SOL DE MELGAR</div>
           <div class="t">Todo en<br>un toque</div>
           <div class="s">Califícanos, mira el menú y pide a domicilio</div>
@@ -185,43 +229,56 @@
       </div>
       <div class="telefono"><iframe src="elsol/index.html" title="Ejemplo de página del negocio" loading="lazy" tabindex="-1"></iframe></div>
     </div>
+    <div class="rev">
+      <span class="kicker">El hablador inteligente</span>
+      <h2 class="h2">Con <em>tu logo</em>, tus colores y tu página</h2>
+      <p class="lead">Diseñamos cada hablador con la identidad de tu negocio. Detrás va un chip NFC y el QR lleva a tu propia página.</p>
+      <ul class="lista-ok">
+        <li><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2.8 2.8 5.7 6.3.9-4.6 4.4 1.1 6.2L12 17l-5.6 3 1.1-6.2L2.9 9.4l6.3-.9L12 2.8Z"/></svg><span><b>Reseña en Google en un toque</b>Sin buscar tu negocio ni escribir nada.</span></li>
+        <li><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5v-15Z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></svg><span><b>Menú con fotos y precios</b>Siempre al día, sin reimprimir cartas.</span></li>
+        <li><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="17" r="3"/><circle cx="18.5" cy="17" r="3"/><path d="M8.5 17h6l3-7h-4M5.5 14l3-5h4l2 8M15 6h2.5l1 4"/></svg><span><b>Pedidos directo a tu WhatsApp</b>Domicilio, para recoger o a la mesa.</span></li>
+      </ul>
+    </div>
   </div>
 </section>
 
 <section>
   <div class="wrap">
-    <div class="centro">
+    <div class="centro rev">
       <span class="kicker">Cómo funciona</span>
-      <h2 class="h2">Así de fácil funciona</h2>
+      <h2 class="h2">Así de <em>fácil</em> funciona</h2>
       <p class="lead">Nosotros hacemos todo: diseño, impresión, programación del NFC y la página de tu negocio.</p>
     </div>
     <div class="pasos">
-      <div class="paso"><div class="n">1</div><h3>Instalamos el hablador</h3><p>Acrílico elegante para mesas, mostrador o caja, con tu QR y un chip NFC.</p></div>
-      <div class="paso"><div class="n">2</div><h3>Tu cliente lo toca</h3><p>Escanea con la cámara o acerca el celular. Sin apps, funciona con iPhone y Android.</p></div>
-      <div class="paso"><div class="n">3</div><h3>Te califica y te pide</h3><p>Llega a tu página: reseña en Google, menú, domicilios por WhatsApp, wifi y más.</p></div>
+      <div class="paso rev"><div class="n">I</div><h3>Instalamos el hablador</h3><p>Acrílico elegante para mesas, mostrador o caja, con tu logo, tu QR y un chip NFC.</p></div>
+      <div class="paso rev"><div class="n">II</div><h3>Tu cliente lo toca</h3><p>Escanea con la cámara o acerca el celular. Sin apps, funciona con iPhone y Android.</p></div>
+      <div class="paso rev"><div class="n">III</div><h3>Te califica y te pide</h3><p>Llega a tu página: reseña en Google, menú, domicilios por WhatsApp, wifi y más.</p></div>
     </div>
   </div>
 </section>
 
 <section class="beneficios">
+  <div class="plano"></div>
   <div class="wrap">
-    <span class="kicker">Por qué funciona</span>
-    <h2 class="h2">Lo que gana tu negocio</h2>
-    <p class="lead">Pensado para el día a día de un restaurante: rápido para el cliente y cero trabajo para ti.</p>
+    <div class="rev">
+      <span class="kicker">Por qué funciona</span>
+      <h2 class="h2">Lo que <em>gana</em> tu negocio</h2>
+      <p class="lead">Pensado para el día a día de un restaurante: rápido para el cliente y cero trabajo para ti.</p>
+    </div>
     <div class="ben-grid">
-      <div class="ben"><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2.8 2.8 5.7 6.3.9-4.6 4.4 1.1 6.2L12 17l-5.6 3 1.1-6.2L2.9 9.4l6.3-.9L12 2.8Z"/></svg><h3>Más reseñas</h3><p>Más reseñas te suben en Google Maps cuando alguien busca dónde comer cerca.</p></div>
-      <div class="ben"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5v-15Z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></svg><h3>Menú sin reimprimir</h3><p>¿Subió un precio o hay plato nuevo? Lo cambiamos y se actualiza en todas las mesas.</p></div>
-      <div class="ben"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="17" r="3"/><circle cx="18.5" cy="17" r="3"/><path d="M8.5 17h6l3-7h-4M5.5 14l3-5h4l2 8M15 6h2.5l1 4"/></svg><h3>Pedidos sin comisión</h3><p>Los pedidos te llegan directo a WhatsApp, sin pagar el 25 % o 30 % de las apps.</p></div>
-      <div class="ben"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 8.5a15 15 0 0 1 20 0M5 12a10 10 0 0 1 14 0M8.5 15.5a5 5 0 0 1 7 0"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg><h3>Menos preguntas</h3><p>Clave del wifi, horario y ubicación a un toque. Tus meseros atienden, no repiten.</p></div>
+      <div class="ben rev"><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2.8 2.8 5.7 6.3.9-4.6 4.4 1.1 6.2L12 17l-5.6 3 1.1-6.2L2.9 9.4l6.3-.9L12 2.8Z"/></svg><h3>Más reseñas</h3><p>Más reseñas te suben en Google Maps cuando alguien busca dónde comer cerca.</p></div>
+      <div class="ben rev"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5v-15Z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></svg><h3>Menú sin reimprimir</h3><p>¿Subió un precio o hay plato nuevo? Lo cambiamos y se actualiza en todas las mesas.</p></div>
+      <div class="ben rev"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="17" r="3"/><circle cx="18.5" cy="17" r="3"/><path d="M8.5 17h6l3-7h-4M5.5 14l3-5h4l2 8M15 6h2.5l1 4"/></svg><h3>Pedidos sin comisión</h3><p>Los pedidos te llegan directo a WhatsApp, sin pagar el 25 % o 30 % de las apps.</p></div>
+      <div class="ben rev"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 8.5a15 15 0 0 1 20 0M5 12a10 10 0 0 1 14 0M8.5 15.5a5 5 0 0 1 7 0"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg><h3>Menos preguntas</h3><p>Clave del wifi, horario y ubicación a un toque. Tus meseros atienden, no repiten.</p></div>
     </div>
   </div>
 </section>
 
 <section id="planes">
   <div class="wrap">
-    <div class="centro">
+    <div class="centro rev">
       <span class="kicker">Planes</span>
-      <h2 class="h2">Empieza con lo que necesitas</h2>
+      <h2 class="h2">Empieza con <em>lo que necesitas</em></h2>
       <p class="lead">Puedes subir de plan cuando quieras sin cambiar el hablador: el mismo QR y el mismo NFC siguen sirviendo.</p>
     </div>
     <div class="planes" id="lista-planes"></div>
@@ -230,9 +287,9 @@
 
 <section id="demos" style="padding-top:0">
   <div class="wrap">
-    <div class="centro">
-      <span class="kicker">Ejemplos reales</span>
-      <h2 class="h2">Escanea y pruébalo</h2>
+    <div class="centro rev">
+      <span class="kicker">Ejemplos</span>
+      <h2 class="h2">Escanea y <em>pruébalo</em></h2>
       <p class="lead">Apunta la cámara de tu celular a cualquiera de estos códigos o toca "Ver página".</p>
     </div>
     <div class="demos" id="lista-demos"></div>
@@ -241,9 +298,10 @@
 
 <section style="padding-top:0">
   <div class="wrap">
-    <div class="centro"><span class="kicker">Preguntas frecuentes</span><h2 class="h2">Lo que nos preguntan</h2></div>
+    <div class="centro rev"><span class="kicker">Preguntas frecuentes</span><h2 class="h2">Lo que nos preguntan</h2></div>
     <div class="faq">
       <details open><summary>¿Mis clientes necesitan descargar una app?</summary><p>No. El QR se abre con la cámara del celular y el NFC funciona acercando el teléfono. Los iPhone lo leen directamente; en Android basta con tener el NFC activado.</p></details>
+      <details><summary>¿El hablador lleva mi logo?</summary><p>Sí. Lo diseñamos con el logo y el color de tu negocio, y te mostramos cómo queda antes de imprimir.</p></details>
       <details><summary>¿Qué pasa si cambio precios o platos?</summary><p>Nos escribes y lo actualizamos. El hablador no se reimprime: el QR y el NFC siempre llevan a tu página actualizada.</p></details>
       <details><summary>¿Puedo empezar solo con reseñas?</summary><p>Sí. Con el plan Reseñas el cliente va directo a calificarte en Google. Cuando quieras, subes a Plus o Pro con el mismo hablador.</p></details>
       <details><summary>¿Cómo me llegan los pedidos?</summary><p>A tu WhatsApp, en un solo mensaje con los productos, cantidades, total, dirección o número de mesa y forma de pago.</p></details>
@@ -253,10 +311,12 @@
 </section>
 
 <section class="cta">
-  <div class="wrap">
-    <h2>Tu negocio, a un toque de distancia</h2>
-    <p>Escríbenos y te mostramos cómo se vería el hablador con el nombre de tu negocio.</p>
-    <a class="btn btn-negro" data-wa="Hola LEGION, quiero ver cómo quedaría el hablador para mi negocio.">Hablar por WhatsApp</a>
+  <div class="wrap rev">
+    <img class="emblema" src="marca/logo-legion.png" alt="">
+    <span class="kicker">LEGION Studio Digital</span>
+    <h2 style="margin-top:12px">Tu negocio, a un toque de distancia</h2>
+    <p>Escríbenos y te mostramos cómo se vería el hablador con el logo de tu negocio.</p>
+    <a class="btn btn-oro" data-wa="Hola LEGION, quiero ver cómo quedaría el hablador para mi negocio.">Hablar por WhatsApp</a>
   </div>
 </section>
 
@@ -284,24 +344,40 @@
 
   const ok = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>';
   const PLANES = [
-    { n: "Reseñas", para: "Para empezar a crecer en Google", f: ["Hablador acrílico con QR + NFC", "Va directo a dejar la reseña en Google", "Diseño con el nombre de tu negocio", "Puedes subir de plan sin cambiar el hablador"], msg: "Hola LEGION, me interesa el plan Reseñas." },
+    { n: "Reseñas", para: "Para empezar a crecer en Google", f: ["Hablador acrílico con QR + NFC", "Va directo a dejar la reseña en Google", "Diseño con el logo de tu negocio", "Puedes subir de plan sin cambiar el hablador"], msg: "Hola LEGION, me interesa el plan Reseñas." },
     { n: "Plus", para: "Tu negocio completo en un toque", dest: true, f: ["Todo lo del plan Reseñas", "Página propia con tu logo y colores", "Menú digital con fotos y precios", "Botones de WhatsApp, ubicación y redes", "Clave del wifi, horario y promociones"], msg: "Hola LEGION, me interesa el plan Plus." },
     { n: "Pro", para: "Para vender más por WhatsApp", f: ["Todo lo del plan Plus", "Carrito de pedidos: domicilio, recoger o mesa", "El pedido llega listo a tu WhatsApp con el total", "Actualizaciones de menú incluidas"], msg: "Hola LEGION, me interesa el plan Pro." }
   ];
   document.getElementById("lista-planes").innerHTML = PLANES.map((p) => `
-    <div class="plan${p.dest ? " dest" : ""}">${p.dest ? '<span class="et">El más elegido</span>' : ""}
+    <div class="plan rev${p.dest ? " dest" : ""}">${p.dest ? '<span class="et">El más elegido</span>' : ""}
       <h3>${p.n}</h3><p class="para">${p.para}</p>
       <ul>${p.f.map((f) => `<li>${ok}${f}</li>`).join("")}</ul>
-      <a class="btn ${p.dest ? "btn-acento" : "btn-negro"}" href="${wa(p.msg)}" target="_blank" rel="noopener">Cotizar ${p.n}</a>
+      <a class="btn ${p.dest ? "btn-oro" : "btn-linea"}" href="${wa(p.msg)}" target="_blank" rel="noopener">Cotizar ${p.n}</a>
     </div>`).join("");
 
   const NOMBRE_PLAN = { basico: "Plan Reseñas", plus: "Plan Plus", pro: "Plan Pro" };
   document.getElementById("lista-demos").innerHTML = Object.entries(NEG).map(([s, n]) => `
-    <div class="demo">
+    <div class="demo rev">
       <div class="qr">${qr(BASE + s + "/")}</div>
-      <div><span class="plan-et">${NOMBRE_PLAN[n.plan]}</span><h3>${n.nombre}</h3><p>${n.categoria || ""}${n.plan === "basico" ? " · abre directo las reseñas" : ""}</p>
+      <div><span class="plan-et">${NOMBRE_PLAN[n.plan]}</span><h3>${n.logo ? `<img src="${n.logo.replace("../", "")}" alt="">` : ""}${n.nombre}</h3><p>${n.categoria || ""}${n.plan === "basico" ? " · abre directo las reseñas" : ""}</p>
         <a class="ver" href="${s}/" target="_blank" rel="noopener">Ver página →</a></div>
     </div>`).join("");
+
+  // Chispas doradas del hero
+  const ch = document.getElementById("chispas");
+  for (let i = 0; i < 26; i++) {
+    const s = document.createElement("i");
+    s.style.left = Math.random() * 100 + "%";
+    s.style.animationDuration = 6 + Math.random() * 8 + "s";
+    s.style.animationDelay = -Math.random() * 14 + "s";
+    ch.appendChild(s);
+  }
+
+  // Aparición suave al hacer scroll
+  const io = "IntersectionObserver" in window && new IntersectionObserver((es) => es.forEach((e) => {
+    if (e.isIntersecting) { e.target.classList.add("vis"); io.unobserve(e.target); }
+  }), { threshold: .12 });
+  document.querySelectorAll(".rev").forEach((el) => io ? io.observe(el) : el.classList.add("vis"));
 </script>
 </body>
 </html>

@@ -25,7 +25,7 @@ Lo que se abre depende del plan, y se cambia sin reimprimir nada:
 1. Copia una entrada en `datos/negocios.js` y cambia los datos. El **slug** (la clave) va en el enlace: corto, en minúsculas, sin tildes ni espacios. **Nunca lo cambies después de imprimir.**
 2. Ejecuta `node herramientas/generar.js` (crea la carpeta del cliente).
 3. Publica (`git add -A && git commit -m "..." && git push`).
-4. Abre el **Hablador**, elige el negocio, imprime y programa el NFC con el mismo enlace.
+4. Abre el **Hablador**, elige el negocio, sube su logo (toma su color solo), descarga la imagen PNG o imprime, y programa el NFC con el mismo enlace.
 
 ### Enlace de reseñas de Google
 Perfil de Empresa de Google del cliente → **Pedir reseñas** → copiar el enlace (`https://g.page/r/.../review`) y pegarlo en `resenas`.

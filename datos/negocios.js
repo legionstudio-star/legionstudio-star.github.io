@@ -15,6 +15,8 @@
   botones disponibles (en el orden que quieras):
     menu, domicilio, reservar, ubicacion, wifi, llamar, instagram, tiktok, facebook, web
 
+  logo: ruta de la imagen del cliente (ej: "../datos/logos/slug.png"), o null para mostrar sus iniciales.
+
   horario: 7 posiciones (0 = domingo ... 6 = sábado). [abre, cierra] en horas 0-24.
     Para cierres después de medianoche usa más de 24 (ej: 26 = 2:00 a. m.). null = cerrado.
 */
@@ -38,7 +40,7 @@ window.NEGOCIOS = {
     color: "#E8590C",
     tema: "claro",
     portada: FOTO("photo-1544025162-d76694265947"),
-    logo: null,
+    logo: "../datos/logos/elsol.svg",
     whatsapp: "573234953988",
     telefono: "573234953988",
     direccion: "Calle 6 # 24-15, Centro, Melgar, Tolima",
@@ -89,7 +91,7 @@ window.NEGOCIOS = {
     color: "#D6336C",
     tema: "claro",
     portada: FOTO("photo-1501443762994-82bd5dace89a"),
-    logo: null,
+    logo: "../datos/logos/lanevada.svg",
     whatsapp: "573234953988",
     telefono: "573234953988",
     direccion: "Carrera 25 # 7-40, frente al parque, Melgar, Tolima",
@@ -130,7 +132,7 @@ window.NEGOCIOS = {
     color: "#F2B134",
     tema: "oscuro",
     portada: FOTO("photo-1572116469696-31de0f17cc34"),
-    logo: null,
+    logo: "../datos/logos/laterraza.svg",
     whatsapp: "573234953988",
     telefono: "573234953988",
     direccion: "Calle 7 # 26-10, piso 3, Melgar, Tolima",
