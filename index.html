@@ -567,6 +567,22 @@ footer::before{
 .nav-links a.nav-nuevo{opacity:1;color:var(--gold-light);white-space:nowrap;}
 @media(max-width:640px){.lanz{padding:5rem 1.25rem;}.lanz-acr{display:none;}}
 @media(min-width:960px){.lanz-inner{grid-template-columns:1fr 1.05fr;}}
+/* CELULAR */
+html{overflow-x:clip;}
+@media(max-width:640px){
+  .urgency-bar{font-size:.68rem;padding:.5rem .75rem;}
+  .u-largo{display:none;}
+  .hero-eyebrow{letter-spacing:.28em;font-size:.6rem;gap:.6rem;}
+  .hero-eyebrow::before,.hero-eyebrow::after{width:22px;}
+  .stats{padding:3.5rem 1rem;}
+  .stats-inner{gap:.75rem;}
+  .stat-item{padding:1rem .25rem;min-width:0;}
+  .stat-num{font-size:clamp(2.1rem,11vw,2.8rem)!important;}
+  .lanz-inner{gap:2.5rem;}
+  .lanz-video{width:min(270px,76vw);}
+  .lanz-btns a{flex:1 1 100%;text-align:center;}
+  input,select,textarea{font-size:16px!important;}
+}
 </style>
 </head>
 <body>
@@ -576,7 +592,7 @@ footer::before{
 <!-- URGENCY BAR -->
 <div class="urgency-bar">
   <span class="urgency-dot"></span>
-  <span><strong>Lanzamiento</strong> — Hablador Inteligente QR + NFC para restaurantes · <a href="#hablador">Conócelo</a></span>
+  <span><strong>Lanzamiento</strong> — Hablador<span class="u-largo"> Inteligente</span> QR + NFC<span class="u-largo"> para restaurantes</span> · <a href="#hablador">Conócelo</a></span>
 </div>
 
 <!-- NAV -->

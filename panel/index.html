@@ -46,7 +46,7 @@
   /* Campos */
   label.c { display: grid; gap: 6px; font-size: .74rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--gris); }
   label.c small { text-transform: none; letter-spacing: 0; font-weight: 500; color: var(--gris); font-size: .78rem; }
-  input.i, select.i, textarea.i { width: 100%; background: var(--negro); border: 1px solid var(--borde); border-radius: 12px; padding: 11px 13px; color: #fff; font-size: .95rem; font-weight: 500; text-transform: none; letter-spacing: 0; }
+  input.i, select.i, textarea.i { width: 100%; background: var(--negro); border: 1px solid var(--borde); border-radius: 12px; padding: 11px 13px; color: #fff; font-size: 16px; font-weight: 500; text-transform: none; letter-spacing: 0; }
   input.i:focus, select.i:focus, textarea.i:focus { outline: 0; border-color: var(--oro); }
   textarea.i { resize: vertical; min-height: 64px; }
   .g2 { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
@@ -137,6 +137,27 @@
   .toast { position: fixed; left: 50%; bottom: 96px; transform: translateX(-50%) translateY(20px); background: #fff; color: #111; padding: 12px 18px; border-radius: 999px; font-weight: 700; font-size: .88rem; opacity: 0; transition: .25s; z-index: 50; pointer-events: none; box-shadow: 0 10px 30px rgba(0,0,0,.5); }
   .toast.ver { opacity: 1; transform: translateX(-50%); }
   .solo-menu.oculto, .solo-pagina.oculto { display: none; }
+
+  /* Celular */
+  @media (max-width: 600px) {
+    .wrap { padding: 0 12px; }
+    .bloque { padding: 18px 14px; border-radius: 18px; }
+    .cabeza h2 { font-size: 1.4rem; }
+    .cabeza .btn { width: 100%; }
+    .resumen { grid-template-columns: repeat(2, 1fr); }
+    .cl-acc .btn { flex: 1 1 calc(50% - 6px); }
+    .cat { padding: 12px 10px; }
+    .item { grid-template-columns: 56px 1fr; gap: 10px; }
+    .item .foto { width: 56px; height: 56px; }
+    .item .campos { grid-template-columns: 1fr; }
+    .item .campos [data-k="p"] { max-width: 150px; }
+    .item .acc-i input { flex: 1 1 100%; }
+    .item .acc-i .ico-btn, .item .acc-i .btn { height: 38px; }
+    .guardar .wrap { height: 70px; }
+    .guardar .estado { font-size: .76rem; white-space: normal; line-height: 1.25; }
+    .guardar .btn { padding: 11px 14px; }
+    .ed-cab h2 { font-size: 1.2rem; }
+  }
 </style>
 </head>
 <body>
@@ -578,7 +599,7 @@
         <button class="foto" type="button" data-foto style="${it.foto ? `background-image:url('${esc(it.foto)}')` : ""}" aria-label="Foto del producto">${it.foto ? "" : "+ Foto"}</button>
         <div class="campos">
           <input class="i" data-k="n" value="${esc(it.n)}" placeholder="Producto" aria-label="Nombre del producto">
-          <input class="i" data-k="p" value="${it.p ?? ""}" inputmode="numeric" placeholder="Precio" aria-label="Precio">
+          <input class="i" data-k="p" value="${it.p ?? ""}" inputmode="numeric" placeholder="Precio $" aria-label="Precio">
           <input class="i d" data-k="d" value="${esc(it.d || "")}" placeholder="Descripción corta (opcional)" aria-label="Descripción">
           <div class="acc-i">
             <input class="i" data-k="tag" value="${esc(it.tag || "")}" placeholder="Etiqueta: Favorito, Nuevo…" aria-label="Etiqueta">
