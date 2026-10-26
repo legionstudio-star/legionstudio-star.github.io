@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panel de clientes | LEGION Studio Digital</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Plus Jakarta Sans", system-ui, sans-serif; background: #F4F1EC; color: #1D1B18; padding: 24px 16px 60px; }
+  .wrap { max-width: 980px; margin: 0 auto; }
+  h1 { font-size: 1.6rem; font-weight: 800; }
+  .sub { color: #6B665E; font-size: .92rem; margin-top: 2px; }
+  .resumen { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0; }
+  .resumen div { background: #fff; border-radius: 14px; padding: 12px 16px; min-width: 120px; }
+  .resumen b { display: block; font-size: 1.5rem; }
+  .resumen span { font-size: .78rem; color: #6B665E; }
+  .cliente { background: #fff; border-radius: 16px; padding: 16px; margin-bottom: 10px; display: grid; gap: 12px; }
+  .top { display: flex; align-items: center; gap: 12px; }
+  .punto { width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0; }
+  .top strong { display: block; font-size: 1rem; }
+  .top small { color: #6B665E; font-size: .82rem; }
+  .plan { margin-left: auto; font-size: .7rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; padding: 5px 10px; border-radius: 999px; }
+  .plan.basico { background: #EDE9E3; color: #5C564D; }
+  .plan.plus { background: #DCEBFF; color: #1F4FA3; }
+  .plan.pro { background: #FFE6CC; color: #A14A00; }
+  .url { display: flex; align-items: center; gap: 8px; background: #F4F1EC; border-radius: 10px; padding: 9px 12px; font-family: ui-monospace, Consolas, monospace; font-size: .82rem; word-break: break-all; }
+  .url span { flex: 1; }
+  .acc { display: flex; flex-wrap: wrap; gap: 8px; }
+  .acc a, .acc button { border: 1.5px solid #D9D2C6; background: #fff; border-radius: 999px; padding: 7px 13px; font: 700 .8rem "Plus Jakarta Sans", sans-serif; color: #1D1B18; text-decoration: none; cursor: pointer; }
+  .acc a.prim { background: #1D1B18; color: #fff; border-color: #1D1B18; }
+  .nota { margin-top: 22px; font-size: .84rem; color: #6B665E; line-height: 1.6; background: #fff; border-radius: 14px; padding: 14px 16px; }
+  .nota b { color: #1D1B18; }
+  @media (min-width: 720px) { .cliente { grid-template-columns: 1.2fr 1.3fr auto; align-items: center; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Panel de clientes</h1>
+  <p class="sub">Uso interno de LEGION Studio Digital. Los datos se editan en <code>datos/negocios.js</code>.</p>
+  <div class="resumen" id="resumen"></div>
+  <div id="lista"></div>
+  <p class="nota"><b>Nuevo cliente:</b> agrega su entrada en <code>datos/negocios.js</code>, ejecuta <code>node herramientas/generar.js</code> y publica. Luego abre "Hablador", imprime y programa el NFC con el mismo enlace.<br>
+  <b>Cambiar de plan:</b> edita <code>plan</code> y vuelve a generar. El QR y el NFC impresos siguen sirviendo.<br>
+  <b>Cliente que no paga:</b> cambia su plan a <code>"basico"</code> (solo reseñas) o pon su <code>resenas</code> apuntando a la página de LEGION.</p>
+</div>
+<script src="../datos/negocios.js"></script>
+<script>
+  const NEG = window.NEGOCIOS, BASE = window.LEGION_URL;
+  const lista = Object.entries(NEG);
+  const cuenta = (p) => lista.filter(([, n]) => n.plan === p).length;
+  document.getElementById("resumen").innerHTML =
+    `<div><b>${lista.length}</b><span>Clientes</span></div><div><b>${cuenta("basico")}</b><span>Básico</span></div><div><b>${cuenta("plus")}</b><span>Plus</span></div><div><b>${cuenta("pro")}</b><span>Pro</span></div>`;
+  document.getElementById("lista").innerHTML = lista.map(([s, n]) => `
+    <div class="cliente">
+      <div class="top"><span class="punto" style="background:${n.color}"></span><div><strong>${n.nombre}</strong><small>${n.categoria || ""}</small></div><span class="plan ${n.plan}">${n.plan}</span></div>
+      <div class="url"><span>${BASE}${s}/</span></div>
+      <div class="acc">
+        <a class="prim" href="../${s}/" target="_blank" rel="noopener">Ver página</a>
+        <a href="../hablador/?n=${s}" target="_blank" rel="noopener">Hablador</a>
+        <button type="button" data-copiar="${BASE}${s}/">Copiar enlace</button>
+      </div>
+    </div>`).join("");
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-copiar]"); if (!b || !navigator.clipboard) return;
+    navigator.clipboard.writeText(b.dataset.copiar).then(() => { b.textContent = "Copiado"; setTimeout(() => (b.textContent = "Copiar enlace"), 1500); });
+  });
+</script>
+</body>
+</html>

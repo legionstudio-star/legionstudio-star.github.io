@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hablador QR + NFC | LEGION Studio Digital</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<style id="estilo-pagina"></style>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Plus Jakarta Sans", system-ui, sans-serif; background: #E9E6E1; color: #1D1B18; padding: 20px 16px 60px; }
+  button, input, select { font: inherit; color: inherit; }
+
+  /* ---------- Controles ---------- */
+  .panel { max-width: 980px; margin: 0 auto 26px; background: #fff; border-radius: 18px; padding: 20px; box-shadow: 0 10px 30px -16px rgba(0,0,0,.35); }
+  .panel h1 { font-size: 1.35rem; font-weight: 800; }
+  .panel > p { color: #6B665E; font-size: .9rem; margin-top: 2px; }
+  .ctrls { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 16px; }
+  .ctrls label { display: block; font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #6B665E; margin-bottom: 4px; }
+  .ctrls select { width: 100%; padding: 10px 11px; border-radius: 10px; border: 1.5px solid #E2DDD4; background: #FAF8F5; }
+  .url { margin-top: 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; background: #F4F1EC; border-radius: 12px; padding: 12px 14px; font-size: .9rem; }
+  .url code { font-family: ui-monospace, Consolas, monospace; font-weight: 600; word-break: break-all; flex: 1; min-width: 200px; }
+  .acc { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+  .btn { border: 0; cursor: pointer; padding: 12px 18px; border-radius: 999px; font-weight: 700; font-size: .88rem; background: #1D1B18; color: #fff; }
+  .btn.sec { background: transparent; border: 1.5px solid #CFC8BC; color: #1D1B18; }
+  .btn.mini { padding: 7px 12px; font-size: .8rem; }
+  .ayuda { margin-top: 14px; font-size: .82rem; color: #6B665E; line-height: 1.5; }
+  .ayuda b { color: #1D1B18; }
+
+  .hoja { display: flex; flex-wrap: wrap; justify-content: center; gap: 24px; }
+
+  /* ---------- Hablador ---------- */
+  .tarjeta {
+    --fondo: #121212; --texto: #FFFFFF; --suave: rgba(255,255,255,.66); --acento: #F5B942; --linea: rgba(255,255,255,.22);
+    width: var(--w); height: var(--h); container-type: size;
+    background: var(--fondo); color: var(--texto); position: relative; overflow: hidden;
+    box-shadow: 0 20px 40px -20px rgba(0,0,0,.5);
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .t-int { --u: min(1cqw, calc(1cqh / 1.5)); position: absolute; inset: 0; justify-content: space-between; display: flex; flex-direction: column; align-items: center; text-align: center; padding: calc(var(--u) * 8) calc(var(--u) * 7) calc(var(--u) * 6); }
+  .tarjeta.claro { --fondo: #FFFFFF; --texto: #141414; --suave: rgba(20,20,20,.62); --acento: #141414; --linea: rgba(20,20,20,.2); }
+  .t-int::before { content: ""; position: absolute; inset: calc(var(--u) * 2.6); border: calc(var(--u) * .35) solid var(--linea); border-radius: calc(var(--u) * 4); pointer-events: none; }
+  .t-nombre { font-size: calc(var(--u) * 3.8); font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--acento); max-width: 100%; line-height: 1.2; }
+  .t-titulo { font-size: calc(var(--u) * 9.4); font-weight: 800; line-height: 1.02; letter-spacing: -.03em; }
+  .t-sub { font-size: calc(var(--u) * 3.8); color: var(--suave); margin-top: calc(var(--u) * -1); line-height: 1.3; max-width: 88%; }
+  .t-qr { background: #fff; border-radius: calc(var(--u) * 5); padding: calc(var(--u) * 3.2); width: calc(var(--u) * 50); }
+  .t-qr svg { display: block; width: 100%; height: auto; }
+  .t-o { display: flex; align-items: center; gap: calc(var(--u) * 3); width: 70%; margin: calc(var(--u) * -2) 0; font-size: calc(var(--u) * 3.2); color: var(--suave); text-transform: uppercase; letter-spacing: .2em; font-weight: 700; }
+  .t-o::before, .t-o::after { content: ""; flex: 1; height: calc(var(--u) * .3); background: var(--linea); }
+  .t-nfc { display: flex; align-items: center; gap: calc(var(--u) * 4); text-align: left; }
+  .t-nfc .zona { width: calc(var(--u) * 18); height: calc(var(--u) * 18); border-radius: 50%; border: calc(var(--u) * .55) dashed var(--acento); display: grid; place-items: center; color: var(--acento); flex-shrink: 0; }
+  .t-nfc .zona svg { width: 55%; height: 55%; }
+  .t-nfc strong { display: block; font-size: calc(var(--u) * 5); line-height: 1.1; }
+  .t-nfc small { display: block; font-size: calc(var(--u) * 3.5); color: var(--suave); margin-top: calc(var(--u) * 1); }
+  .t-chips { display: flex; justify-content: center; gap: calc(var(--u) * 2.4); flex-wrap: wrap; }
+  .t-chips span { display: inline-flex; align-items: center; gap: calc(var(--u) * 1.6); font-size: calc(var(--u) * 3.5); font-weight: 700; padding: calc(var(--u) * 1.8) calc(var(--u) * 3); border-radius: 999px; border: calc(var(--u) * .35) solid var(--linea); }
+  .t-chips svg { width: calc(var(--u) * 4.2); height: calc(var(--u) * 4.2); color: var(--acento); }
+  .t-estrellas { display: flex; gap: calc(var(--u) * 1.4); color: var(--acento); }
+  .t-estrellas svg { width: calc(var(--u) * 8); height: calc(var(--u) * 8); }
+  .t-legion { font-size: calc(var(--u) * 2.6); color: var(--suave); margin-top: calc(var(--u) * -2); letter-spacing: .08em; }
+  .t-legion b { font-weight: 800; color: var(--texto); }
+
+  @media print {
+    body { background: #fff; padding: 0; }
+    .panel { display: none; }
+    .hoja { gap: 0; justify-content: flex-start; }
+    .tarjeta { box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="panel">
+  <h1>Hablador QR + NFC</h1>
+  <p>Diseño general para todos los clientes. Solo cambia el código QR (y el nombre, si lo activas).</p>
+  <div class="ctrls">
+    <div><label for="c-neg">Negocio</label><select id="c-neg"></select></div>
+    <div><label for="c-tam">Tamaño del acrílico</label>
+      <select id="c-tam">
+        <option value="100x150" selected>10 × 15 cm</option>
+        <option value="105x148">A6 (10,5 × 14,8 cm)</option>
+        <option value="130x180">13 × 18 cm</option>
+        <option value="148x210">A5 (14,8 × 21 cm)</option>
+      </select></div>
+    <div><label for="c-dis">Diseño</label>
+      <select id="c-dis"><option value="general">General (reseñas, menú, domicilios)</option><option value="resenas">Solo reseñas</option></select></div>
+    <div><label for="c-tema">Color</label>
+      <select id="c-tema"><option value="oscuro">Negro</option><option value="claro">Blanco</option></select></div>
+    <div><label for="c-nom">Nombre del negocio</label>
+      <select id="c-nom"><option value="si">Mostrar</option><option value="no">Ocultar</option></select></div>
+    <div><label for="c-fmt">Impresión</label>
+      <select id="c-fmt"><option value="exacto">Tamaño exacto (imprenta)</option><option value="carta">Hoja carta para recortar</option></select></div>
+    <div><label for="c-cop">Copias</label>
+      <select id="c-cop"><option>1</option><option selected>2</option><option>4</option><option>6</option></select></div>
+  </div>
+  <div class="url"><span>Enlace para el QR y el NFC:</span><code id="url"></code><button class="btn sec mini" id="copiar" type="button">Copiar</button></div>
+  <div class="acc">
+    <button class="btn" id="imprimir" type="button">Imprimir</button>
+    <button class="btn sec" id="svg" type="button">Descargar QR (SVG para imprenta)</button>
+  </div>
+  <p class="ayuda"><b>NFC:</b> pega el sticker (NTAG213 o NTAG215) detrás de la impresión, justo en el círculo punteado. Prográmalo con la app <b>NFC Tools</b>: Escribir → Agregar registro → URL → pega el enlace de arriba → Escribir. Después usa "Otros → Bloquear etiqueta" para que nadie lo pueda cambiar.<br>
+  <b>Doble cara:</b> los habladores en T llevan dos impresiones; por eso salen 2 copias por defecto.</p>
+</div>
+
+<div class="hoja" id="hoja"></div>
+
+<script src="../datos/negocios.js"></script>
+<script>
+  const $ = (id) => document.getElementById(id);
+  const NEG = window.NEGOCIOS;
+  const BASE = window.LEGION_URL;
+  const params = new URLSearchParams(location.search);
+
+  $("c-neg").innerHTML = Object.entries(NEG).map(([s, n]) => `<option value="${s}">${n.nombre} (${n.plan})</option>`).join("");
+  if (params.get("n") && NEG[params.get("n")]) $("c-neg").value = params.get("n");
+
+  const ICON = {
+    estrella: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2.8 2.8 5.7 6.3.9-4.6 4.4 1.1 6.2L12 17l-5.6 3 1.1-6.2L2.9 9.4l6.3-.9L12 2.8Z"/></svg>',
+    menu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5v-15Z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></svg>',
+    moto: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="17" r="3"/><circle cx="18.5" cy="17" r="3"/><path d="M8.5 17h6l3-7h-4M5.5 14l3-5h4l2 8M15 6h2.5l1 4"/></svg>',
+    nfc: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 8.5a5 5 0 0 1 0 7M9.5 6a8.5 8.5 0 0 1 0 12M13 3.5a12 12 0 0 1 0 17"/><circle cx="3" cy="12" r="1.3" fill="currentColor" stroke="none"/></svg>'
+  };
+
+  // QR vectorial (nítido a cualquier tamaño)
+  function qrSVG(texto) {
+    const qr = qrcode(0, "Q");
+    qr.addData(texto); qr.make();
+    const n = qr.getModuleCount();
+    let d = "";
+    for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (qr.isDark(r, c)) d += `M${c} ${r}h1v1h-1z`;
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${n} ${n}" shape-rendering="crispEdges"><path fill="#111" d="${d}"/></svg>`;
+  }
+
+  function generar() {
+    const slug = $("c-neg").value, N = NEG[slug];
+    const url = BASE + slug + "/";
+    const [w, h] = $("c-tam").value.split("x").map(Number);
+    const dis = $("c-dis").value, tema = $("c-tema").value, nombre = $("c-nom").value === "si";
+    const fmt = $("c-fmt").value, copias = +$("c-cop").value;
+    $("url").textContent = url;
+
+    $("estilo-pagina").textContent = fmt === "exacto"
+      ? `@page { size: ${w}mm ${h}mm; margin: 0; } @media print { .tarjeta { break-after: page; } }`
+      : `@page { size: letter; margin: 8mm; } @media print { .hoja { gap: 4mm; } .tarjeta { outline: .2mm dashed #999; } }`;
+
+    const qr = qrSVG(url);
+    const tarjeta = `
+      <div class="tarjeta ${tema}" style="--w:${w}mm;--h:${h}mm"><div class="t-int">
+        ${nombre ? `<div class="t-nombre">${N.nombre}</div>` : ""}
+        <div class="t-titulo">${dis === "resenas" ? "¿Cómo estuvo<br>todo?" : "Todo en<br>un toque"}</div>
+        <div class="t-sub">${dis === "resenas" ? "Déjanos tu reseña en Google. ¡Nos ayuda muchísimo!" : "Califícanos, mira el menú y pide a domicilio"}</div>
+        <div class="t-qr">${qr}</div>
+        <div class="t-o">o</div>
+        <div class="t-nfc"><div class="zona">${ICON.nfc}</div><div><strong>Acerca tu<br>celular aquí</strong><small>Sin apps, solo toca</small></div></div>
+        ${dis === "resenas"
+          ? `<div class="t-estrellas">${ICON.estrella.repeat(5)}</div>`
+          : `<div class="t-chips"><span>${ICON.estrella}Reseñas</span><span>${ICON.menu}Menú</span><span>${ICON.moto}Domicilios</span></div>`}
+        <div class="t-legion">Tecnología <b>LEGION Studio Digital</b></div>
+      </div></div>`;
+    $("hoja").innerHTML = tarjeta.repeat(copias);
+  }
+
+  ["c-neg", "c-tam", "c-dis", "c-tema", "c-nom", "c-fmt", "c-cop"].forEach((id) => $(id).addEventListener("change", generar));
+  $("c-neg").addEventListener("change", () => {
+    // Si el cliente solo tiene reseñas, sugerir el diseño de reseñas
+    $("c-dis").value = NEG[$("c-neg").value].plan === "basico" ? "resenas" : "general";
+    generar();
+  });
+  $("imprimir").addEventListener("click", () => print());
+  $("copiar").addEventListener("click", (e) => {
+    navigator.clipboard && navigator.clipboard.writeText($("url").textContent).then(() => {
+      e.target.textContent = "Copiado"; setTimeout(() => (e.target.textContent = "Copiar"), 1500);
+    });
+  });
+  $("svg").addEventListener("click", () => {
+    const slug = $("c-neg").value;
+    const blob = new Blob([qrSVG(BASE + slug + "/")], { type: "image/svg+xml" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = `qr-${slug}.svg`; a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  });
+
+  $("c-dis").value = NEG[$("c-neg").value].plan === "basico" ? "resenas" : "general";
+  // Atajos por enlace: ?n=slug&t=130x180&d=resenas&c=claro
+  if (params.get("t")) $("c-tam").value = params.get("t");
+  if (params.get("d")) $("c-dis").value = params.get("d");
+  if (params.get("c")) $("c-tema").value = params.get("c");
+  generar();
+</script>
+</body>
+</html>
