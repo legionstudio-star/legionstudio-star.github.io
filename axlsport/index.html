@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AXL Sport · Ropa deportiva</title>
+<meta name="description" content="AXL Sport: ropa deportiva. Mira el catálogo en 3D, déjanos tu reseña y pide por WhatsApp.">
+<meta name="theme-color" content="#070708">
+<meta property="og:title" content="AXL Sport · Ropa deportiva">
+<meta property="og:description" content="Catálogo en 3D, reseñas, ubicación y WhatsApp.">
+<meta property="og:image" content="https://legionestudio.com/axlsport/video/poster.jpg">
+<link rel="icon" href="img/logo-axl-blanco.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;1,800;1,900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --n: #FF6A1A; --n2: #FFB067; --fondo: #070708; --card: #121214; --borde: rgba(255,255,255,.1); --suave: rgba(255,255,255,.62); }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: "Plus Jakarta Sans", system-ui, sans-serif; background: var(--fondo); color: #fff; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; border: 0; background: none; cursor: pointer; }
+  svg { display: block; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 18px; }
+  .cond { font-family: "Barlow Condensed", sans-serif; font-style: italic; font-weight: 900; text-transform: uppercase; letter-spacing: -.005em; }
+  .ceja { display: inline-flex; align-items: center; gap: 10px; font-size: .72rem; font-weight: 800; letter-spacing: .24em; text-transform: uppercase; color: var(--n2); }
+  .ceja i { width: 8px; height: 8px; border-radius: 50%; background: var(--n); box-shadow: 0 0 12px var(--n); }
+  .h2 { font-size: clamp(2.4rem, 9vw, 3.6rem); line-height: .9; margin-top: 8px; }
+  .h2 em { font-style: italic; color: var(--n); }
+
+  /* ---------- Hero con video ---------- */
+  .hero { position: relative; min-height: 100svh; display: flex; flex-direction: column; isolation: isolate; overflow: hidden; }
+  .hero video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+  .hero::after { content: ""; position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(180deg, rgba(7,7,8,.85) 0%, rgba(7,7,8,.15) 26%, rgba(7,7,8,.25) 50%, rgba(7,7,8,.92) 80%, var(--fondo) 100%); }
+  .barra { display: flex; align-items: center; justify-content: space-between; padding: max(16px, env(safe-area-inset-top)) 18px 0; }
+  .barra img { height: 58px; }
+  .abierto { display: inline-flex; align-items: center; gap: 8px; font-size: .74rem; font-weight: 700; padding: 7px 12px; border-radius: 999px; background: rgba(0,0,0,.45); border: 1px solid var(--borde); backdrop-filter: blur(10px); }
+  .abierto i { width: 8px; height: 8px; border-radius: 50%; background: #2BD46B; box-shadow: 0 0 10px #2BD46B; }
+  .abierto.cerrado i { background: #888; box-shadow: none; }
+  .hero-txt { margin-top: auto; padding: 0 18px 22px; }
+  .hero h1 { font-size: clamp(3.4rem, 16vw, 6.4rem); line-height: .84; margin-top: 12px; text-shadow: 0 6px 40px rgba(0,0,0,.5); }
+  .hero h1 em { display: block; font-style: italic; background: linear-gradient(180deg, #FFD0A3, var(--n) 60%, #E2420A); -webkit-background-clip: text; background-clip: text; color: transparent; padding-right: 8px; }
+  .hero p { color: rgba(255,255,255,.8); margin-top: 12px; max-width: 460px; }
+
+  /* Botones principales (como el hablador) */
+  .acciones { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0 18px 26px; }
+  .acc { position: relative; display: flex; flex-direction: column; gap: 10px; padding: 14px 12px; min-width: 0; border-radius: 20px; background: rgba(22,22,24,.78); border: 1px solid var(--borde); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); overflow: hidden; transition: transform .15s; }
+  .acc:active { transform: scale(.97); }
+  .acc .ic { width: 42px; height: 42px; border-radius: 13px; display: grid; place-items: center; background: rgba(255,106,26,.14); color: var(--n); }
+  .acc .ic svg { width: 22px; height: 22px; }
+  .acc b { font-size: 1.02rem; }
+  .acc b { font-size: .95rem; }
+  .acc small { color: var(--suave); font-size: .72rem; margin-top: -6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .acc.dest { grid-column: 1 / -1; flex-direction: row; align-items: center; background: linear-gradient(120deg, #FF7A2E, #E2420A); border: 0; box-shadow: 0 18px 40px -16px rgba(255,106,26,.8); }
+  .acc.dest .ic { background: rgba(0,0,0,.18); color: #fff; width: 52px; height: 52px; }
+  .acc.dest b { font-size: 1.25rem; display: block; }
+  .acc.dest small { color: rgba(255,255,255,.85); display: block; margin-top: 2px; }
+  .acc.dest .flecha { margin-left: auto; width: 26px; height: 26px; }
+  .acc .et3d { position: absolute; top: 12px; right: 12px; font-size: .62rem; font-weight: 800; letter-spacing: .12em; background: #fff; color: #111; padding: 3px 8px; border-radius: 999px; }
+  .acc.dest .et3d { position: static; margin-left: 4px; vertical-align: 3px; }
+  .acc.wa .ic { background: rgba(37,211,102,.14); color: #25D366; }
+
+  section { padding: 56px 0; }
+
+  /* ---------- Colección (fotos) ---------- */
+  .look { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 18px 18px 6px; scrollbar-width: none; }
+  .look::-webkit-scrollbar { display: none; }
+  .look figure { flex: 0 0 68%; max-width: 300px; aspect-ratio: 4/5; border-radius: 22px; overflow: hidden; position: relative; scroll-snap-align: start; }
+  .look img { width: 100%; height: 100%; object-fit: cover; }
+  .look figcaption { position: absolute; left: 14px; bottom: 12px; font-size: 1.6rem; line-height: .9; }
+  .look figure::after { content: ""; position: absolute; inset: 50% 0 0; background: linear-gradient(0deg, rgba(0,0,0,.75), transparent); }
+  .look figcaption { z-index: 1; }
+
+  /* ---------- Reseñas ---------- */
+  .nota { display: flex; align-items: center; gap: 18px; margin-top: 18px; padding: 18px; border-radius: 22px; background: var(--card); border: 1px solid var(--borde); }
+  .nota .num { font-size: 4rem; line-height: .8; }
+  .estrellas { display: flex; gap: 3px; color: var(--n); }
+  .estrellas svg { width: 18px; height: 18px; }
+  .nota small { color: var(--suave); font-size: .82rem; display: block; margin-top: 4px; }
+  .resenas { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; margin: 14px -18px 0; padding: 0 18px 4px; scrollbar-width: none; }
+  .resenas::-webkit-scrollbar { display: none; }
+  .res { flex: 0 0 82%; max-width: 340px; scroll-snap-align: start; background: var(--card); border: 1px solid var(--borde); border-radius: 20px; padding: 18px; }
+  .res .quien { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .res .av { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; background: rgba(255,106,26,.18); color: var(--n2); }
+  .res .quien small { display: block; color: var(--suave); font-size: .74rem; }
+  .res p { color: rgba(255,255,255,.82); font-size: .93rem; margin-top: 8px; line-height: 1.5; }
+  .btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 16px 20px; border-radius: 999px; font-weight: 800; margin-top: 16px; }
+  .btn svg { width: 20px; height: 20px; }
+  .btn-n { background: var(--n); color: #160800; box-shadow: 0 14px 34px -14px rgba(255,106,26,.9); }
+  .btn-l { border: 1.5px solid rgba(255,255,255,.22); }
+  .btn-wa { background: #25D366; color: #062b14; }
+
+  /* ---------- Ubicación ---------- */
+  .mapa { margin-top: 18px; border-radius: 22px; overflow: hidden; border: 1px solid var(--borde); height: 260px; background: var(--card); }
+  .mapa iframe { width: 100%; height: 100%; border: 0; filter: invert(.92) hue-rotate(180deg) saturate(.6) contrast(.95); }
+  .datos { display: grid; gap: 10px; margin-top: 14px; }
+  .dato { display: flex; gap: 14px; align-items: center; background: var(--card); border: 1px solid var(--borde); border-radius: 18px; padding: 14px 16px; }
+  .dato svg { width: 22px; height: 22px; color: var(--n); flex-shrink: 0; }
+  .dato small { display: block; color: var(--suave); font-size: .78rem; }
+  .horario { width: 100%; font-size: .9rem; border-collapse: collapse; }
+  .horario td { padding: 3px 0; } .horario td:last-child { text-align: right; color: var(--suave); }
+  .horario tr.hoy td { color: var(--n2); font-weight: 800; }
+
+  .pie { padding: 34px 18px calc(100px + env(safe-area-inset-bottom)); text-align: center; color: var(--suave); font-size: .8rem; border-top: 1px solid var(--borde); }
+  .pie img { height: 46px; margin: 0 auto 12px; opacity: .9; }
+  .pie b { color: #fff; }
+  .flota { position: fixed; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom)); z-index: 20; width: 60px; height: 60px; border-radius: 50%; display: grid; place-items: center; background: #25D366; color: #fff; box-shadow: 0 12px 30px -8px rgba(37,211,102,.7); }
+  .flota svg { width: 30px; height: 30px; }
+
+  /* ---------- Catálogo 3D (pantalla completa) ---------- */
+  .capa { position: fixed; inset: 0; z-index: 50; background: var(--fondo); overflow-y: auto; transform: translateY(100%); transition: transform .45s cubic-bezier(.2,.8,.2,1); }
+  .capa.abierta { transform: none; }
+  .capa-cab { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; gap: 12px; padding: max(14px, env(safe-area-inset-top)) 18px 12px; background: rgba(7,7,8,.86); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--borde); }
+  .volver { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.08); }
+  .volver svg { width: 22px; height: 22px; }
+  .capa-cab h2 { font-size: 1.9rem; line-height: 1; }
+  .capa-cab h2 small { display: block; font-family: "Plus Jakarta Sans"; font-style: normal; font-weight: 600; text-transform: none; font-size: .74rem; color: var(--suave); letter-spacing: 0; margin-top: 2px; }
+  .filtros { display: flex; gap: 8px; padding: 16px 18px 4px; overflow-x: auto; scrollbar-width: none; }
+  .filtros button { padding: 9px 16px; border-radius: 999px; font-weight: 700; font-size: .86rem; border: 1px solid var(--borde); white-space: nowrap; }
+  .filtros button.on { background: #fff; color: #111; border-color: #fff; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 14px 18px 40px; }
+  .prod { text-align: left; border-radius: 22px; overflow: hidden; background: var(--card); border: 1px solid var(--borde); display: flex; flex-direction: column; transition: transform .15s; }
+  .prod:active { transform: scale(.97); }
+  .prod .foto { position: relative; aspect-ratio: 1; background: radial-gradient(70% 60% at 50% 45%, #2A2A2E, #121214); display: grid; place-items: center; }
+  .prod .foto img { width: 92%; height: 92%; object-fit: contain; filter: drop-shadow(0 16px 18px rgba(0,0,0,.55)); transition: transform .5s; }
+  .prod:hover .foto img { transform: rotate(-4deg) scale(1.05); }
+  .prod .b3d { position: absolute; top: 10px; left: 10px; display: inline-flex; align-items: center; gap: 5px; font-size: .64rem; font-weight: 800; letter-spacing: .1em; padding: 4px 9px; border-radius: 999px; background: rgba(255,106,26,.18); color: var(--n2); border: 1px solid rgba(255,106,26,.45); }
+  .prod .b3d svg { width: 12px; height: 12px; }
+  .prod .txt { padding: 12px 14px 14px; }
+  .prod .txt small { color: var(--suave); font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+  .prod .txt b { display: block; font-size: .96rem; line-height: 1.2; margin-top: 2px; }
+  .prod .txt span { display: block; color: var(--n2); font-weight: 800; margin-top: 6px; }
+  .puntos { display: flex; gap: 5px; margin-top: 8px; }
+  .puntos i { width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,.35); }
+
+  /* Visor 3D */
+  .visor { position: fixed; inset: 0; z-index: 60; background: radial-gradient(90% 55% at 50% 32%, #26262B, #0B0B0C 70%); display: none; flex-direction: column; }
+  .visor.activo { display: flex; }
+  .visor .capa-cab { background: transparent; border: 0; backdrop-filter: none; position: absolute; left: 0; right: 0; }
+  .lienzo { position: relative; flex: 1 1 auto; min-height: 0; touch-action: none; }
+  .lienzo canvas { width: 100% !important; height: 100% !important; display: block; }
+  .piso { position: absolute; left: 50%; bottom: 8%; width: 60%; height: 40px; transform: translateX(-50%); background: radial-gradient(closest-side, rgba(255,106,26,.35), transparent); filter: blur(6px); pointer-events: none; }
+  .cargando3d { position: absolute; inset: 0; display: grid; place-items: center; color: var(--suave); font-size: .9rem; }
+  .cargando3d i { display: block; width: 46px; height: 46px; margin: 0 auto 12px; border-radius: 50%; border: 3px solid rgba(255,255,255,.12); border-top-color: var(--n); animation: gira 1s linear infinite; }
+  @keyframes gira { to { transform: rotate(360deg); } }
+  .pista { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); display: inline-flex; align-items: center; gap: 8px; font-size: .78rem; color: var(--suave); background: rgba(0,0,0,.4); padding: 7px 14px; border-radius: 999px; white-space: nowrap; pointer-events: none; transition: opacity .4s; }
+  .pista svg { width: 16px; height: 16px; }
+  .ficha { flex: 0 0 auto; background: #111113; border-radius: 26px 26px 0 0; border-top: 1px solid var(--borde); padding: 20px 18px calc(18px + env(safe-area-inset-bottom)); }
+  .ficha .fila1 { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; }
+  .ficha h3 { font-size: 2rem; line-height: .9; }
+  .ficha small.lin { color: var(--suave); font-size: .74rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+  .ficha .precio { font-size: 1.25rem; font-weight: 800; color: var(--n2); white-space: nowrap; }
+  .ficha .lbl { font-size: .72rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--suave); margin: 16px 0 8px; }
+  .ficha .lbl b { color: #fff; letter-spacing: .04em; text-transform: none; font-size: .86rem; margin-left: 6px; }
+  .colores { display: flex; gap: 10px; flex-wrap: wrap; }
+  .colores button { width: 38px; height: 38px; border-radius: 50%; border: 2px solid rgba(255,255,255,.2); position: relative; }
+  .colores button.on { box-shadow: 0 0 0 3px #111113, 0 0 0 5px var(--n); }
+  .tallas { display: flex; gap: 8px; flex-wrap: wrap; }
+  .tallas button { min-width: 48px; padding: 10px 12px; border-radius: 12px; border: 1.5px solid var(--borde); font-weight: 700; font-size: .9rem; }
+  .tallas button.on { background: #fff; color: #111; border-color: #fff; }
+
+  .rev { opacity: 0; transform: translateY(20px); transition: opacity .7s, transform .7s; }
+  .rev.vis { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .rev { opacity: 1; transform: none; } }
+
+  @media (min-width: 760px) {
+    .hero-txt, .acciones, .barra { padding-left: max(18px, calc(50vw - 522px)); padding-right: max(18px, calc(50vw - 522px)); }
+    .acciones { grid-template-columns: 2fr 1fr 1fr 1fr; }
+    .acc.dest { grid-column: auto; }
+    .grid { grid-template-columns: repeat(3, 1fr); max-width: 1080px; margin: 0 auto; }
+    .filtros { max-width: 1080px; margin: 0 auto; }
+    .look figure { flex-basis: 300px; }
+    .datos { grid-template-columns: 1fr 1fr; }
+    .visor { flex-direction: row; }
+    .ficha { width: 400px; border-radius: 0; border-top: 0; border-left: 1px solid var(--borde); display: flex; flex-direction: column; justify-content: center; padding: 30px; }
+  }
+
+  /* Modo foto: solo el modelo con fondo transparente (para las miniaturas) */
+  body.foto { background: transparent; }
+  body.foto > *:not(#visor) { display: none !important; }
+  body.foto .visor { background: transparent; display: flex; animation: none; }
+  body.foto .ficha, body.foto .capa-cab, body.foto .pista, body.foto .piso { display: none; }
+</style>
+<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/" } }</script>
+</head>
+<body>
+
+<header class="hero">
+  <video id="video" autoplay muted loop playsinline preload="auto" poster="video/poster-vertical.jpg"></video>
+  <div class="barra"><img src="img/logo-axl-blanco.png" alt="AXL Sport"><span class="abierto" id="abierto"><i></i>Abierto ahora</span></div>
+  <div class="hero-txt">
+    <span class="ceja"><i></i>Ropa deportiva · Nueva colección</span>
+    <h1 class="cond">Entrena<em>con actitud</em></h1>
+    <p>Bienvenido a AXL Sport. Mira la colección en 3D, déjanos tu reseña y pide por WhatsApp.</p>
+  </div>
+  <nav class="acciones">
+    <button class="acc dest" data-abrir="catalogo">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7l9 5 9-5-9-5Z"/><path d="m3 17 9 5 9-5M3 12l9 5 9-5"/></svg></span>
+      <span><b>Catálogo <span class="et3d">3D</span></b><small>Gira cada prenda con el dedo</small></span>
+      <svg class="flecha" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </button>
+    <a class="acc" href="#resenas"><span class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2.8 2.8 5.7 6.3.9-4.6 4.4 1.1 6.2L12 17l-5.6 3 1.1-6.2L2.9 9.4l6.3-.9L12 2.8Z"/></svg></span><b>Reseñas</b><small>4,9 en Google</small></a>
+    <a class="acc" href="#ubicacion"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Z"/><circle cx="12" cy="10" r="2.6"/></svg></span><b>Ubicación</b><small>Cómo llegar</small></a>
+    <a class="acc wa" data-wa="Hola AXL Sport 👋 Vengo de su página y quiero información." target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9 0-1.4.7-2 1-2.3.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.3 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.6 2.1 1.1 1 2 1.3 2.3 1.4.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.5.3.1.2.1.7-.1 1.3Z"/></svg></span><b>WhatsApp</b><small>Escríbenos</small></a>
+  </nav>
+</header>
+
+<section style="padding-bottom:20px">
+  <div class="wrap rev"><span class="ceja"><i></i>La colección</span><h2 class="h2 cond">Hecho para <em>moverte</em></h2></div>
+  <div class="look rev">
+    <figure><img src="img/look/l1.jpg" alt="Conjunto deportivo" loading="lazy"><figcaption class="cond">Sets<br>training</figcaption></figure>
+    <figure><img src="img/look/l3.jpg" alt="Leggins deportivos" loading="lazy"><figcaption class="cond">Leggins<br>& tops</figcaption></figure>
+    <figure><img src="img/look/l4.jpg" alt="Camiseta deportiva de hombre" loading="lazy"><figcaption class="cond">Línea<br>hombre</figcaption></figure>
+    <figure><img src="img/look/l2.jpg" alt="Leggins en exhibición" loading="lazy"><figcaption class="cond">Nuevos<br>colores</figcaption></figure>
+  </div>
+  <div class="wrap"><button class="btn btn-n" data-abrir="catalogo">Ver catálogo en 3D <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
+</section>
+
+<section id="resenas">
+  <div class="wrap">
+    <div class="rev"><span class="ceja"><i></i>Reseñas</span><h2 class="h2 cond">Lo que dicen <em>de nosotros</em></h2></div>
+    <div class="nota rev">
+      <div class="num cond">4,9</div>
+      <div><div class="estrellas" id="est5"></div><small>Calificación en Google</small></div>
+    </div>
+    <div class="resenas rev" id="lista-res"></div>
+    <a class="btn btn-n rev" href="https://www.google.com/maps/search/?api=1&query=AXL+Sport" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2.8 2.8 5.7 6.3.9-4.6 4.4 1.1 6.2L12 17l-5.6 3 1.1-6.2L2.9 9.4l6.3-.9L12 2.8Z"/></svg>Déjanos tu reseña en Google</a>
+  </div>
+</section>
+
+<section id="ubicacion" style="padding-top:10px">
+  <div class="wrap">
+    <div class="rev"><span class="ceja"><i></i>Visítanos</span><h2 class="h2 cond">Te esperamos <em>en tienda</em></h2></div>
+    <div class="mapa rev"><iframe src="https://www.google.com/maps?q=AXL+Sport&output=embed" loading="lazy" title="Mapa de AXL Sport" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+    <div class="datos rev">
+      <a class="dato" href="https://www.google.com/maps/dir/?api=1&destination=AXL+Sport" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Z"/><circle cx="12" cy="10" r="2.6"/></svg>
+        <span><b>Cómo llegar</b><small>Abrir en Google Maps</small></span></a>
+      <div class="dato" style="align-items:flex-start">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <table class="horario" id="horario"></table></div>
+    </div>
+    <a class="btn btn-wa rev" data-wa="Hola AXL Sport 👋 ¿Me regalan la dirección de la tienda?" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Z"/></svg>Escríbenos por WhatsApp</a>
+  </div>
+</section>
+
+<footer class="pie">
+  <img src="img/logo-axl-blanco.png" alt="">
+  <div>© AXL Sport · Ropa deportiva</div>
+  <div style="margin-top:6px">Tecnología <b>LEGION Studio Digital</b></div>
+</footer>
+<a class="flota" data-wa="Hola AXL Sport 👋 Vengo de su página y quiero información." target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9 0-1.4.7-2 1-2.3.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.3 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.6 2.1 1.1 1 2 1.3 2.3 1.4.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.5.3.1.2.1.7-.1 1.3Z"/></svg></a>
+
+<!-- Catálogo -->
+<div class="capa" id="catalogo" aria-hidden="true">
+  <div class="capa-cab">
+    <button class="volver" data-cerrar="catalogo" aria-label="Volver"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+    <h2 class="cond">Catálogo 3D<small>Toca una prenda para verla en 3D</small></h2>
+  </div>
+  <div class="filtros" id="filtros"></div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<!-- Visor 3D -->
+<div class="visor" id="visor">
+  <div class="lienzo" id="lienzo">
+    <div class="capa-cab"><button class="volver" id="cerrar-visor" aria-label="Volver al catálogo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button></div>
+    <div class="piso"></div>
+    <div class="cargando3d" id="cargando3d"><div><i></i>Cargando modelo 3D…</div></div>
+    <div class="pista" id="pista"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V6.5a1.5 1.5 0 0 1 3 0V11m0-1.5a1.5 1.5 0 0 1 3 0V11m0-.5a1.5 1.5 0 0 1 3 0v4.5a6 6 0 0 1-6 6h-.5a6 6 0 0 1-5-2.7L4.6 15a1.5 1.5 0 0 1 2.5-1.6L9 15"/></svg>Arrastra para girar · pellizca para acercar</div>
+  </div>
+  <div class="ficha">
+    <small class="lin" id="f-lin"></small>
+    <div class="fila1"><h3 class="cond" id="f-nom"></h3><div class="precio" id="f-pre"></div></div>
+    <div class="lbl">Color <b id="f-col"></b></div><div class="colores" id="f-cols"></div>
+    <div class="lbl">Talla</div><div class="tallas" id="f-tal"></div>
+    <a class="btn btn-wa" id="f-wa" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Z"/></svg>Pedir por WhatsApp</a>
+  </div>
+</div>
+
+<script>
+  const WHATSAPP = "573229249840";
+  const wa = (m) => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(m)}`;
+  document.querySelectorAll("[data-wa]").forEach((a) => (a.href = wa(a.dataset.wa)));
+
+  // Video del banner: vertical en celular, horizontal en pantallas anchas
+  const v = document.getElementById("video");
+  const ancho = matchMedia("(min-aspect-ratio: 1/1)").matches;
+  v.poster = ancho ? "video/poster.jpg" : "video/poster-vertical.jpg";
+  v.src = ancho ? "video/banner.mp4" : "video/banner-vertical.mp4";
+  v.play().catch(() => {});
+
+  const EST = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2.8 2.8 5.7 6.3.9-4.6 4.4 1.1 6.2L12 17l-5.6 3 1.1-6.2L2.9 9.4l6.3-.9L12 2.8Z"/></svg>';
+  document.getElementById("est5").innerHTML = EST.repeat(5);
+  const RES = [
+    ["Laura M.", "hace 2 semanas", "Las licras son buenísimas, no se transparentan y la atención fue excelente. Volveré por más colores."],
+    ["Andrés G.", "hace 1 mes", "Compré la camiseta dry-fit para correr y es súper fresca. Buen precio y me la separaron por WhatsApp."],
+    ["Camila R.", "hace 1 mes", "Me encantó poder ver las prendas en 3D antes de ir a la tienda. Muy buena variedad de tallas."],
+    ["Julián P.", "hace 2 meses", "Excelente calidad en los tenis y la ropa de entrenamiento. Muy recomendados."]
+  ];
+  document.getElementById("lista-res").innerHTML = RES.map(([n, f, t]) =>
+    `<div class="res"><div class="quien"><span class="av">${n[0]}</span><div><b>${n}</b><small>${f}</small></div></div><div class="estrellas">${EST.repeat(5)}</div><p>${t}</p></div>`).join("");
+
+  // Horario (0 = domingo)
+  const HOR = [["Domingo", "10:00 a. m. – 4:00 p. m.", 10, 16], ["Lunes", "9:00 a. m. – 8:00 p. m.", 9, 20], ["Martes", "9:00 a. m. – 8:00 p. m.", 9, 20], ["Miércoles", "9:00 a. m. – 8:00 p. m.", 9, 20], ["Jueves", "9:00 a. m. – 8:00 p. m.", 9, 20], ["Viernes", "9:00 a. m. – 8:00 p. m.", 9, 20], ["Sábado", "9:00 a. m. – 8:00 p. m.", 9, 20]];
+  const ahora = new Date(), hoy = ahora.getDay(), h = ahora.getHours() + ahora.getMinutes() / 60;
+  document.getElementById("horario").innerHTML = [1, 2, 3, 4, 5, 6, 0].map((d) => `<tr${d === hoy ? ' class="hoy"' : ""}><td>${HOR[d][0]}</td><td>${HOR[d][1]}</td></tr>`).join("");
+  if (!(h >= HOR[hoy][2] && h < HOR[hoy][3])) { const a = document.getElementById("abierto"); a.classList.add("cerrado"); a.lastChild.textContent = "Cerrado ahora"; }
+
+  const io = "IntersectionObserver" in window && new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("vis"); io.unobserve(e.target); } }), { threshold: .12 });
+  document.querySelectorAll(".rev").forEach((el) => (io ? io.observe(el) : el.classList.add("vis")));
+</script>
+
+<script type="module">
+  import * as THREE from "three";
+  import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+  import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+  import { DecalGeometry } from "three/addons/geometries/DecalGeometry.js";
+  import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+
+  const $ = (id) => document.getElementById(id);
+  const peso = (n) => "$" + n.toLocaleString("es-CO");
+  const CAMISA = { Negro: ["#151517", "b"], Naranja: ["#FF6A1A", "b"], Blanco: ["#EFEFEF", "n"], Gris: ["#5E6168", "b"], Azul: ["#1C2F5E", "b"], Verde: ["#B9F23A", "n"] };
+  const TENIS = { midnight: ["Azul eléctrico", "#1E8BC3"], beach: ["Rosa coral", "#E6B3B3"], street: ["Negro street", "#1A1A1C"] };
+  const PRODUCTOS = [
+    { id: "dryfit", cat: "Camisetas", linea: "Running", nombre: "Camiseta Dry-Fit", precio: 69900, modelo: "camisa", colores: ["Negro", "Naranja", "Blanco", "Gris"], tallas: ["S", "M", "L", "XL"] },
+    { id: "pro", cat: "Camisetas", linea: "Training", nombre: "Camiseta Pro Training", precio: 79900, modelo: "camisa", colores: ["Naranja", "Negro", "Azul"], tallas: ["S", "M", "L", "XL"] },
+    { id: "tenis-runner", cat: "Tenis", linea: "Running", nombre: "Tenis AXL Runner", precio: 249900, modelo: "tenis", colores: ["midnight", "street", "beach"], tallas: ["37", "38", "39", "40", "41", "42"] },
+    { id: "classic", cat: "Camisetas", linea: "Lifestyle", nombre: "Camiseta Classic", precio: 59900, modelo: "camisa", colores: ["Blanco", "Gris", "Negro"], tallas: ["S", "M", "L", "XL"] },
+    { id: "tenis-street", cat: "Tenis", linea: "Urbano", nombre: "Tenis AXL Street", precio: 229900, modelo: "tenis", colores: ["street", "midnight", "beach"], tallas: ["37", "38", "39", "40", "41", "42"] },
+    { id: "neon", cat: "Camisetas", linea: "Edición limitada", nombre: "Camiseta Neon Volt", precio: 74900, modelo: "camisa", colores: ["Verde", "Negro"], tallas: ["S", "M", "L"] },
+    { id: "tenis-coast", cat: "Tenis", linea: "Casual", nombre: "Tenis AXL Coast", precio: 219900, modelo: "tenis", colores: ["beach", "midnight"], tallas: ["36", "37", "38", "39", "40"] }
+  ];
+  const muestra = (p, c) => p.modelo === "camisa" ? CAMISA[c][0] : TENIS[c][1];
+  const nombreColor = (p, c) => p.modelo === "camisa" ? c : TENIS[c][0];
+
+  /* ----- Catálogo ----- */
+  let filtro = "Todo";
+  function pintarCatalogo() {
+    const cats = ["Todo", ...new Set(PRODUCTOS.map((p) => p.cat))];
+    $("filtros").innerHTML = cats.map((c) => `<button class="${c === filtro ? "on" : ""}" data-f="${c}">${c}</button>`).join("");
+    $("grid").innerHTML = PRODUCTOS.filter((p) => filtro === "Todo" || p.cat === filtro).map((p) => `
+      <button class="prod" data-p="${p.id}">
+        <div class="foto"><span class="b3d"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7l9 5 9-5-9-5Z"/><path d="m3 17 9 5 9-5"/></svg>3D</span><img src="img/prod/${p.id}.png" alt="${p.nombre}" loading="lazy"></div>
+        <div class="txt"><small>${p.linea}</small><b>${p.nombre}</b><span>${peso(p.precio)}</span>
+          <div class="puntos">${p.colores.map((c) => `<i style="background:${muestra(p, c)}"></i>`).join("")}</div></div>
+      </button>`).join("");
+  }
+  $("filtros").addEventListener("click", (e) => { const b = e.target.closest("[data-f]"); if (b) { filtro = b.dataset.f; pintarCatalogo(); } });
+  $("grid").addEventListener("click", (e) => { const b = e.target.closest("[data-p]"); if (b) abrirVisor(PRODUCTOS.find((p) => p.id === b.dataset.p)); });
+  pintarCatalogo();
+
+  const abrirCapa = () => { $("catalogo").classList.add("abierta"); $("catalogo").setAttribute("aria-hidden", "false"); if (location.hash !== "#catalogo") history.pushState({ capa: 1 }, "", "#catalogo"); };
+  const cerrarCapa = () => { $("catalogo").classList.remove("abierta"); $("catalogo").setAttribute("aria-hidden", "true"); };
+  document.querySelectorAll('[data-abrir="catalogo"]').forEach((b) => b.addEventListener("click", abrirCapa));
+  document.querySelector('[data-cerrar="catalogo"]').addEventListener("click", () => history.back());
+  addEventListener("popstate", () => {
+    if (location.hash === "#producto") return;
+    cerrarVisor(true);
+    location.hash === "#catalogo" ? abrirCapa() : cerrarCapa();
+  });
+  if (location.hash === "#catalogo") abrirCapa();
+
+  /* ----- Visor 3D ----- */
+  const FOTO = new URLSearchParams(location.search).get("foto");
+  if (FOTO) document.body.classList.add("foto");
+  const lienzo = $("lienzo");
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: !!FOTO });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  lienzo.prepend(renderer.domElement);
+  const escena = new THREE.Scene();
+  escena.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), .04).texture;
+  const camara = new THREE.PerspectiveCamera(30, 1, .01, 50);
+  const luz = new THREE.DirectionalLight(0xffffff, 1.6); luz.position.set(1.5, 2, 2); escena.add(luz);
+  const contra = new THREE.DirectionalLight(0xff8a3d, 1.4); contra.position.set(-2, 1, -2); escena.add(contra);
+  escena.add(new THREE.AmbientLight(0xffffff, .35));
+  const controles = new OrbitControls(camara, renderer.domElement);
+  controles.enableDamping = true; controles.enablePan = false; controles.autoRotate = !FOTO; controles.autoRotateSpeed = 2.2;
+  controles.minPolarAngle = .5; controles.maxPolarAngle = 2.2;
+  controles.addEventListener("start", () => { controles.autoRotate = false; $("pista").style.opacity = 0; });
+
+  const loader = new GLTFLoader();
+  const cache = {};
+  const cargar = (url) => (cache[url] = cache[url] || new Promise((ok, mal) => loader.load(url, ok, undefined, mal)));
+  const texLogo = (url) => { const t = new THREE.TextureLoader().load(url); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t; };
+  const LOGO = { b: texLogo("img/logo-axl-blanco.png"), n: texLogo("img/logo-axl-negro.png") };
+
+  let actual = null, raiz = null, prod = null, color = null, talla = null;
+
+  async function montar(p) {
+    if (raiz) escena.remove(raiz);
+    $("cargando3d").style.display = "grid";
+    if (p.modelo === "camisa") {
+      const g = await cargar("3d/shirt_baked.glb");
+      const malla = g.scene.getObjectByProperty("isMesh", true).clone();
+      malla.material = malla.material.clone();
+      malla.material.roughness = .85;
+      raiz = new THREE.Group(); raiz.add(malla);
+      raiz.updateMatrixWorld(true);
+      // Logo AXL estampado en el pecho y en grande en la espalda
+      const frente = new THREE.Mesh(new DecalGeometry(malla, new THREE.Vector3(0, .07, .15), new THREE.Euler(0, 0, 0), new THREE.Vector3(.17, .115, .3)),
+        new THREE.MeshStandardMaterial({ transparent: true, depthTest: true, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -4, roughness: .6 }));
+      const espalda = new THREE.Mesh(new DecalGeometry(malla, new THREE.Vector3(0, .02, -.12), new THREE.Euler(0, Math.PI, 0), new THREE.Vector3(.3, .2, .3)),
+        frente.material.clone());
+      raiz.add(frente, espalda);
+      raiz.userData = { malla, decals: [frente, espalda] };
+      camara.position.set(0, .05, 1.65); controles.target.set(0, -.04, 0);
+      controles.minDistance = .6; controles.maxDistance = 2.2;
+    } else {
+      const g = await cargar("3d/tenis.glb");
+      const variantes = g.userData.gltfExtensions.KHR_materials_variants.variants.map((v) => v.name);
+      raiz = new THREE.Group();
+      const zapato = g.scene.clone(true);
+      // el modelo trae su propia escala: se ajusta a ~0,62 de largo y se centra
+      const caja = new THREE.Box3().setFromObject(zapato), tam = caja.getSize(new THREE.Vector3());
+      zapato.scale.setScalar(.62 / Math.max(tam.x, tam.y, tam.z));
+      zapato.position.copy(caja.getCenter(new THREE.Vector3()).multiplyScalar(-zapato.scale.x));
+      const giro = new THREE.Group(); giro.rotation.y = -.55; giro.add(zapato);
+      raiz.add(giro);
+      raiz.userData = { zapato, parser: g.parser, variantes };
+      camara.position.set(0, .18, 1.25); controles.target.set(0, 0, 0);
+      controles.minDistance = .5; controles.maxDistance = 2.2;
+    }
+    escena.add(raiz);
+    $("cargando3d").style.display = "none";
+  }
+
+  async function aplicarColor(c) {
+    color = c;
+    const u = raiz.userData;
+    if (prod.modelo === "camisa") {
+      const [hex, tinta] = CAMISA[c];
+      u.malla.material.color.set(hex);
+      u.decals.forEach((d) => { d.material.map = LOGO[tinta]; d.material.needsUpdate = true; });
+    } else {
+      const i = u.variantes.indexOf(c);
+      const tareas = [];
+      u.zapato.traverse((o) => {
+        const ext = o.isMesh && o.userData.gltfExtensions && o.userData.gltfExtensions.KHR_materials_variants;
+        if (!ext) return;
+        const m = ext.mappings.find((m) => m.variants.includes(i));
+        if (m) tareas.push(u.parser.getDependency("material", m.material).then((mat) => { o.material = mat; }));
+      });
+      await Promise.all(tareas);
+    }
+    $("f-col").textContent = nombreColor(prod, c);
+    $("f-cols").querySelectorAll("button").forEach((b) => b.classList.toggle("on", b.dataset.c === c));
+    pedido();
+  }
+
+  function pedido() {
+    $("f-wa").href = `https://wa.me/573229249840?text=${encodeURIComponent(`Hola AXL Sport 👋 Me interesa:\n• ${prod.nombre}\n• Color: ${nombreColor(prod, color)}\n• Talla: ${talla || "por definir"}\n• Precio: ${peso(prod.precio)}\n¿Está disponible?`)}`;
+  }
+
+  async function abrirVisor(p, c) {
+    prod = p; talla = null;
+    $("f-lin").textContent = p.linea; $("f-nom").textContent = p.nombre; $("f-pre").textContent = peso(p.precio);
+    $("f-cols").innerHTML = p.colores.map((c) => `<button data-c="${c}" style="background:${muestra(p, c)}" aria-label="${nombreColor(p, c)}"></button>`).join("");
+    $("f-tal").innerHTML = p.tallas.map((t) => `<button data-t="${t}">${t}</button>`).join("");
+    $("visor").classList.add("activo");
+    $("pista").style.opacity = 1; controles.autoRotate = !FOTO;
+    if (!FOTO && location.hash !== "#producto") history.pushState({ prod: 1 }, "", "#producto");
+    ajustar(); animar();
+    const turno = (actual = {});
+    await montar(p);
+    if (turno !== actual) return;
+    await aplicarColor(c || p.colores[0]);
+  }
+  function cerrarVisor(desdeHistorial) {
+    if (!$("visor").classList.contains("activo")) return;
+    $("visor").classList.remove("activo");
+    actual = null;
+    if (!desdeHistorial && location.hash === "#producto") history.back();
+  }
+  $("cerrar-visor").addEventListener("click", () => cerrarVisor());
+  $("f-cols").addEventListener("click", (e) => { const b = e.target.closest("[data-c]"); if (b) aplicarColor(b.dataset.c); });
+  $("f-tal").addEventListener("click", (e) => { const b = e.target.closest("[data-t]"); if (!b) return; talla = b.dataset.t; $("f-tal").querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b)); pedido(); });
+
+  function ajustar() {
+    const w = lienzo.clientWidth, h = lienzo.clientHeight;
+    if (!w || !h) return;
+    renderer.setSize(w, h, false); camara.aspect = w / h; camara.updateProjectionMatrix();
+  }
+  addEventListener("resize", ajustar);
+  let bucle = false;
+  function animar() {
+    if (bucle) return; bucle = true;
+    const paso = () => {
+      if (!$("visor").classList.contains("activo")) { bucle = false; return; }
+      controles.update(); renderer.render(escena, camara); requestAnimationFrame(paso);
+    };
+    paso();
+  }
+
+  // ?foto=<id>[&c=<color>]&r=<giro>: deja solo el modelo, para sacar las miniaturas del catálogo
+  if (FOTO) {
+    const q = new URLSearchParams(location.search);
+    abrirVisor(PRODUCTOS.find((p) => p.id === FOTO), q.get("c")).then(() => {
+      raiz.rotation.y = +(q.get("r") || 0);
+      setTimeout(() => (document.title = "LISTO"), 800);
+    });
+  }
+</script>
+</body>
+</html>

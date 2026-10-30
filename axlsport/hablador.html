@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hablador AXL Sport | LEGION Studio Digital</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,800;1,900&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<script src="qrcode.min.js"></script>
+<style>
+  /* Lienzo de 1000 × 1500 px = acrílico de 10 × 15 cm (al imprimir se escala a medida exacta) */
+  @page { size: 100mm 150mm; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #1b1b1d; }
+  body { font-family: "Plus Jakarta Sans", system-ui, sans-serif; display: flex; flex-direction: column; align-items: center; gap: 30px; padding: 30px 0; }
+  body.captura { padding: 0; gap: 0; background: #000; }
+  .tarjeta {
+    --naranja: #FF6A1A; --naranja-2: #FFB067;
+    width: 1000px; height: 1500px; position: relative; overflow: hidden; background: #070708; color: #fff;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  @media print {
+    html, body { background: #000; }
+    body { padding: 0; gap: 0; }
+    .tarjeta { zoom: .37795; break-after: page; }
+  }
+
+  /* Foto */
+  .foto { position: absolute; inset: 0 0 auto; height: 900px; background: url("img/hablador-fondo.jpg") 52% 50% / cover no-repeat; }
+  .foto::after { content: ""; position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, rgba(7,7,8,.92) 0%, rgba(7,7,8,.35) 22%, rgba(7,7,8,0) 40%, rgba(7,7,8,.55) 66%, #070708 100%),
+      linear-gradient(90deg, rgba(7,7,8,.75) 0%, transparent 45%); }
+  .brillo { position: absolute; left: -200px; right: -200px; bottom: -260px; height: 800px; background: radial-gradient(closest-side, rgba(255,106,26,.28), transparent); }
+
+  /* Raya diagonal como la del logo */
+  .raya { position: absolute; left: -60px; top: 0; width: 1200px; height: 1500px; pointer-events: none; }
+
+  /* Marco */
+  .marco { position: absolute; inset: 26px; border: 2px solid rgba(255,255,255,.14); border-radius: 34px; pointer-events: none; }
+
+  .cab { position: absolute; top: 64px; left: 0; right: 0; display: flex; justify-content: center; }
+  .cab img { height: 150px; filter: drop-shadow(0 8px 30px rgba(0,0,0,.7)); }
+
+  .titulo { position: absolute; left: 78px; right: 78px; top: 500px; }
+  .ceja { display: inline-flex; align-items: center; gap: 14px; font-size: 22px; font-weight: 800; letter-spacing: .26em; text-transform: uppercase; color: #fff;
+    background: rgba(255,106,26,.16); border: 2px solid rgba(255,106,26,.7); padding: 10px 22px; border-radius: 999px; backdrop-filter: blur(6px); }
+  .ceja i { width: 14px; height: 14px; border-radius: 50%; background: var(--naranja); box-shadow: 0 0 0 7px rgba(255,106,26,.25), 0 0 18px var(--naranja); }
+  h1 { font-family: "Barlow Condensed", sans-serif; font-style: italic; font-weight: 900; text-transform: uppercase; font-size: 128px; line-height: .86; letter-spacing: -.01em; margin-top: 22px; text-shadow: 0 6px 40px rgba(0,0,0,.6); }
+  .sub { font-size: 27px; font-weight: 600; color: rgba(255,255,255,.78); margin-top: 16px; text-shadow: 0 2px 16px rgba(0,0,0,.8); }
+  h1 em { display: block; font-style: italic; background: linear-gradient(180deg, #FFD0A3 0%, var(--naranja) 60%, #E2420A 100%); -webkit-background-clip: text; background-clip: text; color: transparent; padding-right: 10px; }
+
+  /* Bloque inferior */
+  .abajo { position: absolute; left: 78px; right: 78px; top: 880px; display: grid; grid-template-columns: 430px 1fr; gap: 44px; align-items: center; }
+  .qr { position: relative; padding: 22px; }
+  .qr .esq { position: absolute; inset: 0; width: 100%; height: 100%; color: var(--naranja); filter: drop-shadow(0 0 10px rgba(255,106,26,.6)); }
+  .qr .caja { background: #fff; border-radius: 28px; padding: 24px; box-shadow: 0 20px 60px -10px rgba(255,106,26,.55); }
+  .qr .caja svg { display: block; width: 100%; height: auto; }
+  .qr .tab { position: absolute; left: 50%; top: 0; transform: translate(-50%, -50%); background: var(--naranja); color: #140700; font-size: 19px; font-weight: 800; letter-spacing: .22em; text-transform: uppercase; padding: 9px 22px; border-radius: 999px; white-space: nowrap; }
+
+  .der { display: flex; flex-direction: column; gap: 22px; }
+  .toca { display: flex; align-items: center; gap: 22px; }
+  .blanco { position: relative; width: 112px; height: 112px; flex-shrink: 0; display: grid; place-items: center; }
+  .blanco span { position: absolute; inset: 0; border-radius: 50%; border: 3px solid var(--naranja); }
+  .blanco span:nth-child(2) { inset: 17%; opacity: .55; }
+  .blanco span:nth-child(3) { inset: -13%; opacity: .35; border-style: dashed; }
+  .blanco b { width: 48%; height: 48%; border-radius: 50%; background: var(--naranja); color: #140700; display: grid; place-items: center; box-shadow: 0 0 30px rgba(255,106,26,.8); }
+  .blanco b svg { width: 60%; height: 60%; }
+  .toca small { display: block; font-size: 18px; font-weight: 800; letter-spacing: .22em; text-transform: uppercase; color: var(--naranja-2); }
+  .toca strong { display: block; font-family: "Barlow Condensed", sans-serif; font-weight: 800; font-style: italic; text-transform: uppercase; font-size: 50px; line-height: .92; margin-top: 6px; }
+  .toca em { display: block; font-style: normal; font-size: 19px; color: rgba(255,255,255,.62); margin-top: 6px; }
+
+  .lista { list-style: none; display: grid; gap: 11px; }
+  .lista li { display: flex; align-items: center; gap: 14px; font-size: 24px; font-weight: 700; padding: 10px 18px; border-radius: 16px; background: rgba(255,255,255,.06); border: 1.5px solid rgba(255,255,255,.12); }
+  .lista li svg { width: 30px; height: 30px; color: var(--naranja); flex-shrink: 0; }
+  .lista li b { margin-left: auto; font-size: 15px; font-weight: 800; letter-spacing: .12em; color: #140700; background: var(--naranja); padding: 4px 10px; border-radius: 999px; }
+
+  .pie { position: absolute; left: 78px; right: 78px; bottom: 58px; display: flex; align-items: center; justify-content: space-between; font-size: 18px; color: rgba(255,255,255,.55); letter-spacing: .06em; }
+  .pie .web { font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: 26px; letter-spacing: .14em; text-transform: uppercase; color: #fff; }
+  .pie .web span { color: var(--naranja); }
+  .pie b { color: #fff; font-weight: 800; }
+</style>
+</head>
+<body>
+
+<div class="tarjeta" id="tarjeta">
+  <div class="foto"></div>
+  <div class="brillo"></div>
+  <svg class="raya" viewBox="0 0 1200 1500" preserveAspectRatio="none" aria-hidden="true">
+    <defs><linearGradient id="g" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#FF6A1A" stop-opacity="0"/><stop offset=".45" stop-color="#FF6A1A" stop-opacity=".85"/><stop offset="1" stop-color="#FFD0A3" stop-opacity="0"/></linearGradient></defs>
+    <path d="M40 1010 L1180 300 L1186 306 L60 1018 Z" fill="url(#g)"/>
+  </svg>
+  <div class="marco"></div>
+
+  <div class="cab"><img src="img/logo-axl-blanco.png" alt="AXL Sport"></div>
+
+  <div class="titulo">
+    <span class="ceja"><i></i>Escanea · Toca · Listo</span>
+    <h1>Conoce todo<em>AXL Sport</em></h1>
+    <p class="sub">Catálogo, reseñas, ubicación y WhatsApp en un solo toque</p>
+  </div>
+
+  <div class="abajo">
+    <div class="qr">
+      <svg class="esq" viewBox="0 0 100 100" preserveAspectRatio="none" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"><path vector-effect="non-scaling-stroke" style="stroke-width:7px" d="M0 16V5a5 5 0 0 1 5-5h11M84 0h11a5 5 0 0 1 5 5v11M100 84v11a5 5 0 0 1-5 5H84M16 100H5a5 5 0 0 1-5-5V84"/></svg>
+      <div class="caja" id="qr"></div>
+      <div class="tab">Escanéame</div>
+    </div>
+    <div class="der">
+      <div class="toca">
+        <div class="blanco"><span></span><span></span><span></span><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 8.5a5 5 0 0 1 0 7M9.5 6a8.5 8.5 0 0 1 0 12M13 3.5a12 12 0 0 1 0 17"/><circle cx="3" cy="12" r="1.3" fill="currentColor" stroke="none"/></svg></b></div>
+        <div><small>O sin cámara</small><strong>Acerca tu<br>celular aquí</strong><em>Sin apps, solo toca</em></div>
+      </div>
+      <ul class="lista">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7l9 5 9-5-9-5Z"/><path d="m3 17 9 5 9-5M3 12l9 5 9-5"/></svg>Catálogo</li>
+        <li><svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2.8 2.8 5.7 6.3.9-4.6 4.4 1.1 6.2L12 17l-5.6 3 1.1-6.2L2.9 9.4l6.3-.9L12 2.8Z"/></svg>Reseñas</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Z"/><circle cx="12" cy="10" r="2.6"/></svg>Ubicación</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20.5 5 16a8.5 8.5 0 1 1 3.3 3.2l-4.8 1.3Z"/><path d="M9 9.5c.5 2 2 3.6 4.4 4.5l1.3-1.3 2 1-.5 1.8c-3.6.2-7.4-3.3-7.7-7l1.8-.6 1 2-1.3 1.3"/></svg>WhatsApp</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="pie"><span class="web">legionestudio.com/<span>axlsport</span></span><span>Tecnología <b>LEGION Studio Digital</b></span></div>
+</div>
+
+<script>
+  const URL_NEGOCIO = "https://legionestudio.com/axlsport/";
+
+  // QR personalizado: puntos redondeados, ojos propios y el logo en el centro (corrección H: aguanta el logo)
+  function qrSVG(texto) {
+    const qr = qrcode(0, "H");
+    qr.addData(texto); qr.make();
+    const n = qr.getModuleCount(), q = 2, t = n + q * 2;
+    const ojo = (r, c) => (r < 7 && c < 7) || (r < 7 && c >= n - 7) || (r >= n - 7 && c < 7);
+    const hueco = Math.round(n * .22) | 1, h0 = (n - hueco) / 2; // zona libre para el logo
+    const libre = (r, c) => r >= h0 - .5 && r < h0 + hueco - .5 && c >= h0 - .5 && c < h0 + hueco - .5;
+    let d = "";
+    for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) {
+      if (!qr.isDark(r, c) || ojo(r, c) || libre(r, c)) continue;
+      d += `<rect x="${c + q + .07}" y="${r + q + .07}" width=".9" height=".9" rx=".28"/>`;
+    }
+    const ojoSVG = (x, y) => `<rect x="${x + .5}" y="${y + .5}" width="6" height="6" rx="1.9" fill="none" stroke="#0b0b0c" stroke-width="1"/><rect x="${x + 2}" y="${y + 2}" width="3" height="3" rx=".9" fill="#0b0b0c"/>`;
+    const L = hueco - .6, lx = q + h0 + .3 - .5;
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${t} ${t}">
+      <g fill="#0b0b0c">${d}</g>
+      ${ojoSVG(q, q)}${ojoSVG(q + n - 7, q)}${ojoSVG(q, q + n - 7)}
+      <rect x="${lx}" y="${lx}" width="${L}" height="${L}" rx="1.4" fill="#0b0b0c"/>
+      <image href="img/logo-axl-blanco.png" x="${lx + L * .1}" y="${lx + L * .22}" width="${L * .8}" height="${L * .56}" preserveAspectRatio="xMidYMid meet"/>
+    </svg>`;
+  }
+  document.getElementById("qr").innerHTML = qrSVG(URL_NEGOCIO);
+  if (location.hash === "#captura") document.body.classList.add("captura");
+</script>
+</body>
+</html>
