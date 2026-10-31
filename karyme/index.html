@@ -8,330 +8,567 @@
 <meta name="description" content="Mensaje confidencial. Ábrelo solo si eres Karyme.">
 <meta property="og:title" content="Tienes un mensaje 👀">
 <meta property="og:description" content="Confidencial. Ábrelo solo si eres Karyme.">
-<meta name="theme-color" content="#05060d">
+<meta name="theme-color" content="#03040a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/" } }</script>
 <style>
-  :root { --rosa: #FF4D8D; --rosa2: #FF9EC0; --oro: #FFD36E; }
+  @property --a { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+  :root { --rosa: #FF5C9A; --rosa2: #FFB3CF; --oro: #F6D08A; --lila: #B9A6FF; }
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  html, body { height: 100%; overflow: hidden; background: #05060d; color: #fff; font-family: "Plus Jakarta Sans", system-ui, sans-serif; -webkit-font-smoothing: antialiased; user-select: none; -webkit-user-select: none; }
+  html, body { height: 100%; overflow: hidden; color: #fff; font-family: "Plus Jakarta Sans", system-ui, sans-serif; -webkit-font-smoothing: antialiased; user-select: none; -webkit-user-select: none; }
+  body { background: radial-gradient(120% 80% at 50% 0%, #120a26 0%, #05060f 55%, #020208 100%); }
   button { font: inherit; color: inherit; border: 0; background: none; cursor: pointer; }
-  #cielo { position: fixed; inset: 0; width: 100%; height: 100%; }
-  .aurora { position: fixed; inset: -20%; pointer-events: none; opacity: .55; filter: blur(60px);
-    background: radial-gradient(40% 30% at 25% 20%, rgba(255,77,141,.35), transparent 70%), radial-gradient(45% 35% at 80% 75%, rgba(110,90,255,.35), transparent 70%);
-    animation: flota 14s ease-in-out infinite alternate; }
-  @keyframes flota { to { transform: translate(4%, -3%) rotate(6deg); } }
+  #cielo { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+  .velo { position: fixed; inset: 0; pointer-events: none; background: radial-gradient(70% 55% at 50% 50%, transparent 40%, rgba(2,2,8,.55) 100%); }
+  .grano { position: fixed; inset: -50%; pointer-events: none; opacity: .06; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); animation: grano 1s steps(4) infinite; }
+  @keyframes grano { 25% { transform: translate(-3%, 2%); } 50% { transform: translate(2%, -3%); } 75% { transform: translate(-2%, -2%); } }
+  #flash { position: fixed; inset: 0; pointer-events: none; background: radial-gradient(circle, #fff, #ffd6e7 40%, transparent 75%); opacity: 0; z-index: 30; }
 
-  .escena { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 28px 26px calc(28px + env(safe-area-inset-bottom));
-    opacity: 0; pointer-events: none; transform: translateY(18px) scale(.98); transition: opacity .6s ease, transform .6s ease; }
-  .escena.on { opacity: 1; pointer-events: auto; transform: none; }
-  .titulo { font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; font-size: clamp(2.3rem, 11vw, 3.6rem); line-height: 1; letter-spacing: -.03em; }
-  .titulo em { text-shadow: none; filter: drop-shadow(0 2px 10px rgba(5,6,13,.9));
-    font-style: normal; background: linear-gradient(90deg, var(--rosa2), var(--rosa), var(--oro)); -webkit-background-clip: text; background-clip: text; color: transparent; }
-  .sub, .aviso, .titulo { text-shadow: 0 2px 14px rgba(5,6,13,.95), 0 0 30px rgba(5,6,13,.9); }
-  .sub { color: rgba(255,255,255,.8); font-size: 1.05rem; margin-top: 14px; max-width: 320px; line-height: 1.45; }
-  .chip { display: inline-flex; align-items: center; gap: 8px; font-size: .72rem; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; padding: 7px 14px; border-radius: 999px; border: 1px solid rgba(255,77,141,.5); background: rgba(255,77,141,.12); color: var(--rosa2); margin-bottom: 22px; }
-  .chip i { width: 7px; height: 7px; border-radius: 50%; background: var(--rosa); box-shadow: 0 0 10px var(--rosa); animation: late 1.2s infinite; }
-  @keyframes late { 50% { opacity: .3; } }
-  .btn { margin-top: 30px; padding: 17px 30px; border-radius: 999px; font-weight: 800; font-size: 1.05rem; background: linear-gradient(135deg, #FF6FA3, #FF2E74); box-shadow: 0 14px 40px -12px rgba(255,46,116,.9); transition: transform .15s; }
+  /* ---------- Escenas con profundidad ---------- */
+  .escenario { position: fixed; inset: 0; perspective: 1100px; z-index: 2; pointer-events: none; }
+  .escena { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+    padding: calc(30px + env(safe-area-inset-top)) 26px calc(30px + env(safe-area-inset-bottom));
+    opacity: 0; pointer-events: none; transform: translateZ(-260px) rotateX(14deg); filter: blur(14px);
+    transition: opacity .9s cubic-bezier(.2,.7,.2,1), transform 1.1s cubic-bezier(.2,.7,.2,1), filter .9s; }
+  .escena.on { opacity: 1; pointer-events: auto; transform: none; filter: none; }
+  .escena.sale { opacity: 0; transform: translateZ(320px) rotateX(-8deg); filter: blur(18px); transition-duration: .7s; }
+
+  .chip { display: inline-flex; align-items: center; gap: 10px; font-size: .68rem; font-weight: 700; letter-spacing: .32em; text-transform: uppercase; padding: 8px 16px; border-radius: 999px; color: var(--rosa2);
+    background: linear-gradient(rgba(20,12,32,.6), rgba(20,12,32,.6)) padding-box, linear-gradient(90deg, rgba(255,92,154,.7), rgba(246,208,138,.7)) border-box; border: 1px solid transparent; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+  .chip i { width: 6px; height: 6px; border-radius: 50%; background: var(--rosa); box-shadow: 0 0 12px 2px var(--rosa); animation: late 1.4s infinite; }
+  @keyframes late { 50% { opacity: .25; } }
+
+  .titulo { font-weight: 800; font-size: clamp(2.3rem, 10.5vw, 3.6rem); line-height: 1.02; letter-spacing: -.035em; text-shadow: 0 4px 30px rgba(3,4,10,.9); }
+  .serif { font-family: "Instrument Serif", Georgia, serif; font-style: italic; font-weight: 400; letter-spacing: -.01em; font-size: 1.12em;
+    background: linear-gradient(100deg, var(--rosa2) 0%, var(--rosa) 35%, var(--oro) 65%, var(--rosa2) 100%); background-size: 220% 100%; -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: brillo 5s linear infinite; padding: 0 .06em; filter: drop-shadow(0 2px 14px rgba(255,92,154,.35)); text-shadow: none; }
+  @keyframes brillo { to { background-position: -220% 0; } }
+  .sub { color: rgba(255,255,255,.78); font-size: 1.02rem; margin-top: 16px; max-width: 330px; line-height: 1.5; text-shadow: 0 2px 16px rgba(3,4,10,1); }
+
+  /* Palabras que aparecen una por una */
+  .w { display: inline-block; opacity: 0; transform: translateY(.5em) rotateX(-70deg); filter: blur(8px); transform-origin: 50% 100%;
+    transition: opacity .7s, transform .9s cubic-bezier(.2,.9,.25,1.2), filter .7s; transition-delay: calc(var(--i) * 70ms + var(--d, 0ms)); }
+  .on .w { opacity: 1; transform: none; filter: none; }
+
+  .aparece { opacity: 0; transform: translateY(14px); transition: opacity .8s, transform .8s; transition-delay: var(--d, 0ms); }
+  .on .aparece { opacity: 1; transform: none; }
+
+  /* Botón premium */
+  .btn { position: relative; margin-top: 34px; padding: 18px 34px; border-radius: 999px; font-weight: 700; font-size: 1.02rem; letter-spacing: .01em; isolation: isolate; overflow: hidden;
+    background: linear-gradient(135deg, #FF79AC, #FF3B7F 55%, #E8306F); box-shadow: 0 18px 50px -14px rgba(255,59,127,.85), inset 0 1px 0 rgba(255,255,255,.4); transition: transform .2s; }
+  .btn::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,.55) 50%, transparent 70%); transform: translateX(-120%); animation: barrido 3.2s ease-in-out infinite; }
+  @keyframes barrido { 55%, 100% { transform: translateX(120%); } }
   .btn:active { transform: scale(.95); }
-  .btn.sec { background: rgba(255,255,255,.08); box-shadow: none; border: 1px solid rgba(255,255,255,.18); font-size: .95rem; padding: 14px 24px; }
-  .toca { position: absolute; bottom: calc(34px + env(safe-area-inset-bottom)); left: 0; right: 0; font-size: .85rem; color: rgba(255,255,255,.55); animation: late 1.6s infinite; }
-  .candado { font-size: 3.4rem; margin-bottom: 8px; filter: drop-shadow(0 8px 24px rgba(255,77,141,.5)); animation: brinca 2s ease-in-out infinite; }
-  @keyframes brinca { 50% { transform: translateY(-8px) rotate(-6deg); } }
+  /* Vidrio con borde de colores que gira */
+  .vidrio { background: linear-gradient(rgba(18,14,30,.55), rgba(18,14,30,.55)) padding-box, conic-gradient(from var(--a), rgba(255,92,154,.9), rgba(246,208,138,.9), rgba(185,166,255,.9), rgba(255,92,154,.9)) border-box;
+    border: 1.5px solid transparent; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); animation: gira 4s linear infinite; box-shadow: 0 20px 50px -20px rgba(0,0,0,.8); }
+  @keyframes gira { to { --a: 360deg; } }
+  .btn.vidrio { padding: 15px 26px; font-size: .95rem; box-shadow: none; }
+  .btn.vidrio::after { display: none; }
+
+  /* Monograma con órbitas */
+  .mono { position: relative; width: 132px; height: 132px; margin-bottom: 26px; transform-style: preserve-3d; animation: flotar 5s ease-in-out infinite; }
+  @keyframes flotar { 50% { transform: translateY(-10px); } }
+  .mono .aro { position: absolute; inset: 0; border-radius: 50%; border: 1px solid rgba(246,208,138,.55); animation: orbita 7s linear infinite; }
+  .mono .aro:nth-child(2) { inset: -14px; border-color: rgba(255,92,154,.4); animation-duration: 11s; animation-direction: reverse; }
+  .mono .aro::before { content: ""; position: absolute; top: -4px; left: 50%; width: 8px; height: 8px; border-radius: 50%; background: var(--oro); box-shadow: 0 0 14px 3px var(--oro); }
+  .mono .aro:nth-child(2)::before { background: var(--rosa); box-shadow: 0 0 14px 3px var(--rosa); }
+  @keyframes orbita { from { transform: rotateX(68deg) rotateZ(0); } to { transform: rotateX(68deg) rotateZ(360deg); } }
+  .mono .k { position: absolute; inset: 14px; border-radius: 50%; display: grid; place-items: center; font-family: "Instrument Serif", serif; font-style: italic; font-size: 4.2rem; line-height: 1;
+    background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.22), rgba(255,255,255,.04) 60%), rgba(20,12,34,.5); border: 1px solid rgba(255,255,255,.2); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 0 60px -10px rgba(255,92,154,.7), inset 0 0 30px rgba(255,92,154,.25); }
+  .mono .k span { background: linear-gradient(180deg, #fff, var(--rosa2) 60%, var(--oro)); -webkit-background-clip: text; background-clip: text; color: transparent; transform: translateY(4px); }
+
+  .pista { position: absolute; left: 0; right: 0; bottom: calc(40px + env(safe-area-inset-bottom)); font-size: .74rem; letter-spacing: .26em; text-transform: uppercase; color: rgba(255,255,255,.6); }
+  .pista b { display: block; width: 1px; height: 34px; margin: 0 auto 12px; background: linear-gradient(transparent, rgba(255,255,255,.75)); animation: gota 1.8s ease-in-out infinite; }
+  @keyframes gota { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
 
   /* Reglas */
-  .reglas { list-style: none; margin-top: 22px; display: grid; gap: 10px; text-align: left; width: 100%; max-width: 340px; }
-  .reglas li { display: flex; gap: 12px; align-items: center; padding: 14px 16px; border-radius: 16px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); font-weight: 600; opacity: 0; transform: translateX(-14px); transition: .5s; }
+  .reglas { list-style: none; margin-top: 26px; display: grid; gap: 12px; width: 100%; max-width: 340px; perspective: 800px; }
+  .reglas li { display: flex; gap: 14px; align-items: center; text-align: left; padding: 15px 18px; border-radius: 18px; font-weight: 600;
+    background: linear-gradient(135deg, rgba(255,255,255,.1), rgba(255,255,255,.03)); border: 1px solid rgba(255,255,255,.14); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.15), 0 16px 40px -20px rgba(0,0,0,.9);
+    opacity: 0; transform: rotateX(-80deg) translateY(20px); transform-origin: top; transition: opacity .6s, transform .9s cubic-bezier(.2,.9,.25,1.2); }
   .on .reglas li { opacity: 1; transform: none; }
-  .on .reglas li:nth-child(2) { transition-delay: .35s; } .on .reglas li:nth-child(3) { transition-delay: .7s; }
-  .reglas b { font-size: 1.3rem; }
-  .reglas small { display: block; color: rgba(255,255,255,.55); font-weight: 500; font-size: .82rem; }
+  .on .reglas li:nth-child(1) { transition-delay: .5s; } .on .reglas li:nth-child(2) { transition-delay: .8s; } .on .reglas li:nth-child(3) { transition-delay: 1.1s; }
+  .reglas .n { font-family: "Instrument Serif", serif; font-style: italic; font-size: 1.8rem; color: var(--oro); width: 26px; text-align: center; }
+  .reglas small { display: block; color: rgba(255,255,255,.55); font-weight: 500; font-size: .8rem; margin-top: 2px; }
 
-  /* La pregunta */
-  .pregunta .titulo { font-size: clamp(2.1rem, 10vw, 3.2rem); }
-  .boca { font-size: 4rem; margin-bottom: 10px; display: inline-block; animation: brinca 1.8s ease-in-out infinite; }
-  .zona-si { margin-top: 34px; display: flex; flex-direction: column; align-items: center; gap: 14px; }
-  #si { padding: 20px 54px; font-size: 1.35rem; transition: transform .35s cubic-bezier(.3,1.6,.5,1); }
-  .aviso { font-size: .86rem; color: rgba(255,255,255,.6); max-width: 290px; line-height: 1.4; min-height: 2.6em; }
-  .aviso b { color: var(--oro); }
-  #no { position: fixed; z-index: 5; padding: 12px 22px; border-radius: 999px; font-weight: 700; font-size: .95rem; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.22); white-space: nowrap;
-    transition: left .28s cubic-bezier(.3,1.4,.5,1), top .28s cubic-bezier(.3,1.4,.5,1), transform .3s, opacity .3s; touch-action: none; }
+  /* Pregunta */
+  .emoji { font-size: 3.6rem; display: inline-block; margin-bottom: 14px; filter: drop-shadow(0 10px 24px rgba(255,92,154,.45)); animation: flotar 2.4s ease-in-out infinite; }
+  .zona-si { margin-top: 30px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  #si { margin-top: 0; padding: 21px 58px; font-size: 1.3rem; transition: transform .45s cubic-bezier(.3,1.7,.5,1); }
+  .aviso { font-size: .86rem; color: rgba(255,255,255,.7); max-width: 300px; line-height: 1.45; min-height: 2.9em; text-shadow: 0 2px 12px rgba(3,4,10,1); }
+  .aviso b { color: var(--oro); font-weight: 700; }
+  #no { position: fixed; z-index: 6; padding: 13px 24px; border-radius: 999px; font-weight: 600; font-size: .93rem; white-space: nowrap; color: rgba(255,255,255,.9);
+    background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.22); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    transition: left .32s cubic-bezier(.3,1.5,.5,1), top .32s cubic-bezier(.3,1.5,.5,1), transform .35s, opacity .4s; touch-action: none; }
   #no.oculto { opacity: 0; pointer-events: none; }
-  .contador { position: fixed; top: calc(16px + env(safe-area-inset-top)); right: 16px; font-size: .78rem; font-weight: 800; padding: 7px 12px; border-radius: 999px; background: rgba(0,0,0,.45); border: 1px solid rgba(255,255,255,.14); opacity: 0; transition: opacity .3s; }
-  .contador.ver { opacity: 1; }
+  .contador { position: fixed; z-index: 6; top: calc(16px + env(safe-area-inset-top)); left: 50%; transform: translate(-50%, -10px); font-size: .74rem; font-weight: 700; letter-spacing: .04em; padding: 8px 14px; border-radius: 999px;
+    background: rgba(10,8,20,.6); border: 1px solid rgba(255,255,255,.14); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); opacity: 0; transition: .4s; white-space: nowrap; }
+  .contador.ver { opacity: 1; transform: translate(-50%, 0); }
 
   /* Final */
-  .sello { width: 120px; height: 120px; border-radius: 50%; display: grid; place-items: center; font-size: 3.6rem; background: radial-gradient(circle, rgba(255,77,141,.35), transparent 70%); margin-bottom: 8px; transform: scale(0); }
-  .on .sello { animation: sello .7s cubic-bezier(.3,1.7,.5,1) .2s forwards; }
-  @keyframes sello { to { transform: scale(1) rotate(-8deg); } }
-  .recibo { margin-top: 22px; width: 100%; max-width: 330px; padding: 16px 18px; border-radius: 18px; background: rgba(255,255,255,.06); border: 1px dashed rgba(255,255,255,.25); text-align: left; font-size: .9rem; display: grid; gap: 8px; }
-  .recibo div { display: flex; justify-content: space-between; gap: 10px; }
-  .recibo span { color: rgba(255,255,255,.6); }
-  .recibo b { text-align: right; }
-  .acciones { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-  .wa { background: #25D366 !important; color: #062b14; box-shadow: 0 14px 40px -12px rgba(37,211,102,.8) !important; display: inline-flex; align-items: center; gap: 10px; }
+  .recibo { position: relative; margin-top: 24px; width: 100%; max-width: 330px; padding: 18px 20px; border-radius: 20px; text-align: left; font-size: .88rem; display: grid; gap: 9px; overflow: hidden; }
+  .recibo::before { content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 20%, rgba(255,179,207,.16) 40%, rgba(246,208,138,.16) 50%, rgba(185,166,255,.16) 60%, transparent 80%); background-size: 250% 100%; animation: holo 4s linear infinite; pointer-events: none; }
+  @keyframes holo { to { background-position: -250% 0; } }
+  .recibo .tit { font-size: .66rem; letter-spacing: .3em; text-transform: uppercase; color: var(--oro); font-weight: 700; padding-bottom: 8px; border-bottom: 1px dashed rgba(255,255,255,.2); }
+  .recibo div:not(.tit) { display: flex; justify-content: space-between; gap: 12px; }
+  .recibo span { color: rgba(255,255,255,.58); }
+  .recibo b { text-align: right; font-weight: 700; }
+  .wa { background: linear-gradient(135deg, #3BE07F, #1FBF5F) !important; color: #04240f; box-shadow: 0 18px 50px -14px rgba(37,211,102,.75), inset 0 1px 0 rgba(255,255,255,.5) !important; display: inline-flex; align-items: center; gap: 10px; margin-top: 26px; text-decoration: none; }
   .wa svg { width: 22px; height: 22px; }
 
-  .lluvia { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 9; }
-  .lluvia span { position: absolute; top: -60px; animation: cae linear forwards; }
+  .lluvia { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 1; }
+  .lluvia span { position: absolute; top: -60px; animation: cae linear forwards; filter: drop-shadow(0 6px 12px rgba(0,0,0,.4)); }
   @keyframes cae { to { transform: translateY(115vh) rotate(var(--g)); } }
-  .tiembla { animation: tiembla .4s; }
-  @keyframes tiembla { 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
+
+  @media (prefers-reduced-motion: reduce) { .grano { animation: none; } }
 </style>
 </head>
 <body>
 <canvas id="cielo"></canvas>
-<div class="aurora"></div>
+<div class="velo"></div>
+<div class="grano"></div>
+<div id="flash"></div>
 
-<!-- 1. Sobre cerrado -->
-<section class="escena on" id="e1">
-  <span class="chip"><i></i>Confidencial</span>
-  <div class="candado">🔒</div>
-  <h1 class="titulo">Hola, <em>Karyme</em></h1>
-  <p class="sub">Tienes un mensaje secreto.<br>Sin azúcar, sin gluten y aprobado por nutricionistas 🥗</p>
-  <button class="btn" id="abrir">Abrir mensaje 🔓</button>
-</section>
+<main class="escenario">
+  <!-- 1. Portada -->
+  <section class="escena on" id="e1">
+    <div class="mono aparece"><span class="aro"></span><span class="aro"></span><div class="k"><span>K</span></div></div>
+    <span class="chip aparece" style="--d:200ms"><i></i>Confidencial</span>
+    <h1 class="titulo" style="margin-top:22px;--d:300ms" data-p>Hola, <em class="serif">Karyme</em></h1>
+    <p class="sub aparece" style="--d:800ms">Tienes un mensaje secreto.<br>Sin azúcar, sin gluten y aprobado por nutricionistas 🥗</p>
+    <button class="btn aparece" style="--d:1100ms" id="abrir">Abrir mensaje</button>
+  </section>
 
-<!-- 2. Las estrellas escriben su nombre -->
-<section class="escena" id="e2">
-  <p class="toca" id="toca2" style="opacity:0">Toca para seguir</p>
-  <p class="sub" id="nota-nombre" style="position:absolute;bottom:calc(80px + env(safe-area-inset-bottom));opacity:0;transition:opacity .8s">Sí, puse a las estrellas a escribir tu nombre.<br>Normal, lo hago todos los días 😌</p>
-</section>
+  <!-- 2. Su nombre en las estrellas -->
+  <section class="escena" id="e2">
+    <p class="sub aparece" style="position:absolute;top:63%;--d:2600ms">Sí, puse a las estrellas a escribir tu nombre.<br>Normal, lo hago todos los días 😌</p>
+    <div class="pista aparece" style="--d:3600ms"><b></b>Toca para seguir</div>
+  </section>
 
-<!-- 3. Reglas -->
-<section class="escena" id="e3">
-  <h2 class="titulo" style="font-size:clamp(2rem,9vw,2.8rem)">Antes de seguir,<br><em>unas reglas</em></h2>
-  <ul class="reglas">
-    <li><b>☝️</b><span>Responder con sinceridad<small>Esto es muy serio</small></span></li>
-    <li><b>😐</b><span>No reírse<small>Vas a fallar, pero inténtalo</small></span></li>
-    <li><b>🥦</b><span>Esto no cuenta como calorías<small>Lo juro, revisé la tabla nutricional</small></span></li>
-  </ul>
-  <button class="btn" id="acepto">Acepto los términos ✍️</button>
-</section>
+  <!-- 3. Reglas -->
+  <section class="escena" id="e3">
+    <h2 class="titulo" style="font-size:clamp(2rem,9vw,2.9rem)" data-p>Antes de seguir, <em class="serif">unas reglas</em></h2>
+    <ul class="reglas">
+      <li><span class="n">1</span><span>Responder con sinceridad<small>Esto es muy serio</small></span></li>
+      <li><span class="n">2</span><span>No reírse<small>Vas a fallar, pero inténtalo</small></span></li>
+      <li><span class="n">3</span><span>Esto no cuenta como calorías 🥦<small>Lo juro, revisé la tabla nutricional</small></span></li>
+    </ul>
+    <button class="btn aparece" style="--d:1500ms" id="acepto">Acepto los términos</button>
+  </section>
 
-<!-- 4. Suspenso -->
-<section class="escena" id="e4">
-  <h2 class="titulo" id="suspenso" style="font-size:clamp(2rem,9vw,2.8rem)">Tengo una pregunta<br><em>muy seria…</em></h2>
-  <p class="sub" id="suspenso2" style="opacity:0;transition:opacity .6s">(más seria que preguntarle a una nutricionista si la arepa con queso cuenta como ensalada)</p>
-</section>
+  <!-- 4. Suspenso -->
+  <section class="escena" id="e4">
+    <h2 class="titulo" style="font-size:clamp(2.1rem,9.5vw,3rem)" data-p>Tengo una pregunta <em class="serif">muy seria…</em></h2>
+    <p class="sub aparece" style="--d:1500ms">(más seria que preguntarle a una nutricionista si la arepa con queso cuenta como ensalada)</p>
+  </section>
 
-<!-- 5. La pregunta -->
-<section class="escena pregunta" id="e5">
-  <div class="boca">😏</div>
-  <h2 class="titulo">¿Me vas a dar un <em>besito</em> cuando nos veamos?</h2>
-  <div class="zona-si">
-    <button class="btn" id="si">Sí 😘</button>
-    <p class="aviso" id="aviso">Pase lo que pase,<br><b>NO toques el botón de abajo</b> 👀</p>
-  </div>
-</section>
+  <!-- 5. La pregunta -->
+  <section class="escena" id="e5">
+    <div class="emoji aparece" id="emoji">😏</div>
+    <h2 class="titulo" style="font-size:clamp(2.1rem,9.5vw,3.1rem)" data-p>¿Me vas a dar un <em class="serif">besito</em> cuando nos veamos?</h2>
+    <div class="zona-si aparece" style="--d:900ms">
+      <button class="btn" id="si">Sí 😘</button>
+      <p class="aviso" id="aviso">Pase lo que pase,<br><b>NO toques el botón de abajo</b> 👀</p>
+    </div>
+  </section>
+
+  <!-- 6. Final -->
+  <section class="escena" id="e6">
+    <h2 class="titulo" style="font-size:clamp(2.1rem,9.5vw,3rem)" data-p>Sabía que dirías <em class="serif">que sí</em> 😎</h2>
+    <p class="sub aparece" style="--d:700ms" id="final-sub">Trato cerrado. Ya quedó registrado en el sistema y no hay devoluciones.</p>
+    <div class="recibo vidrio aparece" style="--d:1000ms">
+      <div class="tit">Comprobante oficial</div>
+      <div><span>Pendiente</span><b>1 besito 💋</b></div>
+      <div><span>Cuándo</span><b>La próxima vez que nos veamos</b></div>
+      <div><span>Intentos de decir que no</span><b id="intentos">0</b></div>
+      <div><span>Info nutricional</span><b>0 kcal · 100 % recomendado</b></div>
+      <div><span>Estado</span><b style="color:#8CF5AE">Aprobado ✓</b></div>
+    </div>
+    <a class="btn wa aparece" style="--d:1300ms" id="wa" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9 0-1.4.7-2 1-2.3.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.3 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.6 2.1 1.1 1 2 1.3 2.3 1.4.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.5.3.1.2.1.7-.1 1.3Z"/></svg>Mandarme la respuesta</a>
+    <button class="btn vidrio aparece" style="--d:1500ms;margin-top:14px" id="otra">Volver a intentarlo 😂</button>
+  </section>
+</main>
+
 <button id="no" class="oculto">No</button>
 <div class="contador" id="contador"></div>
-
-<!-- 6. Final -->
-<section class="escena" id="e6">
-  <div class="sello">💋</div>
-  <h2 class="titulo" style="font-size:clamp(2.1rem,10vw,3rem)">Sabía que dirías <em>que sí</em> 😎</h2>
-  <p class="sub" id="final-sub">Trato cerrado. Ya quedó registrado en el sistema y no hay devoluciones.</p>
-  <div class="recibo">
-    <div><span>Pendiente</span><b>1 besito 💋</b></div>
-    <div><span>Cuándo</span><b>La próxima vez que nos veamos</b></div>
-    <div><span>Intentos de decir que no</span><b id="intentos">0</b></div>
-    <div><span>Info nutricional</span><b>0 kcal · 100 % recomendado</b></div>
-    <div><span>Estado</span><b style="color:#7CF29A">Aprobado ✅</b></div>
-  </div>
-  <div class="acciones">
-    <a class="btn wa" id="wa" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9 0-1.4.7-2 1-2.3.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.3 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.6 2.1 1.1 1 2 1.3 2.3 1.4.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.5.3.1.2.1.7-.1 1.3Z"/></svg>Mandarme la respuesta</a>
-    <button class="btn sec" id="otra" style="margin-top:12px">Volver a intentarlo 😂</button>
-  </div>
-</section>
-
 <div class="lluvia" id="lluvia"></div>
 
 <script>
-(() => {
-  const $ = (id) => document.getElementById(id);
-  const vibra = (p) => navigator.vibrate && navigator.vibrate(p);
-
-  /* ---------- Cielo de estrellas (canvas) ---------- */
-  const cv = $("cielo"), cx = cv.getContext("2d");
-  let W, H, DPR, estrellas = [], fondo = [], modo = "libre", par = { x: 0, y: 0 }, parObj = { x: 0, y: 0 };
-  function medir() {
-    DPR = Math.min(devicePixelRatio || 1, 2);
-    W = innerWidth; H = innerHeight;
-    cv.width = W * DPR; cv.height = H * DPR; cx.setTransform(DPR, 0, 0, DPR, 0, 0);
-    fondo = Array.from({ length: Math.round(W * H / 3400) }, () => ({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.1 + .2, f: Math.random() * 6, z: Math.random() * .6 + .2 }));
-    if (modo === "nombre") formarNombre();
-  }
-  // Estrellas que luego escriben el nombre
-  function crearEstrellas(n) {
-    estrellas = Array.from({ length: n }, () => {
-      const x = Math.random() * W, y = Math.random() * H;
-      return { x, y, ox: x, oy: y, tx: x, ty: y, r: Math.random() * 1.4 + .8, f: Math.random() * 6, c: Math.random() < .3 ? "255,158,192" : Math.random() < .5 ? "255,211,110" : "255,255,255" };
+  // Los títulos se parten en palabras para que aparezcan una por una
+  document.querySelectorAll("[data-p]").forEach((el) => {
+    let i = 0;
+    [...el.childNodes].forEach((n) => {
+      if (n.nodeType === 3) {
+        const f = document.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach((p) => {
+          if (!p) return;
+          if (/^\s+$/.test(p)) return f.appendChild(document.createTextNode(p));
+          const s = document.createElement("span"); s.className = "w"; s.style.setProperty("--i", i++); s.textContent = p; f.appendChild(s);
+        });
+        n.replaceWith(f);
+      } else if (n.nodeType === 1) {
+        // la palabra con degradado entra completa
+        const s = document.createElement("span"); s.className = "w"; s.style.setProperty("--i", i++); n.replaceWith(s); s.appendChild(n);
+      }
     });
-  }
-  function puntosTexto(txt) {
-    const c = document.createElement("canvas"), k = c.getContext("2d");
-    const ancho = Math.min(W * .9, 520), fs = ancho / (txt.length * .62);
-    c.width = Math.ceil(ancho); c.height = Math.ceil(fs * 1.2);
-    k.fillStyle = "#fff"; k.font = `800 ${fs}px "Bricolage Grotesque", sans-serif`; k.textAlign = "center"; k.textBaseline = "middle";
-    k.fillText(txt, c.width / 2, c.height / 2);
-    const d = k.getImageData(0, 0, c.width, c.height).data, pts = [], paso = Math.max(4, Math.round(fs / 16));
-    for (let y = 0; y < c.height; y += paso) for (let x = 0; x < c.width; x += paso) if (d[(y * c.width + x) * 4 + 3] > 140) pts.push([x + (W - c.width) / 2, y + H * .42 - c.height / 2]);
-    return pts;
-  }
-  function formarNombre() {
-    const pts = puntosTexto("KARYME");
-    if (estrellas.length < pts.length) crearEstrellas(pts.length + 40);
-    pts.sort(() => Math.random() - .5);
-    estrellas.forEach((s, i) => {
-      if (i < pts.length) { s.tx = pts[i][0]; s.ty = pts[i][1]; s.en = true; }
-      else { s.tx = s.ox; s.ty = s.oy; s.en = false; }
-    });
-  }
-  // Al soltar el nombre solo se quedan 70 estrellas; las demás se apagan
-  function soltar() { estrellas.forEach((s, i) => { s.tx = Math.random() * W; s.ty = Math.random() * H; s.en = false; if (i >= 70) s.muere = true; }); }
+  });
+</script>
 
-  let t = 0;
-  function dibujar() {
-    t += .016;
-    par.x += (parObj.x - par.x) * .05; par.y += (parObj.y - par.y) * .05;
-    cx.clearRect(0, 0, W, H);
-    for (const s of fondo) {
-      const a = .35 + .65 * Math.abs(Math.sin(t * .8 + s.f));
-      cx.globalAlpha = a; cx.fillStyle = "#fff";
-      cx.beginPath(); cx.arc(s.x + par.x * s.z * 30, s.y + par.y * s.z * 30, s.r, 0, 7); cx.fill();
+<script type="module">
+import * as THREE from "three";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
+
+const $ = (id) => document.getElementById(id);
+const vibra = (p) => navigator.vibrate && navigator.vibrate(p);
+const espera = (ms) => new Promise((r) => setTimeout(r, ms));
+const movil = matchMedia("(pointer: coarse)").matches;
+
+/* ================= Cielo 3D ================= */
+const renderer = new THREE.WebGLRenderer({ canvas: $("cielo"), antialias: false, alpha: true, powerPreference: "high-performance" });
+const PR = Math.min(devicePixelRatio || 1, movil ? 1.6 : 1.8);
+renderer.setPixelRatio(PR);
+renderer.setClearColor(0x000000, 0);
+const escena = new THREE.Scene();
+const camara = new THREE.PerspectiveCamera(60, 1, .1, 600);
+camara.position.set(0, 0, 30);
+
+// Estrellas con shader: tamaño propio, titileo suave, núcleo brillante, halo y destello en cruz
+const vert = `
+  attribute float aTam; attribute float aFase; attribute vec3 aColor;
+  uniform float uT; uniform float uPR; uniform float uEstira;
+  varying vec3 vColor; varying float vTit;
+  void main() {
+    vec4 mv = modelViewMatrix * vec4(position, 1.0);
+    float tit = 0.72 + 0.28 * sin(uT * (0.6 + fract(aFase * 7.31) * 1.8) + aFase * 6.2831);
+    vTit = tit; vColor = aColor;
+    gl_PointSize = aTam * uPR * (190.0 / -mv.z) * (0.85 + 0.3 * tit) * (1.0 + uEstira);
+    gl_Position = projectionMatrix * mv;
+  }`;
+const frag = `
+  uniform float uOp; varying vec3 vColor; varying float vTit;
+  void main() {
+    vec2 p = gl_PointCoord - 0.5; float d = length(p);
+    if (d > 0.5) discard;
+    float nucleo = smoothstep(0.12, 0.0, d);
+    float halo = pow(smoothstep(0.5, 0.0, d), 2.4) * 0.55;
+    float cruz = (smoothstep(0.035, 0.0, abs(p.x)) + smoothstep(0.035, 0.0, abs(p.y))) * smoothstep(0.5, 0.05, d) * 0.22;
+    float a = (nucleo + halo + cruz) * vTit * uOp;
+    gl_FragColor = vec4(mix(vColor, vec3(1.0), nucleo * 0.7) * a, a);
+  }`;
+const material = (op = 1) => new THREE.ShaderMaterial({
+  vertexShader: vert, fragmentShader: frag, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+  uniforms: { uT: { value: 0 }, uPR: { value: PR }, uOp: { value: op }, uEstira: { value: 0 } }
+});
+// blanco, blanco cálido, azulado, rosa, oro, lila
+const PALETA = [[1, 1, 1], [1, .93, .86], [.85, .9, 1], [1, .7, .82], [.96, .82, .55], [.78, .72, 1]];
+const colorAzar = (pesos = [5, 3, 3, 1.4, 1.2, 1]) => { let r = Math.random() * pesos.reduce((a, b) => a + b), i = 0; while ((r -= pesos[i]) > 0) i++; return PALETA[i]; };
+function puntos(n, llenar, op = 1) {
+  const pos = new Float32Array(n * 3), col = new Float32Array(n * 3), tam = new Float32Array(n), fase = new Float32Array(n);
+  for (let i = 0; i < n; i++) { const r = llenar(i); pos.set(r.p, i * 3); col.set(r.c, i * 3); tam[i] = r.s; fase[i] = Math.random(); }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.BufferAttribute(pos, 3)); g.setAttribute("aColor", new THREE.BufferAttribute(col, 3));
+  g.setAttribute("aTam", new THREE.BufferAttribute(tam, 1)); g.setAttribute("aFase", new THREE.BufferAttribute(fase, 1));
+  const m = new THREE.Points(g, material(op)); m.frustumCulled = false; return m;
+}
+
+// Fondo profundo: esfera de estrellas lejanas (muchas pequeñas, pocas grandes)
+const cielo = puntos(movil ? 2600 : 4200, () => {
+  const u = Math.random() * 2 - 1, th = Math.random() * Math.PI * 2, r = 120 + Math.random() * 200, k = Math.sqrt(1 - u * u);
+  const grande = Math.random() < .045;
+  return { p: [r * k * Math.cos(th), r * u, r * k * Math.sin(th)], c: colorAzar(), s: grande ? 3.4 + Math.random() * 3 : .7 + Math.random() * 1.6 };
+});
+escena.add(cielo);
+
+// Vía láctea: banda de polvo estelar inclinada
+const via = puntos(movil ? 2200 : 3600, () => {
+  const x = (Math.random() - .5) * 420, ancho = 26 * Math.exp(-Math.abs(x) / 260);
+  const y = (Math.random() + Math.random() + Math.random() - 1.5) * ancho, z = -150 - Math.random() * 90;
+  return { p: [x, y, z], c: colorAzar([2, 2, 1, 2, 1.5, 2.2]), s: .6 + Math.random() * 1.3 };
+}, .9);
+via.rotation.z = -.5; escena.add(via);
+
+// Galaxia espiral en tonos rosa, oro y lila
+const brazos = 3;
+const galaxia = puntos(movil ? 3200 : 5200, (i) => {
+  const r = Math.pow(Math.random(), 1.6) * 22, b = (i % brazos) / brazos * Math.PI * 2, giro = r * .32;
+  const disp = (q) => Math.pow(Math.random(), 2.6) * (Math.random() < .5 ? 1 : -1) * q * (1 + r * .12);
+  const t = r / 22, c = [1 - t * .05, .72 + t * .1 - (t > .5 ? .1 : 0), .82 + t * .15];
+  const cc = Math.random() < .25 ? colorAzar([1, 0, 0, 2, 2, 2]) : c;
+  return { p: [Math.cos(b + giro) * r + disp(1.4), disp(.7), Math.sin(b + giro) * r + disp(1.4)], c: cc, s: .5 + Math.random() * 1.1 };
+}, .5);
+galaxia.position.set(0, -2, -24); galaxia.rotation.x = 1.08; galaxia.rotation.z = .35;
+escena.add(galaxia);
+
+// Túnel para el salto al hiperespacio
+const NT = movil ? 900 : 1400;
+const tunel = puntos(NT, () => {
+  const a = Math.random() * Math.PI * 2, r = 3 + Math.random() * 38;
+  return { p: [Math.cos(a) * r, Math.sin(a) * r, -Math.random() * 260], c: colorAzar([4, 2, 2, 2, 1, 1]), s: .8 + Math.random() * 1.4 };
+}, 0);
+escena.add(tunel);
+
+// Partículas que escriben su nombre
+const NN = movil ? 1000 : 1400;
+const nombre = puntos(NN, () => ({ p: [0, 0, -400], c: colorAzar([1.5, 1, 0, 4, 3, 1.5]), s: .75 + Math.random() * .6 }), 1);
+const nPos = nombre.geometry.attributes.position.array, nIni = new Float32Array(NN * 3), nObj = new Float32Array(NN * 3), nVel = new Float32Array(NN * 3);
+let nModo = "oculto", nT = 0;
+escena.add(nombre);
+
+// Estallido final
+const NB = 1100;
+const estallido = puntos(NB, () => ({ p: [0, 0, 0], c: colorAzar([2, 1, 0, 4, 3, 1]), s: 1.2 + Math.random() * 1.8 }), 0);
+const bVel = new Float32Array(NB * 3); let bT = 99;
+escena.add(estallido);
+
+// Bloom suave para el brillo
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(escena, camara));
+const bloom = new UnrealBloomPass(new THREE.Vector2(1, 1), .6, .45, .05);
+composer.addPass(bloom); composer.addPass(new OutputPass());
+
+function medir() {
+  const w = innerWidth, h = innerHeight;
+  renderer.setSize(w, h, false); composer.setSize(w, h); bloom.resolution.set(w, h);
+  camara.aspect = w / h; camara.updateProjectionMatrix();
+  if (nModo === "nombre" || nModo === "forma") formarNombre(false);
+}
+addEventListener("resize", medir); medir();
+
+/* ---- Nombre ---- */
+function puntosTexto(txt) {
+  const alto = 2 * 30 * Math.tan(THREE.MathUtils.degToRad(30)), anchoMundo = alto * camara.aspect;
+  const c = document.createElement("canvas"), k = c.getContext("2d");
+  c.width = 900; c.height = 260;
+  k.fillStyle = "#fff"; k.textAlign = "center"; k.textBaseline = "middle";
+  k.font = `italic 400 230px "Instrument Serif", Georgia, serif`;
+  const esc = Math.min(1, 860 / k.measureText(txt).width);
+  k.save(); k.translate(450, 140); k.scale(esc, esc); k.fillText(txt, 0, 0); k.restore();
+  const d = k.getImageData(0, 0, c.width, c.height).data, pts = [];
+  for (let y = 0; y < c.height; y += 3) for (let x = 0; x < c.width; x += 3) if (d[(y * c.width + x) * 4 + 3] > 120) pts.push([x, y]);
+  const s = Math.min(anchoMundo * .86, 30) / 900;
+  return pts.map(([x, y]) => [(x - 450) * s, -(y - 130) * s + alto * .08]);
+}
+function formarNombre(desdeCero = true) {
+  const pts = puntosTexto("Karyme").sort(() => Math.random() - .5);
+  for (let i = 0; i < NN; i++) {
+    const p = pts[i % pts.length], j = i * 3;
+    if (desdeCero) {
+      const a = Math.random() * Math.PI * 2, r = 25 + Math.random() * 40;
+      nIni[j] = Math.cos(a) * r; nIni[j + 1] = Math.sin(a) * r; nIni[j + 2] = -60 - Math.random() * 120;
+    } else { nIni[j] = nPos[j]; nIni[j + 1] = nPos[j + 1]; nIni[j + 2] = nPos[j + 2]; }
+    nObj[j] = p[0] + (Math.random() - .5) * .12; nObj[j + 1] = p[1] + (Math.random() - .5) * .12; nObj[j + 2] = (Math.random() - .5) * .8;
+  }
+  nModo = "forma"; nT = desdeCero ? 0 : .7;
+  nombre.material.uniforms.uOp.value = .9;
+}
+function soltarNombre() {
+  for (let i = 0; i < NN; i++) {
+    const j = i * 3, a = Math.atan2(nPos[j + 1], nPos[j]) + (Math.random() - .5), v = .15 + Math.random() * .5;
+    nVel[j] = Math.cos(a) * v; nVel[j + 1] = Math.sin(a) * v; nVel[j + 2] = .2 + Math.random() * .9;
+  }
+  nModo = "suelta";
+}
+function estallar() {
+  const p = estallido.geometry.attributes.position.array;
+  for (let i = 0; i < NB; i++) {
+    const j = i * 3; p[j] = 0; p[j + 1] = 2; p[j + 2] = 0;
+    const u = Math.random() * 2 - 1, th = Math.random() * Math.PI * 2, k = Math.sqrt(1 - u * u), v = .25 + Math.pow(Math.random(), .6) * .9;
+    bVel[j] = k * Math.cos(th) * v; bVel[j + 1] = u * v + .25; bVel[j + 2] = k * Math.sin(th) * v;
+  }
+  bT = 0; estallido.material.uniforms.uOp.value = 1;
+}
+
+/* ---- Movimiento con el dedo y al inclinar el celular ---- */
+const par = { x: 0, y: 0 }, parObj = { x: 0, y: 0 };
+addEventListener("pointermove", (e) => { parObj.x = (e.clientX / innerWidth - .5) * 2; parObj.y = (e.clientY / innerHeight - .5) * 2; });
+function escucharGiro() {
+  addEventListener("deviceorientation", (e) => {
+    if (e.gamma == null) return;
+    parObj.x = Math.max(-1, Math.min(1, e.gamma / 25)); parObj.y = Math.max(-1, Math.min(1, (e.beta - 45) / 25));
+  });
+}
+if (!(window.DeviceOrientationEvent && DeviceOrientationEvent.requestPermission)) escucharGiro();
+
+/* ---- Bucle ---- */
+let warp = 0, warpObj = 0, t = 0;
+const reloj = new THREE.Clock();
+const facil = (x) => 1 - Math.pow(1 - x, 3);
+function animar() {
+  const dt = Math.min(reloj.getDelta(), .05); t += dt;
+  par.x += (parObj.x - par.x) * .04; par.y += (parObj.y - par.y) * .04;
+  warp += (warpObj - warp) * (warpObj > warp ? .06 : .04);
+
+  for (const m of [cielo, via, galaxia, tunel, nombre, estallido]) m.material.uniforms.uT.value = t;
+  cielo.rotation.y = t * .006 + par.x * .06; cielo.rotation.x = par.y * .04;
+  via.position.x = -par.x * 6; via.position.y = par.y * 4;
+  galaxia.rotation.y = t * .045; galaxia.position.x = -par.x * 2.2; galaxia.position.y = -2 + par.y * 1.4;
+
+  // Túnel: las estrellas vienen hacia la cámara; en el salto se estiran
+  const tp = tunel.geometry.attributes.position.array, vel = (.02 + warp * 3.4) * 60 * dt;
+  for (let i = 0; i < NT; i++) { tp[i * 3 + 2] += vel; if (tp[i * 3 + 2] > 32) tp[i * 3 + 2] -= 290; }
+  tunel.geometry.attributes.position.needsUpdate = true;
+  tunel.material.uniforms.uOp.value = Math.min(1, warp * 1.4);
+  tunel.material.uniforms.uEstira.value = warp * 2.2;
+  camara.fov = 60 + warp * 34; camara.updateProjectionMatrix();
+  camara.position.x = par.x * .9; camara.position.y = -par.y * .6; camara.lookAt(0, 0, 0);
+
+  // Nombre
+  if (nModo === "forma" || nModo === "nombre") {
+    nT = Math.min(1, nT + dt / 2.6); const e = facil(nT);
+    for (let i = 0; i < NN; i++) {
+      const j = i * 3, q = Math.max(0, Math.min(1, e * 1.15 - (i % 7) * .02));
+      const ond = nT >= 1 ? Math.sin(t * 1.6 + i * .37) * .03 : 0;
+      nPos[j] = nIni[j] + (nObj[j] - nIni[j]) * q + ond; nPos[j + 1] = nIni[j + 1] + (nObj[j + 1] - nIni[j + 1]) * q + ond; nPos[j + 2] = nIni[j + 2] + (nObj[j + 2] - nIni[j + 2]) * q;
     }
-    estrellas = estrellas.filter((s) => !(s.muere && (s.v = (s.v ?? 1) * .96) < .02));
-    for (const s of estrellas) {
-      s.x += (s.tx - s.x) * .06; s.y += (s.ty - s.y) * .06;
-      const brillo = s.en ? .85 + .15 * Math.sin(t * 3 + s.f) : .5 + .5 * Math.abs(Math.sin(t + s.f));
-      const px = s.x + (s.en ? 0 : par.x * 40), py = s.y + (s.en ? 0 : par.y * 40);
-      cx.globalAlpha = brillo * (s.muere ? s.v : 1);
-      const g = cx.createRadialGradient(px, py, 0, px, py, s.r * 4);
-      g.addColorStop(0, `rgba(${s.c},1)`); g.addColorStop(1, `rgba(${s.c},0)`);
-      cx.fillStyle = g; cx.beginPath(); cx.arc(px, py, s.r * 4, 0, 7); cx.fill();
-    }
-    cx.globalAlpha = 1;
-    requestAnimationFrame(dibujar);
+    nombre.rotation.y += ((par.x * .38) - nombre.rotation.y) * .06; nombre.rotation.x += ((par.y * .22) - nombre.rotation.x) * .06;
+    nombre.geometry.attributes.position.needsUpdate = true;
+    if (nT >= 1) nModo = "nombre";
+  } else if (nModo === "suelta") {
+    const op = nombre.material.uniforms.uOp; op.value *= .975;
+    for (let i = 0; i < NN * 3; i++) nPos[i] += nVel[i] * 60 * dt;
+    nombre.geometry.attributes.position.needsUpdate = true;
+    if (op.value < .01) { nModo = "oculto"; op.value = 0; }
   }
-  addEventListener("resize", medir);
-  addEventListener("pointermove", (e) => { parObj.x = e.clientX / W - .5; parObj.y = e.clientY / H - .5; });
-  addEventListener("deviceorientation", (e) => { if (e.gamma != null) { parObj.x = Math.max(-1, Math.min(1, e.gamma / 30)) * .5; parObj.y = Math.max(-1, Math.min(1, (e.beta - 40) / 30)) * .5; } });
-  medir(); crearEstrellas(70); dibujar();
 
-  /* ---------- Escenas ---------- */
-  const ir = (n) => { document.querySelectorAll(".escena").forEach((e) => e.classList.toggle("on", e.id === "e" + n)); };
-  const espera = (ms) => new Promise((r) => setTimeout(r, ms));
-
-  $("abrir").addEventListener("click", async () => {
-    vibra(30);
-    $("abrir").textContent = "Abriendo… 🔓";
-    await espera(350);
-    ir(2);
-    await (document.fonts ? document.fonts.ready : espera(0));
-    modo = "nombre"; formarNombre();
-    await espera(1900); $("nota-nombre").style.opacity = 1;
-    await espera(1500); $("toca2").style.opacity = "";
-    $("e2").addEventListener("click", () => { modo = "libre"; soltar(); ir(3); }, { once: true });
-  });
-
-  $("acepto").addEventListener("click", async () => {
-    vibra(20); ir(4);
-    await espera(1700); $("suspenso2").style.opacity = 1;
-    await espera(1800); ir(5); mostrarNo();
-  });
-
-  /* ---------- El botón que huye ---------- */
-  const no = $("no"), si = $("si");
-  const TEXTOS = ["¿Segura? 🤨", "Piénsalo bien…", "Eso no está en el plan nutricional 🥦", "Error 404: No no encontrado", "Ni lo intentes 😂", "Ya casi… mentira", "El No se fue de vacaciones 🏖️", "Ok, ya, ríndete 😌", "Sí 😏"];
-  const AVISOS = ["Te dije que NO lo tocaras 😂", "Dato nutricional: un besito tiene <b>0 calorías</b> 🤓", "Ese botón tiene miedo de ti", "Mira, el Sí está creciendo solito 👀", "Los besitos son ricos en <b>vitamina Sí</b> 🍊", "Vas a quemar más calorías persiguiendo ese botón 😂", "Ya no hay escapatoria 😌", "El No renunció. Literal."];
-  let intentos = 0, ultimo = 0;
-
-  function ponerNo(x, y) {
-    const r = no.getBoundingClientRect(), m = 14;
-    no.style.left = Math.max(m, Math.min(innerWidth - r.width - m, x)) + "px";
-    no.style.top = Math.max(m + 40, Math.min(innerHeight - r.height - m, y)) + "px";
+  // Estallido
+  if (bT < 4) {
+    bT += dt; const p = estallido.geometry.attributes.position.array;
+    for (let i = 0; i < NB; i++) { const j = i * 3; bVel[j] *= .985; bVel[j + 1] = bVel[j + 1] * .985 - .006; bVel[j + 2] *= .985; p[j] += bVel[j] * 60 * dt; p[j + 1] += bVel[j + 1] * 60 * dt; p[j + 2] += bVel[j + 2] * 60 * dt; }
+    estallido.geometry.attributes.position.needsUpdate = true;
+    estallido.material.uniforms.uOp.value = Math.max(0, 1 - bT / 3.6);
   }
-  function mostrarNo() {
-    no.classList.remove("oculto");
-    const s = si.getBoundingClientRect(), r = no.getBoundingClientRect();
-    ponerNo(innerWidth / 2 - r.width / 2, Math.min(innerHeight - 90, s.bottom + 120));
-  }
-  function huir(e) {
-    if (e) { e.preventDefault(); e.stopPropagation(); }
-    // un mismo toque dispara touchstart, pointerdown y mousedown: se cuenta una sola vez
-    if (Date.now() - ultimo < 350) return;
-    ultimo = Date.now();
-    if (intentos >= TEXTOS.length - 1) return siDijo();
-    intentos++;
-    vibra(40);
-    no.textContent = TEXTOS[Math.min(intentos - 1, TEXTOS.length - 1)];
-    $("aviso").innerHTML = AVISOS[Math.min(intentos - 1, AVISOS.length - 1)];
-    $("contador").textContent = `Intentos de decir que no: ${intentos}`; $("contador").classList.add("ver");
-    si.style.transform = `scale(${Math.min(1 + intentos * .09, 1.7)})`;
-    if (intentos >= TEXTOS.length - 1) { no.style.background = "linear-gradient(135deg,#FF6FA3,#FF2E74)"; no.style.borderColor = "transparent"; }
-    // Salta lejos del dedo y del botón Sí
-    const s = si.getBoundingClientRect(), r = no.getBoundingClientRect();
-    let x, y, tries = 0;
-    do {
-      x = Math.random() * (innerWidth - r.width - 28) + 14;
-      y = Math.random() * (innerHeight - r.height - 80) + 54;
-      tries++;
-    } while (tries < 40 && ((x + r.width > s.left - 20 && x < s.right + 20 && y + r.height > s.top - 20 && y < s.bottom + 20) || Math.hypot(x - r.left, y - r.top) < 140));
-    ponerNo(x, y);
-    no.style.transform = `rotate(${(Math.random() - .5) * 24}deg)`;
-    document.querySelector(".boca").textContent = ["😏", "😂", "🤭", "😳", "🙃", "😎", "🫣", "😌"][intentos % 8];
-  }
-  ["pointerdown", "touchstart", "mousedown"].forEach((ev) => no.addEventListener(ev, huir, { passive: false }));
-  no.addEventListener("click", (e) => { e.preventDefault(); if (intentos >= TEXTOS.length - 1) siDijo(); });
-  // En computador huye apenas el mouse se acerca
-  addEventListener("mousemove", (e) => {
-    if (no.classList.contains("oculto") || intentos >= TEXTOS.length - 1) return;
-    const r = no.getBoundingClientRect();
-    if (Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2)) < 70) huir();
-  });
-  addEventListener("resize", () => { if (!no.classList.contains("oculto")) { const r = no.getBoundingClientRect(); ponerNo(r.left, r.top); } });
 
-  /* ---------- Sí ---------- */
-  function lluvia() {
-    const L = $("lluvia"), em = ["💋", "😘", "✨", "💋", "🔥", "😎"];
-    for (let i = 0; i < 46; i++) {
-      const s = document.createElement("span");
-      s.textContent = em[i % em.length];
-      s.style.left = Math.random() * 100 + "vw";
-      s.style.fontSize = 18 + Math.random() * 26 + "px";
-      s.style.setProperty("--g", (Math.random() - .5) * 540 + "deg");
-      s.style.animationDuration = 2.2 + Math.random() * 2.4 + "s";
-      s.style.animationDelay = Math.random() * 1.2 + "s";
-      L.appendChild(s);
-      setTimeout(() => s.remove(), 6000);
-    }
-  }
-  function siDijo() {
-    vibra([60, 40, 120]);
-    no.classList.add("oculto"); $("contador").classList.remove("ver");
-    $("intentos").textContent = intentos === 0 ? "0 (ni lo intentaste 😏)" : intentos >= TEXTOS.length - 1 ? `${intentos} (hasta el No se rindió)` : `${intentos} 😂`;
-    $("final-sub").textContent = intentos === 0
-      ? "Ni siquiera intentaste tocar el No… me gusta tu actitud 😏 Trato cerrado, sin devoluciones."
-      : "Trato cerrado. Ya quedó registrado en el sistema y no hay devoluciones.";
-    const msg = intentos === 0
-      ? "Ya respondí tu pregunta 😏 Te debo un besito… y ni intenté darle al No 🙈"
-      : `Ya respondí tu pregunta 😏 Te debo un besito… (aunque intenté darle al No ${intentos} ${intentos === 1 ? "vez" : "veces"} 😂)`;
-    $("wa").href = "https://wa.me/?text=" + encodeURIComponent(msg);
-    modo = "nombre"; ir(6); lluvia();
-    soltar(); modo = "libre";
-  }
-  si.addEventListener("click", siDijo);
+  composer.render();
+  requestAnimationFrame(animar);
+}
+animar();
 
-  $("otra").addEventListener("click", () => {
-    intentos = 0; si.style.transform = ""; no.textContent = "No"; no.style.background = ""; no.style.borderColor = ""; no.style.transform = "";
-    $("aviso").innerHTML = "Pase lo que pase,<br><b>NO toques el botón de abajo</b> 👀";
-    document.querySelector(".boca").textContent = "😏";
-    ir(5); setTimeout(mostrarNo, 300);
-  });
-})();
+/* ================= Historia ================= */
+let actual = 1;
+async function ir(n) {
+  const a = $("e" + actual), b = $("e" + n);
+  a.classList.remove("on"); a.classList.add("sale");
+  setTimeout(() => a.classList.remove("sale"), 900);
+  await espera(260);
+  b.classList.add("on"); actual = n;
+}
+const flash = (fuerza = 1) => $("flash").animate([{ opacity: 0 }, { opacity: fuerza, offset: .35 }, { opacity: 0 }], { duration: 900, easing: "ease-out" });
+
+$("abrir").addEventListener("click", async () => {
+  vibra(25);
+  // En iPhone hay que pedir permiso para usar la inclinación del celular
+  if (window.DeviceOrientationEvent && DeviceOrientationEvent.requestPermission) DeviceOrientationEvent.requestPermission().then((r) => r === "granted" && escucharGiro()).catch(() => {});
+  $("e1").classList.remove("on"); $("e1").classList.add("sale");
+  warpObj = 1;
+  await espera(1500);
+  flash(.9); vibra([20, 40, 60]);
+  warpObj = 0;
+  await espera(250);
+  $("e1").classList.remove("sale"); actual = 2; $("e2").classList.add("on");
+  if (document.fonts) await document.fonts.ready;
+  formarNombre(true);
+  await espera(3000);
+  $("e2").addEventListener("click", () => { vibra(15); soltarNombre(); ir(3); }, { once: true });
+});
+
+$("acepto").addEventListener("click", async () => {
+  vibra(20); warpObj = .35; setTimeout(() => (warpObj = 0), 600);
+  ir(4);
+  await espera(3600);
+  ir(5); setTimeout(mostrarNo, 900);
+});
+
+/* ---- El botón que huye ---- */
+const no = $("no"), si = $("si");
+const TEXTOS = ["¿Segura? 🤨", "Piénsalo bien…", "Eso no está en el plan nutricional 🥦", "Error 404: No no encontrado", "Ni lo intentes 😂", "Ya casi… mentira", "El No se fue de vacaciones 🏖️", "Ok, ya, ríndete 😌", "Sí 😏"];
+const AVISOS = ["Te dije que NO lo tocaras 😂", "Dato nutricional: un besito tiene <b>0 calorías</b> 🤓", "Ese botón tiene miedo de ti", "Mira, el Sí está creciendo solito 👀", "Los besitos son ricos en <b>vitamina Sí</b> 🍊", "Vas a quemar más calorías persiguiendo ese botón 😂", "Ya no hay escapatoria 😌", "El No renunció. Literal."];
+const CARAS = ["😏", "😂", "🤭", "😳", "🙃", "😎", "🫣", "😌"];
+let intentos = 0, ultimo = 0;
+
+function ponerNo(x, y) {
+  const r = no.getBoundingClientRect(), m = 14;
+  no.style.left = Math.max(m, Math.min(innerWidth - r.width - m, x)) + "px";
+  no.style.top = Math.max(m + 50, Math.min(innerHeight - r.height - m - 10, y)) + "px";
+}
+function mostrarNo() {
+  no.classList.remove("oculto");
+  const s = si.getBoundingClientRect(), r = no.getBoundingClientRect();
+  ponerNo(innerWidth / 2 - r.width / 2, Math.min(innerHeight - 100, s.bottom + 130));
+}
+function huir(e) {
+  if (e) { e.preventDefault(); e.stopPropagation(); }
+  // un mismo toque dispara touchstart, pointerdown y mousedown: se cuenta una sola vez
+  if (Date.now() - ultimo < 350) return;
+  ultimo = Date.now();
+  if (intentos >= TEXTOS.length - 1) return siDijo();
+  intentos++;
+  vibra(35);
+  no.textContent = TEXTOS[intentos - 1];
+  $("aviso").innerHTML = AVISOS[Math.min(intentos - 1, AVISOS.length - 1)];
+  $("contador").textContent = `Intentos de decir que no: ${intentos}`; $("contador").classList.add("ver");
+  si.style.transform = `scale(${Math.min(1 + intentos * .09, 1.7)})`;
+  $("emoji").textContent = CARAS[intentos % CARAS.length];
+  if (intentos >= TEXTOS.length - 1) { no.style.background = "linear-gradient(135deg,#FF79AC,#FF3B7F)"; no.style.borderColor = "transparent"; }
+  // Salta lejos del dedo y del botón Sí
+  const s = si.getBoundingClientRect(), r = no.getBoundingClientRect();
+  let x, y, n = 0;
+  do {
+    x = Math.random() * (innerWidth - r.width - 28) + 14; y = Math.random() * (innerHeight - r.height - 90) + 60; n++;
+  } while (n < 50 && ((x + r.width > s.left - 24 && x < s.right + 24 && y + r.height > s.top - 24 && y < s.bottom + 24) || Math.hypot(x - r.left, y - r.top) < 150));
+  ponerNo(x, y);
+  no.style.transform = `rotate(${(Math.random() - .5) * 26}deg)`;
+}
+["pointerdown", "touchstart", "mousedown"].forEach((ev) => no.addEventListener(ev, huir, { passive: false }));
+no.addEventListener("click", (e) => { e.preventDefault(); if (intentos >= TEXTOS.length - 1) siDijo(); });
+// En computador huye apenas el mouse se acerca
+addEventListener("mousemove", (e) => {
+  if (no.classList.contains("oculto") || intentos >= TEXTOS.length - 1) return;
+  const r = no.getBoundingClientRect();
+  if (Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2)) < 75) huir();
+});
+addEventListener("resize", () => { if (!no.classList.contains("oculto")) { const r = no.getBoundingClientRect(); ponerNo(r.left, r.top); } });
+
+/* ---- Sí ---- */
+function lluvia() {
+  const L = $("lluvia"), em = ["💋", "😘", "✨", "💋", "🥂", "😎"];
+  for (let i = 0; i < 26; i++) {
+    const s = document.createElement("span");
+    s.textContent = em[i % em.length];
+    s.style.left = Math.random() * 100 + "vw"; s.style.fontSize = 18 + Math.random() * 22 + "px";
+    s.style.setProperty("--g", (Math.random() - .5) * 540 + "deg");
+    s.style.animationDuration = 2.6 + Math.random() * 2.4 + "s"; s.style.animationDelay = .3 + Math.random() * 1.4 + "s";
+    L.appendChild(s); setTimeout(() => s.remove(), 7000);
+  }
+}
+function siDijo() {
+  vibra([60, 40, 140]);
+  no.classList.add("oculto"); $("contador").classList.remove("ver");
+  $("intentos").textContent = intentos === 0 ? "0 (ni lo intentaste 😏)" : intentos >= TEXTOS.length - 1 ? `${intentos} (hasta el No se rindió)` : `${intentos} 😂`;
+  $("final-sub").textContent = intentos === 0
+    ? "Ni siquiera intentaste tocar el No… me gusta tu actitud 😏 Trato cerrado, sin devoluciones."
+    : "Trato cerrado. Ya quedó registrado en el sistema y no hay devoluciones.";
+  const msg = intentos === 0
+    ? "Ya respondí tu pregunta 😏 Te debo un besito… y ni intenté darle al No 🙈"
+    : `Ya respondí tu pregunta 😏 Te debo un besito… (aunque intenté darle al No ${intentos} ${intentos === 1 ? "vez" : "veces"} 😂)`;
+  $("wa").href = "https://wa.me/?text=" + encodeURIComponent(msg);
+  flash(.7); estallar(); ir(6); lluvia();
+}
+si.addEventListener("click", siDijo);
+
+$("otra").addEventListener("click", () => {
+  intentos = 0; si.style.transform = ""; no.textContent = "No"; no.style.background = ""; no.style.borderColor = ""; no.style.transform = "";
+  $("aviso").innerHTML = "Pase lo que pase,<br><b>NO toques el botón de abajo</b> 👀";
+  $("emoji").textContent = "😏";
+  ir(5); setTimeout(mostrarNo, 900);
+});
 </script>
 </body>
 </html>
