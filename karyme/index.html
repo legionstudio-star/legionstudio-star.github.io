@@ -618,7 +618,7 @@ function siDijo() {
   const msg = intentos === 0
     ? "Ya respondí tu pregunta 😏 Te debo un besito… y ni intenté darle al No 🙈"
     : `Ya respondí tu pregunta 😏 Te debo un besito… (aunque intenté darle al No ${intentos} ${intentos === 1 ? "vez" : "veces"} 😂)`;
-  $("wa").href = "https://wa.me/?text=" + encodeURIComponent(msg);
+  $("wa").href = "https://wa.me/573159058877?text=" + encodeURIComponent(msg);
   flash(.7); estallar(); ir(6); lluvia();
 }
 si.addEventListener("click", siDijo);
