@@ -256,6 +256,17 @@ const vibra = (p) => navigator.vibrate && navigator.vibrate(p);
 const espera = (ms) => new Promise((r) => setTimeout(r, ms));
 const movil = matchMedia("(pointer: coarse)").matches;
 
+/* ---- Registro de visitas (solo escritura, en la base de LEGION) ---- */
+const SESION = sessionStorage.getItem("k_sesion") || (() => { const v = Date.now().toString(36) + Math.random().toString(36).slice(2, 8); sessionStorage.setItem("k_sesion", v); return v; })();
+function registrar(evento, intentos = null) {
+  fetch("https://infohpbtwalukhjdfplc.supabase.co/rest/v1/karyme_eventos", {
+    method: "POST", keepalive: true,
+    headers: { apikey: "sb_publishable_c1MoXYfg-DfEoXcvTMAlvw_n4EDk1Qo", "Content-Type": "application/json", Prefer: "return=minimal" },
+    body: JSON.stringify({ sesion: SESION, evento, intentos, dispositivo: navigator.userAgent.slice(0, 300) })
+  }).catch(() => {});
+}
+registrar("abrio");
+
 /* ================= Cielo 3D ================= */
 const renderer = new THREE.WebGLRenderer({ canvas: $("cielo"), antialias: false, alpha: true, powerPreference: "high-performance" });
 const PR = Math.min(devicePixelRatio || 1, movil ? 1.6 : 1.8);
@@ -496,7 +507,7 @@ async function ir(n) {
 const flash = (fuerza = 1) => $("flash").animate([{ opacity: 0 }, { opacity: fuerza, offset: .35 }, { opacity: 0 }], { duration: 900, easing: "ease-out" });
 
 $("abrir").addEventListener("click", async () => {
-  vibra(25);
+  vibra(25); registrar("nombre");
   // En iPhone hay que pedir permiso para usar la inclinación del celular
   if (window.DeviceOrientationEvent && DeviceOrientationEvent.requestPermission) DeviceOrientationEvent.requestPermission().then((r) => r === "granted" && escucharGiro()).catch(() => {});
   $("e1").classList.remove("on"); $("e1").classList.add("sale");
@@ -509,7 +520,7 @@ $("abrir").addEventListener("click", async () => {
   if (document.fonts) await document.fonts.ready;
   formarNombre(true);
   await espera(3000);
-  $("e2").addEventListener("click", () => { vibra(15); soltarNombre(); ir(7); escribirConsola(); }, { once: true });
+  $("e2").addEventListener("click", () => { vibra(15); registrar("terminal"); soltarNombre(); ir(7); escribirConsola(); }, { once: true });
 });
 
 /* ---- Terminal que se escribe sola ---- */
@@ -536,7 +547,7 @@ async function escribirConsola() {
   vibra([15, 30, 15]);
   $("firma").style.opacity = 1; setTimeout(() => ($("firma2").style.opacity = 1), 700); $("firma").querySelectorAll(".w").forEach((w) => { w.style.opacity = 1; w.style.transform = "none"; w.style.filter = "none"; });
   await espera(1400); $("pista7").style.opacity = 1;
-  $("e7").addEventListener("click", () => { vibra(15); ir(3); }, { once: true });
+  $("e7").addEventListener("click", () => { vibra(15); registrar("reglas"); ir(3); }, { once: true });
 }
 
 $("acepto").addEventListener("click", async () => {
@@ -544,7 +555,7 @@ $("acepto").addEventListener("click", async () => {
   ir(4);
   // la pregunta sale cuando ella toque, para que alcance a leer el chiste de la arepa
   await espera(2600);
-  $("e4").addEventListener("click", () => { vibra(15); ir(5); setTimeout(mostrarNo, 900); }, { once: true });
+  $("e4").addEventListener("click", () => { vibra(15); registrar("pregunta"); ir(5); setTimeout(mostrarNo, 900); }, { once: true });
 });
 
 /* ---- El botón que huye ---- */
@@ -571,7 +582,7 @@ function huir(e) {
   ultimo = Date.now();
   if (intentos >= TEXTOS.length - 1) return siDijo();
   intentos++;
-  vibra(35);
+  vibra(35); registrar("intento_no", intentos);
   no.textContent = TEXTOS[intentos - 1];
   $("aviso").innerHTML = AVISOS[Math.min(intentos - 1, AVISOS.length - 1)];
   $("contador").textContent = `Intentos de decir que no: ${intentos}`; $("contador").classList.add("ver");
@@ -611,7 +622,7 @@ function lluvia() {
   }
 }
 function siDijo() {
-  vibra([60, 40, 140]);
+  vibra([60, 40, 140]); registrar("si", intentos);
   no.classList.add("oculto"); $("contador").classList.remove("ver");
   $("intentos").textContent = intentos === 0 ? "0 (ni lo intentaste 😏)" : intentos >= TEXTOS.length - 1 ? `${intentos} (hasta el No se rindió)` : `${intentos} 😂`;
   $("final-sub").textContent = intentos === 0
@@ -624,8 +635,10 @@ function siDijo() {
   flash(.7); estallar(); ir(6); lluvia();
 }
 si.addEventListener("click", siDijo);
+$("wa").addEventListener("click", () => registrar("whatsapp", intentos));
 
 $("otra").addEventListener("click", () => {
+  registrar("repetir", intentos);
   intentos = 0; si.style.transform = ""; no.textContent = "No"; no.style.background = ""; no.style.borderColor = ""; no.style.transform = "";
   $("aviso").innerHTML = "Pase lo que pase,<br><b>NO toques el botón de abajo</b> 👀";
   $("emoji").textContent = "😏";
