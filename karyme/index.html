@@ -11,7 +11,7 @@
 <meta name="theme-color" content="#03040a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/" } }</script>
 <style>
   @property --a { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
@@ -85,6 +85,21 @@
   .pista b { display: block; width: 1px; height: 34px; margin: 0 auto 12px; background: linear-gradient(transparent, rgba(255,255,255,.75)); animation: gota 1.8s ease-in-out infinite; }
   @keyframes gota { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
 
+  /* Terminal */
+  .term { width: 100%; max-width: 350px; border-radius: 18px; overflow: hidden; text-align: left;
+    background: rgba(10,9,20,.72); border: 1px solid rgba(255,255,255,.14); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 30px 70px -25px rgba(0,0,0,.95), 0 0 0 1px rgba(255,92,154,.12), 0 0 60px -20px rgba(255,92,154,.45);
+    transform: rotateX(18deg) translateY(30px) scale(.94); opacity: 0; transition: transform 1s cubic-bezier(.2,.9,.25,1.1), opacity .8s; }
+  .on .term { transform: none; opacity: 1; }
+  .term .barra { display: flex; align-items: center; gap: 7px; padding: 11px 14px; border-bottom: 1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.04); }
+  .term .barra i { width: 10px; height: 10px; border-radius: 50%; background: #FF5F57; } .term .barra i:nth-child(2) { background: #FEBC2E; } .term .barra i:nth-child(3) { background: #28C840; }
+  .term .barra span { margin-left: 8px; font: 600 .7rem "JetBrains Mono", monospace; color: rgba(255,255,255,.45); }
+  .term pre { padding: 16px 16px 18px; min-height: 196px; font: 400 .8rem/1.75 "JetBrains Mono", ui-monospace, monospace; color: rgba(255,255,255,.86); white-space: pre-wrap; }
+  .term .cmd { color: #fff; } .term .cmd b { color: var(--rosa); font-weight: 700; }
+  .term .ok { color: #8CF5AE; } .term .warn { color: var(--oro); } .term .exito { color: var(--rosa2); font-weight: 700; }
+  .term .cursor { display: inline-block; width: .55em; height: 1.05em; vertical-align: -.18em; background: var(--rosa); animation: late .9s steps(1) infinite; }
+  .firma { margin-top: 26px; font-size: clamp(1.6rem, 7.4vw, 2.3rem); }
+
   /* Reglas */
   .reglas { list-style: none; margin-top: 26px; display: grid; gap: 12px; width: 100%; max-width: 340px; perspective: 800px; }
   .reglas li { display: flex; gap: 14px; align-items: center; text-align: left; padding: 15px 18px; border-radius: 18px; font-weight: 600;
@@ -150,6 +165,14 @@
     <div class="pista aparece" style="--d:3600ms"><b></b>Toca para seguir</div>
   </section>
 
+  <!-- 2b. Terminal -->
+  <section class="escena" id="e7">
+    <div class="term"><div class="barra"><i></i><i></i><i></i><span>conquistar.py</span></div><pre id="consola"></pre></div>
+    <h2 class="titulo firma" id="firma" style="opacity:0;transition:opacity .8s" data-p>Este ingeniero escribe código <em class="serif">por ti</em> 💻</h2>
+    <p class="sub" id="firma2" style="opacity:0;transition:opacity .8s;margin-top:10px">Software, IA y ciencia de datos… y aquí estoy, usándolo todo para pedirte un besito 😅</p>
+    <div class="pista" id="pista7" style="opacity:0;transition:opacity .8s"><b></b>Toca para seguir</div>
+  </section>
+
   <!-- 3. Reglas -->
   <section class="escena" id="e3">
     <h2 class="titulo" style="font-size:clamp(2rem,9vw,2.9rem)" data-p>Antes de seguir, <em class="serif">unas reglas</em></h2>
@@ -188,6 +211,7 @@
       <div><span>Intentos de decir que no</span><b id="intentos">0</b></div>
       <div><span>Info nutricional</span><b>0 kcal · 100 % recomendado</b></div>
       <div><span>Estado</span><b style="color:#8CF5AE">Aprobado ✓</b></div>
+      <div><span>Desarrollado por</span><b>Ing. de software e IA 💻🤖</b></div>
     </div>
     <a class="btn wa aparece" style="--d:1300ms" id="wa" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9 0-1.4.7-2 1-2.3.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.3 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.6 2.1 1.1 1 2 1.3 2.3 1.4.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.5.3.1.2.1.7-.1 1.3Z"/></svg>Mandarme la respuesta</a>
     <button class="btn vidrio aparece" style="--d:1500ms;margin-top:14px" id="otra">Volver a intentarlo 😂</button>
@@ -316,7 +340,7 @@ const tunel = puntos(NT, () => {
 escena.add(tunel);
 
 // Partículas que escriben su nombre
-const NN = movil ? 1000 : 1400;
+const NN = movil ? 1600 : 2600;
 const nombre = puntos(NN, () => ({ p: [0, 0, -400], c: colorAzar([1.5, 1, 0, 4, 3, 1.5]), s: .75 + Math.random() * .6 }), 1);
 const nPos = nombre.geometry.attributes.position.array, nIni = new Float32Array(NN * 3), nObj = new Float32Array(NN * 3), nVel = new Float32Array(NN * 3);
 let nModo = "oculto", nT = 0;
@@ -350,21 +374,29 @@ function puntosTexto(txt) {
   k.fillStyle = "#fff"; k.textAlign = "center"; k.textBaseline = "middle";
   k.font = `italic 400 230px "Instrument Serif", Georgia, serif`;
   const esc = Math.min(1, 860 / k.measureText(txt).width);
-  k.save(); k.translate(450, 140); k.scale(esc, esc); k.fillText(txt, 0, 0); k.restore();
-  const d = k.getImageData(0, 0, c.width, c.height).data, pts = [];
-  for (let y = 0; y < c.height; y += 3) for (let x = 0; x < c.width; x += 3) if (d[(y * c.width + x) * 4 + 3] > 120) pts.push([x, y]);
+  // trazo más grueso: la cursiva es muy fina para dibujarla con puntos
+  k.save(); k.translate(450, 140); k.scale(esc, esc); k.strokeStyle = "#fff"; k.lineWidth = 7; k.lineJoin = "round"; k.strokeText(txt, 0, 0); k.fillText(txt, 0, 0); k.restore();
+  const d = k.getImageData(0, 0, c.width, c.height).data;
+  // se busca la separación de muestreo que da más o menos un punto por partícula, para cubrir todas las letras parejo
+  let pts = [], paso = 2;
+  do {
+    pts = [];
+    for (let y = 0; y < c.height; y += paso) for (let x = (y / paso) % 2 ? paso / 2 : 0; x < c.width; x += paso) if (d[(Math.floor(y) * c.width + Math.floor(x)) * 4 + 3] > 120) pts.push([x, y]);
+    paso += .5;
+  } while (pts.length > NN);
   const s = Math.min(anchoMundo * .86, 30) / 900;
   return pts.map(([x, y]) => [(x - 450) * s, -(y - 130) * s + alto * .08]);
 }
 function formarNombre(desdeCero = true) {
-  const pts = puntosTexto("Karyme").sort(() => Math.random() - .5);
+  const pts = puntosTexto("Karyme");
   for (let i = 0; i < NN; i++) {
     const p = pts[i % pts.length], j = i * 3;
     if (desdeCero) {
       const a = Math.random() * Math.PI * 2, r = 25 + Math.random() * 40;
       nIni[j] = Math.cos(a) * r; nIni[j + 1] = Math.sin(a) * r; nIni[j + 2] = -60 - Math.random() * 120;
     } else { nIni[j] = nPos[j]; nIni[j + 1] = nPos[j + 1]; nIni[j + 2] = nPos[j + 2]; }
-    nObj[j] = p[0] + (Math.random() - .5) * .12; nObj[j + 1] = p[1] + (Math.random() - .5) * .12; nObj[j + 2] = (Math.random() - .5) * .8;
+    const extra = i >= pts.length ? .18 : .05; // las partículas sobrantes repiten puntos con un leve desplazamiento
+    nObj[j] = p[0] + (Math.random() - .5) * extra; nObj[j + 1] = p[1] + (Math.random() - .5) * extra; nObj[j + 2] = (Math.random() - .5) * .8;
   }
   nModo = "forma"; nT = desdeCero ? 0 : .7;
   nombre.material.uniforms.uOp.value = .9;
@@ -476,8 +508,35 @@ $("abrir").addEventListener("click", async () => {
   if (document.fonts) await document.fonts.ready;
   formarNombre(true);
   await espera(3000);
-  $("e2").addEventListener("click", () => { vibra(15); soltarNombre(); ir(3); }, { once: true });
+  $("e2").addEventListener("click", () => { vibra(15); soltarNombre(); ir(7); escribirConsola(); }, { once: true });
 });
+
+/* ---- Terminal que se escribe sola ---- */
+const LINEAS = [
+  ["cmd", '$ python <b>conquistar.py</b> --para karyme'],
+  ["", "› Alineando estrellas…      <span class='ok'>✓</span>"],
+  ["", "› Entrenando modelo de IA…  <span class='ok'>✓</span>"],
+  ["", "› Analizando datos: 0 kcal  <span class='ok'>✓</span>"],
+  ["warn", "⚠ Nervios: los normales 😅"],
+  ["exito", "✔ Predicción: 99,9 % dirás que sí"]
+];
+async function escribirConsola() {
+  const c = $("consola"); c.innerHTML = "";
+  await espera(900);
+  for (const [clase, html] of LINEAS) {
+    const linea = document.createElement("div"); if (clase) linea.className = clase; c.appendChild(linea);
+    // se escribe letra por letra el texto visible y al final se pone con sus colores
+    const txt = html.replace(/<[^>]+>/g, "");
+    const cursor = '<span class="cursor"></span>';
+    for (let i = 1; i <= txt.length; i++) { linea.innerHTML = txt.slice(0, i).replace(/&/g, "&amp;").replace(/</g, "&lt;") + cursor; await espera(clase === "cmd" ? 38 : 16); }
+    linea.innerHTML = html; await espera(clase === "cmd" ? 450 : 260);
+  }
+  c.insertAdjacentHTML("beforeend", '<div><span class="cursor"></span></div>');
+  vibra([15, 30, 15]);
+  $("firma").style.opacity = 1; setTimeout(() => ($("firma2").style.opacity = 1), 700); $("firma").querySelectorAll(".w").forEach((w) => { w.style.opacity = 1; w.style.transform = "none"; w.style.filter = "none"; });
+  await espera(1400); $("pista7").style.opacity = 1;
+  $("e7").addEventListener("click", () => { vibra(15); ir(3); }, { once: true });
+}
 
 $("acepto").addEventListener("click", async () => {
   vibra(20); warpObj = .35; setTimeout(() => (warpObj = 0), 600);
@@ -489,7 +548,7 @@ $("acepto").addEventListener("click", async () => {
 /* ---- El botón que huye ---- */
 const no = $("no"), si = $("si");
 const TEXTOS = ["¿Segura? 🤨", "Piénsalo bien…", "Eso no está en el plan nutricional 🥦", "Error 404: No no encontrado", "Ni lo intentes 😂", "Ya casi… mentira", "El No se fue de vacaciones 🏖️", "Ok, ya, ríndete 😌", "Sí 😏"];
-const AVISOS = ["Te dije que NO lo tocaras 😂", "Dato nutricional: un besito tiene <b>0 calorías</b> 🤓", "Ese botón tiene miedo de ti", "Mira, el Sí está creciendo solito 👀", "Los besitos son ricos en <b>vitamina Sí</b> 🍊", "Vas a quemar más calorías persiguiendo ese botón 😂", "Ya no hay escapatoria 😌", "El No renunció. Literal."];
+const AVISOS = ["Ese botón lo programé yo… y no le di permiso de funcionar 😏", "Dato nutricional: un besito tiene <b>0 calorías</b> 🤓", "Mi IA predijo que ibas a tocarlo 🤖", "Mira, el Sí está creciendo solito 👀", "Los besitos son ricos en <b>vitamina Sí</b> 🍊", "Vas a quemar más calorías persiguiendo ese botón 😂", "Ya no hay escapatoria 😌", "El No renunció. Literal."];
 const CARAS = ["😏", "😂", "🤭", "😳", "🙃", "😎", "🫣", "😌"];
 let intentos = 0, ultimo = 0;
 
@@ -517,12 +576,13 @@ function huir(e) {
   si.style.transform = `scale(${Math.min(1 + intentos * .09, 1.7)})`;
   $("emoji").textContent = CARAS[intentos % CARAS.length];
   if (intentos >= TEXTOS.length - 1) { no.style.background = "linear-gradient(135deg,#FF79AC,#FF3B7F)"; no.style.borderColor = "transparent"; }
-  // Salta lejos del dedo y del botón Sí
-  const s = si.getBoundingClientRect(), r = no.getBoundingClientRect();
+  // Salta lejos del dedo, sin tapar la pregunta ni el botón Sí
+  const r = no.getBoundingClientRect(), evitar = [si, document.querySelector("#e5 .titulo")].map((el) => el.getBoundingClientRect());
+  const choca = (x, y) => evitar.some((s) => x + r.width > s.left - 20 && x < s.right + 20 && y + r.height > s.top - 20 && y < s.bottom + 20);
   let x, y, n = 0;
   do {
     x = Math.random() * (innerWidth - r.width - 28) + 14; y = Math.random() * (innerHeight - r.height - 90) + 60; n++;
-  } while (n < 50 && ((x + r.width > s.left - 24 && x < s.right + 24 && y + r.height > s.top - 24 && y < s.bottom + 24) || Math.hypot(x - r.left, y - r.top) < 150));
+  } while (n < 80 && (choca(x, y) || Math.hypot(x - r.left, y - r.top) < 150));
   ponerNo(x, y);
   no.style.transform = `rotate(${(Math.random() - .5) * 26}deg)`;
 }
