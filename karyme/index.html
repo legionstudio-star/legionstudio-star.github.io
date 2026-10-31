@@ -541,7 +541,8 @@ async function escribirConsola() {
 $("acepto").addEventListener("click", async () => {
   vibra(20); warpObj = .35; setTimeout(() => (warpObj = 0), 600);
   ir(4);
-  await espera(3600);
+  // tiempo suficiente para leer el chiste de la arepa antes de la pregunta
+  await espera(8500);
   ir(5); setTimeout(mostrarNo, 900);
 });
 
