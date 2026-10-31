@@ -188,6 +188,7 @@
   <section class="escena" id="e4">
     <h2 class="titulo" style="font-size:clamp(2.1rem,9.5vw,3rem)" data-p>Tengo una pregunta <em class="serif">muy seria…</em></h2>
     <p class="sub aparece" style="--d:1500ms">(más seria que preguntarle a una nutricionista si la arepa con queso cuenta como ensalada)</p>
+    <div class="pista aparece" style="--d:2600ms"><b></b>Toca para ver la pregunta</div>
   </section>
 
   <!-- 5. La pregunta -->
@@ -541,9 +542,9 @@ async function escribirConsola() {
 $("acepto").addEventListener("click", async () => {
   vibra(20); warpObj = .35; setTimeout(() => (warpObj = 0), 600);
   ir(4);
-  // tiempo suficiente para leer el chiste de la arepa antes de la pregunta
-  await espera(8500);
-  ir(5); setTimeout(mostrarNo, 900);
+  // la pregunta sale cuando ella toque, para que alcance a leer el chiste de la arepa
+  await espera(2600);
+  $("e4").addEventListener("click", () => { vibra(15); ir(5); setTimeout(mostrarNo, 900); }, { once: true });
 });
 
 /* ---- El botón que huye ---- */
