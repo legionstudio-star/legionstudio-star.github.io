@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Tienes un mensaje 👀</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Mensaje confidencial. Ábrelo solo si eres Karyme.">
+<meta property="og:title" content="Tienes un mensaje 👀">
+<meta property="og:description" content="Confidencial. Ábrelo solo si eres Karyme.">
+<meta name="theme-color" content="#05060d">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --rosa: #FF4D8D; --rosa2: #FF9EC0; --oro: #FFD36E; }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; overflow: hidden; background: #05060d; color: #fff; font-family: "Plus Jakarta Sans", system-ui, sans-serif; -webkit-font-smoothing: antialiased; user-select: none; -webkit-user-select: none; }
+  button { font: inherit; color: inherit; border: 0; background: none; cursor: pointer; }
+  #cielo { position: fixed; inset: 0; width: 100%; height: 100%; }
+  .aurora { position: fixed; inset: -20%; pointer-events: none; opacity: .55; filter: blur(60px);
+    background: radial-gradient(40% 30% at 25% 20%, rgba(255,77,141,.35), transparent 70%), radial-gradient(45% 35% at 80% 75%, rgba(110,90,255,.35), transparent 70%);
+    animation: flota 14s ease-in-out infinite alternate; }
+  @keyframes flota { to { transform: translate(4%, -3%) rotate(6deg); } }
+
+  .escena { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 28px 26px calc(28px + env(safe-area-inset-bottom));
+    opacity: 0; pointer-events: none; transform: translateY(18px) scale(.98); transition: opacity .6s ease, transform .6s ease; }
+  .escena.on { opacity: 1; pointer-events: auto; transform: none; }
+  .titulo { font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; font-size: clamp(2.3rem, 11vw, 3.6rem); line-height: 1; letter-spacing: -.03em; }
+  .titulo em { text-shadow: none; filter: drop-shadow(0 2px 10px rgba(5,6,13,.9));
+    font-style: normal; background: linear-gradient(90deg, var(--rosa2), var(--rosa), var(--oro)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .sub, .aviso, .titulo { text-shadow: 0 2px 14px rgba(5,6,13,.95), 0 0 30px rgba(5,6,13,.9); }
+  .sub { color: rgba(255,255,255,.8); font-size: 1.05rem; margin-top: 14px; max-width: 320px; line-height: 1.45; }
+  .chip { display: inline-flex; align-items: center; gap: 8px; font-size: .72rem; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; padding: 7px 14px; border-radius: 999px; border: 1px solid rgba(255,77,141,.5); background: rgba(255,77,141,.12); color: var(--rosa2); margin-bottom: 22px; }
+  .chip i { width: 7px; height: 7px; border-radius: 50%; background: var(--rosa); box-shadow: 0 0 10px var(--rosa); animation: late 1.2s infinite; }
+  @keyframes late { 50% { opacity: .3; } }
+  .btn { margin-top: 30px; padding: 17px 30px; border-radius: 999px; font-weight: 800; font-size: 1.05rem; background: linear-gradient(135deg, #FF6FA3, #FF2E74); box-shadow: 0 14px 40px -12px rgba(255,46,116,.9); transition: transform .15s; }
+  .btn:active { transform: scale(.95); }
+  .btn.sec { background: rgba(255,255,255,.08); box-shadow: none; border: 1px solid rgba(255,255,255,.18); font-size: .95rem; padding: 14px 24px; }
+  .toca { position: absolute; bottom: calc(34px + env(safe-area-inset-bottom)); left: 0; right: 0; font-size: .85rem; color: rgba(255,255,255,.55); animation: late 1.6s infinite; }
+  .candado { font-size: 3.4rem; margin-bottom: 8px; filter: drop-shadow(0 8px 24px rgba(255,77,141,.5)); animation: brinca 2s ease-in-out infinite; }
+  @keyframes brinca { 50% { transform: translateY(-8px) rotate(-6deg); } }
+
+  /* Reglas */
+  .reglas { list-style: none; margin-top: 22px; display: grid; gap: 10px; text-align: left; width: 100%; max-width: 340px; }
+  .reglas li { display: flex; gap: 12px; align-items: center; padding: 14px 16px; border-radius: 16px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); font-weight: 600; opacity: 0; transform: translateX(-14px); transition: .5s; }
+  .on .reglas li { opacity: 1; transform: none; }
+  .on .reglas li:nth-child(2) { transition-delay: .35s; } .on .reglas li:nth-child(3) { transition-delay: .7s; }
+  .reglas b { font-size: 1.3rem; }
+  .reglas small { display: block; color: rgba(255,255,255,.55); font-weight: 500; font-size: .82rem; }
+
+  /* La pregunta */
+  .pregunta .titulo { font-size: clamp(2.1rem, 10vw, 3.2rem); }
+  .boca { font-size: 4rem; margin-bottom: 10px; display: inline-block; animation: brinca 1.8s ease-in-out infinite; }
+  .zona-si { margin-top: 34px; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  #si { padding: 20px 54px; font-size: 1.35rem; transition: transform .35s cubic-bezier(.3,1.6,.5,1); }
+  .aviso { font-size: .86rem; color: rgba(255,255,255,.6); max-width: 290px; line-height: 1.4; min-height: 2.6em; }
+  .aviso b { color: var(--oro); }
+  #no { position: fixed; z-index: 5; padding: 12px 22px; border-radius: 999px; font-weight: 700; font-size: .95rem; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.22); white-space: nowrap;
+    transition: left .28s cubic-bezier(.3,1.4,.5,1), top .28s cubic-bezier(.3,1.4,.5,1), transform .3s, opacity .3s; touch-action: none; }
+  #no.oculto { opacity: 0; pointer-events: none; }
+  .contador { position: fixed; top: calc(16px + env(safe-area-inset-top)); right: 16px; font-size: .78rem; font-weight: 800; padding: 7px 12px; border-radius: 999px; background: rgba(0,0,0,.45); border: 1px solid rgba(255,255,255,.14); opacity: 0; transition: opacity .3s; }
+  .contador.ver { opacity: 1; }
+
+  /* Final */
+  .sello { width: 120px; height: 120px; border-radius: 50%; display: grid; place-items: center; font-size: 3.6rem; background: radial-gradient(circle, rgba(255,77,141,.35), transparent 70%); margin-bottom: 8px; transform: scale(0); }
+  .on .sello { animation: sello .7s cubic-bezier(.3,1.7,.5,1) .2s forwards; }
+  @keyframes sello { to { transform: scale(1) rotate(-8deg); } }
+  .recibo { margin-top: 22px; width: 100%; max-width: 330px; padding: 16px 18px; border-radius: 18px; background: rgba(255,255,255,.06); border: 1px dashed rgba(255,255,255,.25); text-align: left; font-size: .9rem; display: grid; gap: 8px; }
+  .recibo div { display: flex; justify-content: space-between; gap: 10px; }
+  .recibo span { color: rgba(255,255,255,.6); }
+  .recibo b { text-align: right; }
+  .acciones { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .wa { background: #25D366 !important; color: #062b14; box-shadow: 0 14px 40px -12px rgba(37,211,102,.8) !important; display: inline-flex; align-items: center; gap: 10px; }
+  .wa svg { width: 22px; height: 22px; }
+
+  .lluvia { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 9; }
+  .lluvia span { position: absolute; top: -60px; animation: cae linear forwards; }
+  @keyframes cae { to { transform: translateY(115vh) rotate(var(--g)); } }
+  .tiembla { animation: tiembla .4s; }
+  @keyframes tiembla { 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
+</style>
+</head>
+<body>
+<canvas id="cielo"></canvas>
+<div class="aurora"></div>
+
+<!-- 1. Sobre cerrado -->
+<section class="escena on" id="e1">
+  <span class="chip"><i></i>Confidencial</span>
+  <div class="candado">🔒</div>
+  <h1 class="titulo">Hola, <em>Karyme</em></h1>
+  <p class="sub">Tienes un mensaje secreto.<br>Sin azúcar, sin gluten y aprobado por nutricionistas 🥗</p>
+  <button class="btn" id="abrir">Abrir mensaje 🔓</button>
+</section>
+
+<!-- 2. Las estrellas escriben su nombre -->
+<section class="escena" id="e2">
+  <p class="toca" id="toca2" style="opacity:0">Toca para seguir</p>
+  <p class="sub" id="nota-nombre" style="position:absolute;bottom:calc(80px + env(safe-area-inset-bottom));opacity:0;transition:opacity .8s">Sí, puse a las estrellas a escribir tu nombre.<br>Normal, lo hago todos los días 😌</p>
+</section>
+
+<!-- 3. Reglas -->
+<section class="escena" id="e3">
+  <h2 class="titulo" style="font-size:clamp(2rem,9vw,2.8rem)">Antes de seguir,<br><em>unas reglas</em></h2>
+  <ul class="reglas">
+    <li><b>☝️</b><span>Responder con sinceridad<small>Esto es muy serio</small></span></li>
+    <li><b>😐</b><span>No reírse<small>Vas a fallar, pero inténtalo</small></span></li>
+    <li><b>🥦</b><span>Esto no cuenta como calorías<small>Lo juro, revisé la tabla nutricional</small></span></li>
+  </ul>
+  <button class="btn" id="acepto">Acepto los términos ✍️</button>
+</section>
+
+<!-- 4. Suspenso -->
+<section class="escena" id="e4">
+  <h2 class="titulo" id="suspenso" style="font-size:clamp(2rem,9vw,2.8rem)">Tengo una pregunta<br><em>muy seria…</em></h2>
+  <p class="sub" id="suspenso2" style="opacity:0;transition:opacity .6s">(más seria que preguntarle a una nutricionista si la arepa con queso cuenta como ensalada)</p>
+</section>
+
+<!-- 5. La pregunta -->
+<section class="escena pregunta" id="e5">
+  <div class="boca">😏</div>
+  <h2 class="titulo">¿Me vas a dar un <em>besito</em> cuando nos veamos?</h2>
+  <div class="zona-si">
+    <button class="btn" id="si">Sí 😘</button>
+    <p class="aviso" id="aviso">Pase lo que pase,<br><b>NO toques el botón de abajo</b> 👀</p>
+  </div>
+</section>
+<button id="no" class="oculto">No</button>
+<div class="contador" id="contador"></div>
+
+<!-- 6. Final -->
+<section class="escena" id="e6">
+  <div class="sello">💋</div>
+  <h2 class="titulo" style="font-size:clamp(2.1rem,10vw,3rem)">Sabía que dirías <em>que sí</em> 😎</h2>
+  <p class="sub" id="final-sub">Trato cerrado. Ya quedó registrado en el sistema y no hay devoluciones.</p>
+  <div class="recibo">
+    <div><span>Pendiente</span><b>1 besito 💋</b></div>
+    <div><span>Cuándo</span><b>La próxima vez que nos veamos</b></div>
+    <div><span>Intentos de decir que no</span><b id="intentos">0</b></div>
+    <div><span>Info nutricional</span><b>0 kcal · 100 % recomendado</b></div>
+    <div><span>Estado</span><b style="color:#7CF29A">Aprobado ✅</b></div>
+  </div>
+  <div class="acciones">
+    <a class="btn wa" id="wa" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9 0-1.4.7-2 1-2.3.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.3 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.6 2.1 1.1 1 2 1.3 2.3 1.4.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.5.3.1.2.1.7-.1 1.3Z"/></svg>Mandarme la respuesta</a>
+    <button class="btn sec" id="otra" style="margin-top:12px">Volver a intentarlo 😂</button>
+  </div>
+</section>
+
+<div class="lluvia" id="lluvia"></div>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const vibra = (p) => navigator.vibrate && navigator.vibrate(p);
+
+  /* ---------- Cielo de estrellas (canvas) ---------- */
+  const cv = $("cielo"), cx = cv.getContext("2d");
+  let W, H, DPR, estrellas = [], fondo = [], modo = "libre", par = { x: 0, y: 0 }, parObj = { x: 0, y: 0 };
+  function medir() {
+    DPR = Math.min(devicePixelRatio || 1, 2);
+    W = innerWidth; H = innerHeight;
+    cv.width = W * DPR; cv.height = H * DPR; cx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    fondo = Array.from({ length: Math.round(W * H / 3400) }, () => ({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.1 + .2, f: Math.random() * 6, z: Math.random() * .6 + .2 }));
+    if (modo === "nombre") formarNombre();
+  }
+  // Estrellas que luego escriben el nombre
+  function crearEstrellas(n) {
+    estrellas = Array.from({ length: n }, () => {
+      const x = Math.random() * W, y = Math.random() * H;
+      return { x, y, ox: x, oy: y, tx: x, ty: y, r: Math.random() * 1.4 + .8, f: Math.random() * 6, c: Math.random() < .3 ? "255,158,192" : Math.random() < .5 ? "255,211,110" : "255,255,255" };
+    });
+  }
+  function puntosTexto(txt) {
+    const c = document.createElement("canvas"), k = c.getContext("2d");
+    const ancho = Math.min(W * .9, 520), fs = ancho / (txt.length * .62);
+    c.width = Math.ceil(ancho); c.height = Math.ceil(fs * 1.2);
+    k.fillStyle = "#fff"; k.font = `800 ${fs}px "Bricolage Grotesque", sans-serif`; k.textAlign = "center"; k.textBaseline = "middle";
+    k.fillText(txt, c.width / 2, c.height / 2);
+    const d = k.getImageData(0, 0, c.width, c.height).data, pts = [], paso = Math.max(4, Math.round(fs / 16));
+    for (let y = 0; y < c.height; y += paso) for (let x = 0; x < c.width; x += paso) if (d[(y * c.width + x) * 4 + 3] > 140) pts.push([x + (W - c.width) / 2, y + H * .42 - c.height / 2]);
+    return pts;
+  }
+  function formarNombre() {
+    const pts = puntosTexto("KARYME");
+    if (estrellas.length < pts.length) crearEstrellas(pts.length + 40);
+    pts.sort(() => Math.random() - .5);
+    estrellas.forEach((s, i) => {
+      if (i < pts.length) { s.tx = pts[i][0]; s.ty = pts[i][1]; s.en = true; }
+      else { s.tx = s.ox; s.ty = s.oy; s.en = false; }
+    });
+  }
+  // Al soltar el nombre solo se quedan 70 estrellas; las demás se apagan
+  function soltar() { estrellas.forEach((s, i) => { s.tx = Math.random() * W; s.ty = Math.random() * H; s.en = false; if (i >= 70) s.muere = true; }); }
+
+  let t = 0;
+  function dibujar() {
+    t += .016;
+    par.x += (parObj.x - par.x) * .05; par.y += (parObj.y - par.y) * .05;
+    cx.clearRect(0, 0, W, H);
+    for (const s of fondo) {
+      const a = .35 + .65 * Math.abs(Math.sin(t * .8 + s.f));
+      cx.globalAlpha = a; cx.fillStyle = "#fff";
+      cx.beginPath(); cx.arc(s.x + par.x * s.z * 30, s.y + par.y * s.z * 30, s.r, 0, 7); cx.fill();
+    }
+    estrellas = estrellas.filter((s) => !(s.muere && (s.v = (s.v ?? 1) * .96) < .02));
+    for (const s of estrellas) {
+      s.x += (s.tx - s.x) * .06; s.y += (s.ty - s.y) * .06;
+      const brillo = s.en ? .85 + .15 * Math.sin(t * 3 + s.f) : .5 + .5 * Math.abs(Math.sin(t + s.f));
+      const px = s.x + (s.en ? 0 : par.x * 40), py = s.y + (s.en ? 0 : par.y * 40);
+      cx.globalAlpha = brillo * (s.muere ? s.v : 1);
+      const g = cx.createRadialGradient(px, py, 0, px, py, s.r * 4);
+      g.addColorStop(0, `rgba(${s.c},1)`); g.addColorStop(1, `rgba(${s.c},0)`);
+      cx.fillStyle = g; cx.beginPath(); cx.arc(px, py, s.r * 4, 0, 7); cx.fill();
+    }
+    cx.globalAlpha = 1;
+    requestAnimationFrame(dibujar);
+  }
+  addEventListener("resize", medir);
+  addEventListener("pointermove", (e) => { parObj.x = e.clientX / W - .5; parObj.y = e.clientY / H - .5; });
+  addEventListener("deviceorientation", (e) => { if (e.gamma != null) { parObj.x = Math.max(-1, Math.min(1, e.gamma / 30)) * .5; parObj.y = Math.max(-1, Math.min(1, (e.beta - 40) / 30)) * .5; } });
+  medir(); crearEstrellas(70); dibujar();
+
+  /* ---------- Escenas ---------- */
+  const ir = (n) => { document.querySelectorAll(".escena").forEach((e) => e.classList.toggle("on", e.id === "e" + n)); };
+  const espera = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  $("abrir").addEventListener("click", async () => {
+    vibra(30);
+    $("abrir").textContent = "Abriendo… 🔓";
+    await espera(350);
+    ir(2);
+    await (document.fonts ? document.fonts.ready : espera(0));
+    modo = "nombre"; formarNombre();
+    await espera(1900); $("nota-nombre").style.opacity = 1;
+    await espera(1500); $("toca2").style.opacity = "";
+    $("e2").addEventListener("click", () => { modo = "libre"; soltar(); ir(3); }, { once: true });
+  });
+
+  $("acepto").addEventListener("click", async () => {
+    vibra(20); ir(4);
+    await espera(1700); $("suspenso2").style.opacity = 1;
+    await espera(1800); ir(5); mostrarNo();
+  });
+
+  /* ---------- El botón que huye ---------- */
+  const no = $("no"), si = $("si");
+  const TEXTOS = ["¿Segura? 🤨", "Piénsalo bien…", "Eso no está en el plan nutricional 🥦", "Error 404: No no encontrado", "Ni lo intentes 😂", "Ya casi… mentira", "El No se fue de vacaciones 🏖️", "Ok, ya, ríndete 😌", "Sí 😏"];
+  const AVISOS = ["Te dije que NO lo tocaras 😂", "Dato nutricional: un besito tiene <b>0 calorías</b> 🤓", "Ese botón tiene miedo de ti", "Mira, el Sí está creciendo solito 👀", "Los besitos son ricos en <b>vitamina Sí</b> 🍊", "Vas a quemar más calorías persiguiendo ese botón 😂", "Ya no hay escapatoria 😌", "El No renunció. Literal."];
+  let intentos = 0, ultimo = 0;
+
+  function ponerNo(x, y) {
+    const r = no.getBoundingClientRect(), m = 14;
+    no.style.left = Math.max(m, Math.min(innerWidth - r.width - m, x)) + "px";
+    no.style.top = Math.max(m + 40, Math.min(innerHeight - r.height - m, y)) + "px";
+  }
+  function mostrarNo() {
+    no.classList.remove("oculto");
+    const s = si.getBoundingClientRect(), r = no.getBoundingClientRect();
+    ponerNo(innerWidth / 2 - r.width / 2, Math.min(innerHeight - 90, s.bottom + 120));
+  }
+  function huir(e) {
+    if (e) { e.preventDefault(); e.stopPropagation(); }
+    // un mismo toque dispara touchstart, pointerdown y mousedown: se cuenta una sola vez
+    if (Date.now() - ultimo < 350) return;
+    ultimo = Date.now();
+    if (intentos >= TEXTOS.length - 1) return siDijo();
+    intentos++;
+    vibra(40);
+    no.textContent = TEXTOS[Math.min(intentos - 1, TEXTOS.length - 1)];
+    $("aviso").innerHTML = AVISOS[Math.min(intentos - 1, AVISOS.length - 1)];
+    $("contador").textContent = `Intentos de decir que no: ${intentos}`; $("contador").classList.add("ver");
+    si.style.transform = `scale(${Math.min(1 + intentos * .09, 1.7)})`;
+    if (intentos >= TEXTOS.length - 1) { no.style.background = "linear-gradient(135deg,#FF6FA3,#FF2E74)"; no.style.borderColor = "transparent"; }
+    // Salta lejos del dedo y del botón Sí
+    const s = si.getBoundingClientRect(), r = no.getBoundingClientRect();
+    let x, y, tries = 0;
+    do {
+      x = Math.random() * (innerWidth - r.width - 28) + 14;
+      y = Math.random() * (innerHeight - r.height - 80) + 54;
+      tries++;
+    } while (tries < 40 && ((x + r.width > s.left - 20 && x < s.right + 20 && y + r.height > s.top - 20 && y < s.bottom + 20) || Math.hypot(x - r.left, y - r.top) < 140));
+    ponerNo(x, y);
+    no.style.transform = `rotate(${(Math.random() - .5) * 24}deg)`;
+    document.querySelector(".boca").textContent = ["😏", "😂", "🤭", "😳", "🙃", "😎", "🫣", "😌"][intentos % 8];
+  }
+  ["pointerdown", "touchstart", "mousedown"].forEach((ev) => no.addEventListener(ev, huir, { passive: false }));
+  no.addEventListener("click", (e) => { e.preventDefault(); if (intentos >= TEXTOS.length - 1) siDijo(); });
+  // En computador huye apenas el mouse se acerca
+  addEventListener("mousemove", (e) => {
+    if (no.classList.contains("oculto") || intentos >= TEXTOS.length - 1) return;
+    const r = no.getBoundingClientRect();
+    if (Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2)) < 70) huir();
+  });
+  addEventListener("resize", () => { if (!no.classList.contains("oculto")) { const r = no.getBoundingClientRect(); ponerNo(r.left, r.top); } });
+
+  /* ---------- Sí ---------- */
+  function lluvia() {
+    const L = $("lluvia"), em = ["💋", "😘", "✨", "💋", "🔥", "😎"];
+    for (let i = 0; i < 46; i++) {
+      const s = document.createElement("span");
+      s.textContent = em[i % em.length];
+      s.style.left = Math.random() * 100 + "vw";
+      s.style.fontSize = 18 + Math.random() * 26 + "px";
+      s.style.setProperty("--g", (Math.random() - .5) * 540 + "deg");
+      s.style.animationDuration = 2.2 + Math.random() * 2.4 + "s";
+      s.style.animationDelay = Math.random() * 1.2 + "s";
+      L.appendChild(s);
+      setTimeout(() => s.remove(), 6000);
+    }
+  }
+  function siDijo() {
+    vibra([60, 40, 120]);
+    no.classList.add("oculto"); $("contador").classList.remove("ver");
+    $("intentos").textContent = intentos === 0 ? "0 (ni lo intentaste 😏)" : intentos >= TEXTOS.length - 1 ? `${intentos} (hasta el No se rindió)` : `${intentos} 😂`;
+    $("final-sub").textContent = intentos === 0
+      ? "Ni siquiera intentaste tocar el No… me gusta tu actitud 😏 Trato cerrado, sin devoluciones."
+      : "Trato cerrado. Ya quedó registrado en el sistema y no hay devoluciones.";
+    const msg = intentos === 0
+      ? "Ya respondí tu pregunta 😏 Te debo un besito… y ni intenté darle al No 🙈"
+      : `Ya respondí tu pregunta 😏 Te debo un besito… (aunque intenté darle al No ${intentos} ${intentos === 1 ? "vez" : "veces"} 😂)`;
+    $("wa").href = "https://wa.me/?text=" + encodeURIComponent(msg);
+    modo = "nombre"; ir(6); lluvia();
+    soltar(); modo = "libre";
+  }
+  si.addEventListener("click", siDijo);
+
+  $("otra").addEventListener("click", () => {
+    intentos = 0; si.style.transform = ""; no.textContent = "No"; no.style.background = ""; no.style.borderColor = ""; no.style.transform = "";
+    $("aviso").innerHTML = "Pase lo que pase,<br><b>NO toques el botón de abajo</b> 👀";
+    document.querySelector(".boca").textContent = "😏";
+    ir(5); setTimeout(mostrarNo, 300);
+  });
+})();
+</script>
+</body>
+</html>
