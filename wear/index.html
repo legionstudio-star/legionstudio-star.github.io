@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es" data-mundo="street">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LEGION WEAR</title>
+<meta name="description" content="LEGION WEAR — Streetwear y Old Money. Una extensión de Legion Estudio.">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;600;800&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/street.css">
+<link rel="stylesheet" href="css/maison.css">
+</head>
+<body>
+  <!-- Encabezado: el mismo en los dos mundos, cambia de piel con data-mundo -->
+  <header class="cabecera">
+    <a class="marca" href="#/street" data-ir="inicio" aria-label="LEGION WEAR, inicio">
+      <span class="marca-street">LGN<b>/</b>WEAR</span>
+      <span class="marca-maison">Legion <i>Maison</i></span>
+    </a>
+    <nav class="mundos" aria-label="Elegir colección">
+      <button class="pestana" data-mundo="street">Street</button>
+      <button class="pestana" data-mundo="maison">Maison</button>
+      <span class="pestana-marca" aria-hidden="true"></span>
+    </nav>
+    <div class="acciones">
+      <a href="#" data-ir="tienda" class="enlace">Tienda</a>
+      <a href="#" data-ir="lookbook" class="enlace">Lookbook</a>
+      <button class="btn-carrito" aria-label="Abrir carrito">
+        <span class="txt">Carrito</span> <span class="cuenta">0</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="vista" tabindex="-1"></main>
+
+  <footer class="pie" id="pie"></footer>
+
+  <!-- Carrito lateral, compartido por los dos mundos -->
+  <div class="velo" hidden></div>
+  <aside class="carrito" aria-label="Carrito" aria-hidden="true">
+    <div class="carrito-cab">
+      <h2>Tu carrito</h2>
+      <button class="cerrar" aria-label="Cerrar carrito">&times;</button>
+    </div>
+    <div class="carrito-lista"></div>
+    <div class="carrito-pie">
+      <div class="fila-total"><span>Subtotal</span><strong class="total">$0</strong></div>
+      <p class="nota">El envío y la forma de pago se confirman por WhatsApp.</p>
+      <button class="btn-pedir">Pedir por WhatsApp</button>
+    </div>
+  </aside>
+
+  <!-- Guía de tallas -->
+  <dialog class="guia" id="guia">
+    <form method="dialog"><button class="cerrar" aria-label="Cerrar">&times;</button></form>
+    <h3>Guía de tallas</h3>
+    <table>
+      <thead><tr><th>Talla</th><th>Pecho (cm)</th><th>Largo (cm)</th><th>Cintura (cm)</th></tr></thead>
+      <tbody>
+        <tr><td>S</td><td>96–101</td><td>70</td><td>76–81</td></tr>
+        <tr><td>M</td><td>102–107</td><td>72</td><td>82–87</td></tr>
+        <tr><td>L</td><td>108–113</td><td>74</td><td>88–93</td></tr>
+        <tr><td>XL</td><td>114–119</td><td>76</td><td>94–99</td></tr>
+      </tbody>
+    </table>
+    <p class="nota">¿Dudas con tu talla? Escríbenos por WhatsApp y te asesoramos.</p>
+  </dialog>
+
+  <!-- Telón del cambio de mundo -->
+  <div class="telon" aria-hidden="true">
+    <div class="telon-a"></div><div class="telon-b"></div>
+    <div class="telon-sello"></div>
+  </div>
+  <div class="grano" aria-hidden="true"></div>
+  <div class="cursor" aria-hidden="true"></div>
+  <div class="aviso" role="status" aria-live="polite"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/prendas.js"></script>
+  <script src="js/productos.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
