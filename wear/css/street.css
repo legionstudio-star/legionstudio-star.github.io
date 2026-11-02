@@ -121,7 +121,12 @@
 @media (max-width: 860px) {
   .s-hero { grid-template-columns: 1fr; min-height: auto; padding-top: 30px; }
   .s-hero-arte { order: -1; width: 80%; justify-self: center; }
-  .s-datos { grid-template-columns: 1fr; }
+  .s-datos { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .s-manifiesto p { font-size: 34px; margin-bottom: 36px; }
+  .s-datos b { font-size: 34px; }
+  .s-datos span { font-size: 9px; letter-spacing: .08em; }
+  .s-titulo { font-size: 92px; }
+  .s-num { font-size: 40px; }
   .cuenta-regresiva { flex-wrap: nowrap; font-size: 10px; }
   .cuenta-regresiva span { margin-right: 4px; letter-spacing: .1em; }
   .cuenta-regresiva b { font-size: 26px; margin-left: 5px; }

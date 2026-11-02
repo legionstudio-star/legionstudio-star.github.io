@@ -220,9 +220,23 @@ function activarProducto(p) {
   const conTalla = () => { if (sel.talla) return true; $('.tallas').classList.remove('falta'); void $('.tallas').offsetWidth; $('.tallas').classList.add('falta'); avisar('Elige tu talla'); return false; };
   $('.btn-agregar').onclick = () => { if (!conTalla()) return; agregar(sel); abrirCarrito(); };
   $('.btn-directo').onclick = () => { if (!conTalla()) return; pedirWhatsApp([{ ...sel }]); };
+  // En el celular las fotos se pasan deslizando el dedo
+  if (p.fotos && p.fotos.length > 1) {
+    let x0 = null, i = 0;
+    const g0 = $('#galeria');
+    g0.insertAdjacentHTML('afterend', `<div class="puntos-galeria">${p.fotos.map((_, k) => `<i class="${k ? '' : 'on'}"></i>`).join('')}</div>`);
+    $$('[data-foto]').forEach((b, k) => b.addEventListener('click', () => { i = k; $$('.puntos-galeria i').forEach((d, j) => d.classList.toggle('on', j === k)); }));
+    g0.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true });
+    g0.addEventListener('touchend', e => {
+      if (x0 === null) return;
+      const dx = e.changedTouches[0].clientX - x0; x0 = null;
+      if (Math.abs(dx) < 40) return;
+      $$('[data-foto]')[(i + (dx < 0 ? 1 : -1) + p.fotos.length) % p.fotos.length].click();
+    });
+  }
   // Zoom suave siguiendo el mouse
   const g = $('#galeria');
-  g.onmousemove = e => { const r = g.getBoundingClientRect(); g.style.setProperty('--zx', ((e.clientX - r.left) / r.width * 100) + '%'); g.style.setProperty('--zy', ((e.clientY - r.top) / r.height * 100) + '%'); g.classList.add('zoom'); };
+  if (matchMedia('(hover: hover)').matches) g.onmousemove = e => { const r = g.getBoundingClientRect(); g.style.setProperty('--zx', ((e.clientX - r.left) / r.width * 100) + '%'); g.style.setProperty('--zy', ((e.clientY - r.top) / r.height * 100) + '%'); g.classList.add('zoom'); };
   g.onmouseleave = () => g.classList.remove('zoom');
 }
 
@@ -278,14 +292,14 @@ function agregar(s) {
   const ya = carrito.find(x => x.id === s.id && x.color === s.color && x.talla === s.talla);
   if (ya) ya.cant = Math.min(10, ya.cant + s.cant); else carrito.push({ id: s.id, color: s.color, talla: s.talla, cant: s.cant });
   guardar();
-  const b = $('.btn-carrito'); b.classList.remove('salta'); void b.offsetWidth; b.classList.add('salta');
+  $$('.btn-carrito, .barra-carrito').forEach(b => { b.classList.remove('salta'); void b.offsetWidth; b.classList.add('salta'); });
   avisar(TXT[producto(s.id).mundo].agregado);
 }
 
 function pintarCarrito() {
   carrito = carrito.filter(x => producto(x.id));
   const n = carrito.reduce((s, x) => s + x.cant, 0), total = carrito.reduce((s, x) => s + producto(x.id).precio * x.cant, 0);
-  $('.cuenta').textContent = n;
+  $$('.cuenta').forEach(c => c.textContent = n);
   $('.total').textContent = pesos(total);
   $('.btn-pedir').disabled = !n;
   $('.carrito-lista').innerHTML = n ? carrito.map((x, i) => {
@@ -303,9 +317,10 @@ function pintarCarrito() {
   $$('[data-q]').forEach(b => b.onclick = () => { carrito.splice(b.dataset.q, 1); guardar(); });
 }
 
-function abrirCarrito() { $('.carrito').classList.add('abierto'); $('.carrito').setAttribute('aria-hidden', 'false'); $('.velo').hidden = false; requestAnimationFrame(() => $('.velo').classList.add('on')); }
+function abrirCarrito() { $('.aviso').classList.remove('on'); clearTimeout(avisoT); $('.carrito').classList.add('abierto'); $('.carrito').setAttribute('aria-hidden', 'false'); $('.velo').hidden = false; requestAnimationFrame(() => $('.velo').classList.add('on')); }
 function cerrarCarrito() { $('.carrito').classList.remove('abierto'); $('.carrito').setAttribute('aria-hidden', 'true'); $('.velo').classList.remove('on'); setTimeout(() => $('.velo').hidden = true, 300); }
 $('.btn-carrito').onclick = abrirCarrito;
+$('.barra-carrito').onclick = abrirCarrito;
 $('.carrito .cerrar').onclick = cerrarCarrito;
 $('.velo').onclick = cerrarCarrito;
 document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarCarrito(); });
@@ -370,6 +385,8 @@ function ruta() {
     else if (partes[1] === 'info') vista.innerHTML = info(m);
     else vista.innerHTML = m === 'street' ? inicioStreet() : inicioMaison();
     $$('.pestana').forEach(b => b.classList.toggle('on', b.dataset.mundo === m));
+    const sec = ['tienda', 'lookbook'].includes(partes[1]) ? partes[1] : partes[1] === 'p' ? 'tienda' : 'inicio';
+    $$('[data-sec]').forEach(a => a.classList.toggle('on', a.dataset.sec === sec));
     $$('[data-ir]').forEach(a => a.href = `#/${m}${a.dataset.ir === 'inicio' ? '' : '/' + a.dataset.ir}`);
     document.title = (m === 'street' ? 'LGN STREET' : 'LEGION MAISON') + ' — LEGION WEAR';
     pie(); pintarCarrito();

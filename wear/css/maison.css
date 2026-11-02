@@ -128,7 +128,11 @@
   .m-hero { grid-template-columns: 1fr; min-height: auto; text-align: center; }
   .m-kicker { justify-content: center; } .m-kicker::before { display: none; }
   .m-sub { margin-left: auto; margin-right: auto; }
-  .m-editorial { grid-template-columns: 1fr; } .m-editorial .tarjeta:nth-child(2) { margin-top: 0; }
+  .m-editorial { grid-template-columns: repeat(2, 1fr); } .m-editorial .tarjeta:nth-child(2) { margin-top: 0; }
+  [data-mundo="maison"] .tarjeta-info h3 { font-size: 18px !important; }
+  .m-titulo { font-size: 52px; }
+  .m-cita { font-size: 28px; }
+  .m-pilares > div { padding: 32px 20px; }
   .m-pilares { grid-template-columns: 1fr; } .m-pilares > div + div { border-left: 0; border-top: 1px solid var(--linea); }
   [data-mundo="maison"] .marca-maison { font-size: 23px; }
 }
