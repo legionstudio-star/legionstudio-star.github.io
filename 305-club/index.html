@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0b0b">
+<meta name="robots" content="noindex, nofollow">
+<title>Club 305 · Demo de fidelización · Legion Estudio</title>
+<link rel="icon" href="assets/logo-305.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Playfair+Display:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<div class="stage">
+  <div class="phone" id="phone">
+    <!-- barra superior de la demo -->
+    <header class="demobar">
+      <span class="demotag">DEMO</span>
+      <div class="roles" role="tablist">
+        <button data-role="cliente" class="on">📱 Cliente</button>
+        <button data-role="barberia">✂️ Barbería</button>
+      </div>
+      <button class="icon-btn" id="btnGuia" title="Guía de la demo">?</button>
+    </header>
+
+    <!-- notificación tipo celular -->
+    <div class="notif" id="notif" aria-live="polite">
+      <img src="assets/logo-305.png" alt="">
+      <div><p class="n-app">CLUB 305 · ahora</p><p class="n-txt" id="notifTxt"></p></div>
+    </div>
+
+    <main id="app"></main>
+  </div>
+
+  <aside class="side">
+    <img src="assets/logo-305.png" alt="305 Barbering" class="side-logo">
+    <h2>Club de fidelización 305</h2>
+    <p>Demo interactiva preparada por <b>Legion Estudio</b>. Abre este enlace en el celular para mostrarla como la verá el cliente.</p>
+    <button class="btn gold" id="btnGuia2">Ver guía de la demo</button>
+  </aside>
+</div>
+
+<!-- guía -->
+<dialog id="guia">
+  <h3>Guía para mostrar la demo</h3>
+  <ol>
+    <li><b>El cliente se une</b> escaneando el QR del espejo o de la caja (vista <i>Cliente</i>). Le toma 10 segundos.</li>
+    <li><b>Guarda su tarjeta en Google Wallet o Apple Wallet</b>. Queda en el celular sin descargar ninguna app.</li>
+    <li>Pasa a <i>Barbería</i> (PIN <b>3050</b>), <b>escanea la tarjeta</b> y pon un sello. Al cliente le llega la notificación al instante.</li>
+    <li>Llena la tarjeta (botón ⚡) y <b>canjea el corte gratis</b>.</li>
+    <li>En <i>Promos</i> envía una notificación a todos los miembros: les llega al Wallet <b>sin pagar WhatsApp ni SMS</b>.</li>
+    <li>Cierra mostrando las <b>métricas</b>: miembros, visitas, quién no ha vuelto y a quién recordarle.</li>
+  </ol>
+  <p class="muted">Todo lo que haces aquí se guarda solo en este celular. "Reiniciar demo" lo deja como nuevo.</p>
+  <div class="row">
+    <button class="btn ghost" id="btnReset">Reiniciar demo</button>
+    <button class="btn gold" id="btnCerrarGuia">Entendido</button>
+  </div>
+</dialog>
+
+<script src="assets/qrcode.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
