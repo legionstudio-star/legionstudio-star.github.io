@@ -10,6 +10,32 @@
     return;
   }
 
+  // Hablador genérico (h001, h002…) que aún no se ha vendido: página de demostración de LEGION
+  if (!N && /^h\d{3}$/.test(window.SLUG)) {
+    const cod = window.SLUG.toUpperCase();
+    const wa = "https://wa.me/573234953988?text=" + encodeURIComponent(`Hola LEGION, quiero activar el hablador ${cod} para mi negocio`);
+    const item = (t, d) => `<li style="display:flex;gap:12px;align-items:flex-start;text-align:left"><span style="flex:none;width:26px;height:26px;border-radius:50%;background:#F5B942;color:#111;display:grid;place-items:center;font-weight:800;font-size:.8rem">✓</span><span><b style="display:block">${t}</b><span style="color:rgba(255,255,255,.62);font-size:.9rem">${d}</span></span></li>`;
+    document.title = `Hablador ${cod} · LEGION Studio`;
+    document.body.style.background = "#0A0A0C";
+    raiz.innerHTML = `
+      <main style="min-height:100svh;color:#fff;padding:40px 22px 48px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:22px;max-width:460px;margin:0 auto;
+        background:radial-gradient(120% 45% at 50% -10%, rgba(245,185,66,.35), transparent 65%)">
+        <img src="/marca/logo-legion.png" alt="LEGION Studio" style="width:64px;height:64px;object-fit:contain;border-radius:16px;background:#111">
+        <span style="font-size:.72rem;font-weight:800;letter-spacing:.24em;color:#F5B942;border:1.5px solid rgba(245,185,66,.55);border-radius:999px;padding:6px 14px">HABLADOR ${cod} · POR ACTIVAR</span>
+        <h1 style="font-size:2.3rem;line-height:1;letter-spacing:-.03em;font-weight:800">Así de fácil te<br><span style="color:#F5B942">califican tus clientes</span></h1>
+        <p style="color:rgba(255,255,255,.7);line-height:1.5">Este hablador todavía no tiene dueño. Cuando lo actives, este mismo código llevará a tus clientes directo a tu negocio.</p>
+        <ul style="list-style:none;display:grid;gap:14px;width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:18px">
+          ${item("Más reseñas en Google", "Tus clientes te califican en un toque, sin descargar nada.")}
+          ${item("Tu menú con fotos y precios", "Siempre al día, lo cambiamos cuando quieras.")}
+          ${item("Pedidos directo a tu WhatsApp", "Domicilio, para recoger o a la mesa. Sin comisiones.")}
+          ${item("Con tu logo y tus colores", "Si quieres, te cambiamos el diseño del acrílico.")}
+        </ul>
+        <a href="${wa}" style="display:block;width:100%;background:#25D366;color:#0A0A0C;font-weight:800;padding:16px;border-radius:999px;text-decoration:none">Activar por WhatsApp</a>
+        <small style="color:rgba(255,255,255,.45)">Tecnología LEGION Studio Digital</small>
+      </main>`;
+    return;
+  }
+
   if (!N) {
     document.title = "Página no encontrada";
     raiz.innerHTML = `<div class="cargando"><p style="text-align:center;padding:24px">Este enlace no existe o ya no está activo.<br><a href="/" style="text-decoration:underline">Ir a LEGION Studio</a></p></div>`;
