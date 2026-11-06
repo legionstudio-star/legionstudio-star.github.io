@@ -1,0 +1,58 @@
+/* Ghetto Barbershop SM — estilos compartidos (página, club y panel) */
+:root{
+  --bg:#0a0909; --surface:#141212; --surface-2:#1c1919; --line:#2c2727;
+  --cream:#f5eee1; --muted:#a59c90; --rose:#c98f9a; --red:#a83246; --red2:#c8435b;
+  --blue:#4459b0; --gold:#c9a84a; --green:#25d366; --danger:#e5484d;
+  --radius:14px;
+  --gothic:'UnifrakturMaguntia',serif; --display:'Oswald',sans-serif; --body:'Inter',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+body{background:var(--bg);color:var(--cream);font-family:var(--body);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+a{color:inherit;text-decoration:none;}
+img,video{display:block;max-width:100%;}
+button,input,select,textarea{font:inherit;color:inherit;}
+button{cursor:pointer;}
+:focus-visible{outline:2px solid var(--rose);outline-offset:2px;}
+.gothic{font-family:var(--gothic);font-weight:400;letter-spacing:0;}
+.display{font-family:var(--display);text-transform:uppercase;letter-spacing:.02em;font-weight:700;line-height:1.02;}
+.muted{color:var(--muted);}
+.wrap{max-width:1140px;margin:0 auto;padding:0 22px;}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:15px 26px;border-radius:999px;font-family:var(--display);font-weight:600;font-size:15px;
+  text-transform:uppercase;letter-spacing:.08em;border:1px solid transparent;transition:transform .15s,box-shadow .2s,background .2s,border-color .2s;white-space:nowrap;}
+.btn:active{transform:scale(.97);}
+.btn-cream{background:var(--cream);color:#111;}
+.btn-cream:hover{box-shadow:0 0 30px rgba(245,238,225,.35);}
+.btn-red{background:linear-gradient(180deg,var(--red2),var(--red));color:#fff;}
+.btn-red:hover{box-shadow:0 0 30px rgba(200,67,91,.45);}
+.btn-ghost{border-color:rgba(245,238,225,.35);color:var(--cream);background:rgba(10,9,9,.25);backdrop-filter:blur(6px);}
+.btn-ghost:hover{border-color:var(--cream);}
+.btn-wa{background:var(--green);color:#06210f;}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.btn-sm{padding:10px 16px;font-size:13px;}
+
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px;font-weight:700;}
+.field input,.field select,.field textarea{width:100%;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:13px 14px;font-size:16px;color-scheme:dark;}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--rose);}
+
+.stars{display:inline-flex;gap:6px;}
+.stars i{width:12px;height:12px;display:block;clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);}
+.stars i:nth-child(1),.stars i:nth-child(5){background:var(--gold);} .stars i:nth-child(2),.stars i:nth-child(4){background:var(--red2);} .stars i:nth-child(3){background:var(--blue);}
+
+/* Diálogos propios (no usamos alert/confirm del navegador) */
+#gb-modal{position:fixed;inset:0;z-index:9990;background:rgba(5,4,4,.82);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;transition:.2s;}
+#gb-modal.show{opacity:1;visibility:visible;}
+.gb-modal-card{width:min(440px,100%);max-height:88vh;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:24px;transform:translateY(14px);transition:transform .25s;}
+#gb-modal.show .gb-modal-card{transform:none;}
+.gb-modal-msg{font-size:15px;line-height:1.6;}
+.gb-modal-msg h3{font-family:var(--display);text-transform:uppercase;font-size:22px;margin-bottom:8px;letter-spacing:.03em;}
+.gb-modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;flex-wrap:wrap;}
+.gb-modal-actions .btn{flex:1;}
+#gb-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,30px);background:var(--cream);color:#111;padding:12px 20px;border-radius:999px;font-weight:700;font-size:14px;
+  z-index:9995;opacity:0;transition:.25s;pointer-events:none;max-width:92vw;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.5);}
+#gb-toast.show{opacity:1;transform:translate(-50%,0);}
+.spin{width:18px;height:18px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:spin .7s linear infinite;display:inline-block;vertical-align:middle;}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;transition-duration:.01ms !important;scroll-behavior:auto !important;}}

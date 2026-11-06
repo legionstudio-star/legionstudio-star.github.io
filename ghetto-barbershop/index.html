@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a0909">
+<title>Ghetto Barbershop SM · Agenda tu turno en Bogotá</title>
+<meta name="description" content="Ghetto Barbershop SM, Bogotá. Fades, diseños, freestyle y color. Agenda tu turno en línea y únete al Club Ghetto.">
+<meta property="og:title" content="Ghetto Barbershop SM">
+<meta property="og:description" content="Fades, diseños, freestyle y color. Agenda tu turno en línea.">
+<meta property="og:image" content="assets/img/poster-h.jpg">
+<link rel="icon" href="assets/img/icono-192.png">
+<link rel="apple-touch-icon" href="assets/img/icono-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/gb.css">
+<style>
+  /* PRELOADER: navaja que revela el logo */
+  #preloader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;transition:opacity .5s,visibility .5s;}
+  #preloader.hidden{opacity:0;visibility:hidden;pointer-events:none;}
+  .pre-stage{position:relative;width:min(58vw,250px);}
+  .pre-logo{width:100%;clip-path:inset(0 0 100% 0);animation:reveal 1.5s cubic-bezier(.65,0,.35,1) .1s forwards;}
+  @keyframes reveal{to{clip-path:inset(0 0 0 0)}}
+  .pre-blade{position:absolute;left:-12%;right:-12%;top:0;height:3px;border-radius:3px;background:linear-gradient(90deg,transparent,var(--cream),#fff,var(--cream),transparent);box-shadow:0 0 18px var(--cream);animation:blade 1.5s cubic-bezier(.65,0,.35,1) .1s forwards;}
+  @keyframes blade{0%{top:0;opacity:1}95%{opacity:1}100%{top:100%;opacity:0}}
+
+  /* NAV */
+  header{position:fixed;top:0;left:0;right:0;z-index:60;transition:background .3s,border-color .3s;border-bottom:1px solid transparent;}
+  header.solid{background:rgba(10,9,9,.88);backdrop-filter:blur(12px);border-color:var(--line);}
+  nav{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;max-width:1240px;margin:0 auto;}
+  .brand{display:flex;align-items:center;gap:10px;}
+  .brand img{height:46px;width:auto;}
+  .nav-links{display:flex;gap:28px;align-items:center;}
+  .nav-links a{font-family:var(--display);font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:rgba(245,238,225,.8);transition:color .2s;}
+  .nav-links a:hover{color:#fff;}
+  .nav-links .btn{color:#111;}
+  @media (max-width:820px){.nav-links a:not(.btn){display:none;}}
+
+  /* HERO con video */
+  .hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden;}
+  .hero video,.hero .poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .hero::after{content:"";position:absolute;inset:0;background:
+    linear-gradient(180deg,rgba(10,9,9,.55) 0%,rgba(10,9,9,.05) 28%,rgba(10,9,9,.25) 55%,rgba(10,9,9,.96) 100%),
+    radial-gradient(ellipse at 20% 80%,rgba(168,50,70,.25),transparent 60%);}
+  .hero-content{position:relative;z-index:2;width:100%;max-width:1240px;margin:0 auto;padding:0 22px 9vh;}
+  .live{display:inline-flex;align-items:center;gap:9px;font-size:13px;font-weight:600;padding:7px 14px;border-radius:999px;background:rgba(10,9,9,.5);border:1px solid rgba(245,238,225,.2);backdrop-filter:blur(6px);margin-bottom:18px;}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:blink 1.6s infinite;}
+  .dot.off{background:var(--muted);box-shadow:none;animation:none;}
+  @keyframes blink{50%{opacity:.25}}
+  .hero h1{font-family:var(--gothic);font-weight:400;font-size:clamp(58px,11vw,150px);line-height:.9;text-shadow:0 8px 40px rgba(0,0,0,.6);}
+  .hero h1 small{display:block;font-family:var(--display);font-weight:600;text-transform:uppercase;font-size:clamp(14px,1.8vw,20px);letter-spacing:.55em;color:var(--rose);margin-top:14px;text-shadow:none;}
+  .hero p{max-width:470px;color:rgba(245,238,225,.85);font-size:17px;margin-top:18px;}
+  .hero-actions{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap;}
+  .scroll-hint{position:absolute;right:26px;bottom:30px;z-index:2;font-family:var(--display);font-size:11px;letter-spacing:.3em;writing-mode:vertical-rl;color:rgba(245,238,225,.6);}
+  .scroll-hint::after{content:"";display:block;width:1px;height:50px;background:linear-gradient(var(--cream),transparent);margin:12px auto 0;animation:drip 2s infinite;}
+  @keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+  @media (max-width:700px){.scroll-hint{display:none;}}
+
+  /* cinta */
+  .marquee{overflow:hidden;border-block:1px solid var(--line);background:var(--surface);padding:16px 0;}
+  .marquee div{display:flex;gap:40px;width:max-content;animation:marq 26s linear infinite;font-family:var(--display);font-size:20px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);}
+  .marquee span::after{content:"✦";margin-left:40px;color:var(--red2);}
+  @keyframes marq{to{transform:translateX(-50%)}}
+
+  section{padding:96px 0;}
+  .head{margin-bottom:42px;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;}
+  .tag{font-family:var(--display);font-size:13px;color:var(--rose);text-transform:uppercase;letter-spacing:.3em;display:block;margin-bottom:10px;}
+  .title{font-family:var(--gothic);font-weight:400;font-size:clamp(44px,6.5vw,78px);line-height:.95;}
+
+  /* galería */
+  .gallery{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;}
+  .gallery figure{position:relative;overflow:hidden;border-radius:var(--radius);background:var(--surface);aspect-ratio:3/4.4;}
+  .gallery figure:nth-child(even){transform:translateY(34px);}
+  .gallery img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.2,.7,.2,1),filter .4s;filter:saturate(.9);}
+  .gallery figure:hover img{transform:scale(1.06);filter:saturate(1.1);}
+  .gallery figcaption{position:absolute;left:0;right:0;bottom:0;padding:40px 16px 14px;background:linear-gradient(transparent,rgba(0,0,0,.8));font-family:var(--gothic);font-size:28px;}
+  @media (max-width:860px){.gallery{grid-template-columns:repeat(2,1fr);} .gallery figure:nth-child(even){transform:none;}
+    .gallery figure:first-child{grid-column:span 2;aspect-ratio:4/3.6;}}
+  #trabajos{padding-bottom:130px;}
+  @media (max-width:860px){#trabajos{padding-bottom:96px;}}
+
+  /* servicios */
+  .services{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;}
+  .svc{position:relative;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 20px;transition:border-color .2s,transform .2s;overflow:hidden;}
+  .svc:hover{border-color:var(--rose);transform:translateY(-3px);}
+  .svc.feat{background:linear-gradient(150deg,#2a1218,var(--surface) 65%);border-color:rgba(200,67,91,.5);}
+  .svc .badge{position:absolute;top:16px;right:16px;font-size:10px;font-weight:800;letter-spacing:.12em;background:var(--red2);color:#fff;padding:4px 9px;border-radius:999px;}
+  .svc h3{font-family:var(--display);text-transform:uppercase;font-size:21px;letter-spacing:.03em;padding-right:70px;}
+  .svc p{color:var(--muted);font-size:13.5px;margin-top:6px;min-height:40px;}
+  .svc .foot{display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);}
+  .svc .price{font-family:var(--display);font-size:22px;}
+  .svc .dur{font-size:12px;color:var(--muted);}
+  .skeleton{height:150px;border-radius:var(--radius);background:linear-gradient(90deg,var(--surface),var(--surface-2),var(--surface));background-size:200% 100%;animation:sk 1.2s infinite;}
+  @keyframes sk{to{background-position:-200% 0}}
+
+  /* barberos */
+  .barbers{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;}
+  .barber{display:grid;grid-template-columns:120px 1fr;gap:18px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;}
+  .barber .ph{width:120px;height:140px;border-radius:10px;overflow:hidden;background:var(--surface-2);display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-size:64px;color:var(--rose);}
+  .barber .ph img{width:100%;height:100%;object-fit:cover;object-position:70% 20%;}
+  .barber h3{font-family:var(--gothic);font-weight:400;font-size:40px;line-height:1;}
+  .barber p{color:var(--muted);font-size:13.5px;margin:6px 0 14px;}
+
+  /* agenda */
+  .booking{background:var(--surface);border-block:1px solid var(--line);}
+  .book-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:40px;align-items:start;}
+  @media (max-width:900px){.book-grid{grid-template-columns:1fr;}}
+  .steps{list-style:none;display:grid;gap:14px;margin-top:26px;}
+  .steps li{display:flex;gap:14px;align-items:flex-start;color:var(--muted);font-size:15px;}
+  .steps b{flex:0 0 34px;height:34px;border-radius:50%;border:1px solid var(--rose);color:var(--rose);display:flex;align-items:center;justify-content:center;font-family:var(--display);}
+  .ticket{background:var(--bg);border:1px solid var(--line);border-radius:18px;overflow:hidden;}
+  .ticket-head{background:var(--cream);color:#111;padding:14px 22px;display:flex;justify-content:space-between;align-items:center;font-family:var(--display);font-weight:700;letter-spacing:.14em;font-size:13px;}
+  .ticket-body{padding:22px;}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;}
+  .chip{padding:11px 15px;border-radius:10px;border:1px solid var(--line);background:transparent;font-size:14px;font-weight:600;transition:.15s;text-align:left;}
+  .chip small{display:block;color:var(--muted);font-weight:500;font-size:12px;}
+  .chip.on{border-color:var(--cream);background:var(--cream);color:#111;}
+  .chip.on small{color:#555;}
+  .days{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none;}
+  .days::-webkit-scrollbar{display:none;}
+  .day{flex:0 0 auto;width:64px;padding:9px 0;border-radius:12px;border:1px solid var(--line);background:transparent;text-align:center;}
+  .day small{display:block;font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
+  .day b{display:block;font-family:var(--display);font-size:22px;margin-top:2px;}
+  .day.on{border-color:var(--rose);background:rgba(201,143,154,.14);}
+  .day.on small{color:var(--rose);}
+  .slots{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+  @media (max-width:420px){.slots{grid-template-columns:repeat(3,1fr);}}
+  .slot{padding:11px 4px;border-radius:9px;border:1px solid var(--line);background:transparent;font-size:13.5px;font-weight:700;transition:.15s;}
+  .slot:hover:not(:disabled){border-color:var(--cream);}
+  .slot.on{background:var(--cream);color:#111;border-color:var(--cream);}
+  .slot:disabled{opacity:.28;cursor:not-allowed;text-decoration:line-through;}
+  .hint{grid-column:1/-1;color:var(--muted);font-size:13px;padding:16px;text-align:center;border:1px dashed var(--line);border-radius:10px;}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media (max-width:480px){.two{grid-template-columns:1fr;}}
+  .perf{border-top:2px dashed var(--line);margin:0 22px;position:relative;}
+  .perf::before,.perf::after{content:"";position:absolute;top:-12px;width:22px;height:22px;border-radius:50%;background:var(--surface);}
+  .perf::before{left:-34px;} .perf::after{right:-34px;}
+  .summary{padding:16px 22px;font-size:13px;color:var(--muted);line-height:2;}
+  .summary div{display:flex;justify-content:space-between;gap:10px;}
+  .summary b{color:var(--cream);text-align:right;}
+  .summary .total b{font-family:var(--display);font-size:18px;}
+  .ticket-foot{padding:4px 22px 24px;}
+  .ticket-foot .btn{width:100%;}
+  .msg{font-size:13px;text-align:center;margin-top:12px;color:var(--danger);min-height:18px;}
+  .mine{margin-top:22px;background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:16px;}
+  .mine h4{font-family:var(--display);text-transform:uppercase;letter-spacing:.1em;font-size:14px;margin-bottom:10px;}
+  .mine-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line);font-size:14px;}
+  .mine-row:first-of-type{border-top:0;}
+  .mine-row span{color:var(--muted);font-size:12.5px;display:block;}
+  .linkbtn{background:none;border:0;color:var(--rose);font-weight:700;font-size:13px;text-decoration:underline;}
+
+  /* club */
+  .club{position:relative;overflow:hidden;border-radius:24px;border:1px solid rgba(200,67,91,.45);background:linear-gradient(120deg,#2a1218 0%,#121010 55%,#141a33 120%);padding:44px;display:grid;grid-template-columns:1.2fr 1fr;gap:30px;align-items:center;}
+  @media (max-width:820px){.club{grid-template-columns:1fr;padding:30px 22px;}}
+  .club h2{font-family:var(--gothic);font-weight:400;font-size:clamp(46px,6vw,70px);line-height:.95;}
+  .club p{color:rgba(245,238,225,.8);margin:14px 0 24px;max-width:460px;}
+  .mini-card{background:var(--cream);color:#111;border-radius:18px;padding:20px;max-width:340px;justify-self:center;width:100%;transform:rotate(-3deg);box-shadow:0 30px 60px rgba(0,0,0,.5);}
+  .mini-card .top{display:flex;justify-content:space-between;align-items:center;}
+  .mini-card .top img{height:48px;}
+  .mini-card .top b{font-family:var(--display);letter-spacing:.14em;font-size:12px;}
+  .mini-stamps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px;}
+  .mini-stamps i{aspect-ratio:1;border-radius:50%;border:2px dashed #bbb;display:flex;align-items:center;justify-content:center;font-style:normal;font-family:var(--gothic);font-size:22px;}
+  .mini-stamps i.f{border:0;background:#111;color:var(--cream);}
+  .mini-stamps i.g{border:2px solid var(--red);color:var(--red);font-family:var(--display);font-size:10px;font-weight:700;text-align:center;line-height:1.1;}
+
+  /* visítanos */
+  .visit{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  @media (max-width:760px){.visit{grid-template-columns:1fr;}}
+  .visit a,.visit div{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px;display:block;transition:border-color .2s;}
+  .visit a:hover{border-color:var(--rose);}
+  .visit small{font-family:var(--display);letter-spacing:.2em;text-transform:uppercase;color:var(--rose);font-size:12px;}
+  .visit b{display:block;font-size:17px;margin-top:6px;}
+
+  footer{padding:60px 0 46px;text-align:center;color:var(--muted);font-size:13px;border-top:1px solid var(--line);}
+  footer img{width:150px;margin:0 auto 16px;}
+  .legion{margin-top:16px;font-size:11px;color:#5e5750;}
+  .legion a{text-decoration:underline;}
+
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s,transform .8s cubic-bezier(.2,.7,.2,1);}
+  .reveal.in{opacity:1;transform:none;}
+  .wa-float{position:fixed;right:18px;bottom:18px;z-index:55;width:58px;height:58px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(0,0,0,.45);}
+  .wa-float[hidden]{display:none;}
+  .wa-float svg{width:30px;height:30px;fill:#fff;}
+</style>
+</head>
+<body>
+
+<div id="preloader" aria-hidden="true">
+  <div class="pre-stage"><img class="pre-logo" src="assets/img/logo-ghetto-oscuro.png" alt=""><div class="pre-blade"></div></div>
+  <div class="stars"><i></i><i></i><i></i><i></i><i></i></div>
+</div>
+
+<header id="top">
+  <nav>
+    <a href="#" class="brand" aria-label="Ghetto Barbershop SM, inicio"><img src="assets/img/logo-ghetto-oscuro.png" alt="Ghetto Barbershop SM"></a>
+    <div class="nav-links">
+      <a href="#trabajos">Trabajos</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#club">Club</a>
+      <a href="#agenda" class="btn btn-cream btn-sm">Agendar</a>
+    </div>
+  </nav>
+</header>
+
+<section class="hero" style="padding:0">
+  <img class="poster" id="heroPoster" src="assets/img/poster-v.jpg" alt="">
+  <video id="heroVideo" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+  <div class="hero-content">
+    <span class="live"><span class="dot" id="liveDot"></span><span id="liveTxt">Bogotá · Agenda en línea</span></span>
+    <h1>Ghetto Barbershop<small>Since the streets · SM</small></h1>
+    <p>Fades, diseños, freestyle y color. Tu estilo habla por ti: elige tu corte y tu hora sin hacer fila.</p>
+    <div class="hero-actions">
+      <a href="#agenda" class="btn btn-cream">Agendar turno</a>
+      <a href="club/" class="btn btn-ghost">Club Ghetto</a>
+    </div>
+  </div>
+  <div class="scroll-hint">DESLIZA</div>
+</section>
+
+<div class="marquee" aria-hidden="true"><div>
+  <span>Fades</span><span>Diseños</span><span>Freestyle</span><span>Color</span><span>Platinado</span><span>Mullet</span><span>Barba</span>
+  <span>Fades</span><span>Diseños</span><span>Freestyle</span><span>Color</span><span>Platinado</span><span>Mullet</span><span>Barba</span>
+</div></div>
+
+<section id="trabajos">
+  <div class="wrap">
+    <div class="head reveal">
+      <div><span class="tag">El trabajo habla</span><h2 class="title">Nuestros cortes</h2></div>
+      <a class="btn btn-ghost btn-sm" id="igLink" href="https://www.instagram.com/santiiighetto/" target="_blank" rel="noopener">Ver más en Instagram</a>
+    </div>
+    <div class="gallery">
+      <figure class="reveal"><img src="assets/img/corte-platino-diseno.webp" alt="Corte platinado con diseño de líneas" loading="lazy"><figcaption>Platino</figcaption></figure>
+      <figure class="reveal"><img src="assets/img/corte-mecha-azul.webp" alt="Corte con mecha de color azul" loading="lazy"><figcaption>Color</figcaption></figure>
+      <figure class="reveal"><img src="assets/img/corte-freestyle.webp" alt="Diseño freestyle a mano alzada" loading="lazy"><figcaption>Freestyle</figcaption></figure>
+      <figure class="reveal"><img src="assets/img/corte-mullet.webp" alt="Corte mullet con degradado" loading="lazy"><figcaption>Mullet</figcaption></figure>
+      <figure class="reveal"><img src="assets/img/corte-con-santi.webp" alt="Santi terminando un diseño a un niño" loading="lazy"><figcaption>Detalle</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="servicios" style="padding-top:0">
+  <div class="wrap">
+    <div class="head reveal"><div><span class="tag">Carta</span><h2 class="title">Servicios</h2></div></div>
+    <div class="services" id="services"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>
+  </div>
+</section>
+
+<section id="equipo" style="padding-top:0">
+  <div class="wrap">
+    <div class="head reveal"><div><span class="tag">En la silla</span><h2 class="title">El equipo</h2></div></div>
+    <div class="barbers" id="barbers"></div>
+  </div>
+</section>
+
+<section id="agenda" class="booking">
+  <div class="wrap book-grid">
+    <div class="reveal">
+      <span class="tag">Reserva en línea</span>
+      <h2 class="title">Agenda tu turno</h2>
+      <p class="muted" style="margin-top:14px;max-width:420px">Escoge el servicio, el día y la hora que te sirva. El turno queda apartado de una vez y le aparece al barbero.</p>
+      <ol class="steps">
+        <li><b>1</b><span>Elige el servicio y tu barbero.</span></li>
+        <li><b>2</b><span>Escoge el día y una hora libre.</span></li>
+        <li><b>3</b><span>Pon tu nombre y WhatsApp, y listo.</span></li>
+      </ol>
+      <div class="mine" id="mine" hidden><h4>Tus próximos turnos</h4><div id="mineList"></div></div>
+    </div>
+
+    <form class="ticket reveal" id="form" novalidate>
+      <div class="ticket-head"><span>GHETTO · TICKET</span><span>✦ ✦ ✦</span></div>
+      <div class="ticket-body">
+        <div class="field"><label id="lblSvc">Servicio</label><div class="chips" id="svcChips" role="radiogroup" aria-labelledby="lblSvc"></div></div>
+        <div class="field" id="barberField"><label id="lblBar">Barbero</label><div class="chips" id="barChips" role="radiogroup" aria-labelledby="lblBar"></div></div>
+        <div class="field"><label id="lblDay">Día</label><div class="days" id="days" role="radiogroup" aria-labelledby="lblDay"></div></div>
+        <div class="field"><label id="lblSlot">Hora</label><div class="slots" id="slots" role="radiogroup" aria-labelledby="lblSlot"><div class="hint">Elige el servicio y el día para ver las horas libres.</div></div></div>
+        <div class="two">
+          <div class="field"><label for="name">Tu nombre</label><input id="name" autocomplete="name" placeholder="¿Cómo te llamas?" maxlength="60"></div>
+          <div class="field"><label for="tel">Tu WhatsApp</label><input id="tel" type="tel" inputmode="numeric" autocomplete="tel" placeholder="300 000 0000" maxlength="14"></div>
+        </div>
+      </div>
+      <div class="perf"></div>
+      <div class="summary" id="summary"></div>
+      <div class="ticket-foot">
+        <button class="btn btn-red" id="submit" type="submit">Apartar mi turno</button>
+        <div class="msg" id="msg" role="alert"></div>
+      </div>
+    </form>
+  </div>
+</section>
+
+<section id="club">
+  <div class="wrap">
+    <div class="club reveal">
+      <div>
+        <span class="tag">Fidelización</span>
+        <h2>Club Ghetto</h2>
+        <p>Cada visita suma un sello en tu tarjeta del celular. Completa <b id="metaTxt">8</b> sellos y tu <b id="premioTxt">corte va por la casa</b>. Unirte es gratis y te regalamos el primer sello.</p>
+        <a class="btn btn-cream" href="club/">Quiero mi tarjeta</a>
+      </div>
+      <div class="mini-card" aria-hidden="true">
+        <div class="top"><img src="assets/img/logo-ghetto.png" alt=""><b>CLUB GHETTO</b></div>
+        <div class="mini-stamps" id="miniStamps"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="visitanos" style="padding-top:0">
+  <div class="wrap">
+    <div class="head reveal"><div><span class="tag">Visítanos</span><h2 class="title">Te esperamos</h2></div></div>
+    <div class="visit reveal">
+      <a id="vDir" href="#" target="_blank" rel="noopener"><small>Dónde</small><b id="dirTxt">Bogotá D.C.</b></a>
+      <div><small>Horario</small><b id="horTxt">Lunes a domingo</b></div>
+      <a id="vIg" href="https://www.instagram.com/santiiighetto/" target="_blank" rel="noopener"><small>Instagram</small><b id="igTxt">@santiiighetto</b></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a href="admin.html" aria-label="Acceso para barberos"><img src="assets/img/logo-ghetto-oscuro.png" alt="Ghetto Barbershop SM"></a>
+  <div class="stars" style="margin-bottom:14px"><i></i><i></i><i></i><i></i><i></i></div>
+  <p>© <span id="year"></span> Ghetto Barbershop SM · Bogotá</p>
+  <p class="legion">Página y sistema de reservas por <a href="https://legionestudio.com" target="_blank" rel="noopener">Legion Estudio</a></p>
+</footer>
+
+<a class="wa-float" id="waFloat" hidden target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.3zM12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2z"/></svg>
+</a>
+
+<script src="assets/gb.js"></script>
+<script>
+const { rpc, esc, money, toMin, fromMin, time12, addDays, parseDate, dateLong, dateShort, telFmt, waLink, alertBox, confirmBox, toast } = GB;
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* ---------- preloader ---------- */
+(function () {
+  const t0 = Date.now(); let done = false;
+  const hide = () => { if (done) return; done = true; setTimeout(() => { const p = document.getElementById('preloader'); p.classList.add('hidden'); setTimeout(() => p.remove(), 600); }, Math.max(0, 1700 - (Date.now() - t0))); };
+  if (document.readyState === 'complete') hide(); else addEventListener('load', hide);
+  setTimeout(hide, 4000);
+})();
+
+/* ---------- video del banner: vertical en celular, horizontal en computador ---------- */
+(function () {
+  const v = document.getElementById('heroVideo'), poster = document.getElementById('heroPoster');
+  const wide = matchMedia('(min-aspect-ratio: 1/1)').matches;
+  poster.src = wide ? 'assets/img/poster-h.jpg' : 'assets/img/poster-v.jpg';
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  v.src = wide ? 'assets/banner-h.mp4' : 'assets/banner-v.mp4';
+  v.addEventListener('playing', () => { poster.style.opacity = 0; });
+  v.play().catch(() => {});
+})();
+
+/* ---------- header sólido al bajar + animaciones de entrada ---------- */
+const header = document.getElementById('top');
+addEventListener('scroll', () => header.classList.toggle('solid', scrollY > 40), { passive: true });
+const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
+document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+/* ---------- estado ---------- */
+let INFO = null, CFG = {}, svc = null, bar = null, day = '', slot = '';
+let loadedAt = Date.now();
+const MINE_KEY = 'ghetto_mis_turnos';
+
+function nowMinBogota() {   // hora del servidor (Bogotá) + lo que ha pasado desde que cargó
+  return toMin(INFO.ahora) + Math.floor((Date.now() - loadedAt) / 60000);
+}
+
+async function init() {
+  try {
+    INFO = await rpc('gb_info'); loadedAt = Date.now(); CFG = INFO.config || {};
+  } catch (e) {
+    document.getElementById('services').innerHTML = `<div class="hint">${esc(e.message)}</div>`;
+    return;
+  }
+  paintInfo(); paintServices(); paintBarbers(); paintDays(); paintSummary(); paintMine();
+}
+
+function paintInfo() {
+  const abre = toMin(CFG.hora_abre || '09:00'), cierra = toMin(CFG.hora_cierra || '20:00');
+  const dow = parseDate(INFO.hoy).getDay(), n = nowMinBogota();
+  const open = !(CFG.dias_cerrados || []).includes(String(dow)) && n >= abre && n < cierra;
+  document.getElementById('liveDot').classList.toggle('off', !open);
+  document.getElementById('liveTxt').textContent = open ? `Abierto ahora · hasta las ${time12(CFG.hora_cierra)}` : `Cerrado ahora · agenda para después`;
+  document.getElementById('metaTxt').textContent = CFG.meta_sellos || 8;
+  document.getElementById('premioTxt').textContent = (CFG.premio || 'Corte gratis').toLowerCase();
+  document.getElementById('horTxt').textContent = CFG.horario_texto || `${time12(CFG.hora_abre)} – ${time12(CFG.hora_cierra)}`;
+  document.getElementById('dirTxt').textContent = CFG.direccion || 'Bogotá D.C.';
+  const vDir = document.getElementById('vDir');
+  vDir.href = CFG.mapa || `https://www.google.com/maps/search/${encodeURIComponent((CFG.nombre || 'Ghetto Barbershop') + ' ' + (CFG.direccion || 'Bogotá'))}`;
+  if (CFG.instagram) {
+    const ig = `https://www.instagram.com/${CFG.instagram.replace('@', '')}/`;
+    document.getElementById('vIg').href = ig; document.getElementById('igLink').href = ig;
+    document.getElementById('igTxt').textContent = '@' + CFG.instagram.replace('@', '');
+  }
+  if (CFG.whatsapp) {
+    const w = document.getElementById('waFloat'); w.hidden = false;
+    w.href = waLink(CFG.whatsapp, 'Hola! Quiero información de Ghetto Barbershop.');
+  }
+  const meta = Number(CFG.meta_sellos || 8);
+  document.getElementById('miniStamps').innerHTML = Array.from({ length: meta }, (_, i) =>
+    i === meta - 1 ? '<i class="g">CORTE<br>GRATIS</i>' : `<i class="${i < 5 ? 'f' : ''}">${i < 5 ? 'G' : ''}</i>`).join('');
+}
+
+function paintServices() {
+  const box = document.getElementById('services'), chips = document.getElementById('svcChips');
+  box.innerHTML = ''; chips.innerHTML = '';
+  INFO.servicios.forEach((s) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'svc' + (s.destacado ? ' feat' : '');
+    b.innerHTML = `${s.destacado ? '<span class="badge">EL MÁS PEDIDO</span>' : ''}<h3>${esc(s.nombre)}</h3><p>${esc(s.descripcion)}</p>
+      <div class="foot"><span class="price">${s.precio != null ? money(s.precio) : 'Se cotiza'}</span><span class="dur">${s.duracion} min</span></div>`;
+    b.onclick = () => { pickSvc(s.id); document.getElementById('agenda').scrollIntoView({ behavior: 'smooth' }); };
+    box.appendChild(b);
+    const c = document.createElement('button');
+    c.type = 'button'; c.className = 'chip'; c.dataset.id = s.id; c.setAttribute('role', 'radio'); c.setAttribute('aria-checked', 'false');
+    c.innerHTML = `${esc(s.nombre)}<small>${s.precio != null ? money(s.precio) : 'Se cotiza'} · ${s.duracion} min</small>`;
+    c.onclick = () => pickSvc(s.id);
+    chips.appendChild(c);
+  });
+}
+function pickSvc(id) {
+  svc = INFO.servicios.find((s) => s.id === id);
+  document.querySelectorAll('#svcChips .chip').forEach((c) => { const on = c.dataset.id === id; c.classList.toggle('on', on); c.setAttribute('aria-checked', on); });
+  refreshSlots();
+}
+
+function paintBarbers() {
+  const box = document.getElementById('barbers'), chips = document.getElementById('barChips');
+  box.innerHTML = ''; chips.innerHTML = '';
+  INFO.barberos.forEach((b) => {
+    const photo = /^santi/i.test(b.nombre) ? '<img src="assets/img/corte-con-santi.webp" alt="">' : esc(b.nombre[0]);
+    const card = document.createElement('div');
+    card.className = 'barber reveal in';
+    card.innerHTML = `<div class="ph">${photo}</div><div><h3>${esc(b.nombre)}</h3><p>${esc(b.especialidad)}</p>
+      <button type="button" class="btn btn-ghost btn-sm">Agendar con ${esc(b.nombre)}</button></div>`;
+    card.querySelector('button').onclick = () => { pickBar(b.id); document.getElementById('agenda').scrollIntoView({ behavior: 'smooth' }); };
+    box.appendChild(card);
+    const c = document.createElement('button');
+    c.type = 'button'; c.className = 'chip'; c.dataset.id = b.id; c.textContent = b.nombre; c.setAttribute('role', 'radio');
+    c.onclick = () => pickBar(b.id);
+    chips.appendChild(c);
+  });
+  if (INFO.barberos.length === 1) { pickBar(INFO.barberos[0].id); document.getElementById('barberField').hidden = true; }
+}
+function pickBar(id) {
+  bar = INFO.barberos.find((b) => b.id === id);
+  document.querySelectorAll('#barChips .chip').forEach((c) => { const on = c.dataset.id === id; c.classList.toggle('on', on); c.setAttribute('aria-checked', on); });
+  refreshSlots();
+}
+
+function paintDays() {
+  const box = document.getElementById('days'); box.innerHTML = '';
+  const closed = (CFG.dias_cerrados || []).map(String);
+  const max = Number(CFG.dias_adelante || 21);
+  const DOW = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+  for (let i = 0, n = 0; i <= max && n < 14; i++) {
+    const d = addDays(INFO.hoy, i), dt = parseDate(d);
+    if (closed.includes(String(dt.getDay()))) continue;
+    if (i === 0 && nowMinBogota() >= toMin(CFG.hora_cierra || '20:00') - 20) continue; // hoy ya cerró
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'day'; b.dataset.d = d; b.setAttribute('role', 'radio');
+    b.setAttribute('aria-label', dateLong(d));
+    b.innerHTML = `<small>${i === 0 ? 'Hoy' : i === 1 ? 'Mañana' : DOW[dt.getDay()]}</small><b>${dt.getDate()}</b>`;
+    b.onclick = () => { day = d; box.querySelectorAll('.day').forEach((x) => { x.classList.toggle('on', x === b); x.setAttribute('aria-checked', x === b); }); refreshSlots(); };
+    box.appendChild(b); n++;
+  }
+}
+
+let slotReq = 0;
+async function refreshSlots() {
+  slot = ''; paintSummary();
+  const box = document.getElementById('slots');
+  if (!svc || !bar || !day) { box.innerHTML = '<div class="hint">Elige el servicio y el día para ver las horas libres.</div>'; return; }
+  box.innerHTML = '<div class="hint"><span class="spin"></span></div>';
+  const my = ++slotReq;
+  let occ;
+  try { occ = await rpc('gb_ocupado', { p_barbero: bar.id, p_fecha: day }); }
+  catch (e) { box.innerHTML = `<div class="hint">${esc(e.message)}</div>`; return; }
+  if (my !== slotReq) return;
+  if (occ.todo_dia) { box.innerHTML = `<div class="hint">${esc(bar.nombre)} no atiende este día. Prueba otro.</div>`; return; }
+  const step = Number(CFG.intervalo || 20), abre = toMin(CFG.hora_abre || '09:00'), cierra = toMin(CFG.hora_cierra || '20:00');
+  const now = day === INFO.hoy ? nowMinBogota() : -1;
+  box.innerHTML = ''; let free = 0;
+  for (let m = abre; m + svc.duracion <= cierra; m += step) {
+    const end = m + svc.duracion;
+    const busy = occ.rangos.some(([a, b]) => a < end && b > m);
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'slot'; b.textContent = time12(fromMin(m)); b.setAttribute('role', 'radio');
+    if (busy || m <= now) { b.disabled = true; b.title = busy ? 'Ocupado' : 'Ya pasó'; }
+    else {
+      free++;
+      b.onclick = () => { slot = fromMin(m); box.querySelectorAll('.slot').forEach((x) => { x.classList.toggle('on', x === b); x.setAttribute('aria-checked', x === b); }); paintSummary(); };
+    }
+    box.appendChild(b);
+  }
+  if (!free) box.innerHTML = '<div class="hint">No quedan horas libres ese día. Prueba otro día.</div>';
+}
+
+function paintSummary() {
+  const name = document.getElementById('name').value.trim();
+  document.getElementById('summary').innerHTML = `
+    <div><span>SERVICIO</span><b>${svc ? esc(svc.nombre) : '—'}</b></div>
+    ${INFO && INFO.barberos.length > 1 ? `<div><span>BARBERO</span><b>${bar ? esc(bar.nombre) : '—'}</b></div>` : ''}
+    <div><span>DÍA</span><b>${day ? dateShort(day) : '—'}</b></div>
+    <div><span>HORA</span><b>${slot ? time12(slot) : '—'}</b></div>
+    <div><span>CLIENTE</span><b>${esc(name) || '—'}</b></div>
+    <div class="total"><span>VALOR</span><b>${svc ? (svc.precio != null ? money(svc.precio) : 'Se cotiza') : '—'}</b></div>`;
+}
+document.getElementById('name').addEventListener('input', paintSummary);
+
+/* ---------- apartar turno ---------- */
+const form = document.getElementById('form'), msg = document.getElementById('msg'), submit = document.getElementById('submit');
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (submit.disabled || !INFO) return;
+  msg.textContent = '';
+  const name = document.getElementById('name').value.trim();
+  const tel = document.getElementById('tel').value.replace(/\D/g, '').slice(-10);
+  const fail = (m, el) => { msg.textContent = m; if (el) el.focus(); };
+  if (!svc) return fail('Elige el servicio.');
+  if (!bar) return fail('Elige el barbero.');
+  if (!day) return fail('Elige el día.');
+  if (!slot) return fail('Elige una hora libre.');
+  if (name.length < 2) return fail('Escribe tu nombre.', document.getElementById('name'));
+  if (tel.length !== 10) return fail('Escribe tu WhatsApp (10 dígitos).', document.getElementById('tel'));
+  submit.disabled = true; submit.innerHTML = '<span class="spin"></span> Apartando…';
+  try {
+    const r = await rpc('gb_agendar', { p_barbero: bar.id, p_servicio: svc.id, p_nombre: name, p_tel: tel, p_fecha: day, p_hora: slot });
+    const mine = JSON.parse(localStorage.getItem(MINE_KEY) || '[]');
+    mine.push({ id: r.id, tel }); localStorage.setItem(MINE_KEY, JSON.stringify(mine.slice(-10)));
+    const resumen = `${dateLong(day)} · ${time12(slot)}`;
+    const btns = [{ label: 'Listo', value: true, primary: !CFG.whatsapp }];
+    if (CFG.whatsapp) btns.push({ label: 'Avisar por WhatsApp', value: true, cls: 'btn-wa',
+      href: waLink(CFG.whatsapp, `Hola ${bar.nombre}! Soy ${name}. Aparté turno en Ghetto Barbershop:\n${resumen}\n${svc.nombre}`) });
+    await GB.modal(`<h3>Turno apartado ✦</h3><p><b>${esc(svc.nombre)}</b> con <b>${esc(bar.nombre)}</b></p>
+      <p style="font-size:18px;margin:8px 0">${esc(resumen)}</p>
+      <p class="muted">Llega 5 minutos antes. Si no puedes venir, cancélalo aquí mismo en "Tus próximos turnos".</p>`, btns);
+    document.getElementById('name').value = '';
+    refreshSlots(); paintMine();
+  } catch (err) {
+    fail(err.message); refreshSlots();
+  } finally {
+    submit.disabled = false; submit.textContent = 'Apartar mi turno';
+  }
+});
+
+/* ---------- mis turnos (guardados en este celular) ---------- */
+async function paintMine() {
+  const mine = JSON.parse(localStorage.getItem(MINE_KEY) || '[]');
+  const box = document.getElementById('mine');
+  if (!mine.length) { box.hidden = true; return; }
+  const byTel = {};
+  mine.forEach((m) => { (byTel[m.tel] = byTel[m.tel] || []).push(m.id); });
+  let rows = [];
+  try {
+    for (const tel of Object.keys(byTel)) {
+      const r = await rpc('gb_mis_turnos', { p_ids: byTel[tel], p_tel: tel });
+      r.forEach((x) => rows.push({ ...x, tel }));
+    }
+  } catch (e) { return; }
+  rows = rows.filter((r) => r.estado === 'pendiente' || r.estado === 'confirmado');
+  const keep = new Set(rows.map((r) => r.id));
+  localStorage.setItem(MINE_KEY, JSON.stringify(mine.filter((m) => keep.has(m.id))));
+  if (!rows.length) { box.hidden = true; return; }
+  box.hidden = false;
+  document.getElementById('mineList').innerHTML = rows.map((r) => `<div class="mine-row"><div><b>${esc(dateShort(r.fecha))} · ${time12(r.hora)}</b>
+    <span>${esc(r.servicio)} · ${esc(r.barbero)}</span></div><button type="button" class="linkbtn" data-id="${r.id}" data-tel="${r.tel}">Cancelar</button></div>`).join('');
+  document.querySelectorAll('#mineList .linkbtn').forEach((b) => b.onclick = async () => {
+    if (!(await confirmBox('¿Seguro que quieres cancelar este turno?', 'Sí, cancelar', 'No', true))) return;
+    try { await rpc('gb_cancelar', { p_id: b.dataset.id, p_tel: b.dataset.tel }); toast('Turno cancelado'); paintMine(); refreshSlots(); }
+    catch (e) { alertBox(esc(e.message)); }
+  });
+}
+
+init();
+</script>
+</body>
+</html>
