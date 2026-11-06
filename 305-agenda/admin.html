@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0b0b0b">
+<meta name="robots" content="noindex, nofollow">
+<title>305 Barbering — Panel</title>
+<link rel="icon" href="assets/logo-305.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Playfair+Display:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/base.css">
+<style>
+  body{min-height:100vh;}
+  /* LOGIN */
+  #loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:radial-gradient(ellipse 60% 50% at 50% 15%,rgba(201,162,39,.12),transparent 60%);}
+  .login-box{width:100%;max-width:400px;}
+  .login-logo{width:110px;height:110px;margin:0 auto 12px;filter:drop-shadow(0 0 24px rgba(201,162,39,.3));}
+  .login-title{text-align:center;font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-size:22px;}
+  .login-sub{text-align:center;color:var(--muted);font-size:13px;margin:6px 0 28px;}
+  .pick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:22px;}
+  .pick-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 4px;text-align:center;cursor:pointer;transition:.2s;}
+  .pick-card.active{border-color:var(--gold);background:#1a160b;}
+  .pick-avatar{width:42px;height:42px;border-radius:50%;background:#111;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-family:var(--serif);color:var(--gold2);font-size:18px;}
+  .pick-card.active .pick-avatar{border-color:var(--gold);}
+  .pick-card span{font-size:12px;font-weight:700;}
+  .pin-input{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;color:var(--cream);font-size:22px;letter-spacing:.5em;text-align:center;}
+  .pin-input:focus{outline:none;border-color:var(--gold);}
+  .lbl{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;font-weight:700;}
+  .btn{width:100%;padding:15px;border:none;border-radius:10px;font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;transition:.2s;}
+  .btn-gold{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#111;}
+  .login-msg{text-align:center;font-size:12.5px;color:var(--red);margin-top:12px;min-height:16px;}
+  .demo-hint{margin-top:22px;text-align:center;font-size:12px;color:var(--muted);border:1px dashed var(--line);border-radius:10px;padding:10px;}
+  .demo-hint b{color:var(--gold2);letter-spacing:.2em;}
+  .back-link{display:block;text-align:center;margin-top:16px;font-size:12.5px;color:var(--muted);}
+
+  /* DASHBOARD */
+  #dashboard{display:none;}
+  header.dash{position:sticky;top:0;z-index:10;background:rgba(11,11,11,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 18px;display:flex;justify-content:space-between;align-items:center;gap:10px;}
+  .who{display:flex;align-items:center;gap:12px;}
+  .who-avatar{width:42px;height:42px;border-radius:50%;background:#111;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--serif);color:var(--gold2);font-size:18px;}
+  .who-name{font-weight:800;font-size:15px;}
+  .who-role{font-size:11px;color:var(--gold);letter-spacing:.12em;font-weight:700;}
+  .hdr-actions{display:flex;gap:8px;flex-shrink:0;}
+  .ghost-btn{white-space:nowrap;}
+  .ghost-btn{background:transparent;border:1px solid var(--line);color:var(--muted);padding:9px 14px;border-radius:8px;font-size:12px;cursor:pointer;font-weight:700;}
+  .ghost-btn:hover{border-color:var(--gold);color:var(--gold2);}
+  .wrap{max-width:920px;margin:0 auto;padding:24px 18px 70px;}
+
+  .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:26px;}
+  @media (max-width:700px){.stats-grid{grid-template-columns:repeat(2,1fr);}}
+  .stat-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;}
+  .stat-label{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;font-weight:700;}
+  .stat-value{font-family:var(--display);font-size:28px;}
+  .stat-value.gold{color:var(--gold2);}
+
+  .team-box{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;margin-bottom:26px;}
+  .team-row{display:grid;grid-template-columns:1fr auto auto;gap:14px;align-items:center;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14px;}
+  .team-row:last-child{border-bottom:none;}
+  .team-row span{color:var(--muted);font-size:12.5px;}
+  .team-row b.money{font-family:var(--display);color:var(--gold2);font-size:17px;font-weight:600;}
+
+  .reminders{background:rgba(201,162,39,.07);border:1px solid var(--gold);border-radius:var(--radius);padding:16px;margin-bottom:24px;}
+  .reminders-title{font-weight:800;font-size:14px;color:var(--gold2);margin-bottom:12px;}
+  .rem-card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:8px;}
+  .rem-card b{display:block;font-size:14px;}
+  .rem-card span{color:var(--muted);font-size:12px;}
+  .wa-btn{background:#1fa855;color:#fff;border:none;border-radius:8px;padding:9px 14px;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap;}
+  .wa-btn:disabled{opacity:.55;cursor:default;}
+
+  .box{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-top:10px;}
+  .toggle-btn{background:transparent;border:1px dashed var(--gold);color:var(--gold2);padding:13px 16px;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;width:100%;}
+  .toggle-btn:hover{background:rgba(201,162,39,.07);}
+  .sub{color:var(--muted);font-size:12.5px;margin-bottom:16px;line-height:1.5;}
+  .f{margin-bottom:14px;}
+  .f select,.f input{width:100%;background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:12px 14px;color:var(--cream);font-size:14px;color-scheme:dark;}
+  .f select:focus,.f input:focus{outline:none;border-color:var(--gold);}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .msg{font-size:12.5px;color:var(--red);margin-top:10px;min-height:16px;}
+
+  .section-title{font-size:18px;font-weight:800;margin:30px 0 14px;}
+  .tabs-row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;}
+  .tab{padding:8px 14px;border-radius:999px;border:1px solid var(--line);font-size:12px;font-weight:700;cursor:pointer;color:var(--muted);}
+  .tab.active{background:var(--cream);color:#111;border-color:var(--cream);}
+  .chip-btn{background:transparent;border:1px solid var(--line);color:var(--muted);padding:8px 13px;border-radius:999px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;}
+  .chip-btn:hover{border-color:var(--gold);color:var(--gold2);}
+
+  .appt-list{display:flex;flex-direction:column;gap:10px;}
+  .day-sep{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:10px 0 2px;}
+  .appt{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
+  .appt.is-today{border-left:3px solid var(--gold);}
+  .appt-info{flex:1;min-width:190px;}
+  .appt-client{font-weight:800;font-size:15px;}
+  .appt-meta{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.5;}
+  .appt-meta b{color:var(--cream);font-weight:700;}
+  .appt-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
+  .badge{font-size:10px;padding:4px 10px;border-radius:999px;text-transform:uppercase;font-weight:800;letter-spacing:.06em;}
+  .b-pend{background:rgba(201,162,39,.15);color:var(--gold2);}
+  .b-done{background:rgba(34,197,94,.13);color:var(--green);}
+  .b-canc{background:rgba(239,68,68,.12);color:var(--red);}
+  .amount{width:96px;background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:8px 10px;color:var(--cream);font-size:13px;}
+  .mini{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#111;border:none;border-radius:6px;padding:9px 12px;font-size:11.5px;font-weight:800;cursor:pointer;white-space:nowrap;}
+  .mini.sec{background:transparent;border:1px solid var(--line);color:var(--muted);}
+  .mini.sec:hover{border-color:var(--gold);color:var(--gold2);}
+  .x-btn{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:16px;padding:6px 8px;}
+  .x-btn:hover{color:var(--red);}
+  .delay-row{display:none;flex-wrap:wrap;align-items:center;gap:8px;width:100%;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);}
+  .delay-row.open{display:flex;}
+  .delay-row span{font-size:12px;color:var(--muted);width:100%;}
+  .delay-btn{background:transparent;border:1px solid var(--gold);color:var(--gold2);padding:8px 14px;border-radius:999px;font-size:12px;font-weight:800;cursor:pointer;}
+  .delay-btn:hover{background:var(--gold);color:#111;}
+  .empty{text-align:center;padding:44px 20px;color:var(--muted);}
+
+  .avail{margin-top:40px;padding-top:28px;border-top:1px solid var(--line);}
+  .avail-controls{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;margin-bottom:14px;}
+  .avail-controls .f{margin-bottom:0;flex:1;min-width:150px;}
+  .day-btn{padding:12px 16px;border-radius:8px;border:1px solid var(--red);background:transparent;color:var(--red);font-weight:800;font-size:12.5px;cursor:pointer;white-space:nowrap;}
+  .day-btn.active{background:var(--red);color:#fff;}
+  .range-row{display:flex;gap:8px;align-items:center;margin-bottom:16px;flex-wrap:wrap;}
+  .range-row select{background:var(--surface);border:1px solid var(--line);border-radius:8px;color:var(--cream);padding:10px 8px;font-size:13px;color-scheme:dark;}
+  .range-row span{color:var(--muted);font-size:13px;}
+  .slots{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+  @media (max-width:420px){.slots{grid-template-columns:repeat(3,1fr);}}
+  .slot{padding:10px 4px;border-radius:8px;border:1px solid var(--line);background:transparent;color:var(--cream);font-size:13px;font-weight:700;cursor:pointer;transition:.15s;}
+  .slot:hover{border-color:var(--gold);}
+  .slot.blocked{background:var(--red);color:#fff;border-color:var(--red);}
+  .slot.reserved{opacity:.4;cursor:not-allowed;background:var(--surface-2);text-decoration:underline;}
+  .day-blocked{grid-column:1/-1;text-align:center;color:var(--red);font-size:13px;padding:16px;border:1px dashed var(--red);border-radius:8px;}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin-bottom:12px;}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px;border:1px solid var(--line);}
+</style>
+</head>
+<body>
+
+<div id="loginScreen">
+  <div class="login-box">
+    <img class="login-logo" src="assets/logo-305.png" alt="305 Barbering">
+    <div class="login-title">Panel 305</div>
+    <p class="login-sub">Agenda, cobros y horarios de la barbería</p>
+    <div class="pick-grid" id="pickGrid"></div>
+    <label class="lbl" for="pinInput">PIN</label>
+    <input class="pin-input" type="password" id="pinInput" maxlength="4" inputmode="numeric" placeholder="••••" autocomplete="off">
+    <div style="height:14px"></div>
+    <button class="btn btn-gold" id="loginBtn">Entrar</button>
+    <div class="login-msg" id="loginMsg"></div>
+    <div class="demo-hint">Demo · PIN para todos: <b>3050</b></div>
+    <a class="back-link" href="index.html">← Volver a la página de agenda</a>
+  </div>
+</div>
+
+<div id="dashboard">
+  <header class="dash">
+    <div class="who">
+      <div class="who-avatar" id="whoAvatar"></div>
+      <div><div class="who-name" id="whoName"></div><div class="who-role" id="whoRole"></div></div>
+    </div>
+    <div class="hdr-actions">
+      <button class="ghost-btn" id="resetBtn" title="Reiniciar demo: deja todo como nuevo">↺ Reiniciar</button>
+      <button class="ghost-btn" id="logoutBtn">Salir</button>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-label">Turnos de hoy</div><div class="stat-value" id="stToday">0</div></div>
+      <div class="stat-card"><div class="stat-label">Pendientes</div><div class="stat-value" id="stPending">0</div></div>
+      <div class="stat-card"><div class="stat-label">Recaudado hoy</div><div class="stat-value gold" id="stMoneyToday">$0</div></div>
+      <div class="stat-card"><div class="stat-label">Recaudado mes</div><div class="stat-value gold" id="stMoneyMonth">$0</div></div>
+    </div>
+
+    <div class="team-box" id="teamBox" style="display:none;">
+      <div class="lbl" style="margin-bottom:4px;">Rendimiento del equipo · este mes</div>
+      <div id="teamRows"></div>
+    </div>
+
+    <div class="reminders" id="reminders" style="display:none;">
+      <div class="reminders-title">🔔 Recordatorios · próxima hora</div>
+      <div id="remList"></div>
+    </div>
+
+    <button type="button" class="toggle-btn" id="walkinToggle">+ Agendar cliente en persona</button>
+    <div class="box" id="walkinPanel" style="display:none;">
+      <p class="sub">Para quien llega a la barbería sin haber agendado o sin celular. El WhatsApp es opcional.</p>
+      <div class="f owner-only"><label class="lbl">Barbero</label><select id="wBarber"></select></div>
+      <div class="f"><label class="lbl">Servicio</label><select id="wService"></select></div>
+      <div class="f"><label class="lbl">Nombre del cliente</label><input type="text" id="wName" placeholder="Nombre"></div>
+      <div class="f"><label class="lbl">WhatsApp (opcional)</label><input type="tel" id="wPhone" placeholder="Vacío si no tiene"></div>
+      <div class="row2">
+        <div class="f"><label class="lbl">Fecha</label><input type="date" id="wDate"></div>
+        <div class="f"><label class="lbl">Hora</label><select id="wTime"></select></div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button type="button" class="mini" id="wSubmit" style="padding:12px 20px;font-size:12.5px;">Agendar turno</button>
+        <button type="button" class="mini sec" id="wCancel" style="padding:12px 18px;">Cancelar</button>
+      </div>
+      <div class="msg" id="wMsg"></div>
+    </div>
+
+    <div class="section-title">Turnos</div>
+    <div class="tabs-row">
+      <div class="tabs" id="statusTabs">
+        <div class="tab active" data-f="pendiente">Pendientes</div>
+        <div class="tab" data-f="completado">Completados</div>
+        <div class="tab" data-f="cancelado">Cancelados</div>
+        <div class="tab" data-f="todos">Todos</div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <select class="chip-btn owner-only" id="ownerFilter" style="color-scheme:dark;"></select>
+        <button type="button" class="chip-btn" id="completeTodayBtn">Completar los de hoy</button>
+      </div>
+    </div>
+    <div class="appt-list" id="apptList"></div>
+
+    <div class="avail">
+      <div class="section-title" style="margin-top:0;">Disponibilidad</div>
+      <p class="sub">Marca las horas o el día en que NO se atiende. Los clientes no van a poder agendar ahí.</p>
+      <div class="avail-controls">
+        <div class="f owner-only"><label class="lbl">Barbero</label><select id="aBarber"></select></div>
+        <div class="f"><label class="lbl">Fecha</label><input type="date" id="aDate"></div>
+        <button type="button" class="day-btn" id="dayBtn">Bloquear día completo</button>
+      </div>
+      <div class="range-row">
+        <select id="rStart"></select><span>a</span><select id="rEnd"></select>
+        <button type="button" class="mini" id="rangeBtn">Bloquear rango</button>
+      </div>
+      <div class="legend"><span><i></i>Libre (toca para bloquear)</span><span><i style="background:var(--red);border-color:var(--red)"></i>Bloqueado</span><span><i style="background:var(--surface-2);opacity:.5"></i>Con cliente</span></div>
+      <div class="slots" id="aSlots"></div>
+    </div>
+  </div>
+</div>
+<div class="demo-ribbon">DEMO</div>
+
+<script src="assets/store.js"></script>
+<script>
+const { BARBERS, CUTS, ALL_SLOTS, money, formatTime12, blocksForCut, priceOf, esc, todayStr } = AG;
+const OWNER = { id: 'owner', name: 'Dueño', role: 'ADMINISTRADOR · TODO EL EQUIPO' };
+const SESSION_KEY = '305agenda_demo_session';
+let me = null, filter = 'pendiente';
+
+/* ===== Login ===== */
+let picked = null;
+const pickGrid = document.getElementById('pickGrid');
+[...BARBERS, OWNER].forEach(b => {
+  const c = document.createElement('div');
+  c.className = 'pick-card'; c.dataset.id = b.id;
+  c.innerHTML = `<div class="pick-avatar">${b.id === 'owner' ? '♛' : b.name[0]}</div><span>${esc(b.name)}</span>`;
+  c.onclick = () => { picked = b.id; document.querySelectorAll('.pick-card').forEach(x => x.classList.toggle('active', x === c)); document.getElementById('pinInput').focus(); };
+  pickGrid.appendChild(c);
+});
+document.getElementById('loginBtn').onclick = login;
+document.getElementById('pinInput').addEventListener('keydown', e => { if(e.key === 'Enter') login(); });
+function login(){
+  const m = document.getElementById('loginMsg');
+  if(!picked){ m.textContent = 'Elige quién eres primero.'; return; }
+  if(document.getElementById('pinInput').value.trim() !== AG.PIN){ m.textContent = 'PIN incorrecto.'; return; }
+  m.textContent = '';
+  sessionStorage.setItem(SESSION_KEY, picked);
+  enter(picked);
+}
+function enter(id){
+  me = id === 'owner' ? OWNER : BARBERS.find(b => b.id === id);
+  if(!me){ sessionStorage.removeItem(SESSION_KEY); return; }
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  document.getElementById('whoAvatar').textContent = isOwner() ? '♛' : me.name[0];
+  document.getElementById('whoName').textContent = me.name;
+  document.getElementById('whoRole').textContent = isOwner() ? OWNER.role : 'PANEL DE BARBERO';
+  document.querySelectorAll('.owner-only').forEach(el => el.style.display = isOwner() ? '' : 'none');
+  initSelectors(); initWalkin(); initAvailability(); renderAll();
+}
+const isOwner = () => me && me.id === 'owner';
+document.getElementById('logoutBtn').onclick = () => {
+  sessionStorage.removeItem(SESSION_KEY); me = null; picked = null;
+  document.getElementById('pinInput').value = '';
+  document.querySelectorAll('.pick-card').forEach(x => x.classList.remove('active'));
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+};
+document.getElementById('resetBtn').onclick = async () => {
+  if(!(await agConfirm('¿Reiniciar la demo? Se borran los turnos de prueba y se cargan los de ejemplo otra vez.', 'Reiniciar'))) return;
+  AG.reset(); renderAll(); loadAvailability(); refreshWalkinTimes(); agToast('Demo reiniciada');
+};
+
+/* ===== Selectores del dueño ===== */
+function fillBarberSelect(sel, withAll){
+  sel.innerHTML = (withAll ? '<option value="">Todo el equipo</option>' : '') + BARBERS.map(b => `<option value="${b.id}">${esc(b.name)}</option>`).join('');
+}
+function initSelectors(){
+  fillBarberSelect(document.getElementById('ownerFilter'), true);
+  fillBarberSelect(document.getElementById('wBarber'), false);
+  fillBarberSelect(document.getElementById('aBarber'), false);
+  document.getElementById('ownerFilter').onchange = renderAll;
+}
+const walkinBarberId = () => isOwner() ? document.getElementById('wBarber').value : me.id;
+const availBarberId = () => isOwner() ? document.getElementById('aBarber').value : me.id;
+const barberName = id => (BARBERS.find(b => b.id === id) || {}).name || '';
+
+/* ===== Datos visibles ===== */
+function myAppointments(){
+  let list = AG.appointments();
+  if(!isOwner()) list = list.filter(a => a.barber_id === me.id);
+  else { const f = document.getElementById('ownerFilter').value; if(f) list = list.filter(a => a.barber_id === f); }
+  return list.sort((a, b) => (a.appt_date + a.appt_time).localeCompare(b.appt_date + b.appt_time));
+}
+
+function renderAll(){ renderStats(); renderTeam(); renderReminders(); renderList(); }
+
+function renderStats(){
+  const list = myAppointments(), today = todayStr(), month = today.slice(0, 7);
+  const done = list.filter(a => a.status === 'completado');
+  document.getElementById('stToday').textContent = list.filter(a => a.appt_date === today && a.status !== 'cancelado').length;
+  document.getElementById('stPending').textContent = list.filter(a => a.status === 'pendiente').length;
+  document.getElementById('stMoneyToday').textContent = money(done.filter(a => a.appt_date === today).reduce((s, a) => s + Number(a.amount || 0), 0));
+  document.getElementById('stMoneyMonth').textContent = money(done.filter(a => a.appt_date.slice(0, 7) === month).reduce((s, a) => s + Number(a.amount || 0), 0));
+}
+
+function renderTeam(){
+  const box = document.getElementById('teamBox');
+  if(!isOwner()){ box.style.display = 'none'; return; }
+  box.style.display = 'block';
+  const month = todayStr().slice(0, 7), all = AG.appointments();
+  document.getElementById('teamRows').innerHTML = BARBERS.map(b => {
+    const done = all.filter(a => a.barber_id === b.id && a.status === 'completado' && a.appt_date.slice(0, 7) === month);
+    const pend = all.filter(a => a.barber_id === b.id && a.status === 'pendiente').length;
+    return `<div class="team-row"><div><b>${esc(b.name)}</b><br><span>${done.length} cortes · ${pend} pendientes</span></div><span></span><b class="money">${money(done.reduce((s, a) => s + Number(a.amount || 0), 0))}</b></div>`;
+  }).join('');
+}
+
+function waLink(phone, msg){
+  let p = String(phone || '').replace(/\D/g, '');
+  if(p && !p.startsWith('57')) p = '57' + p;
+  return `https://wa.me/${p}?text=${encodeURIComponent(msg)}`;
+}
+// En la demo no se abre WhatsApp: se muestra el mensaje que le llegaría al cliente
+async function previewWhatsApp(title, phone, msg){
+  await agAlert(`<h3>${title}</h3>Así le llega al cliente (${esc(phone)}):<div class="wa-preview">${esc(msg)}</div><p class="muted">En la versión real se abre WhatsApp con este mensaje listo para enviar.</p>`);
+}
+
+function renderReminders(){
+  const sec = document.getElementById('reminders'), list = document.getElementById('remList');
+  const today = todayStr(), n = new Date(), nowMin = n.getHours() * 60 + n.getMinutes();
+  const up = myAppointments().filter(a => {
+    if(a.status !== 'pendiente' || a.appt_date !== today) return false;
+    const [h, m] = a.appt_time.split(':').map(Number);
+    return h * 60 + m >= nowMin && h * 60 + m <= nowMin + 60;
+  });
+  if(!up.length){ sec.style.display = 'none'; return; }
+  sec.style.display = 'block';
+  list.innerHTML = '';
+  up.forEach(a => {
+    const card = document.createElement('div');
+    card.className = 'rem-card';
+    card.innerHTML = `<div><b>${esc(a.client_name)}</b><span>${formatTime12(a.appt_time)} · ${esc(a.service)}${isOwner() ? ' · ' + esc(a.barber_name) : ''}</span></div>`;
+    const btn = document.createElement('button');
+    btn.className = 'wa-btn'; btn.textContent = '📲 Enviar recordatorio';
+    btn.onclick = async () => {
+      if(!a.client_phone){ agAlert('Ese cliente no dejó WhatsApp.'); return; }
+      await previewWhatsApp('Recordatorio', a.client_phone, `Hola ${a.client_name}! Te recordamos tu turno hoy a las ${formatTime12(a.appt_time)} con ${a.barber_name} en 305 Barbering. ¡Te esperamos! 💈`);
+      btn.textContent = 'Enviado ✓'; btn.disabled = true;
+    };
+    card.appendChild(btn);
+    list.appendChild(card);
+  });
+}
+
+/* ===== Lista de turnos ===== */
+document.querySelectorAll('#statusTabs .tab').forEach(t => t.onclick = () => {
+  document.querySelectorAll('#statusTabs .tab').forEach(x => x.classList.remove('active'));
+  t.classList.add('active'); filter = t.dataset.f; renderList();
+});
+
+function renderList(){
+  const el = document.getElementById('apptList'), today = todayStr();
+  let list = myAppointments();
+  if(filter !== 'todos') list = list.filter(a => a.status === filter);
+  if(filter === 'completado' || filter === 'cancelado') list.reverse();
+  if(!list.length){ el.innerHTML = '<div class="empty">No hay turnos en esta vista.</div>'; return; }
+  el.innerHTML = '';
+  let lastDay = '';
+  list.forEach(a => {
+    if(a.appt_date !== lastDay){
+      lastDay = a.appt_date;
+      const label = a.appt_date === today ? 'Hoy' : a.appt_date === AG.addDays(1) ? 'Mañana' : new Date(a.appt_date + 'T00:00:00').toLocaleDateString('es-CO', { weekday: 'long', day: 'numeric', month: 'short' });
+      el.insertAdjacentHTML('beforeend', `<div class="day-sep">${label}</div>`);
+    }
+    const card = document.createElement('div');
+    card.className = 'appt' + (a.appt_date === today && a.status === 'pendiente' ? ' is-today' : '');
+    let actions = '';
+    if(a.status === 'pendiente'){
+      actions = `<span class="badge b-pend">Pendiente</span>
+        <input type="number" class="amount" placeholder="Valor $" value="${priceOf(a.service) || ''}" data-amt>
+        <button class="mini" data-act="done">Completar</button>
+        <button class="mini sec" data-act="cancel">Cancelar</button>
+        <button class="mini sec" data-act="delay">⏰ Retraso</button>`;
+    } else if(a.status === 'completado') actions = `<span class="badge b-done">${money(a.amount)}</span>`;
+    else actions = `<span class="badge b-canc">Cancelado</span>`;
+    card.innerHTML = `
+      <div class="appt-info">
+        <div class="appt-client">${esc(a.client_name)}</div>
+        <div class="appt-meta"><b>${formatTime12(a.appt_time)}</b> · ${esc(a.service)}${isOwner() ? ' · ✂️ ' + esc(a.barber_name) : ''}${a.client_phone ? ' · ' + esc(a.client_phone) : ' · sin WhatsApp'}</div>
+      </div>
+      <div class="appt-actions">${actions}<button class="x-btn" data-act="del" title="Eliminar">✕</button></div>
+      ${a.status === 'pendiente' ? `<div class="delay-row"><span>Avisar al siguiente cliente que vas atrasado:</span>
+        ${[10, 15, 20, 30].map(m => `<button class="delay-btn" data-delay="${m}">+${m} min</button>`).join('')}</div>` : ''}`;
+    card.querySelectorAll('[data-act]').forEach(b => b.onclick = () => act(a, b.dataset.act, card));
+    card.querySelectorAll('[data-delay]').forEach(b => b.onclick = () => notifyDelay(a, Number(b.dataset.delay)));
+    el.appendChild(card);
+  });
+}
+
+async function act(a, what, card){
+  if(what === 'done'){
+    const amount = Number(card.querySelector('[data-amt]').value || 0);
+    AG.updateAppointment(a.id, { status: 'completado', amount }); agToast(`${a.client_name}: completado · ${money(amount)}`);
+  } else if(what === 'cancel'){
+    if(!(await agConfirm(`¿Cancelar el turno de <b>${esc(a.client_name)}</b>? Ese horario vuelve a quedar libre.`, 'Cancelar turno', 'Volver'))) return;
+    AG.updateAppointment(a.id, { status: 'cancelado' });
+  } else if(what === 'delay'){
+    card.querySelector('.delay-row').classList.toggle('open'); return;
+  } else if(what === 'del'){
+    if(!(await agConfirm(`¿Eliminar el turno de <b>${esc(a.client_name)}</b> del historial?`, 'Eliminar'))) return;
+    AG.deleteAppointment(a.id);
+  }
+  renderAll(); loadAvailability();
+}
+
+async function notifyDelay(a, minutes){
+  const next = AG.appointments({ barber_id: a.barber_id, appt_date: a.appt_date })
+    .filter(x => x.status === 'pendiente' && x.id !== a.id && x.appt_time > a.appt_time)
+    .sort((x, y) => x.appt_time.localeCompare(y.appt_time))[0];
+  if(!next){ agAlert('No hay otro turno después de este ese día.'); return; }
+  if(!next.client_phone){ agAlert(`${esc(next.client_name)} no dejó WhatsApp.`); return; }
+  await previewWhatsApp(`Aviso de retraso · +${minutes} min`, next.client_phone,
+    `Hola ${next.client_name}! Soy ${next.barber_name} de 305 Barbering. Te aviso que voy con ${minutes} minutos de retraso para tu turno de las ${formatTime12(next.appt_time)}. ¡Gracias por la paciencia! 🙏`);
+}
+
+document.getElementById('completeTodayBtn').onclick = async () => {
+  const today = todayStr();
+  const due = myAppointments().filter(a => a.status === 'pendiente' && a.appt_date === today && AG.isPast(today, a.appt_time));
+  if(!due.length){ agAlert('No hay turnos de hoy pendientes que ya hayan pasado de hora.'); return; }
+  if(!(await agConfirm(`¿Marcar como completados los <b>${due.length}</b> turnos de hoy que ya pasaron? Se les pone el precio de la carta.`, 'Completar'))) return;
+  due.forEach(a => AG.updateAppointment(a.id, { status: 'completado', amount: priceOf(a.service) }));
+  renderAll(); agToast(`${due.length} turnos completados`);
+};
+
+/* ===== Cliente en persona ===== */
+function initWalkin(){
+  const s = document.getElementById('wService');
+  s.innerHTML = CUTS.map(c => `<option value="${esc(c.name)}">${esc(c.name)}${c.price ? ' — ' + money(c.price) : ''}</option>`).join('');
+  document.getElementById('wDate').value = todayStr();
+  document.getElementById('wDate').min = todayStr();
+  const panel = document.getElementById('walkinPanel'), tg = document.getElementById('walkinToggle');
+  const close = () => { panel.style.display = 'none'; tg.textContent = '+ Agendar cliente en persona'; document.getElementById('wMsg').textContent = ''; };
+  tg.onclick = () => { if(panel.style.display === 'none'){ panel.style.display = 'block'; tg.textContent = 'Cerrar'; refreshWalkinTimes(); } else close(); };
+  document.getElementById('wCancel').onclick = close;
+  ['wService', 'wDate', 'wBarber'].forEach(id => document.getElementById(id).onchange = refreshWalkinTimes);
+  document.getElementById('wSubmit').onclick = async () => {
+    const msg = document.getElementById('wMsg'), name = document.getElementById('wName').value.trim();
+    const service = s.value, date = document.getElementById('wDate').value, time = document.getElementById('wTime').value, bid = walkinBarberId();
+    if(!name){ msg.textContent = 'Escribe el nombre del cliente.'; return; }
+    if(!date || !time){ msg.textContent = 'Elige fecha y una hora disponible.'; return; }
+    if(AG.fits(AG.dayStatus(bid, date), ALL_SLOTS.indexOf(time), service) || AG.isPast(date, time)){ msg.textContent = 'Ese horario ya no está disponible.'; refreshWalkinTimes(); return; }
+    AG.addAppointment({ barber_id: bid, barber_name: barberName(bid), client_name: name, client_phone: document.getElementById('wPhone').value.trim(), service, appt_date: date, appt_time: time, status: 'pendiente' });
+    document.getElementById('wName').value = ''; document.getElementById('wPhone').value = '';
+    close(); renderAll(); loadAvailability(); agToast(`Turno agendado: ${name} · ${formatTime12(time)}`);
+  };
+}
+function refreshWalkinTimes(){
+  const sel = document.getElementById('wTime'), date = document.getElementById('wDate').value;
+  if(!me || !date){ sel.innerHTML = '<option value="">—</option>'; return; }
+  const st = AG.dayStatus(walkinBarberId(), date), service = document.getElementById('wService').value;
+  if(st.allDay){ sel.innerHTML = '<option value="">Día bloqueado — elige otra fecha</option>'; return; }
+  const free = ALL_SLOTS.filter((s, i) => !AG.fits(st, i, service) && !AG.isPast(date, s));
+  sel.innerHTML = free.length ? free.map(s => `<option value="${s}">${formatTime12(s)}</option>`).join('') : '<option value="">No hay horarios libres ese día</option>';
+}
+
+/* ===== Disponibilidad ===== */
+let curAllDay = false, curBlocked = new Set(), curReserved = new Set();
+function initAvailability(){
+  const d = document.getElementById('aDate');
+  d.value = todayStr(); d.min = todayStr();
+  const rs = document.getElementById('rStart'), re = document.getElementById('rEnd');
+  const opts = ALL_SLOTS.map(s => `<option value="${s}">${formatTime12(s)}</option>`).join('') ;
+  rs.innerHTML = opts; re.innerHTML = opts + `<option value="end">${formatTime12(AG.pad(AG.CLOSE_HOUR) + ':00')} (cierre)</option>`;
+  rs.value = '13:00'; re.value = '14:00';
+  d.onchange = loadAvailability;
+  document.getElementById('aBarber').onchange = loadAvailability;
+  document.getElementById('dayBtn').onclick = toggleDay;
+  document.getElementById('rangeBtn').onclick = blockRange;
+  loadAvailability();
+}
+function loadAvailability(){
+  if(!me) return;
+  const bid = availBarberId(), date = document.getElementById('aDate').value;
+  const st = AG.dayStatus(bid, date);
+  curAllDay = st.allDay;
+  curBlocked = new Set([...st.blocked].map(i => ALL_SLOTS[i]));
+  curReserved = new Set([...st.occupied].map(i => ALL_SLOTS[i]));
+  const grid = document.getElementById('aSlots'), btn = document.getElementById('dayBtn');
+  btn.textContent = curAllDay ? 'Desbloquear día completo' : 'Bloquear día completo';
+  btn.classList.toggle('active', curAllDay);
+  if(curAllDay){ grid.innerHTML = '<div class="day-blocked">Este día está bloqueado completo. Desbloquéalo para manejar horas sueltas.</div>'; return; }
+  grid.innerHTML = '';
+  ALL_SLOTS.forEach(s => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'slot'; b.textContent = formatTime12(s);
+    if(curReserved.has(s)){ b.classList.add('reserved'); b.disabled = true; b.title = 'Hay un cliente agendado'; }
+    else if(curBlocked.has(s)){ b.classList.add('blocked'); b.title = 'Bloqueado — toca para liberar'; b.onclick = () => { AG.removeBlocks(x => x.barber_id === bid && x.block_date === date && x.time_slot === s); loadAvailability(); }; }
+    else { b.title = 'Libre — toca para bloquear'; b.onclick = () => { AG.addBlocks([{ barber_id: bid, block_date: date, all_day: false, time_slot: s }]); loadAvailability(); }; }
+    grid.appendChild(b);
+  });
+}
+async function toggleDay(){
+  const bid = availBarberId(), date = document.getElementById('aDate').value;
+  if(curAllDay){ AG.removeBlocks(x => x.barber_id === bid && x.block_date === date && x.all_day); }
+  else {
+    const pend = AG.appointments({ barber_id: bid, appt_date: date }).filter(a => a.status === 'pendiente').length;
+    if(pend && !(await agConfirm(`Ese día hay <b>${pend}</b> turno(s) pendientes. Bloquear el día no los cancela: avísales tú. ¿Bloquear igual?`, 'Bloquear'))) return;
+    AG.removeBlocks(x => x.barber_id === bid && x.block_date === date);
+    AG.addBlocks([{ barber_id: bid, block_date: date, all_day: true, time_slot: null }]);
+  }
+  loadAvailability(); refreshWalkinTimes();
+}
+function blockRange(){
+  const bid = availBarberId(), date = document.getElementById('aDate').value;
+  const si = ALL_SLOTS.indexOf(document.getElementById('rStart').value);
+  const endVal = document.getElementById('rEnd').value, ei = endVal === 'end' ? ALL_SLOTS.length : ALL_SLOTS.indexOf(endVal);
+  if(si < 0 || ei <= si){ agAlert('La hora final debe ser mayor que la inicial.'); return; }
+  if(curAllDay){ agAlert('Ese día ya está bloqueado completo.'); return; }
+  const rows = ALL_SLOTS.slice(si, ei).filter(s => !curReserved.has(s) && !curBlocked.has(s)).map(s => ({ barber_id: bid, block_date: date, all_day: false, time_slot: s }));
+  AG.addBlocks(rows); loadAvailability(); refreshWalkinTimes();
+  agToast(rows.length ? `${rows.length} bloques bloqueados` : 'Nada que bloquear en ese rango');
+}
+
+/* Si el cliente agenda en otra pestaña del mismo celular, el panel se actualiza solo */
+window.addEventListener('storage', () => { if(me){ renderAll(); loadAvailability(); } });
+setInterval(() => { if(me) renderReminders(); }, 60000);
+
+/* Mantener la sesión al recargar */
+const saved = sessionStorage.getItem(SESSION_KEY);
+if(saved) enter(saved);
+</script>
+</body>
+</html>
