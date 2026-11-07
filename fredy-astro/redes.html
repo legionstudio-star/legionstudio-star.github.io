@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Kit de redes · Fredy Astro</title>
+  <meta name="theme-color" content="#0a0c17">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='15' fill='%230a0c17' stroke='%23d8b06a'/><text x='16' y='22' font-size='17' text-anchor='middle' fill='%23d8b06a'>✦</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..600&family=Archivo:wght@400..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    .ig { max-width: 470px; margin: 0 auto; border: 1px solid var(--line); border-radius: 28px; background: #000; overflow: hidden; color: #f5f5f5; font-family: -apple-system, 'Segoe UI', Roboto, Arial, sans-serif; }
+    .ig__bar { display: flex; justify-content: space-between; padding: 14px 18px; font-weight: 700; font-size: 17px; }
+    .ig__head { display: grid; grid-template-columns: 92px 1fr; gap: 18px; align-items: center; padding: 6px 18px 0; }
+    .ava { width: 88px; height: 88px; border-radius: 50%; padding: 3px; background: conic-gradient(var(--gold), #c4673d, #6b4bd8, var(--gold)); }
+    .ava div { width: 100%; height: 100%; border-radius: 50%; border: 3px solid #000; background: radial-gradient(circle at 50% 40%, #1b1f3d, #0a0c17); display: grid; place-items: center; color: var(--gold); font-size: 34px; font-family: var(--serif); }
+    .stats { display: flex; justify-content: space-around; text-align: center; font-size: 13px; }
+    .stats b { display: block; font-size: 17px; }
+    .bio { padding: 12px 18px; font-size: 14px; line-height: 1.45; }
+    .bio a { color: #e0f1ff; text-decoration: none; }
+    .ig__btns { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; padding: 0 18px 12px; }
+    .ig__btns span { background: #262626; border-radius: 8px; text-align: center; font-size: 13px; font-weight: 600; padding: 7px 0; }
+    .hl { display: flex; gap: 14px; padding: 6px 18px 14px; overflow-x: auto; }
+    .hl div { text-align: center; font-size: 11.5px; flex: none; width: 64px; }
+    .hl i { display: grid; place-items: center; width: 62px; height: 62px; border-radius: 50%; border: 1px solid #555; background: #0a0c17; color: var(--gold); font-style: normal; font-size: 22px; margin-bottom: 4px; }
+    .grid9 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+    .post { aspect-ratio: 4/5; position: relative; overflow: hidden; display: grid; place-items: center; text-align: center; padding: 10px; }
+    .post .t { font-family: var(--serif); line-height: 1.02; }
+    .post small { font-family: var(--sans); font-size: 8.5px; letter-spacing: .18em; text-transform: uppercase; opacity: .85; display: block; margin-bottom: 6px; }
+    .post img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .post .ov { position: relative; z-index: 1; }
+    .p-night { background: radial-gradient(circle at 50% 30%, #23284d, #0a0c17); color: var(--star); }
+    .p-gold { background: var(--gold); color: #0a0c17; }
+    .p-sand { background: #efe6d6; color: #1d1915; }
+    .p-terra { background: #b2502a; color: #f7f1e6; }
+    .reel::after { content: '▶'; position: absolute; top: 7px; right: 8px; font-size: 11px; color: #fff; z-index: 2; }
+    .cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+    @media (max-width: 700px) { .cal { grid-template-columns: repeat(2, 1fr); } .cal .dn { display: none; } }
+    .cal .dn { font-size: 11px; text-transform: uppercase; letter-spacing: .14em; color: var(--star-2); text-align: center; }
+    .cd { border: 1px solid var(--line); border-radius: 12px; padding: 9px; min-height: 96px; font-size: 12.5px; background: rgba(26, 30, 58, .45); }
+    .cd b { font-family: var(--serif); font-size: 18px; color: var(--gold-2); font-weight: 500; }
+    .cd .k { display: inline-block; font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 99px; margin: 4px 0 3px; }
+    .k-reel { background: #6b4bd8; color: #fff; } .k-post { background: var(--gold); color: #0a0c17; } .k-hist { background: #2b2f55; color: var(--star); } .k-live { background: var(--bad); color: #fff; } .k-ad { background: var(--ok); color: #0a0c17; }
+    .cd.esp { border-color: var(--gold); }
+  </style>
+</head>
+<body>
+  <canvas class="cielo" id="cielo" aria-hidden="true"></canvas>
+  <div class="demo-bar">DEMO · Kit de redes que LEGION le arma a Fredy · <a href="plan.html">Ver el plan</a></div>
+  <header class="top"><div class="wrap"><a class="brand" href="index.html"><span class="mark">✦</span>Fredy <b>Astro</b></a><a class="btn btn--sm btn--ghost" href="plan.html">← Plan</a></div></header>
+  <main>
+    <section style="padding-top:44px">
+      <div class="wrap hero__grid" style="align-items:start">
+        <div>
+          <p class="label">Kit de redes</p>
+          <h1 class="display" style="font-size:clamp(40px,7vw,76px)">Un perfil que <em>vende solo</em></h1>
+          <p class="lead">Instagram, TikTok, Facebook y YouTube con la misma imagen, un enlace único a la agenda y contenido que trae consultas todas las semanas.</p>
+          <div class="grid" style="margin-top:26px">
+            <div class="card"><p class="label">Nombre de usuario</p><h3>@fredyastro</h3><p class="muted" style="margin:0">El mismo en todas las redes. Alternativas: @fredy.astro · @fredyastrologo.</p></div>
+            <div class="card"><p class="label">Biografía</p><p style="margin:0">✦ Astrólogo · +20 años leyendo el cielo<br>🏜 Desde el Desierto de la Tatacoa 🇨🇴<br>🌍 Sesiones virtuales a todo el mundo<br>👇 Agenda tu carta astral</p></div>
+            <div class="card"><p class="label">Historias destacadas</p><p class="muted" style="margin:0">Servicios · Testimonios · Curso · Tatacoa · Preguntas · Tu signo</p></div>
+          </div>
+        </div>
+        <div class="ig" aria-label="Vista previa del perfil de Instagram">
+          <div class="ig__bar"><span>fredyastro ✓</span><span>☰</span></div>
+          <div class="ig__head"><div class="ava"><div>✦</div></div><div class="stats"><div><b>124</b>publicaciones</div><div><b>18,4 mil</b>seguidores</div><div><b>312</b>seguidos</div></div></div>
+          <div class="bio"><b>Fredy Astro · Astrólogo</b><br>✦ +20 años leyendo el cielo<br>🏜 Desde el Desierto de la Tatacoa 🇨🇴<br>🌍 Sesiones virtuales a todo el mundo<br>👇 Agenda tu carta astral<br><a href="index.html">🔗 fredyastro.com</a></div>
+          <div class="ig__btns"><span>Seguir</span><span>Mensaje</span><span>WhatsApp</span></div>
+          <div class="hl"><div><i>✦</i>Servicios</div><div><i>★</i>Testimonios</div><div><i>✎</i>Curso</div><div><i>☾</i>Tatacoa</div><div><i>?</i>Preguntas</div><div><i>♈</i>Tu signo</div></div>
+          <div class="grid9">
+            <div class="post p-night reel"><div class="ov"><small>Reel</small><div class="t" style="font-size:19px">¿Qué es tu <i style="color:var(--gold-2)">Ascendente</i>?</div></div></div>
+            <div class="post p-gold"><div class="ov"><small>Esta semana</small><div class="t" style="font-size:20px">Tu signo<br>del 10 al 16<br>de nov.</div></div></div>
+            <div class="post reel"><img src="assets/img/terraza-estrellas-m.webp" alt=""><div class="ov" style="color:#fff;text-shadow:0 2px 12px #000"><small>13 de diciembre</small><div class="t" style="font-size:21px">Gemínidas:<br>pide tu deseo</div></div></div>
+            <div class="post p-sand"><div class="ov"><small>Testimonio</small><div class="t" style="font-size:15px;font-style:italic">“Me explicó cosas de mí que nadie sabía”</div><small style="margin-top:8px">Laura · Bogotá</small></div></div>
+            <div class="post p-night"><div class="ov"><div style="width:46px;height:46px;border-radius:50%;background:#f3ead9;box-shadow:inset 16px 0 0 0 #12152a;margin:0 auto 10px"></div><small>9 de noviembre</small><div class="t" style="font-size:18px">Luna nueva<br>en Escorpio</div></div></div>
+            <div class="post p-terra reel"><div class="ov"><small>Reel · Amor</small><div class="t" style="font-size:18px">Los 3 signos más fieles</div></div></div>
+            <div class="post p-gold"><div class="ov"><small>Curso en vivo</small><div class="t" style="font-size:18px">Aprende a leer tu carta</div><small style="margin-top:8px">Inicia 18 nov</small></div></div>
+            <div class="post"><img src="assets/img/fachada-noche-m.webp" alt=""><div class="ov" style="color:#fff;text-shadow:0 2px 12px #000"><small>La Tatacoa</small><div class="t" style="font-size:18px">Donde el desierto se vuelve cielo</div></div></div>
+            <div class="post p-sand reel"><div class="ov"><small>Reel</small><div class="t" style="font-size:18px">Tu signo en 30 segundos: <i>Escorpio</i></div></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <p class="label">Qué publicamos</p>
+        <h2 class="display">5 tipos de <em>contenido</em></h2>
+        <div class="grid g3" style="margin-top:26px">
+          <div class="card"><div class="ico">☉</div><h3>Tu signo esta semana</h3><p class="muted">Cada lunes. Es el contenido que más se comparte y trae seguidores nuevos.</p></div>
+          <div class="card"><div class="ico">▶</div><h3>Reels y TikToks</h3><p class="muted">“Tu signo en 30 segundos”, signos en el amor, mitos. Videos cortos con Fredy hablando a cámara.</p></div>
+          <div class="card"><div class="ico">☾</div><h3>Fechas del cielo</h3><p class="muted">Lunas nuevas y llenas, eclipses, Mercurio retrógrado y lluvias de estrellas desde la Tatacoa.</p></div>
+          <div class="card"><div class="ico">★</div><h3>Testimonios</h3><p class="muted">Lo que dicen sus consultantes, con su permiso. Genera confianza para agendar.</p></div>
+          <div class="card"><div class="ico">◎</div><h3>En vivo mensual</h3><p class="muted">Preguntas y respuestas en vivo. Ahí se venden el curso y el Círculo Astro.</p></div>
+          <div class="card card--gold"><div class="ico">$</div><h3>Anuncios pagados</h3><p class="muted">Pauta en Instagram y Facebook hacia Colombia, España, Estados Unidos y México, que lleva a la agenda o al WhatsApp.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <p class="label">Calendario de ejemplo</p>
+        <h2 class="display" style="margin-bottom:24px">30 días de <em>contenido</em></h2>
+        <div class="cal" id="cal"></div>
+        <p class="nota" style="margin-top:14px"><span class="cd" style="display:inline;padding:2px 8px;min-height:0">borde dorado</span> = fecha especial del cielo, con anuncio pagado.</p>
+      </div>
+    </section>
+  </main>
+  <footer><div class="wrap">Kit de redes · demo de LEGION Estudio para Fredy Astro · <a href="index.html">Página</a> · <a href="plan.html">Plan</a></div></footer>
+  <script src="assets/astro.js"></script>
+  <script src="assets/data.js"></script>
+  <script src="assets/common.js"></script>
+  <script>
+    cielo($('#cielo'));
+    const PLAN = {
+      0: ['k-reel', 'Reel: tu signo en 30 s'], 1: ['k-post', 'Tu signo esta semana'], 2: ['k-hist', 'Historia: pregunta del día'], 3: ['k-reel', 'Reel: signos en el amor'],
+      4: ['k-post', 'Testimonio'], 5: ['k-hist', 'Encuesta: ¿qué signo eres?'], 6: ['k-reel', 'Reel: un mito de la astrología'],
+    };
+    const ESP = { '2026-11-09': ['k-ad', '🌑 Luna nueva · anuncio carta astral'], '2026-11-18': ['k-live', '🎓 Inicia el curso'], '2026-11-24': ['k-ad', '🌕 Luna llena · Círculo Astro'], '2026-11-28': ['k-live', 'En vivo: preguntas'], '2026-12-08': ['k-ad', '🌑 Luna nueva + puente festivo'], '2026-12-01': ['k-ad', '🎁 Tarjeta de regalo navideña'] };
+    const ini = new Date(2026, 10, 9); const dn = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+    let h = dn.map((d) => `<div class="dn">${d}</div>`).join('');
+    for (let i = 0; i < 28; i++) {
+      const d = new Date(ini); d.setDate(ini.getDate() + i); const k = d.toISOString().slice(0, 10);
+      const e = ESP[k]; const p = PLAN[i % 7];
+      h += `<div class="cd ${e ? 'esp' : ''}"><b>${d.getDate()}</b> <small class="muted">${d.toLocaleDateString('es-CO', { month: 'short' })}</small><br><span class="k ${p[0]}">${p[0].slice(2).toUpperCase()}</span> ${p[1]}${e ? `<br><span class="k ${e[0]}">${e[0] === 'k-ad' ? 'ANUNCIO' : 'EN VIVO'}</span> ${e[1]}` : ''}</div>`;
+    }
+    $('#cal').innerHTML = h;
+  </script>
+</body>
+</html>

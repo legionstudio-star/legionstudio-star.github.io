@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Fredy Astro · Astrólogo</title>
+  <meta name="description" content="Fredy Astro, astrólogo con más de 20 años de experiencia desde el Desierto de la Tatacoa. Carta astral, compatibilidad de pareja, revolución solar, cursos y sesiones virtuales para todo el mundo.">
+  <meta property="og:title" content="Fredy Astro · Lo que tu cielo dice de ti">
+  <meta property="og:description" content="Carta astral, pareja, tu año y cursos. Sesiones virtuales desde la Tatacoa para todo el mundo.">
+  <meta property="og:image" content="assets/img/terraza-estrellas.webp">
+  <meta name="theme-color" content="#0a0c17">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='15' fill='%230a0c17' stroke='%23d8b06a'/><text x='16' y='22' font-size='17' text-anchor='middle' fill='%23d8b06a'>✦</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..600&family=Archivo:wght@400..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <canvas class="cielo" id="cielo" aria-hidden="true"></canvas>
+  <div class="demo-bar">DEMO hecha por LEGION Estudio · precios y testimonios de ejemplo · <a href="plan.html">Ver el plan completo →</a></div>
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="#"><span class="mark">✦</span>Fredy <b>Astro</b></a>
+      <nav class="nav"><a href="#signo">Tu signo</a><a href="#servicios">Servicios</a><a href="#cursos">Cursos</a><a href="#fredy">Sobre Fredy</a><a href="#preguntas">Preguntas</a></nav>
+      <a class="btn btn--sm" href="agendar.html">Agendar</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- HÉROE -->
+    <section class="hero">
+      <div class="wrap hero__grid">
+        <div>
+          <div class="luna-hoy rv" id="lunaHoy"></div>
+          <p class="label rv">Astrólogo · Desierto de la Tatacoa · Sesiones virtuales</p>
+          <h1 class="display rv">Lo que tu cielo<br><em>dice de ti</em></h1>
+          <p class="lead rv">Más de 20 años leyendo cartas astrales bajo el cielo más limpio de Colombia. Ahora, desde cualquier ciudad del mundo, por videollamada.</p>
+          <div class="hero__cta rv">
+            <a class="btn" href="agendar.html?s=carta">Agendar mi carta astral</a>
+            <a class="btn btn--ghost" href="#signo">Descubrir mi signo gratis</a>
+          </div>
+          <div class="chips rv"><span class="chip">+20 años de experiencia</span><span class="chip">+3.000 cartas leídas</span><span class="chip">Clientes en 9 países</span><span class="chip">★ 4,9 en reseñas</span></div>
+        </div>
+        <div class="hero__foto rv">
+          <img src="assets/img/terraza-estrellas.webp" alt="Terraza bajo las estrellas en la Tatacoa" fetchpriority="high">
+          <div class="hero__firma"><p class="label">Foto de Fredy aquí</p><div class="display">Fredy Astro</div><span class="muted">Astrólogo y anfitrión de La Casa del Astrólogo</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CALCULADORA -->
+    <section id="signo">
+      <div class="wrap">
+        <div class="card card--gold rv" style="padding:clamp(22px,4vw,48px)">
+          <p class="label">Gratis · 30 segundos</p>
+          <h2 class="display">Descubre tu <em>Sol, Luna</em> y Ascendente</h2>
+          <p class="muted" style="max-width:60ch">Tu signo solar es solo una parte. La Luna muestra lo que sientes y el Ascendente cómo te ven. Escribe tus datos de nacimiento:</p>
+          <form class="form" id="formSigno" style="margin-top:18px">
+            <div class="row3">
+              <label class="field"><span>Fecha de nacimiento</span><input class="in" type="date" name="f" value="1992-06-15" required></label>
+              <label class="field"><span>Hora (si la sabes)</span><input class="in" type="time" name="h" value="08:30"></label>
+              <label class="field"><span>Ciudad</span><select class="in" name="c" id="ciudadSigno"></select></label>
+            </div>
+            <button class="btn" type="submit">Ver mi cielo</button>
+          </form>
+          <div id="resSigno"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICIOS -->
+    <section id="servicios">
+      <div class="wrap">
+        <div style="display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap">
+          <div class="rv"><p class="label">Servicios</p><h2 class="display">Escoge tu <em>lectura</em></h2></div>
+          <div class="moneda rv" role="group" aria-label="Moneda"><button class="on" data-m="cop">Pesos</button><button data-m="usd">Dólares</button></div>
+        </div>
+        <div class="filtros" id="filtros"></div>
+        <div class="grid g3" id="listaServicios"></div>
+      </div>
+    </section>
+
+    <!-- CÓMO FUNCIONA -->
+    <section>
+      <div class="wrap">
+        <p class="label rv">Sesiones virtuales</p>
+        <h2 class="display rv" style="max-width:16ch">Desde tu casa, <em>en cualquier país</em></h2>
+        <div class="grid g4" style="margin-top:34px">
+          <div class="card rv"><div class="ico">1</div><h3>Escoges</h3><p class="muted">El servicio, el día y la hora. La hora se ajusta a tu país.</p></div>
+          <div class="card rv"><div class="ico">2</div><h3>Pagas seguro</h3><p class="muted">Nequi, PSE, tarjeta o PayPal desde el exterior.</p></div>
+          <div class="card rv"><div class="ico">3</div><h3>Te conectas</h3><p class="muted">Recibes el enlace de la videollamada por WhatsApp.</p></div>
+          <div class="card rv"><div class="ico">4</div><h3>Te quedas con todo</h3><p class="muted">Tu carta en PDF y la grabación de la sesión.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CURSOS Y CÍRCULO -->
+    <section id="cursos">
+      <div class="wrap grid g2">
+        <div class="card card--gold rv">
+          <span class="tag">Cupos limitados</span>
+          <p class="label">Curso en vivo</p>
+          <h3 style="font-size:34px">Aprende a leer tu carta</h3>
+          <p class="muted">4 clases por Zoom con Fredy. Desde cero hasta leer tu propia carta y la de tu familia. Próximo grupo: <b style="color:var(--star)">18 de noviembre</b>.</p>
+          <ul class="inc"><li>Signos, planetas, casas y aspectos</li><li>Grabaciones y material descargable</li><li>Certificado y grupo de WhatsApp</li></ul>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap"><span class="precio" data-p="curso"></span><a class="btn" href="agendar.html?s=curso">Inscribirme</a></div>
+        </div>
+        <div class="card rv">
+          <p class="label">Membresía mensual</p>
+          <h3 style="font-size:34px">Círculo Astro</h3>
+          <p class="muted">Tu guía de cada mes según el cielo, un encuentro en vivo con Fredy y descuentos en todas las lecturas.</p>
+          <ul class="inc"><li>Lectura mensual personalizada</li><li>En vivo grupal cada luna nueva</li><li>10% en todas las lecturas</li><li>Grupo privado</li></ul>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap"><span class="precio" data-p="circulo"></span><a class="btn btn--ghost" href="agendar.html?s=circulo">Unirme</a></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIDEOS -->
+    <section>
+      <div class="wrap">
+        <div class="rv"><p class="label">Videos</p><h2 class="display">Fredy <em>explica</em></h2><p class="muted">Los videos de sus redes, aquí mismo (ejemplos).</p></div>
+        <div class="grid g4" style="margin-top:28px">
+          <div class="vid rv"><img src="assets/img/terraza-estrellas-m.webp" alt=""><div class="play"><span>▶</span></div><div class="tt">¿Qué es el Ascendente?<small>1:12 · Reel</small></div></div>
+          <div class="vid rv"><img src="assets/img/fachada-noche-m.webp" alt=""><div class="play"><span>▶</span></div><div class="tt">Gemínidas: pide tu deseo el 13 de diciembre<small>0:48 · Reel</small></div></div>
+          <div class="vid rv"><img src="assets/img/piscina-cascada-m.webp" alt=""><div class="play"><span>▶</span></div><div class="tt">Los signos en el amor<small>2:30 · TikTok</small></div></div>
+          <div class="vid rv"><img src="assets/img/patio-piscina-m.webp" alt=""><div class="play"><span>▶</span></div><div class="tt">Luna nueva: qué sembrar este mes<small>1:40 · Reel</small></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOBRE FREDY -->
+    <section id="fredy">
+      <div class="wrap hero__grid">
+        <div class="hero__foto rv" style="aspect-ratio:1"><img src="assets/img/fachada-noche.webp" alt="La Casa del Astrólogo de noche" loading="lazy"></div>
+        <div>
+          <p class="label rv">Sobre Fredy</p>
+          <h2 class="display rv">Del desierto <em>al mundo</em></h2>
+          <p class="lead rv">Fredy lleva más de veinte años estudiando y leyendo el cielo. Vive en Villavieja, a minutos del Desierto de la Tatacoa, uno de los mejores lugares de Colombia para ver las estrellas, donde también recibe a sus huéspedes en La Casa del Astrólogo.</p>
+          <p class="muted rv">Su forma de leer la carta es cercana y práctica: no se trata de adivinar, sino de entenderte mejor para decidir con claridad. (Texto de ejemplo: lo escribimos con él.)</p>
+          <div class="chips rv"><span class="chip">Astrología natal</span><span class="chip">Sinastría</span><span class="chip">Revolución solar</span><span class="chip">Astrología vocacional</span><span class="chip">Docente</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIOS -->
+    <section>
+      <div class="wrap">
+        <p class="label rv">Testimonios (ejemplos)</p>
+        <h2 class="display rv">Lo que dicen <em>sus consultantes</em></h2>
+        <div class="grid g2" style="margin-top:28px" id="testimonios"></div>
+      </div>
+    </section>
+
+    <!-- TATACOA -->
+    <section>
+      <div class="wrap">
+        <div class="card rv" style="padding:0;overflow:hidden;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+          <img src="assets/img/fachada-noche-m.webp" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover;min-height:260px">
+          <div style="padding:clamp(22px,4vw,44px)">
+            <p class="label">Experiencia presencial</p>
+            <h3 style="font-size:34px">Noche de estrellas en la Tatacoa</h3>
+            <p class="muted">Observa el cielo del desierto con Fredy y recibe tu carta astral bajo las estrellas. Con descuento si te hospedas en La Casa del Astrólogo.</p>
+            <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:14px"><span class="precio" data-p="tatacoa"></span><a class="btn" href="agendar.html?s=tatacoa">Reservar</a></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="preguntas">
+      <div class="wrap" style="max-width:860px">
+        <p class="label rv">Preguntas frecuentes</p>
+        <h2 class="display rv" style="margin-bottom:16px">Antes de <em>agendar</em></h2>
+        <div id="faq" class="rv"></div>
+        <div style="text-align:center;margin-top:44px" class="rv"><a class="btn" href="agendar.html">Agendar ahora</a></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap" style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap">
+      <div><div class="brand"><span class="mark">✦</span>Fredy <b>Astro</b></div><p>Villavieja, Huila · Sesiones virtuales para todo el mundo</p></div>
+      <div><p>Instagram · TikTok · YouTube · Facebook<br>@fredyastro (ejemplo)</p><p><a href="panel.html">Panel de Fredy</a> · <a href="redes.html">Kit de redes</a> · <a href="plan.html">Plan LEGION</a></p></div>
+    </div>
+  </footer>
+  <a class="wa-float" id="waFloat" aria-label="Escribir por WhatsApp" href="#"><svg viewBox="0 0 24 24"><path d="M.06 24l1.69-6.16A11.87 11.87 0 0 1 .16 11.9C.16 5.34 5.5 0 12.06 0a11.8 11.8 0 0 1 8.41 3.49 11.8 11.8 0 0 1 3.48 8.41c0 6.56-5.34 11.9-11.9 11.9-2 0-3.96-.5-5.7-1.45zm6.6-3.8c1.68 1 3.28 1.6 5.4 1.6 5.45 0 9.89-4.43 9.9-9.89A9.88 9.88 0 0 0 12.06 2C6.6 2 2.17 6.44 2.17 11.9c0 2.23.65 3.9 1.75 5.65l-1 3.65zm11.39-5.47c-.07-.12-.27-.2-.57-.35s-1.76-.87-2.03-.97-.47-.15-.67.15-.77.97-.94 1.17-.35.22-.65.07a8.13 8.13 0 0 1-2.39-1.47 9 9 0 0 1-1.66-2.06c-.17-.3 0-.46.13-.61l.45-.52c.15-.17.2-.3.3-.5s.05-.37-.03-.52-.67-1.62-.92-2.22c-.24-.58-.49-.5-.67-.51h-.57a1.1 1.1 0 0 0-.8.37 3.34 3.34 0 0 0-1.04 2.48 5.8 5.8 0 0 0 1.21 3.08 13.3 13.3 0 0 0 5.09 4.5c.71.3 1.27.49 1.7.63.72.23 1.37.2 1.88.12.58-.09 1.76-.72 2-1.41s.25-1.29.18-1.41"/></svg></a>
+
+  <script src="assets/astro.js"></script>
+  <script src="assets/data.js"></script>
+  <script src="assets/common.js"></script>
+  <script>
+    cielo($('#cielo'));
+    // luna de hoy
+    const fl = ASTRO.faseLunar();
+    const sombra = fl.f < .5 ? `inset ${-30 + fl.f * 120}px 0 0 0 #0a0c17` : `inset ${30 - (fl.f - .5) * 120}px 0 0 0 #0a0c17`;
+    $('#lunaHoy').innerHTML = `<span class="disco" style="background:#f3ead9;box-shadow:${sombra}"></span><span>Hoy: <b>${fl.nombre}</b> en ${fl.signo.n} ${fl.signo.s} · ${fl.ilum}% iluminada</span>`;
+
+    // calculadora
+    $('#ciudadSigno').innerHTML = opcionesCiudad('Bogotá');
+    $('#formSigno').addEventListener('submit', (e) => {
+      e.preventDefault(); const f = new FormData(e.target);
+      const c = ASTRO.carta(f.get('f'), f.get('h'), f.get('c'));
+      const box = (t, x, txt) => `<div class="astro"><div class="label">${t}</div><div class="g">${x ? x.s : '?'}</div><b>${x ? x.n : 'Falta la hora'}</b>${x ? `<small class="muted">${x.grado}° · ${x.el}</small>` : ''}<p>${x ? txt(x) : 'Con tu hora de nacimiento calculamos tu Ascendente.'}</p></div>`;
+      $('#resSigno').innerHTML = `<div class="trio">${box('Sol · tu esencia', c.sol, (x) => x.sol)}${box('Luna · tus emociones', c.luna, (x) => x.luna)}${box('Ascendente · cómo te ven', c.asc, (x) => x.asc)}</div>
+        <div style="margin-top:20px;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><p class="muted" style="margin:0;flex:1;min-width:220px">Esto es solo el comienzo: tu carta tiene 10 planetas, 12 casas y decenas de aspectos. Fredy te la lee completa.</p><a class="btn" href="agendar.html?s=carta">Quiero mi carta completa</a></div>`;
+      $('#resSigno').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+
+    // servicios
+    let moneda = 'cop', cat = 'Todos';
+    const precio = (s) => moneda === 'cop' ? `${cop(s.cop)}<small>COP</small>` : `${usd(s.usd)}<small>${s.tipo === 'membresia' ? '/ mes' : ''}</small>`;
+    const cats = ['Todos', ...new Set(SERVICIOS.map((s) => s.cat))];
+    $('#filtros').innerHTML = cats.map((c) => `<button class="filtro ${c === cat ? 'on' : ''}" data-c="${c}">${c}</button>`).join('');
+    function pintar() {
+      $$('.filtro').forEach((b) => b.classList.toggle('on', b.dataset.c === cat));
+      $('#listaServicios').innerHTML = SERVICIOS.filter((s) => cat === 'Todos' || s.cat === cat).map((s) => `
+        <article class="card servicio ${s.top ? 'card--gold' : ''}">${s.top ? '<span class="tag">Más pedido</span>' : ''}
+          <div class="ico">${s.ico}</div><h3>${s.n}</h3><p class="muted" style="margin:0">${s.d}</p>
+          <ul class="inc">${s.inc.map((i) => `<li>${i}</li>`).join('')}</ul>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:16px"><span class="precio">${precio(s)}</span><small class="muted">${s.dur}</small></div>
+          <a class="btn ${s.top ? '' : 'btn--ghost'}" href="agendar.html?s=${s.id}">${s.tipo === 'curso' ? 'Inscribirme' : s.tipo === 'membresia' ? 'Unirme' : s.tipo === 'regalo' ? 'Regalar' : 'Agendar'}</a>
+        </article>`).join('');
+      $$('[data-p]').forEach((el) => { el.innerHTML = precio(srv(el.dataset.p)); });
+    }
+    $('#filtros').addEventListener('click', (e) => { const b = e.target.closest('.filtro'); if (b) { cat = b.dataset.c; pintar(); } });
+    $$('.moneda button').forEach((b) => b.addEventListener('click', () => { moneda = b.dataset.m; $$('.moneda button').forEach((x) => x.classList.toggle('on', x === b)); pintar(); }));
+    pintar();
+
+    $('#testimonios').innerHTML = TESTIMONIOS.map((t) => `<figure class="card rv" style="margin:0"><div style="color:var(--gold);letter-spacing:3px">★★★★★</div><blockquote class="quote" style="margin:12px 0 16px">“${t.t}”</blockquote><figcaption class="muted">${t.n} · ${t.c} · <span style="color:var(--gold-2)">${t.s}</span></figcaption></figure>`).join('');
+    $('#faq').innerHTML = FAQ.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join('');
+    $('#waFloat').href = waLink('Hola Fredy, vi tu página y quiero información sobre una lectura ✨');
+    revelar();
+  </script>
+</body>
+</html>

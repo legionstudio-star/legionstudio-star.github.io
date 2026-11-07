@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Agendar · Fredy Astro</title>
+  <meta name="theme-color" content="#0a0c17">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='15' fill='%230a0c17' stroke='%23d8b06a'/><text x='16' y='22' font-size='17' text-anchor='middle' fill='%23d8b06a'>✦</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..600&family=Archivo:wght@400..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <canvas class="cielo" id="cielo" aria-hidden="true"></canvas>
+  <div class="demo-bar">DEMO · el pago es simulado y el WhatsApp llega a LEGION</div>
+  <header class="top"><div class="wrap"><a class="brand" href="index.html"><span class="mark">✦</span>Fredy <b>Astro</b></a><a class="btn btn--sm btn--ghost" href="index.html">← Volver</a></div></header>
+  <main class="wrap" style="max-width:680px;padding-top:28px;padding-bottom:90px">
+    <p class="label" id="pasoTxt">Paso 1</p>
+    <h1 class="display" style="font-size:clamp(34px,7vw,52px)" id="titulo">Agenda con <em>Fredy</em></h1>
+    <div class="pasos" id="barra"></div>
+    <div id="paso"></div>
+  </main>
+
+  <script src="assets/astro.js"></script>
+  <script src="assets/data.js"></script>
+  <script src="assets/common.js"></script>
+  <script>
+    cielo($('#cielo'));
+    const TZ = { CO: -5, MX: -6, PE: -5, EC: -5, PA: -5, VE: -4, CL: -3, AR: -3, US: -5, ES: 1 };
+    const q = new URLSearchParams(location.search);
+    const st = { s: srv(q.get('s')) ? q.get('s') : null, modo: 'video', pais: 'CO', fecha: null, hora: null, grupo: null, metodo: null, i: 0 };
+    const S = () => srv(st.s);
+
+    const PASOS = {
+      sesion: ['servicio', 'modo', 'fecha', 'datos', 'pago', 'ok'], entrega: ['servicio', 'datos', 'pago', 'ok'], curso: ['servicio', 'grupo', 'datos', 'pago', 'ok'],
+      membresia: ['servicio', 'datos', 'pago', 'ok'], regalo: ['servicio', 'regalo', 'pago', 'ok'],
+    };
+    const lista = () => PASOS[S() ? S().tipo : 'sesion'];
+    const TIT = { servicio: ['¿Qué quieres <em>agendar</em>?'], modo: ['¿Cómo prefieres la <em>sesión</em>?'], fecha: ['Escoge el <em>día y la hora</em>'], grupo: ['Escoge tu <em>grupo</em>'],
+      datos: ['Tus datos de <em>nacimiento</em>'], regalo: ['¿Para quién es el <em>regalo</em>?'], pago: ['Confirma y <em>paga</em>'], ok: ['¡Listo, <em>nos vemos</em>!'] };
+    const ir = (k) => { st.i = Math.max(0, Math.min(lista().length - 1, k)); render(); scrollTo({ top: 0, behavior: 'smooth' }); };
+    const navBtns = (okTxt = 'Continuar', dis = false) => `<div class="nav-paso">${st.i ? '<button class="btn btn--ghost" data-atras>← Atrás</button>' : ''}<button class="btn" data-sig ${dis ? 'disabled' : ''}>${okTxt}</button></div>`;
+    const totalCOP = () => S() ? S().cop : 0;
+
+    function render() {
+      const L = lista(), k = L[st.i];
+      $('#barra').innerHTML = L.map((_, i) => `<i class="${i <= st.i ? 'on' : ''}"></i>`).join('');
+      $('#pasoTxt').textContent = k === 'ok' ? 'Confirmado' : `Paso ${st.i + 1} de ${L.length - 1}`;
+      $('#titulo').innerHTML = TIT[k][0];
+      const P = $('#paso');
+      if (k === 'servicio') {
+        P.innerHTML = `<div class="opc">${SERVICIOS.map((s) => `<button class="op ${st.s === s.id ? 'on' : ''}" data-s="${s.id}"><span class="ico">${s.ico}</span><span><b>${s.n}</b><small>${s.dur}</small></span><span class="pr">${cop(s.cop)}<br><small style="font-family:var(--sans);font-size:11px">${usd(s.usd)}</small></span></button>`).join('')}</div>${navBtns('Continuar', !st.s)}`;
+        P.onclick = (e) => { const b = e.target.closest('[data-s]'); if (b) { st.s = b.dataset.s; render(); } nav(e); };
+      } else if (k === 'modo') {
+        const ops = S().presencial ? [['presencial', '✺', 'Presencial en la Tatacoa', 'Villavieja, Huila']] : [['video', '▶', 'Videollamada', 'Zoom, Meet o WhatsApp · queda grabada'], ['llamada', '☏', 'Llamada por WhatsApp', 'Solo audio'], ['presencial', '✺', 'Presencial en la Tatacoa', 'En La Casa del Astrólogo']];
+        if (!ops.find((o) => o[0] === st.modo)) st.modo = ops[0][0];
+        P.innerHTML = `<div class="opc">${ops.map(([id, ic, n, d]) => `<button class="op ${st.modo === id ? 'on' : ''}" data-m="${id}"><span class="ico">${ic}</span><span><b>${n}</b><small>${d}</small></span></button>`).join('')}</div>${navBtns()}`;
+        P.onclick = (e) => { const b = e.target.closest('[data-m]'); if (b) { st.modo = b.dataset.m; render(); } nav(e); };
+      } else if (k === 'fecha') {
+        const hoy = new Date(); hoy.setHours(0, 0, 0, 0); const dias = [];
+        for (let d = 1; dias.length < 14; d++) { const x = new Date(hoy); x.setDate(x.getDate() + d); if (CONFIG.horario.dias.includes(x.getDay())) dias.push(x); }
+        const iso = (x) => x.toISOString().slice(0, 10);
+        if (!st.fecha) st.fecha = iso(dias[0]);
+        const ocupadas = Store.get().filter((c) => c.fecha === st.fecha).map((c) => c.hora);
+        const hash = (s) => [...s].reduce((a, c) => a + c.charCodeAt(0), 0);
+        const dif = TZ[st.pais] - TZ.CO;
+        const suHora = (h) => { let [a, b] = h.split(':').map(Number); a = (a + dif + 24) % 24; const ap = a >= 12 ? 'p. m.' : 'a. m.'; return `${((a + 11) % 12) + 1}:${String(b).padStart(2, '0')} ${ap}`; };
+        const co = (h) => { const a = +h.slice(0, 2); return `${((a + 11) % 12) + 1}:00 ${a >= 12 ? 'p. m.' : 'a. m.'}`; };
+        P.innerHTML = `<label class="field" style="margin-bottom:16px"><span>¿Desde qué país te conectas?</span><select class="in" id="pais">${Object.entries(PAISES).map(([c, n]) => `<option value="${c}" ${c === st.pais ? 'selected' : ''}>${n}</option>`).join('')}</select></label>
+          <div class="dias">${dias.map((x) => `<button class="dia ${iso(x) === st.fecha ? 'on' : ''}" data-f="${iso(x)}"><small>${x.toLocaleDateString('es-CO', { weekday: 'short' })}</small><b>${x.getDate()}</b><small>${x.toLocaleDateString('es-CO', { month: 'short' })}</small></button>`).join('')}</div>
+          <div class="horas">${CONFIG.horario.bloques.map((h, i) => { const ocup = ocupadas.includes(h) || (hash(st.fecha + h) % 5 === 0); return `<button class="hora ${st.hora === h ? 'on' : ''}" data-h="${h}" ${ocup ? 'disabled' : ''}>${st.pais === 'CO' ? co(h) : suHora(h)}${st.pais !== 'CO' ? `<small>${co(h)} Col.</small>` : ''}</button>`; }).join('')}</div>
+          <p class="nota">${st.pais === 'CO' ? 'Horas de Colombia.' : 'Arriba tu hora local; abajo la hora de Colombia.'} Las tachadas ya están ocupadas.</p>${navBtns('Continuar', !st.hora)}`;
+        $('#pais').onchange = (e) => { st.pais = e.target.value; render(); };
+        P.onclick = (e) => { const f = e.target.closest('[data-f]'), h = e.target.closest('[data-h]'); if (f) { st.fecha = f.dataset.f; st.hora = null; render(); } if (h) { st.hora = h.dataset.h; render(); } nav(e); };
+      } else if (k === 'grupo') {
+        const gs = CURSOS_GRUPOS[st.s] || [];
+        if (!st.grupo) st.grupo = gs[0];
+        P.innerHTML = `<div class="opc">${gs.map((g, i) => `<button class="op ${st.grupo === g ? 'on' : ''}" data-g="${g}"><span class="ico">${i + 1}</span><span><b>Inicia el ${fechaLarga(g)}</b><small>${st.s === 'curso' ? 'Miércoles · 7:00 p. m. (Colombia) · 4 semanas' : 'Miércoles · 7:00 p. m. (Colombia)'}</small></span><span class="pr" style="font-size:14px">${[7, 12, 15][i] || 15} cupos</span></button>`).join('')}</div>${navBtns()}`;
+        P.onclick = (e) => { const b = e.target.closest('[data-g]'); if (b) { st.grupo = b.dataset.g; render(); } nav(e); };
+      } else if (k === 'datos') {
+        const d = st.datos || {};
+        const pareja = st.s === 'pareja';
+        const pide = !['curso', 'taller'].includes(st.s);
+        P.innerHTML = `<form class="form" id="fd">
+          <label class="field"><span>${st.s === 'bebe' ? 'Nombre del bebé' : 'Tu nombre'}</span><input class="in" name="nombre" required value="${d.nombre || ''}" placeholder="${st.s === 'bebe' ? 'Ej: Emiliano' : 'Nombre y apellido'}"></label>
+          <div class="row2"><label class="field"><span>WhatsApp</span><input class="in" name="tel" required inputmode="tel" value="${d.tel || ''}" placeholder="300 123 4567"></label>
+          <label class="field"><span>Vives en</span><select class="in" name="ciudad">${opcionesCiudad(d.ciudad || 'Bogotá')}</select></label></div>
+          ${pide ? `<p class="label" style="margin-top:6px">${pareja ? 'Persona 1' : 'Nacimiento'}</p>
+          <div class="row3"><label class="field"><span>Fecha</span><input class="in" type="date" name="nac" required value="${d.nac || ''}"></label><label class="field"><span>Hora</span><input class="in" type="time" name="hnac" value="${d.hnac || ''}"></label><label class="field"><span>Ciudad</span><select class="in" name="cnac">${opcionesCiudad(d.cnac || 'Bogotá')}</select></label></div>` : ''}
+          ${pareja ? `<p class="label" style="margin-top:6px">Persona 2</p><label class="field"><span>Nombre</span><input class="in" name="nombre2" value="${d.nombre2 || ''}"></label>
+          <div class="row3"><label class="field"><span>Fecha</span><input class="in" type="date" name="nac2" required value="${d.nac2 || ''}"></label><label class="field"><span>Hora</span><input class="in" type="time" name="hnac2" value="${d.hnac2 || ''}"></label><label class="field"><span>Ciudad</span><select class="in" name="cnac2">${opcionesCiudad(d.cnac2 || 'Bogotá')}</select></label></div>` : ''}
+          <label class="field"><span>¿Algo que Fredy deba saber? (opcional)</span><textarea class="in" name="nota" rows="2" placeholder="Ej: quiero enfocarme en mi trabajo">${d.nota || ''}</textarea></label>
+          ${pide ? '<p class="nota">¿No sabes tu hora de nacimiento? Déjala vacía: Fredy te ayuda a encontrarla.</p>' : ''}
+          ${navBtns()}</form>`;
+        P.onclick = nav;
+      } else if (k === 'regalo') {
+        const d = st.datos || {};
+        P.innerHTML = `<form class="form" id="fd">
+          <label class="field"><span>Para (nombre de quien recibe)</span><input class="in" name="para" required value="${d.para || ''}" placeholder="Ej: Gloria"></label>
+          <label class="field"><span>De parte de</span><input class="in" name="nombre" required value="${d.nombre || ''}" placeholder="Tu nombre"></label>
+          <div class="row2"><label class="field"><span>Tu WhatsApp</span><input class="in" name="tel" required value="${d.tel || ''}" inputmode="tel"></label><label class="field"><span>Vives en</span><select class="in" name="ciudad">${opcionesCiudad(d.ciudad || 'Bogotá')}</select></label></div>
+          <label class="field"><span>Mensaje en la tarjeta</span><textarea class="in" name="nota" rows="2" placeholder="¡Feliz cumpleaños, mamá! Que las estrellas te guíen.">${d.nota || ''}</textarea></label>
+          <div class="card card--gold" style="text-align:center;padding:26px"><p class="label">Vista previa</p><div class="display" style="font-size:30px">Una carta astral<br><em>para ti</em></div><p class="muted" id="prevRegalo" style="margin-bottom:0">Con cariño · válida 6 meses</p></div>
+          ${navBtns()}</form>`;
+        P.onclick = nav;
+        const upd = () => { const f = new FormData($('#fd')); $('#prevRegalo').textContent = `Para ${f.get('para') || '…'} · de ${f.get('nombre') || '…'} · válida 6 meses`; };
+        $('#fd').oninput = upd; upd();
+      } else if (k === 'pago') {
+        const s = S(), d = st.datos;
+        const cuando = s.tipo === 'sesion' ? `${fechaLarga(st.fecha)} · ${st.hora} (Col.)` : s.tipo === 'curso' ? `Grupo del ${fechaLarga(st.grupo)}` : s.tipo === 'membresia' ? 'Mensual · cancelas cuando quieras' : s.tipo === 'regalo' ? `Para ${d.para}` : 'Entrega: ' + s.dur.split('·').pop().trim();
+        if (!st.metodo) st.metodo = st.pais === 'CO' ? 'nequi' : 'paypal';
+        P.innerHTML = `<div class="resumen"><div><span>Servicio</span><span>${s.n}</span></div><div><span>${s.tipo === 'regalo' ? 'Regalo' : 'Cuándo'}</span><span>${cuando}</span></div>${s.tipo === 'sesion' ? `<div><span>Modalidad</span><span>${{ video: 'Videollamada', llamada: 'Llamada WhatsApp', presencial: 'Presencial' }[st.modo]}</span></div>` : ''}<div><span>A nombre de</span><span>${d.nombre}</span></div><div class="tot"><span>Total</span><span>${cop(s.cop)} <small class="muted">· ${usd(s.usd)}</small></span></div></div>
+          <p class="label" style="margin:22px 0 10px">Medio de pago</p>
+          <div class="opc">${PAGOS.map((p) => `<button class="op ${st.metodo === p.id ? 'on' : ''}" data-p="${p.id}"><span class="ico">${{ nequi: 'N', banco: 'B', tarjeta: '▭', paypal: 'P' }[p.id]}</span><span><b>${p.n}</b><small>${p.d}</small></span></button>`).join('')}</div>
+          <p class="nota">🔒 En la versión real el pago va por una pasarela segura (Wompi, Mercado Pago o PayPal). En esta demo el pago es simulado.</p>
+          ${navBtns('Pagar ' + cop(s.cop) + ' (simulado)')}`;
+        P.onclick = (e) => { const b = e.target.closest('[data-p]'); if (b) { st.metodo = b.dataset.p; render(); } nav(e); };
+      } else if (k === 'ok') {
+        const s = S(), d = st.datos, c = st.cita;
+        const cart = d.nac ? ASTRO.carta(d.nac, d.hnac, d.cnac) : null;
+        const cuando = s.tipo === 'sesion' ? `${fechaLarga(st.fecha)} a las ${st.hora} (hora Colombia)` : s.tipo === 'curso' ? `grupo que inicia el ${fechaLarga(st.grupo)}` : '';
+        const msg = `✨ Nueva ${s.tipo === 'regalo' ? 'tarjeta de regalo' : 'reserva'} · Fredy Astro\n\n${s.n}\n${cuando ? '📅 ' + cuando + '\n' : ''}👤 ${d.nombre} (${d.ciudad})\n📱 ${d.tel}${d.nac ? `\n🌟 Nació: ${d.nac} ${d.hnac || '(sin hora)'} en ${d.cnac}` : ''}${cart ? `\n☉ ${cart.sol.n} · ☾ ${cart.luna.n}${cart.asc ? ' · Asc ' + cart.asc.n : ''}` : ''}\n💳 Pagado ${cop(s.cop)} por ${PAGOS.find((p) => p.id === st.metodo).n}\nCódigo: ${c.id}`;
+        P.innerHTML = `<div style="text-align:center"><div class="ok-ico">✓</div><p class="lead" style="margin:0 auto">Tu ${s.tipo === 'curso' ? 'cupo' : s.tipo === 'membresia' ? 'membresía' : s.tipo === 'regalo' ? 'tarjeta de regalo' : 'cita'} quedó confirmada${cuando ? ' para el <b style="color:var(--star)">' + cuando + '</b>' : ''}.</p></div>
+          ${cart ? `<div class="trio">${[['Sol', cart.sol], ['Luna', cart.luna], ['Ascendente', cart.asc]].map(([t, x]) => `<div class="astro"><div class="label">${t}</div><div class="g">${x ? x.s : '?'}</div><b>${x ? x.n : 'Sin hora'}</b></div>`).join('')}</div><p class="nota" style="text-align:center">Fredy ya tiene tu cielo listo para la sesión.</p>` : ''}
+          <div class="opc" style="margin-top:24px">
+            <a class="btn btn--full" target="_blank" rel="noopener" href="${waLink(msg)}">Enviar confirmación por WhatsApp</a>
+            <a class="btn btn--ghost btn--full" href="panel.html">Ver cómo le llega a Fredy (panel) →</a>
+            <a class="btn btn--ghost btn--full" href="index.html">Volver al inicio</a>
+          </div><p class="nota" style="text-align:center">En la demo el WhatsApp llega a LEGION Estudio. Código de reserva: <b>${c.id}</b></p>`;
+        P.onclick = null;
+      }
+    }
+    function nav(e) {
+      if (e.target.closest('[data-atras]')) { e.preventDefault(); ir(st.i - 1); return; }
+      if (!e.target.closest('[data-sig]')) return;
+      e.preventDefault();
+      const k = lista()[st.i];
+      if (k === 'datos' || k === 'regalo') {
+        const f = $('#fd'); if (!f.reportValidity()) return;
+        st.datos = Object.fromEntries(new FormData(f));
+      }
+      if (k === 'pago') {
+        const s = S(), d = st.datos;
+        const cita = { id: 'FA' + Date.now().toString(36).slice(-5).toUpperCase(), creada: new Date().toISOString().slice(0, 10), fecha: s.tipo === 'sesion' ? st.fecha : new Date().toISOString().slice(0, 10), hora: s.tipo === 'sesion' ? st.hora : '00:00',
+          servicio: s.id, nombre: s.tipo === 'regalo' ? `Para: ${d.para} (de ${d.nombre})` : d.nombre, tel: d.tel, ciudad: d.ciudad, pais: (ASTRO.CIUDADES.find((x) => x.n === d.ciudad) || {}).p || 'CO',
+          nac: d.nac || '', hnac: d.hnac || '', cnac: d.cnac || '', nac2: d.nac2, hnac2: d.hnac2, cnac2: d.cnac2, nombre2: d.nombre2, nota: d.nota, modo: st.modo, grupo: st.grupo,
+          pago: 'pagado', metodo: st.metodo, estado: { sesion: 'confirmada', entrega: 'en proceso', curso: 'inscrito', membresia: 'activa', regalo: 'enviada' }[s.tipo], nueva: true };
+        Store.add(cita); st.cita = cita; toast('Pago aprobado (simulado) ✓');
+      }
+      ir(st.i + 1);
+    }
+    // si llega con ?s= salta directo al paso 2
+    if (st.s) st.i = 1;
+    render();
+  </script>
+</body>
+</html>

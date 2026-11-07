@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Plan Fredy Astro · LEGION</title>
+  <meta name="description" content="Propuesta de LEGION Estudio para que Fredy Astro trabaje como astrólogo virtual: página, agenda con pago, panel, redes y pauta.">
+  <meta name="theme-color" content="#0a0c17">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='15' fill='%230a0c17' stroke='%23d8b06a'/><text x='16' y='22' font-size='17' text-anchor='middle' fill='%23d8b06a'>✦</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..600&family=Archivo:wght@400..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    .flujo { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-top: 30px; }
+    @media (max-width: 900px) { .flujo { grid-template-columns: repeat(2, 1fr); } }
+    .paso { border: 1px solid var(--line); border-radius: 16px; padding: 16px; text-align: center; background: rgba(26, 30, 58, .5); position: relative; }
+    .paso .ico { margin: 0 auto 10px; }
+    .paso b { display: block; font-size: 15px; }
+    .paso small { color: var(--star-2); font-size: 12.5px; }
+    .pieza { display: grid; grid-template-columns: 64px 1fr auto; gap: 18px; align-items: center; }
+    @media (max-width: 640px) { .pieza { grid-template-columns: 52px 1fr; } .pieza .btn { grid-column: 1 / -1; } }
+    .pieza .num { font-family: var(--serif); font-size: 46px; color: var(--gold); line-height: 1; }
+    .sim label { display: grid; grid-template-columns: 1fr 70px; gap: 6px 14px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); }
+    .sim label span:first-child small { display: block; color: var(--star-2); font-size: 12.5px; }
+    .sim input[type=range] { grid-column: 1 / -1; width: 100%; accent-color: var(--gold); }
+    .sim output { text-align: right; font-family: var(--serif); font-size: 24px; color: var(--gold-2); }
+    .total { font-family: var(--serif); font-size: clamp(40px, 8vw, 72px); color: var(--gold-2); line-height: 1; }
+    .linea { border-left: 2px solid var(--gold); padding-left: 22px; display: grid; gap: 22px; }
+    .linea div { position: relative; }
+    .linea div::before { content: ''; position: absolute; left: -29px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--gold); }
+    .linea b { color: var(--gold-2); }
+  </style>
+</head>
+<body>
+  <canvas class="cielo" id="cielo" aria-hidden="true"></canvas>
+  <header class="top"><div class="wrap"><a class="brand" href="plan.html"><span class="mark">✦</span>Fredy Astro <b>× LEGION</b></a><a class="btn btn--sm" href="index.html">Ver la página</a></div></header>
+  <main>
+    <section class="hero" style="min-height:auto;padding-top:clamp(60px,10vw,120px)">
+      <div class="wrap">
+        <p class="label rv">Propuesta de LEGION Estudio para Fredy</p>
+        <h1 class="display rv">Fredy Astro,<br><em>astrólogo para el mundo</em></h1>
+        <p class="lead rv">Hoy Fredy lee cartas a quien llega al hotel. Con este proyecto lo hace todos los días, por videollamada, a personas de cualquier ciudad y país, y cobra en pesos o en dólares.</p>
+        <div class="hero__cta rv"><a class="btn" href="#piezas">Ver lo que haríamos</a><a class="btn btn--ghost" href="#ingresos">¿Cuánto puede ganar?</a></div>
+      </div>
+    </section>
+
+    <section style="padding-top:0">
+      <div class="wrap">
+        <p class="label rv">Así llega un cliente</p>
+        <h2 class="display rv">Del celular <em>a la sesión</em></h2>
+        <div class="flujo">
+          <div class="paso rv"><div class="ico">◎</div><b>Lo ve en redes</b><small>Reel, anuncio o recomendación</small></div>
+          <div class="paso rv"><div class="ico">✦</div><b>Entra a la página</b><small>Calcula su signo gratis</small></div>
+          <div class="paso rv"><div class="ico">◷</div><b>Agenda</b><small>Servicio, día y hora en su país</small></div>
+          <div class="paso rv"><div class="ico">$</div><b>Paga</b><small>Nequi, PSE, tarjeta o PayPal</small></div>
+          <div class="paso rv"><div class="ico">✉</div><b>Le llega a Fredy</b><small>WhatsApp + panel con su carta</small></div>
+          <div class="paso rv"><div class="ico">▶</div><b>Sesión</b><small>Videollamada grabada + PDF</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="piezas">
+      <div class="wrap">
+        <p class="label rv">Lo que construimos</p>
+        <h2 class="display rv" style="margin-bottom:26px">5 piezas, <em>una sola marca</em></h2>
+        <div class="grid">
+          <div class="card card--gold pieza rv"><div class="num">1</div><div><h3>Página y portafolio</h3><p class="muted" style="margin:0">Su marca “Fredy Astro”, 13 servicios con precios en pesos y dólares, calculadora gratis de Sol, Luna y Ascendente, videos, testimonios y preguntas.</p></div><a class="btn" href="index.html">Abrir</a></div>
+          <div class="card pieza rv"><div class="num">2</div><div><h3>Agenda con pago en línea</h3><p class="muted" style="margin:0">El cliente escoge el servicio, el día y la hora (ajustada a su país), deja sus datos de nacimiento y paga. Cursos, membresía y tarjetas de regalo también.</p></div><a class="btn btn--ghost" href="agendar.html?s=carta">Probar</a></div>
+          <div class="card pieza rv"><div class="num">3</div><div><h3>Panel de Fredy</h3><p class="muted" style="margin:0">Sus citas del día con la carta de cada cliente ya calculada, pagos, alumnos de los cursos, miembros del Círculo y ventas por servicio y país. PIN: 2026.</p></div><a class="btn btn--ghost" href="panel.html">Abrir</a></div>
+          <div class="card pieza rv"><div class="num">4</div><div><h3>Redes sociales</h3><p class="muted" style="margin:0">Perfil en Instagram, TikTok, Facebook y YouTube, publicaciones listas, calendario mensual de contenido y edición de sus videos.</p></div><a class="btn btn--ghost" href="redes.html">Ver kit</a></div>
+          <div class="card pieza rv"><div class="num">5</div><div><h3>Anuncios pagados</h3><p class="muted" style="margin:0">Pauta en Instagram y Facebook hacia Colombia, España, Estados Unidos y México, con fechas fuertes del cielo: lunas nuevas, eclipses, Gemínidas y Navidad (tarjeta de regalo).</p></div><span class="chip">Con presupuesto aparte</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <p class="label rv">Qué puede vender</p>
+        <h2 class="display rv" style="margin-bottom:26px">Todo lo que <em>sabe hacer</em></h2>
+        <div class="grid g4" id="catalogo"></div>
+      </div>
+    </section>
+
+    <section id="ingresos">
+      <div class="wrap grid g2" style="align-items:start;gap:clamp(20px,4vw,48px)">
+        <div class="card sim rv">
+          <p class="label">Simulador · mueve las barras</p>
+          <label><span>Cartas astrales al mes<small>$150.000 c/u</small></span><output id="o1"></output><input type="range" id="r1" min="0" max="60" value="12"></label>
+          <label><span>Consultas y lecturas exprés<small>promedio $60.000</small></span><output id="o2"></output><input type="range" id="r2" min="0" max="80" value="15"></label>
+          <label><span>Parejas y revoluciones solares<small>promedio $150.000</small></span><output id="o3"></output><input type="range" id="r3" min="0" max="40" value="6"></label>
+          <label><span>Alumnos del curso al mes<small>$350.000 c/u</small></span><output id="o4"></output><input type="range" id="r4" min="0" max="40" value="8"></label>
+          <label><span>Miembros del Círculo Astro<small>$40.000 al mes c/u</small></span><output id="o5"></output><input type="range" id="r5" min="0" max="300" value="40"></label>
+          <label><span>% de clientes del exterior<small>pagan en dólares</small></span><output id="o6"></output><input type="range" id="r6" min="0" max="80" value="25"></label>
+        </div>
+        <div class="rv">
+          <p class="label">Ingreso mensual estimado</p>
+          <div class="total" id="total"></div>
+          <p class="muted" id="detalle"></p>
+          <div class="card" style="margin-top:20px"><p class="label">Horas de sesión al mes</p><div class="display" style="font-size:40px" id="horas"></div><p class="muted" style="margin:0">Con 3 o 4 sesiones al día, de lunes a sábado, Fredy trabaja desde su casa en la Tatacoa.</p></div>
+          <p class="nota">Cifras de ejemplo para mostrar el potencial; no son una promesa de ventas.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap grid g2" style="gap:clamp(20px,4vw,48px)">
+        <div>
+          <p class="label rv">Cómo arrancamos</p>
+          <h2 class="display rv" style="margin-bottom:26px">En <em>4 semanas</em></h2>
+          <div class="linea rv">
+            <div><b>Semana 1 ·</b> Sesión de fotos y videos con Fredy, definimos servicios y precios reales, y abrimos sus redes.</div>
+            <div><b>Semana 2 ·</b> Página, agenda y pagos funcionando con su dominio y su WhatsApp.</div>
+            <div><b>Semana 3 ·</b> Primeras 12 publicaciones y 4 reels; le enseñamos a usar su panel.</div>
+            <div><b>Semana 4 ·</b> Lanzamiento con anuncios pagados y el primer en vivo.</div>
+          </div>
+        </div>
+        <div class="grid">
+          <div class="card rv"><p class="label">Fredy pone</p><ul class="inc" style="margin-bottom:0"><li>Su conocimiento y su voz</li><li>2 o 3 videos cortos a la semana (le decimos qué grabar)</li><li>Las sesiones con sus clientes</li></ul></div>
+          <div class="card card--gold rv"><p class="label">LEGION se encarga de</p><ul class="inc" style="margin-bottom:0"><li>Página, agenda, pagos y panel</li><li>Diseño, edición y publicación en redes</li><li>Anuncios y reportes de resultados</li><li>Soporte y mejoras cada mes</li></ul></div>
+        </div>
+      </div>
+    </section>
+
+    <section style="text-align:center">
+      <div class="wrap">
+        <h2 class="display rv">¿Empezamos con <em>la próxima luna nueva</em>?</h2>
+        <p class="lead rv" style="margin:16px auto 28px">La demo ya funciona. Solo faltan las fotos de Fredy, sus precios reales y su WhatsApp.</p>
+        <div class="hero__cta rv" style="justify-content:center"><a class="btn" href="index.html">Ver la página de Fredy</a><a class="btn btn--ghost" href="panel.html">Ver su panel</a></div>
+      </div>
+    </section>
+  </main>
+  <footer><div class="wrap">LEGION Estudio · legionestudio.com · Demo para Fredy Astro (datos y precios de ejemplo)</div></footer>
+  <script src="assets/astro.js"></script>
+  <script src="assets/data.js"></script>
+  <script src="assets/common.js"></script>
+  <script>
+    cielo($('#cielo'));
+    $('#catalogo').innerHTML = SERVICIOS.map((s) => `<a class="card rv" href="agendar.html?s=${s.id}" style="text-decoration:none;padding:18px"><div class="ico" style="width:38px;height:38px;font-size:16px">${s.ico}</div><b style="display:block;margin:10px 0 2px">${s.n}</b><small class="muted">${cop(s.cop)} · ${usd(s.usd)}${s.tipo === 'membresia' ? '/mes' : ''}</small></a>`).join('');
+    const P = [150000, 60000, 150000, 350000, 40000];
+    function calc() {
+      const v = [1, 2, 3, 4, 5, 6].map((i) => +$('#r' + i).value);
+      v.forEach((x, i) => { $('#o' + (i + 1)).textContent = i === 5 ? x + '%' : x; });
+      const base = v.slice(0, 5).reduce((a, x, i) => a + x * P[i], 0);
+      const plus = (v[0] * P[0] + v[1] * P[1] + v[2] * P[2] + v[3] * P[3]) * (v[5] / 100) * 0.2; // en dólares se cobra ~20% más
+      $('#total').textContent = cop(base + plus);
+      $('#detalle').textContent = `${v[0] + v[1] + v[2]} lecturas, ${v[3]} alumnos y ${v[4]} miembros que pagan cada mes (${cop(v[4] * P[4])} fijos).`;
+      $('#horas').textContent = Math.round(v[0] * 1 + v[1] * 0.5 + v[2] * 1) + ' h';
+    }
+    $$('input[type=range]').forEach((r) => r.addEventListener('input', calc)); calc();
+    revelar();
+  </script>
+</body>
+</html>
