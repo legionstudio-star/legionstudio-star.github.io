@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<title>Nohelys, pregunta rápida</title>
+<meta name="description" content="Una pregunta rápida. Prometo que es corta.">
+<meta property="og:title" content="Nohelys, pregunta rápida 👀">
+<meta property="og:description" content="Prometo que es corta.">
+<meta name="theme-color" content="#ffe14d">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{--am:#ffe14d;--ne:#111;--ro:#ff4f8b;--ve:#3ddc84;--bl:#fff}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{background:var(--am);color:var(--ne);font-family:'Bricolage Grotesque',system-ui,sans-serif;user-select:none;-webkit-user-select:none;
+  background-image:radial-gradient(rgba(0,0,0,.09) 1.5px,transparent 1.5px);background-size:22px 22px}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:50}
+.scene{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px 20px;opacity:0;visibility:hidden;transform:scale(.94);transition:opacity .35s,transform .45s cubic-bezier(.3,1.6,.5,1),visibility 0s .35s}
+.scene.on{opacity:1;visibility:visible;transform:none;transition:opacity .35s,transform .45s cubic-bezier(.3,1.6,.5,1)}
+h1{font-weight:800;font-size:clamp(46px,14vw,86px);line-height:.95;letter-spacing:-2px}
+h2{font-weight:800;font-size:clamp(38px,11vw,64px);line-height:1;letter-spacing:-1.5px}
+.sub{font-size:19px;font-weight:500;margin-top:16px;max-width:340px;line-height:1.35}
+.btn{font:800 21px 'Bricolage Grotesque',sans-serif;color:var(--ne);background:var(--bl);border:3px solid var(--ne);border-radius:16px;padding:16px 30px;box-shadow:5px 5px 0 var(--ne);cursor:pointer;transition:transform .15s,box-shadow .15s}
+.btn:active{transform:translate(4px,4px);box-shadow:1px 1px 0 var(--ne)}
+.btn.ro{background:var(--ro);color:#fff}
+.btn.ve{background:var(--ve)}
+.chip{display:inline-block;background:var(--ne);color:var(--am);font-weight:800;font-size:14px;letter-spacing:2px;padding:7px 14px;border-radius:999px;transform:rotate(-3deg);margin-bottom:22px}
+.emoji{font-size:64px;display:inline-block;animation:menear 1.8s ease-in-out infinite}
+@keyframes menear{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+.hl{background:var(--ne);color:var(--am);padding:0 .15em;border-radius:8px;display:inline-block;transform:rotate(-2deg)}
+
+/* pregunta */
+#preg .botones{position:relative;margin-top:38px;display:flex;gap:18px;align-items:center;justify-content:center;min-height:90px}
+#bSi{transition:transform .3s cubic-bezier(.3,1.6,.5,1),box-shadow .15s;transform-origin:center}
+#bNo{transition:left .25s ease,top .25s ease,transform .2s}
+#bNo.suelto{position:fixed;z-index:20}
+#burla{margin-top:30px;font-size:20px;font-weight:700;min-height:2.6em;max-width:330px;line-height:1.3}
+#burla span{display:inline-block;animation:pop .35s cubic-bezier(.3,1.8,.5,1)}
+@keyframes pop{from{transform:scale(.4);opacity:0}}
+
+/* no definitivo */
+#triste .btn{margin-top:28px}
+
+/* sí */
+.tarjeta{background:var(--bl);border:3px solid var(--ne);border-radius:22px;box-shadow:8px 8px 0 var(--ne);padding:28px 22px;width:100%;max-width:390px}
+.campo{display:flex;align-items:center;border:3px solid var(--ne);border-radius:14px;padding:0 14px;margin:22px 0 16px;background:#fffbe6}
+.campo span{font-size:24px;font-weight:800;color:var(--ro)}
+.campo input{flex:1;min-width:0;border:0;outline:0;background:none;font:700 21px 'Bricolage Grotesque',sans-serif;padding:15px 6px;color:var(--ne);user-select:text;-webkit-user-select:text}
+.campo.mal{animation:temblar .35s}
+@keyframes temblar{25%{transform:translateX(-9px)}75%{transform:translateX(9px)}}
+.tarjeta .btn{width:100%}
+#nota{margin-top:14px;font-weight:700;min-height:1.4em}
+.pie{margin-top:26px;font-size:14px;font-weight:600;opacity:.6}
+</style>
+</head>
+<body>
+<canvas id="fx"></canvas>
+
+<section class="scene on" id="hola">
+  <div class="emoji">👋</div>
+  <h1 style="margin-top:14px">Hola,<br><span class="hl" id="tNombre">Nohelys</span></h1>
+  <p class="sub">Soy el del número equivocado.<br>Tengo <b>una</b> pregunta. Prometo que es corta.</p>
+  <button class="btn ro" id="bDale" style="margin-top:34px">Dale, pregunta</button>
+</section>
+
+<section class="scene" id="preg">
+  <div class="chip">PREGUNTA SERIA</div>
+  <h2>¿Me pasas tu Instagram? 📸</h2>
+  <div class="botones">
+    <button class="btn ve" id="bSi">Sí</button>
+    <button class="btn" id="bNo">No</button>
+  </div>
+  <div id="burla"></div>
+</section>
+
+<section class="scene" id="triste">
+  <div class="emoji">🥲</div>
+  <h2 style="margin-top:14px">Ok, respeto.</h2>
+  <p class="sub">Me voy a llorar un ratico con el wifi.<br>Pero el botón de <b>Sí</b> sigue aquí 👀</p>
+  <button class="btn ve" id="bSi2">Bueno ya, sí</button>
+</section>
+
+<section class="scene" id="si">
+  <div class="tarjeta">
+    <div class="emoji">🎉</div>
+    <h2 style="margin-top:8px;font-size:clamp(34px,10vw,48px)">¡Sabía!</h2>
+    <p class="sub" style="margin:10px auto 0">Escríbelo aquí y me llega directo:</p>
+    <div class="campo" id="campo"><span>@</span><input id="ig" placeholder="tu_usuario" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" maxlength="40"></div>
+    <button class="btn ro" id="bEnviar">Enviar 🚀</button>
+    <div id="nota"></div>
+  </div>
+  <div class="pie">Sí, programé esto solo para preguntarte 😅</div>
+</section>
+
+<script>
+/* ===== CONFIGURACIÓN ===== */
+const C = {
+  nombre: 'Nohelys',
+  whatsapp: '573007248165'   // tu número con indicativo, ej. '573001234567'
+};
+
+const $ = s => document.querySelector(s);
+const rnd = (a, b) => a + Math.random() * (b - a);
+$('#tNombre').textContent = C.nombre;
+
+function ir(id) {
+  document.querySelectorAll('.scene.on').forEach(s => s.classList.remove('on'));
+  setTimeout(() => $('#' + id).classList.add('on'), 200);
+}
+
+/* ===== sonidos cortos ===== */
+let AC = null;
+function bip(f, d = .12, tipo = 'square', v = .05, t0 = 0) {
+  try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === 'suspended') AC.resume(); } catch (e) { return; }
+  const t = AC.currentTime + t0, o = AC.createOscillator(), g = AC.createGain();
+  o.type = tipo; o.frequency.setValueAtTime(f, t);
+  g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(.0001, t + d);
+  o.connect(g).connect(AC.destination); o.start(t); o.stop(t + d + .02);
+}
+const fanfarria = () => [523, 659, 784, 1047, 784, 1047].forEach((f, i) => bip(f, .18, 'triangle', .09, i * .09));
+
+/* ===== el NO que se escapa ===== */
+const BURLAS = [
+  '¿Segura? 🤨',
+  'Ese botón está defectuoso, intenta con el otro',
+  'Piénsalo bien… 👀',
+  'El Sí está creciendo, es una señal',
+  'Soy buena persona, lo dice mi mamá',
+  'Ok, ya, ahora sí funciona el No 🙄'
+];
+let intentos = 0;
+const bNo = $('#bNo'), bSi = $('#bSi');
+function escapar(e) {
+  if (intentos >= BURLAS.length - 1) return;           // ya se rindió: el No funciona
+  e.preventDefault(); e.stopPropagation();
+  intentos++;
+  bip(220 + intentos * 40, .1, 'square', .04);
+  const r = bNo.getBoundingClientRect();
+  bNo.classList.add('suelto');
+  const m = 20, w = r.width, h = r.height;
+  let x, y, n = 0;
+  do { x = rnd(m, innerWidth - w - m); y = rnd(m + 60, innerHeight - h - m); n++; }
+  while (n < 30 && Math.hypot(x - r.left, y - r.top) < 140);
+  bNo.style.left = x + 'px'; bNo.style.top = y + 'px';
+  bSi.style.transform = `scale(${1 + intentos * .18})`;
+  $('#burla').innerHTML = `<span>${BURLAS[intentos - 1]}</span>`;
+  if (intentos === BURLAS.length - 1) { setTimeout(() => $('#burla').innerHTML = `<span>${BURLAS[BURLAS.length - 1]}</span>`, 900); }
+}
+bNo.addEventListener('pointerdown', escapar);
+bNo.addEventListener('click', e => {
+  if (intentos < BURLAS.length - 1) { escapar(e); return; }
+  bip(300, .25, 'sawtooth', .05); bip(200, .4, 'sawtooth', .05, .2);
+  bNo.classList.remove('suelto'); ir('triste');
+});
+
+/* ===== SÍ ===== */
+function dijoSi() { fanfarria(); confeti(200); setTimeout(() => confeti(100), 900); ir('si'); setTimeout(() => $('#ig').focus({ preventScroll: true }), 900); }
+bSi.onclick = dijoSi;
+$('#bSi2').onclick = dijoSi;
+$('#bDale').onclick = () => { bip(660, .1, 'triangle', .08); bip(880, .12, 'triangle', .08, .08); ir('preg'); };
+
+$('#bEnviar').onclick = () => {
+  const u = $('#ig').value.trim().replace(/^@+/, '').replace(/\s+/g, '');
+  if (!u) { const c = $('#campo'); c.classList.remove('mal'); void c.offsetWidth; c.classList.add('mal'); bip(180, .2, 'square', .05); return; }
+  fanfarria(); confeti(120);
+  const msg = `Ok ganaste 😂 mi Instagram es @${u}`;
+  if (C.whatsapp) {
+    $('#nota').textContent = 'Abriendo WhatsApp…';
+    setTimeout(() => location.href = `https://wa.me/${C.whatsapp}?text=${encodeURIComponent(msg)}`, 700);
+  } else {
+    $('#nota').textContent = `Listo: mándame "@${u}" por el chat 😉`;
+  }
+};
+
+/* ===== confeti ===== */
+const cv = $('#fx'), cx = cv.getContext('2d'); let piezas = [], W, H;
+function medir() { const d = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight; cv.width = W * d; cv.height = H * d; cv.style.width = W + 'px'; cv.style.height = H + 'px'; cx.setTransform(d, 0, 0, d, 0, 0); }
+addEventListener('resize', medir); medir();
+const COL = ['#ff4f8b', '#3ddc84', '#111', '#4d7cff', '#ff8a00', '#fff'];
+function confeti(n) { for (let i = 0; i < n; i++) piezas.push({ x: W / 2 + rnd(-40, 40), y: H * .55, vx: rnd(-9, 9), vy: rnd(-17, -6), r: rnd(0, 6), vr: rnd(-.25, .25), s: rnd(8, 15), c: COL[i % COL.length] }); }
+(function bucle() {
+  cx.clearRect(0, 0, W, H);
+  for (const p of piezas) {
+    p.vy += .38; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.r += p.vr;
+    cx.save(); cx.translate(p.x, p.y); cx.rotate(p.r); cx.fillStyle = p.c; cx.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2); cx.restore();
+  }
+  piezas = piezas.filter(p => p.y < H + 40);
+  requestAnimationFrame(bucle);
+})();
+</script>
+</body>
+</html>
