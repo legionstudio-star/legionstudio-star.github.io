@@ -43,6 +43,12 @@
   }
   document.title = N.nombre;
 
+  // Tarjeta de vehículo (Carpeta Vial): página aparte
+  if (N.tipo === "vehiculo") {
+    await new Promise((ok, mal) => { const s = document.createElement("script"); s.src = "/app/vehiculo.js?v=2"; s.onload = ok; s.onerror = mal; document.head.appendChild(s); });
+    return window.LEGION_VEHICULO(N, raiz);
+  }
+
   // Tarjeta NFC/QR de una mesa: legionestudio.com/<slug>/?mesa=7
   const MESA = (new URLSearchParams(location.search).get("mesa") || "").replace(/\D/g, "").slice(0, 3).replace(/^0+/, "");
   const MESERO = N.mesero && N.mesero.activo && MESA ? N.mesero : null;
@@ -80,6 +86,12 @@
     recibo: '<path d="M6 3h12v18l-2-1.5-2 1.5-2-1.5-2 1.5-2-1.5L6 21V3Z"/><path d="M9 8h6M9 12h6M9 16h3"/>',
     mas: '<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>',
     ok: '<path d="m5 12.5 4.5 4.5L19 7.5"/>',
+    tijera: '<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.6 7.6 20 18M8.6 16.4 20 6"/>',
+    gota: '<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11Z"/><path d="M9.5 14.5a2.5 2.5 0 0 0 2.5 2.5"/>',
+    carro: '<path d="M5 16V11l2-5h10l2 5v5"/><path d="M3 16h18v3H3zM7 11h10"/><circle cx="7.5" cy="19" r="1.5"/><circle cx="16.5" cy="19" r="1.5"/>',
+    corona: '<path d="m3 8 4.5 4L12 5l4.5 7L21 8l-2 11H5L3 8Z"/>',
+    tienda: '<path d="M4 9h16l-1-5H5L4 9Z"/><path d="M5 9v11h14V9M9 20v-6h6v6"/>',
+    hoja: '<path d="M5 19c0-8 5-14 15-15-1 10-7 15-15 15Z"/><path d="M5 19 13 11"/>',
     copiar: '<rect x="8" y="8" width="13" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/>'
   };
   const ic = (n, cls = "icon") => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${SVG[n]}</svg>`;
@@ -134,10 +146,15 @@
     facebook: () => N.facebook && { i: "fb", t: "Facebook", s: "Síguenos", href: N.facebook },
     web: () => N.web && { i: "web", t: "Sitio web", s: N.web.replace(/^https?:\/\//, ""), href: N.web }
   };
-  const lista = (N.botones || []).map((k) => BOTONES[k] && BOTONES[k]()).filter(Boolean);
-  const boton = (b, ancho) => {
+  BOTONES.mesero = () => N.mesero && N.mesero.activo && !MESERO && { i: "campana", t: "Mesero virtual", s: "Llama al mesero desde tu mesa", accion: "mesa" };
+  const lista = [...(N.mesero && N.mesero.activo && !(N.botones || []).includes("mesero") ? ["mesero"] : []), ...(N.botones || [])].map((k) => BOTONES[k] && BOTONES[k]()).filter(Boolean);
+  // Botones personalizados (nombre, ícono y enlace) que se agregan en el panel
+  (N.extras || []).forEach((b) => b && b.t && b.url && lista.push({ i: SVG[b.i] ? b.i : "flecha", t: b.t, s: b.s || "", href: b.url, destacado: !!b.destacado }));
+  // Los botones destacados y el mesero van primero y a lo ancho
+  lista.sort((a, b) => (b.destacado || b.accion === "mesa" ? 1 : 0) - (a.destacado || a.accion === "mesa" ? 1 : 0));
+  const boton = (b, ancho, fuerte) => {
     const inner = `<span class="ic">${ic(b.i)}</span><div><strong>${esc(b.t)}</strong><small>${esc(b.s || "")}</small></div>`;
-    const cls = `boton${ancho ? " ancho" : ""}`;
+    const cls = `boton${ancho ? " ancho" : ""}${fuerte ? " fuerte" : ""}`;
     return b.accion
       ? `<button type="button" class="${cls}" data-accion="${b.accion}">${inner}</button>`
       : `<a class="${cls}" href="${b.href}" target="_blank" rel="noopener">${inner}</a>`;
@@ -186,7 +203,8 @@
 
       ${N.promo ? `<div class="bloque"><div class="promo">${ic("regalo")}<div><strong>${esc(N.promo.titulo)}</strong><span>${esc(N.promo.texto)}</span></div></div></div>` : ""}
 
-      ${lista.length ? `<div class="bloque botones">${lista.map((b, i) => boton(b, lista.length % 2 === 1 && i === lista.length - 1)).join("")}</div>` : ""}
+      ${lista.length ? `<div class="bloque botones">${(() => { const anchos = lista.filter((b) => b.destacado || b.accion === "mesa").length, resto = lista.length - anchos;
+        return lista.map((b, i) => boton(b, i < anchos || (resto % 2 === 1 && i === lista.length - 1), b.destacado || b.accion === "mesa")).join(""); })()}</div>` : ""}
 
       ${N.horario || N.direccion ? `
       <div class="bloque info">
@@ -207,6 +225,16 @@
         <div class="dato-wifi"><small>Clave</small><b>${esc(N.wifi.clave)}</b></div>
         <button type="button" class="copiar" id="copiar-wifi">Copiar clave</button>
         <button type="button" class="cerrar-m" data-cerrar>Cerrar</button>
+      </div>
+    </div>` : ""}
+    ${N.mesero && N.mesero.activo && !MESERO ? `
+    <div class="modal" id="m-mesa" role="dialog" aria-modal="true" aria-label="¿En qué mesa estás?">
+      <div class="modal-caja">
+        <div class="ic">${ic("campana")}</div>
+        <h3>¿En qué mesa estás?</h3>
+        <p class="ms-p">Mira el número en tu mesa.</p>
+        <div class="mesas-grid">${Array.from({ length: Math.min(60, N.mesero.mesas || 12) }, (_, i) => `<a href="?mesa=${i + 1}">${i + 1}</a>`).join("")}</div>
+        <button type="button" class="cerrar-m" data-cerrar>Cancelar</button>
       </div>
     </div>` : ""}
     ${MESERO ? `
@@ -266,6 +294,9 @@
     document.addEventListener("click", (e) => { const b = e.target.closest("[data-mesero]"); if (b) abrir(b.dataset.mesero); });
   }
 
+  const mMesa = $("#m-mesa");
+  if (mMesa) mMesa.addEventListener("click", (e) => { if (e.target === mMesa || e.target.closest("[data-cerrar]")) mMesa.classList.remove("abierta"); });
+
   /* ---------- Wifi ---------- */
   const mWifi = $("#m-wifi");
   if (mWifi) {
@@ -284,6 +315,7 @@
     const a = e.target.closest("[data-accion]"); if (!a) return;
     if (a.dataset.accion === "wifi") mWifi.classList.add("abierta");
     if (a.dataset.accion === "menu") location.hash = "menu";
+    if (a.dataset.accion === "mesa") $("#m-mesa").classList.add("abierta");
   });
 
   function montarMenu() {
