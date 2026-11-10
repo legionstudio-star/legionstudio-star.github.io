@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tarjetas NFC | LEGION Studio</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/marca/logo-legion.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<style>
+  :root { --c: #F5B942; --tx: #111; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Plus Jakarta Sans", system-ui, sans-serif; background: #E9E6E1; color: #1D1B18; padding: 20px 16px 60px; }
+  button, input, select { font: inherit; color: inherit; }
+  [hidden] { display: none !important; }
+
+  /* ---------- Controles ---------- */
+  .panel { max-width: 1100px; margin: 0 auto 22px; background: #fff; border-radius: 20px; padding: 20px; box-shadow: 0 10px 30px -16px rgba(0,0,0,.35); }
+  .cabecera { display: flex; align-items: center; gap: 14px; }
+  .cabecera img { width: 54px; height: 54px; object-fit: contain; background: #111; border-radius: 14px; padding: 4px; }
+  .cabecera h1 { font-size: 1.3rem; font-weight: 800; }
+  .cabecera p { color: #6B665E; font-size: .88rem; }
+  .ctrls { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-top: 16px; }
+  .ctrls label { display: block; font-size: .7rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #6B665E; margin-bottom: 4px; }
+  .ctrls select, .ctrls input { width: 100%; padding: 10px 11px; border-radius: 10px; border: 1.5px solid #E2DDD4; background: #FAF8F5; font-size: 16px; }
+  .acc { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; border: 0; cursor: pointer; padding: 12px 18px; border-radius: 999px; font-weight: 800; font-size: .9rem; background: #111; color: #fff; text-decoration: none; }
+  .btn.claro { background: #F1EEE8; color: #1D1B18; }
+  .nota { margin-top: 14px; font-size: .84rem; color: #6B665E; background: #F7F4EE; border-radius: 12px; padding: 12px 14px; line-height: 1.55; }
+  .nota b { color: #1D1B18; }
+  .funcs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .funcs span { font-size: .74rem; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: #EAF7EF; color: #1E7A44; }
+  .funcs span.no { background: #F4F1EC; color: #9A948A; text-decoration: line-through; }
+
+  /* ---------- Hoja de tarjetas ---------- */
+  .hoja { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(440px, 1fr)); gap: 28px 18px; justify-items: center; }
+  .par { display: flex; gap: 10px; flex-direction: column; align-items: center; }
+  .par > small { font-size: .74rem; font-weight: 700; color: #6B665E; }
+  .lados { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+
+  /* Tarjeta CR80 vertical: 54 x 85.6 mm */
+  .tj { width: 54mm; height: 85.6mm; border-radius: 3.2mm; overflow: hidden; position: relative; background: var(--fondo); color: var(--tx); box-shadow: 0 14px 30px -14px rgba(0,0,0,.5); font-family: "Plus Jakarta Sans", sans-serif; flex-shrink: 0; }
+  .estilo-oscuro { --fondo: #0D0D0F; --tx: #fff; --tx2: rgba(255,255,255,.62); --acento: var(--c); --placa: #fff; }
+  .estilo-marca { --fondo: var(--c); --tx: var(--sobre); --tx2: color-mix(in srgb, var(--sobre) 70%, transparent); --acento: var(--sobre); --placa: #fff; }
+  .estilo-claro { --fondo: #FBF9F5; --tx: #141414; --tx2: #6B665E; --acento: var(--c); --placa: #fff; }
+
+  .tj .brillo { position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(60mm 40mm at 85% -6%, color-mix(in srgb, var(--acento) 38%, transparent), transparent 70%),
+                radial-gradient(50mm 30mm at -10% 108%, color-mix(in srgb, var(--acento) 22%, transparent), transparent 70%); }
+  .estilo-marca .brillo { background: radial-gradient(60mm 40mm at 85% -6%, rgba(255,255,255,.32), transparent 70%), radial-gradient(50mm 34mm at -10% 108%, rgba(0,0,0,.22), transparent 70%); }
+  .tj .cont { position: absolute; inset: 0; padding: 5mm 4.6mm 4.4mm; display: flex; flex-direction: column; align-items: center; text-align: center; }
+
+  /* Frente */
+  .f-logo { width: 15mm; height: 15mm; border-radius: 50%; background: #fff center/cover no-repeat; border: .6mm solid color-mix(in srgb, var(--acento) 70%, transparent); display: grid; place-items: center; font-weight: 800; font-size: 6mm; color: #111; flex-shrink: 0; }
+  .f-nombre { font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; font-size: 3.5mm; line-height: 1.1; margin-top: 2mm; letter-spacing: -.01em; max-width: 44mm; }
+  .f-mesa { margin-top: 2.6mm; line-height: .86; }
+  .f-mesa small { display: block; font-size: 2mm; font-weight: 800; letter-spacing: .5mm; color: var(--acento); text-transform: uppercase; }
+  .f-mesa b { display: block; font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; font-size: 17mm; letter-spacing: -.8mm; }
+  .f-titulo { margin-top: 3mm; font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; font-size: 5.4mm; line-height: 1; letter-spacing: -.2mm; }
+  .f-titulo em { font-style: normal; color: var(--acento); display: block; }
+  .nfc { margin-top: auto; display: flex; align-items: center; gap: 2.2mm; text-align: left; }
+  .nfc .ondas { width: 11mm; height: 11mm; border-radius: 50%; display: grid; place-items: center; background: color-mix(in srgb, var(--acento) 18%, transparent); color: var(--acento); flex-shrink: 0; position: relative; }
+  .nfc .ondas::after { content: ""; position: absolute; inset: -1.2mm; border-radius: 50%; border: .3mm dashed color-mix(in srgb, var(--acento) 55%, transparent); }
+  .nfc .ondas svg { width: 6.4mm; height: 6.4mm; }
+  .nfc b { display: block; font-size: 2.7mm; line-height: 1.15; }
+  .nfc small { display: block; font-size: 2.1mm; color: var(--tx2); line-height: 1.2; }
+  .pie-f { width: 100%; margin-top: 3mm; display: flex; align-items: center; gap: 2.4mm; background: color-mix(in srgb, var(--tx) 7%, transparent); border-radius: 2.4mm; padding: 1.6mm; text-align: left; }
+  .qr { width: 13mm; height: 13mm; background: var(--placa); border-radius: 1.4mm; padding: .9mm; flex-shrink: 0; }
+  .qr svg { width: 100%; height: 100%; display: block; }
+  .pie-f b { display: block; font-size: 2.3mm; line-height: 1.15; }
+  .pie-f small { display: block; font-size: 1.85mm; color: var(--tx2); line-height: 1.25; }
+
+  /* Reverso */
+  .r-cab { display: flex; align-items: center; gap: 2mm; width: 100%; text-align: left; }
+  .r-cab .f-logo { width: 9mm; height: 9mm; font-size: 3.6mm; border-width: .4mm; }
+  .r-cab b { font-family: "Bricolage Grotesque", sans-serif; font-size: 3.2mm; line-height: 1.05; display: block; }
+  .r-cab small { font-size: 2mm; color: var(--tx2); }
+  .r-tit { margin-top: 4mm; width: 100%; text-align: left; font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; font-size: 4.6mm; line-height: 1.02; }
+  .r-tit em { font-style: normal; color: var(--acento); }
+  .r-lista { list-style: none; width: 100%; margin-top: 3mm; display: grid; gap: 1.7mm; }
+  .r-lista li { display: flex; align-items: center; gap: 2mm; text-align: left; background: color-mix(in srgb, var(--tx) 6%, transparent); border-radius: 2mm; padding: 1.6mm 2mm; }
+  .r-lista .i { width: 6.4mm; height: 6.4mm; border-radius: 1.6mm; background: var(--acento); color: var(--fondo); display: grid; place-items: center; flex-shrink: 0; }
+  .estilo-marca .r-lista .i { color: var(--c); }
+  .r-lista .i svg { width: 4mm; height: 4mm; }
+  .r-lista b { font-size: 2.55mm; line-height: 1.1; display: block; }
+  .r-lista small { font-size: 1.9mm; color: var(--tx2); line-height: 1.15; display: block; }
+  .r-pie { margin-top: auto; width: 100%; display: flex; align-items: center; justify-content: space-between; font-size: 1.8mm; color: var(--tx2); }
+  .r-pie b { color: var(--tx); letter-spacing: .3mm; }
+  .r-pie .m { font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; font-size: 3mm; color: var(--acento); }
+
+  /* Enlaces NFC */
+  .enlaces { max-width: 1100px; margin: 28px auto 0; background: #fff; border-radius: 20px; padding: 18px 20px; }
+  .enlaces h2 { font-size: 1.05rem; }
+  .enlaces p { font-size: .84rem; color: #6B665E; margin: 2px 0 12px; }
+  .enlaces ol { list-style: none; display: grid; gap: 6px; }
+  .enlaces li { display: flex; gap: 10px; align-items: center; font-size: .84rem; background: #F7F4EE; border-radius: 10px; padding: 8px 10px; }
+  .enlaces li b { min-width: 64px; }
+  .enlaces li code { flex: 1; word-break: break-all; font-family: ui-monospace, Consolas, monospace; font-size: .78rem; }
+  .enlaces li button { border: 0; background: #111; color: #fff; border-radius: 999px; padding: 6px 12px; font-size: .75rem; font-weight: 700; cursor: pointer; }
+
+  @media (max-width: 600px) {
+    body { padding: 12px 10px 40px; }
+    .ctrls { grid-template-columns: 1fr 1fr; }
+    .btn { flex: 1 1 100%; justify-content: center; }
+    .hoja { grid-template-columns: 1fr; }
+    .lados { gap: 14px; }
+    .enlaces li { flex-wrap: wrap; }
+  }
+
+  @page { size: 54mm 85.6mm; margin: 0; }
+  @media print {
+    body { background: none; padding: 0; }
+    .panel, .enlaces, .par > small { display: none !important; }
+    .hoja, .par, .lados { display: block; max-width: none; margin: 0; gap: 0; transform: none; }
+    .tj { border-radius: 0; box-shadow: none; break-after: page; page-break-after: always; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .sin-reverso .tj.reverso { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<section class="panel">
+  <div class="cabecera">
+    <img src="/marca/logo-legion.png" alt="LEGION">
+    <div><h1>Tarjetas NFC + QR</h1><p>Tamaño real CR80 (54 × 85,6 mm) para la impresora CD800.</p></div>
+  </div>
+  <div class="ctrls">
+    <div><label for="c-negocio">Negocio</label><select id="c-negocio"><option>Cargando…</option></select></div>
+    <div><label for="c-tipo">Tipo de tarjeta</label><select id="c-tipo"><option value="mesa">Una por mesa (mesero virtual)</option><option value="general">General (página / catálogo)</option></select></div>
+    <div class="solo-mesa"><label for="c-desde">Desde la mesa</label><input id="c-desde" inputmode="numeric" value="1"></div>
+    <div class="solo-mesa"><label for="c-hasta">Hasta la mesa</label><input id="c-hasta" inputmode="numeric" value="4"></div>
+    <div class="solo-general"><label for="c-copias">Copias</label><input id="c-copias" inputmode="numeric" value="1"></div>
+    <div><label for="c-estilo">Estilo</label><select id="c-estilo"><option value="oscuro">Negro con su color</option><option value="marca">Color de la marca</option><option value="claro">Claro</option></select></div>
+    <div><label for="c-lados">Caras</label><select id="c-lados"><option value="2">Frente y reverso (intercalado)</option><option value="1">Solo frente</option></select></div>
+  </div>
+  <div class="funcs" id="funcs"></div>
+  <div class="acc">
+    <button class="btn" type="button" id="imprimir">Imprimir / guardar PDF</button>
+    <button class="btn claro" type="button" id="descargar">Descargar enlaces NFC (.txt)</button>
+    <a class="btn claro" href="/panel/" target="_blank" rel="noopener">Abrir panel</a>
+  </div>
+  <p class="nota"><b>Imprimir en la CD800:</b> tamaño real 100 %, sin márgenes, doble cara. Sale intercalado: frente 1, reverso 1, frente 2…
+    <br><b>Grabar el NFC:</b> NFC Tools → Escribir → URL → pega el enlace de esa tarjeta (cada mesa tiene el suyo) → Escribir → Otros → Bloquear etiqueta.
+    <br>Lo que se abre al tocarla se cambia desde el panel; la tarjeta no se vuelve a imprimir.</p>
+</section>
+
+<div class="hoja" id="hoja"></div>
+
+<section class="enlaces">
+  <h2>Enlaces para grabar en cada sticker NFC</h2>
+  <p>El QR de cada tarjeta lleva exactamente el mismo enlace.</p>
+  <ol id="lista-enlaces"></ol>
+</section>
+
+<script src="/datos/config.js"></script>
+<script>
+(async () => {
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const P = new URLSearchParams(location.search);
+  const SVG = {
+    nfc: '<path d="M8.5 8.5a5 5 0 0 1 0 7M12 6a8.5 8.5 0 0 1 0 12M15.5 3.5a12 12 0 0 1 0 17"/><path d="M5 11v2"/>',
+    campana: '<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15L6 16Z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>',
+    recibo: '<path d="M6 3h12v18l-2-1.5-2 1.5-2-1.5-2 1.5-2-1.5L6 21V3Z"/><path d="M9 8h6M9 12h6"/>',
+    menu: '<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5v-15Z"/><path d="M9 8h7M9 12h5"/>',
+    grid: '<rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/>',
+    estrella: '<path fill="currentColor" stroke="none" d="m12 2.8 2.8 5.7 6.3.9-4.6 4.4 1.1 6.2L12 17l-5.6 3 1.1-6.2L2.9 9.4l6.3-.9L12 2.8Z"/>',
+    wifi: '<path d="M2 8.5a15 15 0 0 1 20 0M5 12a10 10 0 0 1 14 0M8.5 15.5a5 5 0 0 1 7 0"/><circle cx="12" cy="19" r="1" fill="currentColor"/>',
+    moto: '<circle cx="5.5" cy="17" r="3"/><circle cx="18.5" cy="17" r="3"/><path d="M8.5 17h6l3-7h-4M5.5 14l3-5h4l2 8"/>'
+  };
+  const ic = (n) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${SVG[n]}</svg>`;
+  const qrSVG = (txt) => { const q = qrcode(0, "M"); q.addData(txt); q.make(); return q.createSvgTag({ cellSize: 4, margin: 0, scalable: true }); };
+  const sobre = (hex) => { const n = parseInt((hex || "#F5B942").slice(1), 16), r = n >> 16, g = (n >> 8) & 255, b = n & 255; return (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? "#111111" : "#FFFFFF"; };
+  const iniciales = (n) => (n || "?").replace(/^(Asadero|Heladería|Restaurante|Bar|Panadería|Café|Cafetería)\s+/i, "").split(/\s+/).filter((p) => p.length > 2).slice(0, 2).map((p) => p[0]).join("").toUpperCase() || "?";
+
+  let NEG = {};
+  try { NEG = await window.LEGION.negocios(); } catch (e) { $("c-negocio").innerHTML = "<option>Sin conexión</option>"; return; }
+  const slugs = Object.keys(NEG);
+  $("c-negocio").innerHTML = slugs.map((s) => `<option value="${s}">${esc(NEG[s].nombre)} · /${s}</option>`).join("");
+  if (P.get("n") && NEG[P.get("n")]) $("c-negocio").value = P.get("n");
+  const N0 = NEG[$("c-negocio").value];
+  if (N0 && !(N0.mesero && N0.mesero.activo)) $("c-tipo").value = "general";
+  if (N0 && N0.mesero && N0.mesero.mesas) $("c-hasta").value = N0.mesero.mesas;
+  if (N0 && N0.tema === "claro") $("c-estilo").value = "marca";
+
+  function acciones(N, tipo) {
+    const a = [], menu = N.menu && N.menu.categorias && N.menu.categorias.length, mesero = tipo === "mesa" && N.mesero && N.mesero.activo;
+    if (mesero) a.push(["campana", "Llama al mesero", "Te atienden al instante"], ["recibo", "Pide la cuenta", "Y elige cómo pagas"]);
+    if (menu) a.push(N.menu.vista === "catalogo" ? ["grid", "Mira el catálogo", "Fotos y precios"] : mesero && N.menu.carrito ? ["menu", "Pide desde la carta", "Te llega a la mesa"] : ["menu", "Mira la carta", "Platos y precios"]);
+    if (!mesero && N.menu && N.menu.carrito) a.push(["moto", "Pide a domicilio", "Directo a WhatsApp"]);
+    if (N.wifi && a.length < 4) a.push(["wifi", "Clave del wifi", "Conéctate gratis"]);
+    if (N.resenas && a.length < 4) a.push(["estrella", "Califícanos", "En Google, en un toque"]);
+    return a.slice(0, 4);
+  }
+
+  function frente(N, url, mesa) {
+    const logo = N.logo ? `style="background-image:url('${esc(N.logo)}')"` : "";
+    return `<div class="tj frente"><div class="brillo"></div><div class="cont">
+      <div class="f-logo" ${logo}>${N.logo ? "" : esc(iniciales(N.nombre))}</div>
+      <div class="f-nombre">${esc(N.nombre)}</div>
+      ${mesa ? `<div class="f-mesa"><small>Mesa</small><b>${String(mesa).padStart(2, "0")}</b></div>`
+             : `<div class="f-titulo">Toca y<em>descubre</em>todo</div>`}
+      <div class="nfc"><span class="ondas">${ic("nfc")}</span><div><b>Acerca tu celular</b><small>${mesa ? "Llama al mesero y pide sin esperar" : "Menú, pedidos y más"}</small></div></div>
+      <div class="pie-f"><span class="qr">${qrSVG(url)}</span><div><b>¿No tienes NFC?</b><small>Escanea el código con la cámara</small></div></div>
+    </div></div>`;
+  }
+  function reverso(N, mesa, tipo) {
+    const lista = acciones(N, tipo);
+    const logo = N.logo ? `style="background-image:url('${esc(N.logo)}')"` : "";
+    return `<div class="tj reverso"><div class="brillo"></div><div class="cont">
+      <div class="r-cab"><div class="f-logo" ${logo}>${N.logo ? "" : esc(iniciales(N.nombre))}</div><div><b>${esc(N.nombre)}</b><small>${esc(N.categoria || "")}</small></div></div>
+      <div class="r-tit">Desde tu celular,<br><em>sin descargar nada.</em></div>
+      <ul class="r-lista">${lista.map(([i, t, s]) => `<li><span class="i">${ic(i)}</span><div><b>${t}</b><small>${s}</small></div></li>`).join("")}</ul>
+      <div class="r-pie"><span>Tecnología <b>LEGION</b></span>${mesa ? `<span class="m">MESA ${String(mesa).padStart(2, "0")}</span>` : ""}</div>
+    </div></div>`;
+  }
+
+  let ENLACES = [];
+  function pintar() {
+    const slug = $("c-negocio").value, N = NEG[slug]; if (!N) return;
+    const tipo = $("c-tipo").value, estilo = $("c-estilo").value, dos = $("c-lados").value === "2";
+    document.querySelectorAll(".solo-mesa").forEach((e) => (e.hidden = tipo !== "mesa"));
+    document.querySelectorAll(".solo-general").forEach((e) => (e.hidden = tipo !== "general"));
+    document.documentElement.style.setProperty("--c", N.color || "#F5B942");
+    document.documentElement.style.setProperty("--sobre", sobre(N.color));
+    const base = window.LEGION_URL + slug + "/";
+    const mesero = N.mesero && N.mesero.activo;
+    $("funcs").innerHTML = [["Mesero virtual", mesero], ["Carta / menú", N.menu && N.menu.categorias && N.menu.categorias.length], ["Pedidos", N.menu && N.menu.carrito], ["Catálogo con fotos", N.menu && N.menu.vista === "catalogo"], ["Reseñas Google", !!N.resenas]]
+      .map(([t, on]) => `<span class="${on ? "" : "no"}">${t}</span>`).join("") + (tipo === "mesa" && !mesero ? `<span class="no" style="text-decoration:none;background:#FDECEC;color:#B42318">Prende el mesero virtual en el panel para las tarjetas de mesa</span>` : "");
+    let items = [];
+    if (tipo === "mesa") {
+      const d = Math.max(1, +$("c-desde").value || 1), h = Math.min(d + 199, Math.max(d, +$("c-hasta").value || d));
+      for (let m = d; m <= h; m++) items.push({ mesa: m, url: base + "?mesa=" + m });
+    } else {
+      const n = Math.min(100, Math.max(1, +$("c-copias").value || 1));
+      for (let i = 0; i < n; i++) items.push({ mesa: null, url: base });
+    }
+    ENLACES = items;
+    $("hoja").className = "hoja estilo-" + estilo + (dos ? "" : " sin-reverso");
+    $("hoja").innerHTML = items.map((it, i) => `<div class="par"><small>${it.mesa ? "Mesa " + it.mesa : "Tarjeta " + (i + 1)}</small>
+      <div class="lados">${frente(N, it.url, it.mesa)}${dos ? reverso(N, it.mesa, tipo) : ""}</div></div>`).join("");
+    const unicos = tipo === "mesa" ? items : items.slice(0, 1);
+    $("lista-enlaces").innerHTML = unicos.map((it) => `<li><b>${it.mesa ? "Mesa " + it.mesa : "Todas"}</b><code>${esc(it.url)}</code><button type="button" data-copiar="${esc(it.url)}">Copiar</button></li>`).join("");
+    history.replaceState(null, "", "?n=" + slug);
+  }
+  document.querySelectorAll(".ctrls select, .ctrls input").forEach((e) => e.addEventListener("input", pintar));
+  $("c-negocio").addEventListener("change", () => {
+    const N = NEG[$("c-negocio").value];
+    $("c-tipo").value = N.mesero && N.mesero.activo ? "mesa" : "general";
+    if (N.mesero && N.mesero.mesas) { $("c-desde").value = 1; $("c-hasta").value = N.mesero.mesas; }
+    pintar();
+  });
+  $("lista-enlaces").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-copiar]"); if (!b) return;
+    navigator.clipboard.writeText(b.dataset.copiar).then(() => { b.textContent = "Copiado"; setTimeout(() => (b.textContent = "Copiar"), 1500); });
+  });
+  $("imprimir").addEventListener("click", () => window.print());
+  $("descargar").addEventListener("click", () => {
+    const N = NEG[$("c-negocio").value];
+    const txt = `Enlaces NFC · ${N.nombre}\r\n\r\n` + ENLACES.filter((it, i) => it.mesa || i === 0).map((it) => `${it.mesa ? "Mesa " + it.mesa : "Todas las tarjetas"}: ${it.url}`).join("\r\n");
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([txt], { type: "text/plain" }));
+    a.download = `Enlaces_NFC_${$("c-negocio").value}.txt`; a.click();
+  });
+  pintar();
+})();
+</script>
+</body>
+</html>

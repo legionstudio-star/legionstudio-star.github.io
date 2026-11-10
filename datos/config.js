@@ -2,7 +2,7 @@
   CONFIGURACIÓN — LEGION Studio Digital
   -------------------------------------
   Los clientes ya no se editan aquí: se crean y se editan en el panel (legionestudio.com/panel/).
-  Los datos viven en Supabase (proyecto "legion-habladores").
+  Los datos viven en Supabase (proyecto de demos de LEGION, ref cbvzwwhdfxwlujmninov; antes legion-habladores).
 
   La llave de abajo es la "publishable": es pública a propósito. Solo permite LEER los
   negocios activos; crear, editar o borrar exige iniciar sesión como administrador.
@@ -11,8 +11,8 @@
 // Dirección base de todos los enlaces (QR y NFC). Nunca cambiar el slug de un cliente con hablador impreso.
 window.LEGION_URL = "https://legionestudio.com/";
 
-window.SUPABASE_URL = "https://infohpbtwalukhjdfplc.supabase.co";
-window.SUPABASE_KEY = "sb_publishable_c1MoXYfg-DfEoXcvTMAlvw_n4EDk1Qo";
+window.SUPABASE_URL = "https://cbvzwwhdfxwlujmninov.supabase.co";
+window.SUPABASE_KEY = "sb_publishable_o-pcQCGPXSuvRdxovVmSIA_F9qyR1-9";
 
 // Lectura pública de negocios (sin librerías)
 window.LEGION = {

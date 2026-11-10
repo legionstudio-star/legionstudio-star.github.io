@@ -177,3 +177,65 @@ button, input, select, textarea { font: inherit; color: inherit; }
   .modal { align-items: center; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+/* ---------- Mesero virtual (tarjeta NFC de la mesa) ---------- */
+.mesero { background: linear-gradient(150deg, var(--c), var(--c-osc)); color: #fff; border-radius: 24px; padding: 18px 16px 16px; box-shadow: 0 18px 34px -18px var(--c); position: relative; overflow: hidden; }
+.mesero::before { content: ""; position: absolute; width: 220px; height: 220px; right: -70px; top: -90px; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,.22), transparent 70%); }
+.ms-cab { display: flex; align-items: center; justify-content: space-between; gap: 10px; position: relative; }
+.ms-cab small { display: block; font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; opacity: .85; }
+.ms-cab b { font-size: 2rem; font-weight: 800; letter-spacing: -.03em; line-height: 1; }
+.ms-vivo { display: inline-flex; align-items: center; gap: 7px; font-size: .72rem; font-weight: 800; background: rgba(0,0,0,.22); padding: 7px 11px; border-radius: 999px; white-space: nowrap; }
+.ms-vivo i { width: 8px; height: 8px; border-radius: 50%; background: #6EE7A0; box-shadow: 0 0 0 0 rgba(110,231,160,.7); animation: latido 1.8s infinite; }
+@keyframes latido { 70% { box-shadow: 0 0 0 8px rgba(110,231,160,0); } 100% { box-shadow: 0 0 0 0 rgba(110,231,160,0); } }
+.ms-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; position: relative; }
+.ms-b { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; text-align: left; border: 0; cursor: pointer; background: rgba(255,255,255,.14); color: #fff; border-radius: 18px; padding: 14px; min-height: 108px; backdrop-filter: blur(6px); transition: transform .15s, background .2s; }
+.ms-b:active { transform: scale(.96); }
+.ms-b .icon { width: 28px; height: 28px; }
+.ms-b strong { font-size: .95rem; line-height: 1.15; margin-top: auto; }
+.ms-b small { font-size: .74rem; opacity: .85; font-weight: 500; }
+.ms-b.fuerte { background: #fff; color: var(--c-osc); }
+.oscuro .mesero, .oscuro .ms-b.fuerte { color: #141414; }
+.oscuro .ms-b { color: #141414; background: rgba(0,0,0,.12); }
+.oscuro .ms-b.fuerte { background: #141414; color: var(--c); }
+.ms-estado { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: .82rem; font-weight: 700; background: rgba(0,0,0,.2); border-radius: 12px; padding: 10px 12px; position: relative; }
+.ms-estado .icon { width: 18px; height: 18px; }
+.ms-p { color: var(--gris); font-size: .9rem; margin-top: 4px; }
+.ms-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 14px; }
+.ms-chips label { position: relative; cursor: pointer; }
+.ms-chips input { position: absolute; opacity: 0; }
+.ms-chips span { display: block; padding: 10px 14px; border-radius: 999px; border: 1.5px solid var(--linea); font-weight: 700; font-size: .86rem; }
+.ms-chips input:checked + span { border-color: var(--c); background: var(--c-suave); color: var(--c); }
+.modal-caja .ic.ok { background: #DDF3E5; color: #1E7A44; }
+.modal-caja .copiar:disabled { opacity: .6; }
+
+/* ---------- Catálogo con fotos grandes ---------- */
+.cg { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.cg-item { background: var(--card); border: 1px solid var(--linea); border-radius: 18px; overflow: hidden; cursor: pointer; display: flex; flex-direction: column; }
+.cg-foto { position: relative; aspect-ratio: 1; background: var(--c-suave); display: grid; place-items: center; color: var(--c); }
+.cg-foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.cg-foto em { position: absolute; right: 8px; bottom: 8px; font-style: normal; font-size: .66rem; font-weight: 800; background: rgba(0,0,0,.6); color: #fff; padding: 3px 8px; border-radius: 999px; }
+.cg-foto .tag { position: absolute; left: 8px; top: 8px; font-size: .66rem; font-weight: 800; padding: 3px 8px; border-radius: 999px; background: var(--c); color: #fff; }
+.cg-txt { padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 2px; flex: 1; }
+.cg-txt h3 { font-size: .9rem; font-weight: 700; line-height: 1.25; }
+.cg-txt .precio { font-weight: 800; color: var(--c); }
+.cg-txt .acc { margin-top: auto; padding-top: 8px; }
+@media (min-width: 560px) { .cg { grid-template-columns: repeat(3, 1fr); } }
+.item[data-ver] { cursor: pointer; }
+
+/* Detalle del producto */
+.modal.detalle .modal-caja { padding: 0; overflow: hidden; text-align: left; max-height: 92svh; overflow-y: auto; }
+.galeria { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; background: var(--linea); }
+.galeria::-webkit-scrollbar { display: none; }
+.galeria img { flex: 0 0 100%; width: 100%; aspect-ratio: 4 / 3.4; object-fit: cover; scroll-snap-align: center; }
+.puntos { display: flex; justify-content: center; gap: 6px; margin-top: -22px; position: relative; }
+.puntos i { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.55); transition: .2s; }
+.puntos i.on { background: #fff; width: 18px; border-radius: 4px; }
+.det-txt { padding: 18px 20px 14px; display: flex; flex-direction: column; gap: 6px; }
+.det-txt h3 { font-size: 1.3rem; font-weight: 800; line-height: 1.2; }
+.det-txt p { color: var(--gris); font-size: .9rem; }
+.det-txt .precio { font-size: 1.2rem; font-weight: 800; color: var(--c); }
+.det-txt .tag { align-self: flex-start; font-size: .7rem; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: var(--c-suave); color: var(--c); }
+.det-txt .btn-wa { margin-top: 10px; }
+.det-acc { margin-top: 8px; }
+.det-txt .cerrar-m { align-self: center; }
+.det-abierto .barra { display: none; }

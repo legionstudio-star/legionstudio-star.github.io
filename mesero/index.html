@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pantalla de meseros | LEGION</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0B0B0C">
+<link rel="icon" href="/marca/logo-legion.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --c: #F5B942; --fondo: #0B0B0C; --card: #161618; --linea: #2A2A2D; --gris: #9A968E; --verde: #3DBE74; --rojo: #F2555A; --azul: #6AA8FF; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Plus Jakarta Sans", system-ui, sans-serif; background: var(--fondo); color: #fff; min-height: 100svh; -webkit-font-smoothing: antialiased; }
+  button, input { font: inherit; color: inherit; }
+  [hidden] { display: none !important; }
+  .icon { width: 22px; height: 22px; flex-shrink: 0; }
+
+  /* Ingreso */
+  .ingreso { min-height: 100svh; display: grid; place-items: center; padding: 24px 16px; background: radial-gradient(600px 380px at 50% 20%, color-mix(in srgb, var(--c) 22%, transparent), transparent 70%); }
+  .caja { width: 100%; max-width: 360px; text-align: center; }
+  .logo { width: 84px; height: 84px; border-radius: 50%; margin: 0 auto 14px; background: var(--c) center/cover no-repeat; border: 3px solid #222; display: grid; place-items: center; font-weight: 800; font-size: 1.8rem; color: #111; }
+  .caja h1 { font-size: 1.4rem; }
+  .caja p { color: var(--gris); font-size: .9rem; margin: 4px 0 22px; }
+  .pin { display: flex; justify-content: center; gap: 10px; margin-bottom: 18px; }
+  .pin i { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--linea); transition: .15s; }
+  .pin i.on { background: var(--c); border-color: var(--c); }
+  .teclado { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .teclado button { height: 64px; border-radius: 18px; border: 1px solid var(--linea); background: var(--card); font-size: 1.4rem; font-weight: 700; cursor: pointer; }
+  .teclado button:active { background: #222; transform: scale(.97); }
+  .err { color: var(--rojo); font-size: .88rem; min-height: 1.4em; margin-bottom: 8px; }
+
+  /* Pantalla */
+  header { position: sticky; top: 0; z-index: 5; background: rgba(11,11,12,.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--linea); }
+  .top { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; gap: 12px; padding: 12px 16px; }
+  .top .logo { width: 42px; height: 42px; margin: 0; font-size: 1rem; border-width: 2px; }
+  .top b { display: block; line-height: 1.15; }
+  .top small { color: var(--gris); font-size: .76rem; display: flex; align-items: center; gap: 6px; }
+  .top small i { width: 8px; height: 8px; border-radius: 50%; background: var(--verde); }
+  .top small i.mal { background: var(--rojo); }
+  .top .esp { flex: 1; }
+  .btn { border: 1px solid var(--linea); background: var(--card); border-radius: 999px; padding: 9px 14px; font-weight: 700; font-size: .82rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+  .btn.sonido-off { border-color: var(--rojo); color: #FFB3B5; animation: titila 1.2s infinite; }
+  @keyframes titila { 50% { opacity: .55; } }
+  main { max-width: 1100px; margin: 0 auto; padding: 16px 16px 40px; }
+  .resumen { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+  .resumen span { font-size: .8rem; font-weight: 700; padding: 7px 12px; border-radius: 999px; background: var(--card); border: 1px solid var(--linea); }
+  .lista { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); align-items: start; }
+  .ll { background: var(--card); border: 1px solid var(--linea); border-left: 6px solid var(--t); border-radius: 20px; padding: 16px; display: grid; gap: 10px; animation: entra .35s ease; }
+  .ll.nuevo { box-shadow: 0 0 0 2px var(--t), 0 18px 40px -20px var(--t); }
+  .ll.viejo .hace { color: var(--rojo); }
+  @keyframes entra { from { transform: translateY(10px) scale(.98); opacity: 0; } }
+  .ll-top { display: flex; align-items: center; gap: 12px; }
+  .mesa { width: 62px; height: 62px; border-radius: 18px; background: var(--t); color: #111; display: grid; place-items: center; flex-shrink: 0; text-align: center; line-height: 1; }
+  .mesa small { display: block; font-size: .58rem; font-weight: 800; letter-spacing: .1em; }
+  .mesa b { font-size: 1.7rem; font-weight: 800; }
+  .ll-top strong { display: block; font-size: 1.08rem; }
+  .ll-top .hace { color: var(--gris); font-size: .8rem; font-weight: 600; }
+  .det { background: #0E0E10; border-radius: 12px; padding: 10px 12px; font-size: .92rem; white-space: pre-line; line-height: 1.45; }
+  .atender { border: 0; border-radius: 14px; background: var(--verde); color: #08130C; font-weight: 800; padding: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .atender:active { transform: scale(.98); }
+  .vacio { text-align: center; padding: 70px 16px; color: var(--gris); }
+  .vacio .icon { width: 54px; height: 54px; color: var(--verde); margin-bottom: 10px; }
+  .vacio b { display: block; color: #fff; font-size: 1.2rem; margin-bottom: 4px; }
+  @media (max-width: 520px) { .top .btn span { display: none; } }
+</style>
+</head>
+<body>
+
+<section class="ingreso" id="v-pin" hidden>
+  <div class="caja">
+    <div class="logo" id="pin-logo"></div>
+    <h1 id="pin-nombre">Pantalla de meseros</h1>
+    <p>Escribe el PIN de los meseros</p>
+    <div class="pin" id="pin-puntos"></div>
+    <div class="err" id="pin-err"></div>
+    <div class="teclado" id="teclado"></div>
+  </div>
+</section>
+
+<section class="ingreso" id="v-error" hidden><div class="caja"><h1>Enlace incompleto</h1><p id="err-txt">Abre esta pantalla desde el panel de LEGION.</p></div></section>
+
+<div id="v-pantalla" hidden>
+  <header><div class="top">
+    <div class="logo" id="top-logo"></div>
+    <div><b id="top-nombre"></b><small><i id="conexion"></i><span id="conexion-txt">En línea</span></small></div>
+    <div class="esp"></div>
+    <button class="btn sonido-off" type="button" id="sonido">🔇 <span>Toca para activar el sonido</span></button>
+    <button class="btn" type="button" id="salir">Salir</button>
+  </div></header>
+  <main>
+    <div class="resumen" id="resumen"></div>
+    <div class="lista" id="lista"></div>
+  </main>
+</div>
+
+<script src="/datos/config.js"></script>
+<script>
+(async () => {
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const ver = (id) => ["v-pin", "v-error", "v-pantalla"].forEach((v) => ($(v).hidden = v !== id));
+  const SLUG = (new URLSearchParams(location.search).get("n") || "").toLowerCase();
+  const CLAVE = "mesero_pin_" + SLUG;
+  const TIPOS = {
+    llamar: { t: "Llama al mesero", c: "#F5B942" },
+    cuenta: { t: "Pide la cuenta", c: "#6AA8FF" },
+    extra:  { t: "Necesita algo", c: "#C79BFF" },
+    pedido: { t: "Pedido nuevo", c: "#3DBE74" }
+  };
+
+  async function rpc(fn, args) {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, { method: "POST", headers: { apikey: SUPABASE_KEY, "Content-Type": "application/json" }, body: JSON.stringify(args) });
+    const j = await r.json().catch(() => null);
+    if (!r.ok) { const e = new Error((j && j.message) || "Error " + r.status); e.status = r.status; throw e; }
+    if (j && j.ok === false) { const e = new Error(j.error); e.pin = true; e.codigo = j.error; throw e; }
+    return j;
+  }
+
+  if (!/^[a-z0-9][a-z0-9-]{1,39}$/.test(SLUG)) return ver("v-error");
+  let N = null;
+  try { N = await window.LEGION.negocio(SLUG); } catch (e) { $("err-txt").textContent = "No hay conexión. Recarga la página."; return ver("v-error"); }
+  if (!N) { $("err-txt").textContent = "Este negocio no existe o está apagado."; return ver("v-error"); }
+  document.documentElement.style.setProperty("--c", N.color || "#F5B942");
+  document.title = "Meseros · " + N.nombre;
+  const ponLogo = (el) => { if (N.logo) el.style.backgroundImage = `url("${N.logo}")`; else el.textContent = N.nombre[0]; };
+  ponLogo($("pin-logo")); ponLogo($("top-logo"));
+  $("pin-nombre").textContent = N.nombre; $("top-nombre").textContent = N.nombre;
+
+  /* ---------- PIN ---------- */
+  let PIN = "";
+  try { PIN = localStorage.getItem(CLAVE) || ""; } catch (e) {}
+  let escrito = "";
+  const puntos = () => ($("pin-puntos").innerHTML = Array.from({ length: Math.max(4, escrito.length) }, (_, i) => `<i class="${i < escrito.length ? "on" : ""}"></i>`).join(""));
+  $("teclado").innerHTML = [1, 2, 3, 4, 5, 6, 7, 8, 9, "⌫", 0, "OK"].map((k) => `<button type="button" data-k="${k}">${k}</button>`).join("");
+  $("teclado").addEventListener("click", async (e) => {
+    const k = e.target.closest("[data-k]")?.dataset.k; if (k === undefined) return;
+    $("pin-err").textContent = "";
+    if (k === "⌫") escrito = escrito.slice(0, -1);
+    else if (k === "OK") return entrar(escrito);
+    else if (escrito.length < 6) escrito += k;
+    puntos();
+  });
+  async function entrar(pin) {
+    try {
+      await rpc("mesero_pendientes", { p_slug: SLUG, p_pin: pin });
+      PIN = pin; try { localStorage.setItem(CLAVE, pin); } catch (e) {}
+      ver("v-pantalla"); arrancar();
+    } catch (err) {
+      escrito = ""; puntos();
+      $("pin-err").textContent = err.codigo === "bloqueado" ? "Demasiados intentos. Espera 5 minutos." : err.codigo === "sin_pin" ? "Este negocio aún no tiene PIN (se pone en el panel)." : err.pin ? "PIN incorrecto" : "Sin conexión, intenta otra vez";
+      ver("v-pin");
+    }
+  }
+  $("salir").addEventListener("click", () => { try { localStorage.removeItem(CLAVE); } catch (e) {} location.reload(); });
+
+  /* ---------- Sonido ---------- */
+  let audio = null;
+  function timbre() {
+    if (!audio) return;
+    const t = audio.currentTime;
+    [[880, 0], [1320, .18], [880, .5], [1320, .68]].forEach(([f, d]) => {
+      const o = audio.createOscillator(), g = audio.createGain();
+      o.type = "sine"; o.frequency.value = f; o.connect(g); g.connect(audio.destination);
+      g.gain.setValueAtTime(0, t + d); g.gain.linearRampToValueAtTime(.35, t + d + .02); g.gain.exponentialRampToValueAtTime(.001, t + d + .3);
+      o.start(t + d); o.stop(t + d + .32);
+    });
+    if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+  }
+  $("sonido").addEventListener("click", async () => {
+    audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+    await audio.resume();
+    $("sonido").classList.remove("sonido-off"); $("sonido").innerHTML = "🔔 <span>Sonido activo</span>";
+    timbre();
+    try { await navigator.wakeLock?.request("screen"); } catch (e) {}
+  });
+
+  /* ---------- Llamados ---------- */
+  let vistos = null, LISTA = [];
+  const hace = (iso) => { const s = Math.max(0, (Date.now() - new Date(iso)) / 1000); return s < 60 ? "hace " + Math.round(s) + " s" : "hace " + Math.round(s / 60) + " min"; };
+  function pintar() {
+    const cuenta = (t) => LISTA.filter((l) => l.tipo === t).length;
+    $("resumen").innerHTML = LISTA.length ? Object.entries(TIPOS).filter(([k]) => cuenta(k)).map(([k, v]) => `<span style="color:${v.c}">${cuenta(k)} · ${v.t}</span>`).join("") : "";
+    $("lista").innerHTML = LISTA.length ? LISTA.map((l) => {
+      const T = TIPOS[l.tipo] || TIPOS.llamar, viejo = Date.now() - new Date(l.creado) > 180000;
+      return `<article class="ll ${l.nuevo ? "nuevo" : ""} ${viejo ? "viejo" : ""}" style="--t:${T.c}">
+        <div class="ll-top"><div class="mesa"><div><small>MESA</small><b>${esc(l.mesa)}</b></div></div>
+          <div><strong>${T.t}</strong><span class="hace">${hace(l.creado)}</span></div></div>
+        ${l.detalle ? `<div class="det">${esc(l.detalle)}</div>` : ""}
+        <button class="atender" type="button" data-id="${l.id}">✓ Atendido</button>
+      </article>`;
+    }).join("") : `<div class="vacio" style="grid-column:1/-1"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><b>Todo al día</b>Cuando una mesa toque su tarjeta, aparece aquí y suena.</div>`;
+  }
+  async function traer() {
+    try {
+      const filas = (await rpc("mesero_pendientes", { p_slug: SLUG, p_pin: PIN })).llamados;
+      $("conexion").classList.remove("mal"); $("conexion-txt").textContent = "En línea";
+      const ids = new Set(filas.map((f) => f.id));
+      const nuevos = vistos ? filas.filter((f) => !vistos.has(f.id)) : [];
+      if (nuevos.length) timbre();
+      LISTA = filas.map((f) => ({ ...f, nuevo: nuevos.some((n) => n.id === f.id) || (LISTA.find((l) => l.id === f.id) || {}).nuevo }));
+      vistos = ids; pintar();
+    } catch (err) {
+      if (err.pin) { try { localStorage.removeItem(CLAVE); } catch (e) {} return location.reload(); }
+      $("conexion").classList.add("mal"); $("conexion-txt").textContent = "Sin conexión, reintentando…";
+    }
+  }
+  $("lista").addEventListener("click", async (e) => {
+    const b = e.target.closest("[data-id]"); if (!b) return;
+    b.disabled = true; b.textContent = "…";
+    try { await rpc("mesero_atender", { p_slug: SLUG, p_pin: PIN, p_id: +b.dataset.id }); LISTA = LISTA.filter((l) => l.id !== +b.dataset.id); pintar(); }
+    catch (err) { b.disabled = false; b.textContent = "✓ Atendido"; }
+  });
+  function arrancar() { traer(); setInterval(traer, 4000); setInterval(pintar, 15000); }
+
+  if (PIN) entrar(PIN); else { puntos(); ver("v-pin"); }
+})();
+</script>
+</body>
+</html>

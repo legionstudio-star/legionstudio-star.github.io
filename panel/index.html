@@ -138,6 +138,42 @@
   .toast.ver { opacity: 1; transform: translateX(-50%); }
   .solo-menu.oculto, .solo-pagina.oculto { display: none; }
 
+  /* Funciones (interruptores grandes) */
+  .funcs { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); align-items: start; }
+  .fn { border: 1px solid var(--borde); border-radius: 18px; background: var(--negro); overflow: hidden; transition: border-color .2s, box-shadow .2s; }
+  .fn.on { border-color: var(--oro); box-shadow: 0 0 0 1px var(--oro) inset, 0 18px 40px -26px rgba(212,175,106,.7); }
+  .fn-cab { display: flex; gap: 14px; align-items: center; padding: 16px; cursor: pointer; }
+  .fn-ic { width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; flex-shrink: 0; background: linear-gradient(150deg, #2A241A, #15130F); color: var(--oro2); border: 1px solid rgba(212,175,106,.3); }
+  .fn.on .fn-ic { background: linear-gradient(180deg, var(--oro2), var(--oro) 60%, var(--bronce)); color: #1A1409; }
+  .fn-ic svg { width: 26px; height: 26px; }
+  .fn-cab b { display: block; font-size: 1rem; }
+  .fn-cab small { color: var(--gris); font-size: .8rem; line-height: 1.35; display: block; }
+  .fn-cab > div { flex: 1; min-width: 0; }
+  .tg { position: relative; width: 48px; height: 28px; flex-shrink: 0; }
+  .tg input { position: absolute; opacity: 0; inset: 0; cursor: pointer; z-index: 1; }
+  .tg span { position: absolute; inset: 0; border-radius: 999px; background: #33302B; transition: .2s; }
+  .tg span::after { content: ""; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff; transition: .2s; }
+  .tg input:checked + span { background: var(--verde); }
+  .tg input:checked + span::after { transform: translateX(20px); }
+  .fn-op { display: none; padding: 0 16px 16px; gap: 12px; }
+  .fn.on .fn-op { display: grid; }
+  .vistas { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .vistas label { cursor: pointer; }
+  .vistas input { position: absolute; opacity: 0; pointer-events: none; }
+  .vistas span { display: grid; gap: 8px; border: 1px solid var(--borde); border-radius: 14px; padding: 10px; font-size: .8rem; font-weight: 700; text-align: center; }
+  .vistas input:checked + span { border-color: var(--oro); background: rgba(212,175,106,.08); }
+  .mini-ui { height: 64px; border-radius: 8px; background: #1F1D1A; display: grid; gap: 4px; padding: 6px; }
+  .mini-ui.lista { grid-template-rows: repeat(3, 1fr); }
+  .mini-ui.lista i { background: #2E2B26; border-radius: 4px; position: relative; }
+  .mini-ui.lista i::after { content: ""; position: absolute; right: 3px; top: 3px; bottom: 3px; width: 14px; border-radius: 3px; background: #4A4337; }
+  .mini-ui.cuad { grid-template-columns: 1fr 1fr; }
+  .mini-ui.cuad i { background: linear-gradient(180deg, #4A4337 65%, #2E2B26 65%); border-radius: 5px; }
+  .fotos-extra { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .fotos-extra .fx { width: 44px; height: 44px; border-radius: 10px; background: var(--n2) center/cover no-repeat; position: relative; border: 1px solid var(--borde); }
+  .fotos-extra .fx button { position: absolute; top: -6px; right: -6px; width: 20px; height: 20px; border-radius: 50%; border: 0; background: var(--rojo); color: #fff; font-size: .7rem; cursor: pointer; line-height: 1; }
+  .fotos-extra .add-fx { height: 44px; padding: 0 12px; border-radius: 10px; border: 1px dashed var(--borde); background: transparent; color: var(--gris); font-size: .74rem; cursor: pointer; }
+  .chip.fx-on { border-color: rgba(61,190,116,.5); color: #9BE6B9; }
+
   /* Celular */
   @media (max-width: 600px) {
     .wrap { padding: 0 12px; }
@@ -242,6 +278,44 @@
         <label><input type="radio" name="plan" value="pro"><span><b>Pro</b><small>Todo Plus + carrito de pedidos a WhatsApp.</small></span></label>
       </div>
       <label class="sw" style="margin-top:14px"><input type="checkbox" id="f-activo" checked> Cliente activo (si lo apagas, su enlace deja de funcionar)</label>
+    </div>
+
+    <div class="bloque">
+      <h3><i>✦</i> Funciones de la tarjeta NFC y el QR</h3>
+      <p class="ay">Prende lo que compró el cliente. La tarjeta impresa no cambia: al tocarla se abre lo que esté prendido aquí.</p>
+      <div class="funcs">
+        <div class="fn" id="fn-mesero">
+          <label class="fn-cab">
+            <span class="fn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15L6 16Z"/><path d="M10 20.5a2 2 0 0 0 4 0M12 3v2"/></svg></span>
+            <div><b>Mesero virtual</b><small>Cada mesa tiene su tarjeta: llamar al mesero, pedir la cuenta, pedir algo o hacer el pedido desde la carta.</small></div>
+            <span class="tg"><input type="checkbox" id="f-mesero"><span></span></span>
+          </label>
+          <div class="fn-op">
+            <div class="g2">
+              <label class="c">Número de mesas<input class="i" id="f-mesas" inputmode="numeric" placeholder="12"></label>
+              <label class="c">El aviso le llega a
+                <select class="i" id="f-aviso"><option value="pantalla">Pantalla de meseros (celular o tablet)</option><option value="whatsapp">WhatsApp del negocio</option></select></label>
+              <label class="c solo-pantalla">PIN de los meseros<input class="i" id="f-pin" inputmode="numeric" maxlength="6" placeholder="4 a 6 números"><small id="f-pin-ay">Para abrir la pantalla de meseros.</small></label>
+              <label class="c">Qué pueden pedir<input class="i" id="f-extras" placeholder="Servilletas, Salsas, Cubiertos, Hielo"><small>Separado por comas.</small></label>
+            </div>
+            <div class="cl-acc solo-pantalla"><a class="btn linea mini" id="ir-pantalla" target="_blank" rel="noopener">Abrir pantalla de meseros</a></div>
+          </div>
+        </div>
+        <div class="fn" id="fn-catalogo">
+          <label class="fn-cab">
+            <span class="fn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg></span>
+            <div><b>Catálogo virtual</b><small>Productos en cuadrícula con fotos grandes y galería de varias fotos por producto.</small></div>
+            <span class="tg"><input type="checkbox" id="f-catalogo"><span></span></span>
+          </label>
+          <div class="fn-op">
+            <div class="vistas">
+              <label><input type="radio" name="vista" value="lista"><span><span class="mini-ui lista"><i></i><i></i><i></i></span>Carta en lista</span></label>
+              <label><input type="radio" name="vista" value="catalogo"><span><span class="mini-ui cuad"><i></i><i></i><i></i><i></i></span>Catálogo con fotos</span></label>
+            </div>
+            <small style="color:var(--gris);font-size:.8rem">Las fotos se suben en "Menú" (abajo): la principal y hasta 4 más por producto.</small>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="bloque">
@@ -414,11 +488,12 @@
           <span class="avatar" style="background-color:${esc(d.color || "#555")};${d.logo ? `background-image:url('${esc(d.logo)}')` : ""}">${d.logo ? "" : esc(iniciales(d.nombre))}</span>
           <div style="min-width:0"><strong>${esc(d.nombre)}</strong><small>${esc(d.categoria || "")}</small></div>
         </div>
-        <div style="display:grid;gap:8px"><div style="display:flex;gap:6px;flex-wrap:wrap"><span class="chip ${esc(d.plan)}">${NOMBRE_PLAN[d.plan] || d.plan}</span>${c.activo ? "" : '<span class="chip off">Apagado</span>'}</div><div class="cl-url">${esc(url)}</div></div>
+        <div style="display:grid;gap:8px"><div style="display:flex;gap:6px;flex-wrap:wrap"><span class="chip ${esc(d.plan)}">${NOMBRE_PLAN[d.plan] || d.plan}</span>${d.mesero?.activo ? '<span class="chip fx-on">Mesero</span>' : ""}${d.menu?.vista === "catalogo" ? '<span class="chip fx-on">Catálogo</span>' : ""}${c.activo ? "" : '<span class="chip off">Apagado</span>'}</div><div class="cl-url">${esc(url)}</div></div>
         <div class="cl-acc">
           <button class="btn oro mini" type="button" data-editar="${esc(c.slug)}">Editar</button>
           <a class="btn linea mini" href="/${esc(c.slug)}/" target="_blank" rel="noopener">Ver</a>
           <a class="btn linea mini" href="/hablador/?n=${esc(c.slug)}" target="_blank" rel="noopener">Hablador</a>
+          <a class="btn linea mini" href="/tarjeta/?n=${esc(c.slug)}" target="_blank" rel="noopener">Tarjetas NFC</a>
           <button class="btn linea mini" type="button" data-copiar="${esc(url)}">Copiar enlace</button>
         </div></div>`;
     }).join("") : `<p class="vacio">${CLIENTES.length ? "Ningún cliente coincide con la búsqueda." : "Todavía no hay clientes. Crea el primero."}</p>`;
@@ -481,6 +556,15 @@
       f.querySelectorAll("select").forEach((s) => (s.disabled = !h));
     });
     $("f-carrito").checked = !!D.menu?.carrito;
+    $("f-mesero").checked = !!D.mesero?.activo;
+    $("f-mesas").value = D.mesero?.mesas || "";
+    $("f-aviso").value = D.mesero?.aviso || "pantalla";
+    $("f-extras").value = (D.mesero?.extras || []).join(", ");
+    $("f-pin").value = ""; PIN_NUEVO = null;
+    $("f-pin-ay").textContent = fila && D.mesero?.activo ? "Ya tiene PIN. Escribe uno nuevo solo si lo quieres cambiar." : "Para abrir la pantalla de meseros.";
+    $("f-catalogo").checked = D.menu?.vista === "catalogo";
+    document.querySelectorAll('[name="vista"]').forEach((r) => (r.checked = r.value === (D.menu?.vista || "lista")));
+    pintarFunciones();
     $("f-domicilio").value = D.menu?.domicilio || "";
     pintarImagenes(); pintarMenu(); segunPlan();
     cambios = false; $("estado").textContent = fila ? "Sin cambios" : "Cliente nuevo";
@@ -510,6 +594,24 @@
     ayudaSlug();
   }
   document.querySelectorAll('[name="plan"]').forEach((r) => r.addEventListener("change", segunPlan));
+
+  /* ----- Funciones ----- */
+  let PIN_NUEVO = null;
+  function pintarFunciones() {
+    $("fn-mesero").classList.toggle("on", $("f-mesero").checked);
+    $("fn-catalogo").classList.toggle("on", $("f-catalogo").checked);
+    document.querySelectorAll(".solo-pantalla").forEach((e) => (e.hidden = $("f-aviso").value !== "pantalla"));
+    const slug = actual ? actual.slug : val("f-slug");
+    $("ir-pantalla").href = "/mesero/?n=" + encodeURIComponent(slug || "");
+  }
+  $("f-mesero").addEventListener("change", pintarFunciones);
+  $("f-aviso").addEventListener("change", pintarFunciones);
+  $("f-catalogo").addEventListener("change", () => {
+    document.querySelectorAll('[name="vista"]').forEach((r) => (r.checked = r.value === ($("f-catalogo").checked ? "catalogo" : "lista")));
+    pintarFunciones();
+  });
+  document.querySelectorAll('[name="vista"]').forEach((r) => r.addEventListener("change", () => { $("f-catalogo").checked = r.value === "catalogo"; pintarFunciones(); }));
+  $("f-pin").addEventListener("input", () => { $("f-pin").value = $("f-pin").value.replace(/\D/g, "").slice(0, 6); PIN_NUEVO = $("f-pin").value || null; });
 
   /* ----- Color ----- */
   function ponerColor(c) { $("f-color").value = c; $("f-color-txt").value = c; D.color = c; }
@@ -601,6 +703,10 @@
           <input class="i" data-k="n" value="${esc(it.n)}" placeholder="Producto" aria-label="Nombre del producto">
           <input class="i" data-k="p" value="${it.p ?? ""}" inputmode="numeric" placeholder="Precio $" aria-label="Precio">
           <input class="i d" data-k="d" value="${esc(it.d || "")}" placeholder="Descripción corta (opcional)" aria-label="Descripción">
+          <div class="fotos-extra">
+            ${(it.fotos || []).map((f, x) => `<span class="fx" style="background-image:url('${esc(f)}')"><button type="button" data-sinfx="${x}" aria-label="Quitar foto">✕</button></span>`).join("")}
+            ${(it.fotos || []).length < 4 ? `<button class="add-fx" type="button" data-addfx>+ Más fotos (${(it.fotos || []).length}/4)</button>` : ""}
+          </div>
           <div class="acc-i">
             <input class="i" data-k="tag" value="${esc(it.tag || "")}" placeholder="Etiqueta: Favorito, Nuevo…" aria-label="Etiqueta">
             ${it.foto ? `<button class="btn linea mini" type="button" data-sinfoto>Quitar foto</button>` : ""}
@@ -622,7 +728,7 @@
     if (k === "p") { e.target.value = e.target.value.replace(/\D/g, ""); it.p = e.target.value ? +e.target.value : ""; }
     else if (e.target.value) it[k] = e.target.value; else delete it[k];
   });
-  let fotoDestino = null;
+  let fotoDestino = null, fotoExtra = false;
   $("f-menu").addEventListener("click", (e) => {
     const b = e.target.closest("button"); if (!b) return;
     const ci = +b.closest(".cat").dataset.c, c = D.menu.categorias[ci];
@@ -633,13 +739,20 @@
     else if (b.dataset.mov === "cat") mover(D.menu.categorias, ci, +b.dataset.d);
     else if (b.dataset.mov === "item") mover(c.items, ji, +b.dataset.d);
     else if (b.dataset.sinfoto !== undefined) delete c.items[ji].foto;
-    else if (b.dataset.foto !== undefined) { fotoDestino = c.items[ji]; return $("u-foto").click(); }
+    else if (b.dataset.foto !== undefined) { fotoDestino = c.items[ji]; fotoExtra = false; return $("u-foto").click(); }
+    else if (b.dataset.addfx !== undefined) { fotoDestino = c.items[ji]; fotoExtra = true; return $("u-foto").click(); }
+    else if (b.dataset.sinfx !== undefined) { c.items[ji].fotos.splice(+b.dataset.sinfx, 1); if (!c.items[ji].fotos.length) delete c.items[ji].fotos; }
     else return;
     pintarMenu(); sucio();
   });
   $("u-foto").addEventListener("change", async (e) => {
     const f = e.target.files[0]; e.target.value = ""; if (!f || !fotoDestino) return;
-    try { toast("Subiendo foto…"); fotoDestino.foto = (await subir(f, "plato", 500)).url; pintarMenu(); sucio(); toast("Foto lista"); }
+    try {
+      toast("Subiendo foto…");
+      const url = (await subir(f, "plato", fotoExtra ? 1000 : 700)).url;
+      if (fotoExtra) (fotoDestino.fotos = fotoDestino.fotos || []).push(url); else fotoDestino.foto = url;
+      pintarMenu(); sucio(); toast("Foto lista");
+    }
     catch (err) { toast(err.message); }
   });
 
@@ -659,6 +772,16 @@
       categorias: D.menu.categorias.map((c) => ({ nombre: c.nombre.trim(), items: c.items.filter((it) => (it.n || "").trim()).map((it) => ({ ...it, n: it.n.trim(), p: +it.p || 0 })) })).filter((c) => c.nombre && c.items.length)
     };
     if (plan === "pro" && +val("f-domicilio")) d.menu.domicilio = +val("f-domicilio").replace(/\D/g, "");
+    if ($("f-catalogo").checked) d.menu.vista = "catalogo";
+    if ($("f-mesero").checked || D.mesero) {
+      d.mesero = {
+        activo: $("f-mesero").checked,
+        mesas: Math.min(200, +val("f-mesas").replace(/\D/g, "") || 0),
+        aviso: $("f-aviso").value,
+        extras: val("f-extras").split(",").map((t) => t.trim()).filter(Boolean).slice(0, 10)
+      };
+      if (!d.mesero.extras.length) delete d.mesero.extras;
+    }
     return d;
   }
   function validar(d, slug) {
@@ -667,6 +790,10 @@
     if (!/^https?:\/\//.test(d.resenas)) return "Falta el enlace de reseñas de Google (debe empezar por https://).";
     if (d.plan !== "basico" && !d.whatsapp) return "Falta el WhatsApp del negocio.";
     for (const [i, h] of d.horario.entries()) if (h && h[1] <= h[0]) return `Revisa el horario del ${DIAS[i].toLowerCase()}: cierra antes de abrir.`;
+    if (d.mesero?.activo && !d.mesero.mesas) return "Escribe cuántas mesas tiene el negocio (mesero virtual).";
+    if (d.mesero?.activo && d.mesero.aviso === "whatsapp" && !d.whatsapp) return "Para avisar por WhatsApp falta el WhatsApp del negocio.";
+    if (PIN_NUEVO && PIN_NUEVO.length < 4) return "El PIN de los meseros debe tener de 4 a 6 números.";
+    if (d.mesero?.activo && d.mesero.aviso === "pantalla" && !PIN_NUEVO && !actual?.datos?.mesero?.activo) return "Ponle un PIN a la pantalla de meseros (4 a 6 números).";
     return null;
   }
   $("guardar").addEventListener("click", async () => {
@@ -682,7 +809,12 @@
       $("estado").textContent = "No se guardó";
       return toast(r.error.code === "23505" ? "Ese enlace ya lo usa otro cliente. Cambia el slug." : r.error.code === "23514" ? "Ese enlace no está permitido. Usa otro." : r.error.message);
     }
-    actual = r.data; D = structuredClone(r.data.datos);
+    if (PIN_NUEVO) {
+      const p = await sb.rpc("mesero_poner_pin", { p_slug: slug, p_pin: PIN_NUEVO });
+      if (p.error) toast("Se guardó, pero no el PIN: " + p.error.message);
+      else { PIN_NUEVO = null; $("f-pin").value = ""; $("f-pin-ay").textContent = "PIN guardado. Escribe uno nuevo solo si lo quieres cambiar."; }
+    }
+    actual = r.data; D = structuredClone(r.data.datos); pintarFunciones();
     const i = CLIENTES.findIndex((c) => c.slug === slug);
     if (i >= 0) CLIENTES[i] = r.data; else CLIENTES.unshift(r.data);
     cambios = false; $("estado").textContent = "Guardado · ya está en línea";

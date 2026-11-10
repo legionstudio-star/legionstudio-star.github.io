@@ -43,8 +43,12 @@
   }
   document.title = N.nombre;
 
-  // Plan básico: directo a dejar la reseña
-  if (N.plan === "basico") {
+  // Tarjeta NFC/QR de una mesa: legionestudio.com/<slug>/?mesa=7
+  const MESA = (new URLSearchParams(location.search).get("mesa") || "").replace(/\D/g, "").slice(0, 3).replace(/^0+/, "");
+  const MESERO = N.mesero && N.mesero.activo && MESA ? N.mesero : null;
+
+  // Plan básico: directo a dejar la reseña (salvo que la tarjeta sea de una mesa con mesero virtual)
+  if (N.plan === "basico" && !MESERO) {
     raiz.innerHTML = `<div class="cargando"><p>Abriendo reseñas de ${N.nombre}… <a href="${N.resenas}" style="text-decoration:underline">toca aquí si no abre</a></p></div>`;
     location.replace(N.resenas);
     return;
@@ -72,6 +76,10 @@
     x: '<path d="M6 6l12 12M18 6 6 18"/>',
     plato: '<circle cx="12" cy="13" r="7"/><circle cx="12" cy="13" r="3.5"/><path d="M3 4v5a2 2 0 0 0 2 2M5 4v16M21 4c-1.5 1-2 3-2 5s1 2 2 2v9"/>',
     bolsa: '<path d="M5 8h14l-1 13H6L5 8Z"/><path d="M9 10V6a3 3 0 0 1 6 0v4"/>',
+    campana: '<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15L6 16Z"/><path d="M10 20.5a2 2 0 0 0 4 0M12 3v2"/>',
+    recibo: '<path d="M6 3h12v18l-2-1.5-2 1.5-2-1.5-2 1.5-2-1.5L6 21V3Z"/><path d="M9 8h6M9 12h6M9 16h3"/>',
+    mas: '<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>',
+    ok: '<path d="m5 12.5 4.5 4.5L19 7.5"/>',
     copiar: '<rect x="8" y="8" width="13" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/>'
   };
   const ic = (n, cls = "icon") => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${SVG[n]}</svg>`;
@@ -150,6 +158,21 @@
         ${est ? `<span class="estado ${est.abierto ? "abierto" : "cerrado"}">${est.txt}</span>` : ""}
       </section>
 
+      ${MESERO ? `
+      <section class="bloque mesero" aria-label="Mesero virtual">
+        <div class="ms-cab">
+          <div><small>Estás en la</small><b>Mesa ${esc(MESA)}</b></div>
+          <span class="ms-vivo"><i></i> Mesero virtual</span>
+        </div>
+        <div class="ms-grid">
+          <button type="button" class="ms-b fuerte" data-mesero="llamar">${ic("campana")}<strong>Llamar al mesero</strong><small>Viene a tu mesa</small></button>
+          <button type="button" class="ms-b" data-mesero="cuenta">${ic("recibo")}<strong>Pedir la cuenta</strong><small>Elige cómo pagas</small></button>
+          ${tieneMenu ? `<button type="button" class="ms-b" data-accion="menu">${ic("menu")}<strong>${N.menu.carrito ? "Pedir desde aquí" : "Ver la carta"}</strong><small>${N.menu.carrito ? "Llega a tu mesa" : "Platos y precios"}</small></button>` : ""}
+          <button type="button" class="ms-b" data-mesero="extra">${ic("mas")}<strong>Necesito algo</strong><small>Servilletas, salsas…</small></button>
+        </div>
+        <p class="ms-estado" id="ms-estado" hidden></p>
+      </section>` : ""}
+
       <div class="bloque">
         <a class="resena" href="${N.resenas}" target="_blank" rel="noopener">
           <div>
@@ -185,7 +208,63 @@
         <button type="button" class="copiar" id="copiar-wifi">Copiar clave</button>
         <button type="button" class="cerrar-m" data-cerrar>Cerrar</button>
       </div>
+    </div>` : ""}
+    ${MESERO ? `
+    <div class="modal" id="m-mesero" role="dialog" aria-modal="true" aria-label="Mesero virtual">
+      <div class="modal-caja" id="ms-caja"></div>
     </div>` : ""}`;
+
+  /* ---------- Mesero virtual ---------- */
+  // Avisa al mesero: a la pantalla de meseros (Supabase) o por WhatsApp, según lo que se configuró en el panel
+  async function avisarMesero(tipo, detalle) {
+    const NOMBRES = { llamar: "Llamar al mesero", cuenta: "Pedir la cuenta", extra: "Necesito algo", pedido: "Pedido nuevo" };
+    if (MESERO.aviso === "whatsapp") {
+      window.open(wa(`MESA ${MESA} · ${NOMBRES[tipo]}${detalle ? "\n" + detalle : ""}`), "_blank", "noopener");
+      return true;
+    }
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/mesero_llamar`, {
+      method: "POST", headers: { apikey: SUPABASE_KEY, "Content-Type": "application/json" },
+      body: JSON.stringify({ p_slug: window.SLUG, p_mesa: MESA, p_tipo: tipo, p_detalle: detalle || "" })
+    });
+    if (!r.ok) throw new Error("No se pudo avisar. Intenta otra vez o llama al mesero.");
+    return true;
+  }
+  if (MESERO) {
+    const mMes = $("#m-mesero"), caja = $("#ms-caja");
+    mMes.addEventListener("click", (e) => { if (e.target === mMes || e.target.closest("[data-cerrar]")) mMes.classList.remove("abierta"); });
+    const EXTRAS = MESERO.extras && MESERO.extras.length ? MESERO.extras : ["Servilletas", "Salsas", "Cubiertos", "Hielo", "Limpiar la mesa"];
+    const PAGOS = MESERO.pagos && MESERO.pagos.length ? MESERO.pagos : ["Efectivo", "Tarjeta", "Nequi", "Daviplata"];
+    const chips = (lista, multi) => `<div class="ms-chips">${lista.map((t) => `<label><input type="${multi ? "checkbox" : "radio"}" name="ms-op" value="${esc(t)}"><span>${esc(t)}</span></label>`).join("")}</div>`;
+    const PANTALLAS = {
+      llamar: () => `<div class="ic">${ic("campana")}</div><h3>¿Llamamos al mesero?</h3><p class="ms-p">Le llega el aviso de la mesa ${esc(MESA)} al instante.</p>`,
+      cuenta: () => `<div class="ic">${ic("recibo")}</div><h3>Pedir la cuenta</h3><p class="ms-p">¿Cómo vas a pagar?</p>${chips(PAGOS)}`,
+      extra: () => `<div class="ic">${ic("mas")}</div><h3>¿Qué necesitas?</h3><p class="ms-p">Marca lo que quieras.</p>${chips(EXTRAS, true)}<input class="campo" id="ms-otro" placeholder="Otra cosa…" style="margin-top:10px">`
+    };
+    let tipoAct = null, reloj = null;
+    function abrir(tipo) {
+      tipoAct = tipo;
+      caja.innerHTML = PANTALLAS[tipo]() + `<p class="error" id="ms-err"></p><button type="button" class="copiar" id="ms-enviar">${MESERO.aviso === "whatsapp" ? "Enviar por WhatsApp" : "Avisar al mesero"}</button><button type="button" class="cerrar-m" data-cerrar>Cancelar</button>`;
+      mMes.classList.add("abierta");
+      $("#ms-enviar").addEventListener("click", enviar);
+    }
+    async function enviar() {
+      const marcadas = [...caja.querySelectorAll("[name=ms-op]:checked")].map((i) => i.value);
+      const otro = $("#ms-otro") ? $("#ms-otro").value.trim() : "";
+      if (otro) marcadas.push(otro);
+      if (tipoAct === "cuenta" && !marcadas.length) return ($("#ms-err").textContent = "Elige cómo vas a pagar.");
+      if (tipoAct === "extra" && !marcadas.length) return ($("#ms-err").textContent = "Marca o escribe lo que necesitas.");
+      const b = $("#ms-enviar"); b.disabled = true; b.textContent = "Avisando…";
+      try {
+        await avisarMesero(tipoAct, tipoAct === "cuenta" ? "Paga con: " + marcadas[0] : marcadas.join(", "));
+        caja.innerHTML = `<div class="ic ok">${ic("ok")}</div><h3>¡Listo!</h3><p class="ms-p">${tipoAct === "cuenta" ? "Ya te traen la cuenta." : "Tu mesero ya viene a la mesa " + esc(MESA) + "."}</p><button type="button" class="copiar" data-cerrar>Entendido</button>`;
+        const e = $("#ms-estado"), t0 = Date.now();
+        const txt = { llamar: "Llamaste al mesero", cuenta: "Pediste la cuenta", extra: "Pediste: " + marcadas.join(", ") }[tipoAct];
+        const pinta = () => { const sg = Math.round((Date.now() - t0) / 1000); e.innerHTML = `${ic("ok")} ${esc(txt)} · hace ${sg < 60 ? sg + " s" : Math.round(sg / 60) + " min"}`; };
+        e.hidden = false; pinta(); clearInterval(reloj); reloj = setInterval(pinta, 5000);
+      } catch (err) { b.disabled = false; b.textContent = "Intentar otra vez"; $("#ms-err").textContent = err.message; }
+    }
+    document.addEventListener("click", (e) => { const b = e.target.closest("[data-mesero]"); if (b) abrir(b.dataset.mesero); });
+  }
 
   /* ---------- Wifi ---------- */
   const mWifi = $("#m-wifi");
@@ -216,7 +295,9 @@
     try { carrito = JSON.parse(localStorage.getItem(clave) || "{}"); } catch (e) {}
     Object.keys(carrito).forEach((k) => { if (!ITEMS[k] || !(carrito[k] > 0)) delete carrito[k]; });
 
-    const mesaQR = (new URLSearchParams(location.search).get("mesa") || "").replace(/\D/g, "").slice(0, 2);
+    const mesaQR = MESA;
+    const catalogo = M.vista === "catalogo";
+    const fotosDe = (it) => [it.foto, ...(it.fotos || [])].filter(Boolean);
 
     document.body.insertAdjacentHTML("beforeend", `
       <div class="hoja" id="h-menu" role="dialog" aria-modal="true" aria-label="Menú">
@@ -227,8 +308,14 @@
             ${mesaQR && carritoOn ? `<div class="aviso-mesa">${ic("plato")} Estás en la mesa ${mesaQR}. Tu pedido llegará a tu mesa.</div>` : ""}
             ${M.categorias.map((c, i) => `
               <h3 class="cat-titulo" id="cat-${i}">${esc(c.nombre)}</h3>
-              ${c.items.map((it, j) => `
-                <article class="item">
+              ${catalogo ? `<div class="cg">${c.items.map((it, j) => `
+                <article class="cg-item" data-ver="${i}-${j}">
+                  <div class="cg-foto">${fotosDe(it)[0] ? `<img src="${fotosDe(it)[0]}" alt="" loading="lazy">` : `<span>${ic("plato")}</span>`}
+                    ${fotosDe(it).length > 1 ? `<em>${fotosDe(it).length} fotos</em>` : ""}${it.tag ? `<span class="tag">${esc(it.tag)}</span>` : ""}</div>
+                  <div class="cg-txt"><h3>${esc(it.n)}</h3><span class="precio">${pesos(it.p)}</span>
+                  ${carritoOn ? `<div class="acc" data-id="${i}-${j}"></div>` : ""}</div>
+                </article>`).join("")}</div>` : c.items.map((it, j) => `
+                <article class="item" ${fotosDe(it).length ? `data-ver="${i}-${j}"` : ""}>
                   <div>
                     ${it.tag ? `<span class="tag">${esc(it.tag)}</span>` : ""}
                     <h3>${esc(it.n)}</h3>
@@ -244,6 +331,7 @@
           ? `<button type="button" class="barra" id="barra" hidden><span><span class="cnt" id="cnt">0</span>Ver mi pedido</span><span id="sub">$ 0</span></button>`
           : `<a class="barra wa" href="${wa(`Hola ${N.nombre}, quiero hacer un pedido.`)}" target="_blank" rel="noopener">${ic("wa")} Pedir por WhatsApp</a>`}
       </div>
+      <div class="modal detalle" id="m-detalle" role="dialog" aria-modal="true" aria-label="Producto"><div class="modal-caja" id="det-caja"></div></div>
       ${carritoOn ? `
       <div class="hoja" id="h-pedido" role="dialog" aria-modal="true" aria-label="Tu pedido">
         <div class="hoja-top"><button class="btn-icono" type="button" data-volver aria-label="Volver">${ic("atras")}</button><h2>Tu pedido</h2></div>
@@ -287,7 +375,7 @@
     };
     document.querySelectorAll("[data-volver]").forEach((b) => b.addEventListener("click", volver));
     ruta();
-    if (mesaQR && carritoOn && !location.hash) location.hash = "menu";
+    if (mesaQR && carritoOn && !MESERO && !location.hash) location.hash = "menu";
 
     // Pestañas de categorías
     $("#cats").addEventListener("click", (e) => {
@@ -301,6 +389,40 @@
       titulos.forEach((t, i) => { if (t.offsetTop - 90 <= cuerpo.scrollTop) act = i; });
       hMenu.querySelectorAll("#cats button").forEach((b, i) => b.classList.toggle("on", i === act));
     }, { passive: true });
+
+    /* ----- Detalle del producto con galería de fotos ----- */
+    const mDet = $("#m-detalle"), detCaja = $("#det-caja");
+    let detId = null;
+    function verDetalle(k) {
+      const it = ITEMS[k], fotos = fotosDe(it); detId = k;
+      detCaja.innerHTML = `
+        ${fotos.length ? `<div class="galeria" id="galeria">${fotos.map((f) => `<img src="${f}" alt="">`).join("")}</div>
+        ${fotos.length > 1 ? `<div class="puntos" id="puntos">${fotos.map((_, i) => `<i class="${i ? "" : "on"}"></i>`).join("")}</div>` : ""}` : ""}
+        <div class="det-txt">
+          ${it.tag ? `<span class="tag">${esc(it.tag)}</span>` : ""}
+          <h3>${esc(it.n)}</h3>
+          ${it.d ? `<p>${esc(it.d)}</p>` : ""}
+          <span class="precio">${pesos(it.p)}</span>
+          ${carritoOn ? `<div class="acc det-acc" data-id="${k}"></div>`
+            : `<a class="btn-wa" href="${wa(`Hola ${N.nombre}, me interesa: ${it.n} (${pesos(it.p)})`)}" target="_blank" rel="noopener">${ic("wa")} Preguntar por WhatsApp</a>`}
+          <button type="button" class="cerrar-m" data-cerrar>Cerrar</button>
+        </div>`;
+      mDet.classList.add("abierta"); document.body.classList.add("det-abierto");
+      const g = $("#galeria"), pts = $("#puntos");
+      if (g && pts) g.addEventListener("scroll", () => {
+        const i = Math.round(g.scrollLeft / g.clientWidth);
+        pts.querySelectorAll("i").forEach((p, j) => p.classList.toggle("on", i === j));
+      }, { passive: true });
+      if (carritoOn) pintar();
+    }
+    mDet.addEventListener("click", (e) => {
+      if (e.target === mDet || e.target.closest("[data-cerrar]")) { mDet.classList.remove("abierta"); document.body.classList.remove("det-abierto"); detId = null; return; }
+      const b = e.target.closest("[data-d]"); if (b && carritoOn) cambiar(detId, +b.dataset.d);
+    });
+    hMenu.addEventListener("click", (e) => {
+      if (e.target.closest("[data-d], .acc, a")) return;
+      const v = e.target.closest("[data-ver]"); if (v) verDetalle(v.dataset.ver);
+    });
 
     if (!carritoOn) return;
 
@@ -319,7 +441,7 @@
     }
 
     function pintar() {
-      hMenu.querySelectorAll(".acc").forEach((el) => {
+      document.querySelectorAll("#h-menu .acc, #m-detalle .acc").forEach((el) => {
         const q = carrito[el.dataset.id] || 0;
         el.innerHTML = q ? stepper(q) : `<button type="button" class="agregar" data-d="1">+ Agregar</button>`;
       });
@@ -368,6 +490,17 @@
         (tipo === "domicilio" ? `\nEntrega: Domicilio\nDirección: ${dir}` : tipo === "recoger" ? "\nEntrega: Para recoger" : "") +
         (tipo !== "mesa" ? `\nNombre: ${nombre}\nPago: ${$("#p-pago").value}` : "") +
         (nota ? `\nNotas: ${nota}` : "");
+      if (tipo === "mesa" && MESERO && MESERO.aviso !== "whatsapp") {
+        const lineas = Object.entries(carrito).map(([k, q]) => `${q} x ${ITEMS[k].n}`).join("\n") + `\nTotal: ${pesos(subtotal())}` + (nota ? `\nNotas: ${nota}` : "");
+        const b = form.querySelector(".btn-wa"); b.disabled = true;
+        avisarMesero("pedido", lineas).then(() => {
+          carrito = {}; try { localStorage.removeItem(clave); } catch (e2) {}
+          pintar(); location.replace("#");
+          $("#ms-caja").innerHTML = `<div class="ic ok">${ic("ok")}</div><h3>¡Pedido enviado!</h3><p class="ms-p">Ya le llegó a tu mesero. Te lo llevan a la mesa ${esc(mesa)}.</p><button type="button" class="copiar" data-cerrar>Entendido</button>`;
+          $("#m-mesero").classList.add("abierta");
+        }).catch((e2) => err(e2.message)).finally(() => (b.disabled = false));
+        return;
+      }
       window.open(wa(msg), "_blank", "noopener");
     });
 
