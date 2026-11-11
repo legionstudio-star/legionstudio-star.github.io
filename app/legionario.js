@@ -6,7 +6,7 @@ window.LEGION_LEGIONARIO = function (N, raiz) {
   const R = L.redes || {};
   const $ = (s, el = document) => el.querySelector(s);
   const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-  if (!document.getElementById("vx-css")) document.head.appendChild(Object.assign(document.createElement("link"), { id: "vx-css", rel: "stylesheet", href: "/app/vial.css?v=2" }));
+  if (!document.getElementById("vx-css")) document.head.appendChild(Object.assign(document.createElement("link"), { id: "vx-css", rel: "stylesheet", href: "/app/vial.css?v=3" }));
 
   const SVG = {
     candado: '<rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/>',
@@ -73,8 +73,9 @@ window.LEGION_LEGIONARIO = function (N, raiz) {
       <header class="vx-top">${marca}<span class="vx-nfc">${ic("nfc")} NFC</span></header>
     </section>
     <section class="vx-cuerpo lg-cuerpo">
-      <div class="lg-cab">
+      <div class="lg-cab ${L.ceo ? "es-ceo" : ""}">
         <div class="lg-avatar">${L.foto ? `<img src="${esc(L.foto)}" alt="">` : `<span>${esc(iniciales(L.nombre))}</span>`}</div>
+        ${L.ceo ? `<span class="lg-ceo">${ic("escudo")} Founder &amp; CEO</span>` : ""}
         <h1>${esc(L.nombre || "Legionario")}</h1>
         <p class="lg-cargo">${esc(L.cargo || "Legionario")} · <b>LEGION Studio</b></p>
         ${L.frase ? `<p class="lg-frase">${esc(L.frase)}</p>` : ""}

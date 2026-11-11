@@ -265,3 +265,7 @@ body.vx { --bg: #0A0B0D; --sup: #131518; --sup2: #1A1D21; --linea: rgba(255,255,
 .lg-redes-in input:focus { outline: none; }
 .lg-redes-in label:focus-within > .vx-i { color: #fff; }
 @media (max-width: 370px) { .lg-redes { grid-template-columns: repeat(3, 1fr); } }
+.lg-ceo { display: inline-flex; align-items: center; gap: 6px; margin-top: 16px; font-size: .68rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: #0A0B0D; background: linear-gradient(135deg, #F3DC9A, #C9A24A 55%, #8E6B22); border-radius: 999px; padding: 6px 12px; }
+.lg-ceo .vx-i { width: 14px; height: 14px; }
+.lg-ceo + h1 { margin-top: 10px; }
+.es-ceo .lg-avatar { box-shadow: 0 0 0 2px #C9A24A, 0 0 0 6px rgba(201,162,74,.18), 0 24px 44px -18px rgba(0,0,0,.95); }
