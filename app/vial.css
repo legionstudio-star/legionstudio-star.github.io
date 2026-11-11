@@ -1,5 +1,5 @@
 /* Carpeta Vial — LEGION Studio Digital */
-body.vx { --bg: #0A0B0D; --sup: #131518; --sup2: #1A1D21; --linea: rgba(255,255,255,.08); --linea2: rgba(255,255,255,.14); --tx: #F1F2F4; --mu: #8B9099; --c: #F5B942;
+body.vx { --bg: #0A0B0D; --ct: #0A0B0D; --sup: color-mix(in srgb, var(--c) 5%, color-mix(in srgb, var(--bg) 40%, #16181B)); --sup2: color-mix(in srgb, var(--c) 7%, color-mix(in srgb, var(--bg) 35%, #1D2024)); --linea: rgba(255,255,255,.08); --linea2: rgba(255,255,255,.14); --tx: #F1F2F4; --mu: #8B9099; --c: #F5B942;
   background: var(--bg); color: var(--tx); font-feature-settings: "ss01", "cv11"; letter-spacing: -.005em; }
 .vx .vx-i { width: 20px; height: 20px; flex-shrink: 0; }
 .vx-main { max-width: 560px; margin: 0 auto; min-height: 100vh; }
@@ -14,7 +14,7 @@ body.vx { --bg: #0A0B0D; --sup: #131518; --sup2: #1A1D21; --linea: rgba(255,255,
 
 /* Hero con foto */
 .vx-hero { position: relative; min-height: 460px; display: flex; align-items: flex-end; background: var(--foto) center 40% / cover no-repeat, #111; isolation: isolate; }
-.vx-hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(10,11,13,.55) 0%, rgba(10,11,13,0) 22%, rgba(10,11,13,.25) 48%, rgba(10,11,13,.92) 82%, var(--bg) 100%); }
+.vx-hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, color-mix(in srgb, var(--bg) 55%, transparent) 0%, transparent 22%, color-mix(in srgb, var(--bg) 25%, transparent) 48%, color-mix(in srgb, var(--bg) 92%, transparent) 82%, var(--bg) 100%); }
 .vx-hero-full { min-height: 100svh; max-height: 860px; }
 .vx-hero-txt { width: 100%; padding: 0 22px 26px; }
 .vx-hero h1 { font-size: 2.05rem; line-height: 1.08; font-weight: 700; letter-spacing: -.035em; margin-top: 14px; }
@@ -34,7 +34,7 @@ body.vx { --bg: #0A0B0D; --sup: #131518; --sup2: #1A1D21; --linea: rgba(255,255,
 
 /* Cuerpo */
 .vx-cuerpo { padding: 4px 20px 40px; }
-.vx-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 54px; border: 0; border-radius: 14px; background: var(--c); color: #0A0B0D; font: inherit; font-size: 1rem; font-weight: 700; cursor: pointer; text-decoration: none; transition: transform .12s, opacity .12s; margin-top: 20px; }
+.vx-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 54px; border: 0; border-radius: 14px; background: var(--c); color: var(--ct); font: inherit; font-size: 1rem; font-weight: 700; cursor: pointer; text-decoration: none; transition: transform .12s, opacity .12s; margin-top: 20px; }
 .vx-btn:active { transform: scale(.985); }
 .vx-btn:disabled { opacity: .55; }
 .vx-btn.sec { background: var(--sup2); color: var(--tx); border: 1px solid var(--linea2); }
@@ -107,7 +107,7 @@ body.vx { --bg: #0A0B0D; --sup: #131518; --sup2: #1A1D21; --linea: rgba(255,255,
 .vx-segs i { flex: 1; height: 3px; border-radius: 3px; background: var(--sup2); transition: background .25s; }
 .vx-segs i.hecho, .vx-segs i.actual { background: var(--c); }
 .vx-segs i.actual { opacity: .55; }
-.vx-hoja-cuerpo { flex: 1; overflow-y: auto; padding: 22px 18px 24px; display: grid; gap: 16px; max-width: 600px; width: 100%; margin: 0 auto; align-content: start; }
+.vx-hoja-cuerpo { flex: 1; overflow-y: auto; padding: 22px 18px 24px; display: grid; gap: 16px; grid-auto-rows: max-content; max-width: 600px; width: 100%; margin: 0 auto; align-content: start; }
 .vx-pie-btns { display: flex; gap: 10px; padding: 12px 18px calc(12px + env(safe-area-inset-bottom)); border-top: 1px solid var(--linea); max-width: 600px; width: 100%; margin: 0 auto; }
 .vx-pie-btns label.vx-btn { margin: 0; }
 
@@ -149,7 +149,7 @@ body.vx { --bg: #0A0B0D; --sup: #131518; --sup2: #1A1D21; --linea: rgba(255,255,
 .vx-fecha input:focus { outline: none; border-color: var(--c); }
 .vx-rh { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
 .vx-rh button { height: 46px; border-radius: 12px; border: 1px solid var(--linea2); background: var(--sup); color: #C3C7CD; font: inherit; font-weight: 700; cursor: pointer; }
-.vx-rh button.on { border-color: var(--c); color: #0A0B0D; background: var(--c); }
+.vx-rh button.on { border-color: var(--c); color: var(--ct); background: var(--c); }
 .vx-pin input { height: 60px; text-align: center; font-size: 1.6rem; letter-spacing: .6em; padding-left: .6em; }
 
 /* Documentos (paso a paso) */
@@ -166,7 +166,7 @@ body.vx { --bg: #0A0B0D; --sup: #131518; --sup2: #1A1D21; --linea: rgba(255,255,
 .vx-dc.lleno { grid-template-columns: 52px 1fr auto; }
 .vx-dc.lleno .vx-dc-acc { grid-column: auto; display: flex; margin: 0; }
 .vx-dc-acc button, .vx-dc-acc label, .vx-dc-acc a { display: flex; align-items: center; justify-content: center; gap: 7px; height: 42px; border-radius: 10px; border: 1px solid var(--linea2); background: var(--sup2); color: var(--tx); font: inherit; font-size: .86rem; font-weight: 600; cursor: pointer; text-decoration: none; }
-.vx-dc-acc button[data-escanear] { background: var(--c); color: #0A0B0D; border-color: transparent; }
+.vx-dc-acc button[data-escanear] { background: var(--c); color: var(--ct); border-color: transparent; }
 .vx-dc-acc .vx-i { width: 18px; height: 18px; }
 .vx-dc.lleno .vx-dc-acc button, .vx-dc.lleno .vx-dc-acc a { width: 42px; padding: 0; }
 .vx-mas { display: flex; align-items: center; justify-content: center; gap: 8px; height: 50px; border-radius: 14px; border: 1.5px dashed var(--linea2); background: none; color: #C3C7CD; font: inherit; font-weight: 600; cursor: pointer; }
@@ -269,3 +269,26 @@ body.vx { --bg: #0A0B0D; --sup: #131518; --sup2: #1A1D21; --linea: rgba(255,255,
 .lg-ceo .vx-i { width: 14px; height: 14px; }
 .lg-ceo + h1 { margin-top: 10px; }
 .es-ceo .lg-avatar { box-shadow: 0 0 0 2px #C9A24A, 0 0 0 6px rgba(201,162,74,.18), 0 24px 44px -18px rgba(0,0,0,.95); }
+
+/* Personalización: color y fondo */
+body.vx { transition: background-color .3s; }
+.vx-prev { position: relative; height: 270px; border-radius: 20px; overflow: hidden; background: linear-gradient(180deg, color-mix(in srgb, var(--bg) 45%, transparent), transparent 30%, color-mix(in srgb, var(--bg) 92%, transparent) 88%), var(--foto) center 40% / cover; border: 1px solid var(--linea2); display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end; gap: 6px; padding: 16px; box-shadow: 0 30px 60px -34px #000; transition: background .3s; }
+.vx-prev-marca { position: absolute; top: 14px; left: 16px; display: flex; align-items: center; gap: 6px; font-size: .62rem; font-weight: 700; letter-spacing: .22em; color: #fff; }
+.vx-prev-marca .vx-i { width: 15px; height: 15px; color: var(--c); }
+.vx-prev .vx-placa { transform: scale(.72); transform-origin: left bottom; margin: 0 0 -6px; }
+.vx-prev b { font-size: 1.15rem; font-weight: 700; letter-spacing: -.02em; }
+.vx-prev-btn { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; height: 40px; border-radius: 11px; background: var(--c); color: var(--ct); font-style: normal; font-size: .84rem; font-weight: 700; margin-top: 4px; }
+.vx-prev-btn .vx-i { width: 16px; height: 16px; }
+.vx-temas { display: flex; gap: 10px; overflow-x: auto; padding: 2px 2px 6px; scrollbar-width: none; }
+.vx-temas::-webkit-scrollbar { display: none; }
+.vx-temas button { flex: 0 0 auto; display: grid; justify-items: center; gap: 6px; background: none; border: 0; color: var(--mu); font: inherit; font-size: .7rem; font-weight: 600; cursor: pointer; width: 64px; }
+.vx-temas i { width: 48px; height: 48px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--tc) 85%, #fff), var(--tc) 45%, color-mix(in srgb, var(--tc) 40%, var(--tb)) 100%); box-shadow: inset 0 0 0 1px rgba(255,255,255,.18); transition: box-shadow .15s; }
+.vx-temas button.on { color: var(--tx); }
+.vx-temas button.on i { box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--tc); }
+.vx-fondos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.vx-fondo { position: relative; aspect-ratio: 4 / 5; border-radius: 12px; overflow: hidden; border: 1.5px solid var(--linea2); background: linear-gradient(180deg, transparent 45%, rgba(0,0,0,.78)), var(--t, none) center / cover, var(--sup); color: #fff; font: inherit; font-size: .74rem; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end; padding: 8px; }
+.vx-fondo.on { border-color: var(--c); box-shadow: 0 0 0 1px var(--c); }
+.vx-fondo.on::after { content: ""; position: absolute; top: 7px; right: 7px; width: 18px; height: 18px; border-radius: 50%; background: var(--c) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='m6 12.5 4 4 8-9'/%3E%3C/svg%3E") center / 12px no-repeat; }
+.vx-fondo.mia:not([style*="--t"]) { align-items: center; justify-content: center; gap: 6px; border-style: dashed; color: #C3C7CD; text-align: center; }
+.vx-fondo.mia .vx-i { width: 24px; height: 24px; color: var(--c); }
+.vx-cambiar-foto { margin: 4px 0 0; justify-content: flex-start; padding: 6px 0; }

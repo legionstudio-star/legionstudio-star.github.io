@@ -6,7 +6,7 @@ window.LEGION_VEHICULO = function (N, raiz) {
   const V = N.vehiculo || {};
   const $ = (s, el = document) => el.querySelector(s);
   const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-  if (!document.getElementById("vx-css")) document.head.appendChild(Object.assign(document.createElement("link"), { id: "vx-css", rel: "stylesheet", href: "/app/vial.css?v=3" }));
+  if (!document.getElementById("vx-css")) document.head.appendChild(Object.assign(document.createElement("link"), { id: "vx-css", rel: "stylesheet", href: "/app/vial.css?v=4" }));
 
   const SVG = {
     candado: '<rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/>',
@@ -33,12 +33,28 @@ window.LEGION_VEHICULO = function (N, raiz) {
 
   document.title = V.placa ? `${V.placa} · Carpeta Vial` : "Carpeta Vial";
   document.body.classList.add("vial", "vx");
-  document.documentElement.style.setProperty("--c", N.color || "#F5B942");
+  const TEMAS = {
+    negro: { t: "Oro", c: "#F5B942", bg: "#0A0B0D", ct: "#0A0B0D" },
+    azul: { t: "Azul", c: "#3E9BFF", bg: "#050A14", ct: "#fff" },
+    rojo: { t: "Rojo", c: "#FF3B3B", bg: "#100506", ct: "#fff" },
+    verde: { t: "Verde", c: "#2FD07A", bg: "#04100A", ct: "#04100A" },
+    morado: { t: "Morado", c: "#A47BFF", bg: "#0B0716", ct: "#fff" },
+    naranja: { t: "Naranja", c: "#FF8A1F", bg: "#120903", ct: "#120903" },
+    plata: { t: "Plata", c: "#D7DCE3", bg: "#0B0C0F", ct: "#0B0C0F" }
+  };
+  const FONDOS = { monaco: "Mónaco", garage: "Garaje", neon: "Neón", racing: "Racing", ruta: "En ruta", clasica: "Clásica", urbano: "Urbano", moto: "Calle" };
+  const fondoUrl = (f, foto, moto) => f === "mia" && foto ? foto : FONDOS[f] ? `/app/img/vf-${f}.webp` : foto || `/app/img/vial-hero-${moto ? "moto" : "carro"}.webp`;
+  const ponerTema = (k) => {
+    const T = TEMAS[k] || TEMAS.negro, r = document.body;
+    r.style.setProperty("--c", T.c); r.style.setProperty("--bg", T.bg); r.style.setProperty("--ct", T.ct);
+    const m = document.querySelector('meta[name="theme-color"]'); if (m) m.content = T.bg;
+  };
   const meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.content = "#0A0B0D";
 
   const ACTIVAR = N.estado === "por_activar";
   const esMoto = V.clase === "moto";
-  const FOTO = V.foto || `/app/img/vial-hero-${esMoto ? "moto" : "carro"}.webp`;
+  const FOTO = fondoUrl(V.fondo, V.foto, esMoto);
+  ponerTema(V.tema);
   const hoy = new Date(); hoy.setHours(0, 0, 0, 0);
   const fmt = (d) => d.toLocaleDateString("es-CO", { day: "numeric", month: "short", year: "numeric" }).replace(".", "");
   const estados = (V.vence || []).filter((v) => v.doc && v.fecha).map((v) => {
@@ -234,7 +250,7 @@ window.LEGION_VEHICULO = function (N, raiz) {
     const venceDe = (doc) => ((V.vence || []).find((x) => x.doc === doc) || {}).fecha || "";
     const F = {
       propietario: V.propietario || "", clase: V.clase || "carro", placa: V.placa || "", marca: V.marca || "", linea: V.linea || "",
-      modelo: V.modelo || "", color: V.color || "", ciudad: V.ciudad && V.ciudad !== "CARPETA VIAL" ? V.ciudad : "", foto: V.foto || "",
+      modelo: V.modelo || "", color: V.color || "", ciudad: V.ciudad && V.ciudad !== "CARPETA VIAL" ? V.ciudad : "", foto: V.foto || "", tema: V.tema || "negro", fondo: V.fondo || (V.foto ? "mia" : ""),
       soat: venceDe("SOAT"), tecno: venceDe("Revisión técnico-mecánica"), licencia: venceDe("Licencia de conducción"),
       e_nombre: (em && em.nombre) || "", e_relacion: (em && em.relacion) || "", e_tel: em && em.tel ? String(em.tel).replace(/^57/, "") : "", e_rh: (em && em.rh) || "",
       pin1: "", pin2: ""
@@ -243,7 +259,7 @@ window.LEGION_VEHICULO = function (N, raiz) {
     const extrasNombres = docs.map((d) => d.n).filter((n) => !TIPOS_DOC.includes(n));
     let ocupado = 0, nuevoOtro = false;
     const PASOS = [
-      { id: "vehiculo", t: "Tu vehículo" }, { id: "vence", t: "Vencimientos" }, { id: "emergencia", t: "Emergencia" },
+      { id: "vehiculo", t: "Tu vehículo" }, { id: "diseno", t: "Diseño" }, { id: "vence", t: "Vencimientos" }, { id: "emergencia", t: "Emergencia" },
       { id: "docs", t: "Documentos" }, { id: "pin", t: S.activar ? "Tu PIN" : "PIN" }, { id: "listo", t: "Listo" }
     ];
     let paso = 0;
@@ -290,11 +306,27 @@ window.LEGION_VEHICULO = function (N, raiz) {
         <div class="vx-dos">${campo("marca", "Marca", { ph: "Mazda", max: 30 })}${campo("linea", "Línea", { ph: "BT-50", max: 40 })}</div>
         <div class="vx-dos">${campo("modelo", "Modelo", { ph: "2024", im: "numeric", max: 4 })}${campo("color", "Color", { ph: "Negro", max: 30 })}</div>
         ${campo("ciudad", "Ciudad de matrícula", { ph: "Bogotá", max: 30, op: 1 })}
-        <div class="vx-campo"><span>Foto de tu vehículo<em>Opcional</em></span>
-          <label class="vx-foto ${F.foto ? "con" : ""}" style="${F.foto ? `--f:url('${esc(F.foto)}')` : ""}">
-            ${F.foto ? `<span class="vx-foto-cambiar">${ic("camara")} Cambiar foto</span>` : `${ic("imagen")}<b>Agregar foto</b><small>Es la que se ve al escanear la tarjeta</small>`}
-            <input type="file" accept="image/*" id="foto-veh" hidden></label></div>
         <p class="vx-err" id="conf-err"></p>`;
+      if (p === "diseno") {
+        const fd = F.fondo || (F.clase === "moto" ? "ruta" : "monaco");
+        const lista = F.clase === "moto" ? ["ruta", "racing", "clasica", "moto", "neon", "garage", "monaco", "urbano"] : ["monaco", "garage", "neon", "urbano", "racing", "ruta", "clasica", "moto"];
+        h = `<h3 class="vx-h">Dale tu estilo</h3><p class="vx-s">Escoge el color y el fondo. Así se verá tu tarjeta cuando alguien la escanee.</p>
+        <div class="vx-prev" style="--foto:url('${esc(fondoUrl(fd, F.foto, F.clase === "moto"))}')">
+          <span class="vx-prev-marca">${ic("escudo")} CARPETA VIAL</span>
+          ${placaHTML(F.placa, F.ciudad, F.clase === "moto")}
+          <b>${esc([F.marca, F.linea].filter(Boolean).join(" ") || "Tu vehículo")}</b>
+          <i class="vx-prev-btn">${ic("candado")} Ver documentos</i>
+        </div>
+        <div class="vx-campo"><span>Color</span><div class="vx-temas">
+          ${Object.entries(TEMAS).map(([k, T]) => `<button type="button" data-tema="${k}" class="${F.tema === k ? "on" : ""}" style="--tc:${T.c};--tb:${T.bg}" aria-label="${T.t}"><i></i><span>${T.t}</span></button>`).join("")}
+        </div></div>
+        <div class="vx-campo"><span>Fondo</span><div class="vx-fondos">
+          <label class="vx-fondo mia ${fd === "mia" ? "on" : ""}" style="${F.foto ? `--t:url('${esc(F.foto)}')` : ""}" data-fondo="mia">
+            ${F.foto ? "" : ic("camara")}<span>${F.foto ? "Mi foto" : "Subir mi foto"}</span><input type="file" accept="image/*" id="foto-veh" hidden></label>
+          ${lista.map((k) => `<button type="button" class="vx-fondo ${fd === k ? "on" : ""}" data-fondo="${k}" style="--t:url('/app/img/vf-${k}-t.webp')"><span>${FONDOS[k]}</span></button>`).join("")}
+        </div>${F.foto ? `<label class="vx-link vx-cambiar-foto">${ic("camara")} Cambiar mi foto<input type="file" accept="image/*" id="foto-veh2" hidden></label>` : ""}</div>
+        <p class="vx-err" id="conf-err"></p>`;
+      }
       if (p === "vence") h = `<h3 class="vx-h">¿Cuándo se vencen tus documentos?</h3><p class="vx-s">La tarjeta muestra si algo está por vencer. Deja en blanco lo que no tengas a la mano.</p>
         <div class="vx-fechas">
           ${[["soat", "SOAT"], ["tecno", "Revisión técnico-mecánica"], ["licencia", "Licencia de conducción"]].map(([k, t]) => `<label class="vx-fecha">${ic("calendario")}<span>${t}</span><input type="date" name="${k}" value="${esc(F[k])}"></label>`).join("")}
@@ -319,7 +351,7 @@ window.LEGION_VEHICULO = function (N, raiz) {
         <p class="vx-err" id="conf-err"></p>`;
       if (p === "listo") h = `
         <div class="vx-fin">
-          <div class="vx-fin-card" style="--foto:url('${esc(F.foto || `/app/img/vial-hero-${F.clase === "moto" ? "moto" : "carro"}.webp`)}')">
+          <div class="vx-fin-card" style="--foto:url('${esc(fondoUrl(F.fondo || (F.clase === "moto" ? "ruta" : "monaco"), F.foto, F.clase === "moto"))}')">
             ${placaHTML(F.placa, F.ciudad, F.clase === "moto")}
             <b>${esc([F.marca, F.linea].filter(Boolean).join(" "))}</b><small>${esc(F.propietario)}</small>
           </div>
@@ -335,7 +367,7 @@ window.LEGION_VEHICULO = function (N, raiz) {
     async function guardar() {
       const vence = [["SOAT", F.soat], ["Revisión técnico-mecánica", F.tecno], ["Licencia de conducción", F.licencia]].filter((x) => x[1]).map(([doc, fecha]) => ({ doc, fecha }));
       const tel = F.e_tel.replace(/\D/g, "");
-      const v = { propietario: F.propietario, clase: F.clase, placa: F.placa, marca: F.marca, linea: F.linea, modelo: F.modelo, color: F.color, ciudad: F.ciudad, foto: F.foto, vence,
+      const v = { propietario: F.propietario, clase: F.clase, placa: F.placa, marca: F.marca, linea: F.linea, modelo: F.modelo, color: F.color, ciudad: F.ciudad, foto: F.foto, tema: F.tema, fondo: F.fondo || (F.clase === "moto" ? "ruta" : "monaco"), vence,
         emergencia: tel ? { nombre: F.e_nombre, relacion: F.e_relacion, rh: F.e_rh, tel: tel.length === 10 ? "57" + tel : tel } : null };
       const j = await rpc("vial_guardar", { p_token: S.token, p_v: v, p_docs: docs, p_pin_nuevo: F.pin1 || null });
       if (!j.ok) throw new Error(j.error);
@@ -411,12 +443,19 @@ window.LEGION_VEHICULO = function (N, raiz) {
       try {
         const cv = await lienzo(file, 1400, false), b = await aBlob(cv, 0.8);
         F.foto = await subirBlob(b, b.type === "image/webp" ? "webp" : "jpg", b.type);
-        ocupado--; leer(); pintar();
+        F.fondo = "mia"; ocupado--; leer(); pintar();
       } catch (e) { ocupado--; aviso(e.message && !/^(red|Failed)/.test(e.message) ? e.message : "No se pudo subir la foto."); }
     }
 
     cuerpo.addEventListener("click", (e) => {
       const c = e.target.closest("[data-clase]");
+      const tm = e.target.closest("[data-tema]");
+      if (tm) { F.tema = tm.dataset.tema; ponerTema(F.tema); cuerpo.querySelectorAll("[data-tema]").forEach((b) => b.classList.toggle("on", b === tm)); }
+      const fo = e.target.closest("[data-fondo]");
+      if (fo && !(fo.dataset.fondo === "mia" && !F.foto)) {
+        if (fo.dataset.fondo === "mia" && e.target.tagName !== "INPUT") e.preventDefault();
+        F.fondo = fo.dataset.fondo; leer(); pintar(); return;
+      }
       if (c) { F.clase = c.dataset.clase; cuerpo.querySelectorAll("[data-clase]").forEach((b) => b.classList.toggle("on", b === c)); $(".vx-placa-in")?.classList.toggle("moto", F.clase === "moto"); }
       const r = e.target.closest("[data-rh]");
       if (r) { F.e_rh = F.e_rh === r.dataset.rh ? "" : r.dataset.rh; cuerpo.querySelectorAll("[data-rh]").forEach((b) => b.classList.toggle("on", b.dataset.rh === F.e_rh)); }
@@ -440,7 +479,7 @@ window.LEGION_VEHICULO = function (N, raiz) {
     cuerpo.addEventListener("change", (e) => {
       const i = e.target.closest("input[type=file]"); if (!i || !i.files[0]) return;
       if (ocupado) { i.value = ""; return aviso("Espera a que termine la subida…"); }
-      if (i.id === "foto-veh") subirFoto(i.files[0]); else if (i.dataset.subir) subirArchivo(i.files[0], i.dataset.subir);
+      if (i.id === "foto-veh" || i.id === "foto-veh2") subirFoto(i.files[0]); else if (i.dataset.subir) subirArchivo(i.files[0], i.dataset.subir);
       i.value = "";
     });
     pie.addEventListener("click", async (e) => {
@@ -478,7 +517,7 @@ window.LEGION_VEHICULO = function (N, raiz) {
       const p = PASOS[paso].id;
       if (p === "listo") return location.reload();
       if (Date.now() - avisoCerrar > 4000) { avisoCerrar = Date.now(); return aviso("Si sales ahora no se guarda lo que llevas. Toca la X otra vez para salir."); }
-      cerrarHoja(hConf);
+      ponerTema(V.tema); cerrarHoja(hConf);
     };
     pintar();
   }
