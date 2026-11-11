@@ -6,7 +6,7 @@ window.LEGION_VEHICULO = function (N, raiz) {
   const V = N.vehiculo || {};
   const $ = (s, el = document) => el.querySelector(s);
   const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-  if (!document.getElementById("vx-css")) document.head.appendChild(Object.assign(document.createElement("link"), { id: "vx-css", rel: "stylesheet", href: "/app/vial.css?v=4" }));
+  if (!document.getElementById("vx-css")) document.head.appendChild(Object.assign(document.createElement("link"), { id: "vx-css", rel: "stylesheet", href: "/app/vial.css?v=5" }));
 
   const SVG = {
     candado: '<rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/>',
@@ -52,7 +52,8 @@ window.LEGION_VEHICULO = function (N, raiz) {
   const meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.content = "#0A0B0D";
 
   const ACTIVAR = N.estado === "por_activar";
-  const esMoto = V.clase === "moto";
+  const ENTRADA = N.tipo === "vial_entrada";
+  const esMoto = (ENTRADA ? N.clase : V.clase) === "moto";
   const FOTO = fondoUrl(V.fondo, V.foto, esMoto);
   ponerTema(V.tema);
   const hoy = new Date(); hoy.setHours(0, 0, 0, 0);
@@ -92,6 +93,23 @@ window.LEGION_VEHICULO = function (N, raiz) {
       <p class="vx-pie">LEGION Studio Digital</p>
     </section>`;
 
+  const htmlEntrada = () => `
+    <section class="vx-hero vx-hero-full" style="--foto:url('${esc(FOTO)}')">
+      <header class="vx-top">${marca}<span class="vx-nfc">${ic("nfc")} NFC</span></header>
+      <div class="vx-hero-txt">
+        <h1>Carpeta Vial</h1>
+        <p>Escribe la placa del vehículo para ver su carpeta.</p>
+        <form class="vx-buscar" id="buscar" autocomplete="off">
+          <label class="vx-placa vx-placa-in ${esMoto ? "moto" : ""}"><input id="b-placa" placeholder="ABC 123" maxlength="8" autocapitalize="characters" aria-label="Placa"><small>COLOMBIA</small></label>
+          <button type="submit" class="vx-btn">Buscar ${ic("flecha")}</button>
+          <p class="vx-err" id="b-err"></p>
+        </form>
+        <div class="vx-o"><span>¿Tarjeta nueva?</span></div>
+        <button type="button" class="vx-btn sec" id="nueva">${ic("candado")} Activar mi tarjeta</button>
+      </div>
+    </section>
+    <p class="vx-pie">LEGION Studio Digital</p>`;
+
   const htmlTarjeta = () => `
     <section class="vx-hero" style="--foto:url('${esc(FOTO)}')">
       <header class="vx-top">${marca}${P && P.logo ? `<img class="vx-pat" src="${esc(P.logo)}" alt="${esc(P.nombre)}">` : `<span class="vx-nfc">${ic("nfc")} NFC</span>`}</header>
@@ -120,7 +138,7 @@ window.LEGION_VEHICULO = function (N, raiz) {
     </section>`;
 
   raiz.innerHTML = `
-  <main class="vx-main">${ACTIVAR ? htmlActivar() : htmlTarjeta()}</main>
+  <main class="vx-main">${ENTRADA ? htmlEntrada() : ACTIVAR ? htmlActivar() : htmlTarjeta()}</main>
 
   <div class="vx-modal" id="m-pin" role="dialog" aria-modal="true" aria-label="PIN">
     <div class="vx-caja">
@@ -159,13 +177,26 @@ window.LEGION_VEHICULO = function (N, raiz) {
   const puntos = () => ($("#vx-puntos").innerHTML = Array.from({ length: Math.max(4, escrito.length) }, (_, i) => `<i class="${i < escrito.length ? "on" : ""}"></i>`).join(""));
   const pedirPin = (m) => {
     modo = m; escrito = ""; puntos(); $("#vx-err").textContent = "";
-    $("#pin-tit").textContent = m === "activar" ? "PIN de activación" : m === "editar" ? "Editar mi carpeta" : "Documentos";
-    $("#pin-sub").textContent = m === "activar" ? "Viene impreso con tu tarjeta." : "Escribe tu PIN personal.";
+    $("#pin-tit").textContent = m === "activar" || m === "nueva" ? "PIN de activación" : m === "editar" ? "Editar mi carpeta" : "Documentos";
+    $("#pin-sub").textContent = m === "activar" || m === "nueva" ? "Viene impreso con tu tarjeta." : "Escribe tu PIN personal.";
     mPin.classList.add("abierta");
   };
   $("#ver-docs")?.addEventListener("click", () => pedirPin("docs"));
   $("#editar")?.addEventListener("click", () => pedirPin("editar"));
   $("#activar")?.addEventListener("click", () => pedirPin("activar"));
+  $("#nueva")?.addEventListener("click", () => pedirPin("nueva"));
+  $("#b-placa")?.addEventListener("input", (e) => { const p = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 7); e.target.value = p.length > 3 ? p.slice(0, 3) + " " + p.slice(3) : p; $("#b-err").textContent = ""; });
+  $("#buscar")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const pl = $("#b-placa").value.replace(/[^A-Za-z0-9]/g, "");
+    if (pl.length < 5) return ($("#b-err").textContent = "Escribe la placa completa.");
+    $("#b-err").textContent = "Buscando…";
+    try {
+      const slug = await rpc("vial_buscar", { p_placa: pl });
+      if (!slug) return ($("#b-err").textContent = "No encontramos una carpeta con esa placa.");
+      location.href = `/${slug}/`;
+    } catch (err) { $("#b-err").textContent = "Sin conexión, intenta otra vez"; }
+  });
   mPin.addEventListener("click", (e) => { if (e.target === mPin || e.target.closest("[data-cerrar]")) mPin.classList.remove("abierta"); });
   $("#vx-tecl").addEventListener("click", (e) => {
     const k = e.target.closest("[data-k]")?.dataset.k; if (k === undefined) return;
@@ -185,6 +216,12 @@ window.LEGION_VEHICULO = function (N, raiz) {
     if (escrito.length < 4) return ($("#vx-err").textContent = "El PIN tiene de 4 a 6 números");
     $("#vx-err").textContent = "Verificando…";
     try {
+      if (modo === "nueva") {
+        const j = await rpc("vial_nueva", { p_entrada: window.SLUG, p_pin: escrito });
+        if (!j.ok) return j.error === "limite" ? ($("#vx-err").textContent = "Intenta más tarde.") : errPin(j);
+        location.href = `/${j.slug}/#t=${j.token}`;
+        return;
+      }
       if (modo === "docs") {
         const j = await rpc("vehiculo_docs", { p_slug: window.SLUG, p_pin: escrito });
         if (!j.ok) return errPin(j);
@@ -357,6 +394,7 @@ window.LEGION_VEHICULO = function (N, raiz) {
           </div>
           <h3>${S.activar ? "Tu tarjeta quedó activada" : "Cambios guardados"}</h3>
           <p>Al acercar el celular o escanear el QR se ven tu vehículo, los vencimientos y el contacto de emergencia. Los documentos se abren con tu PIN.</p>
+          <div class="vx-enlace"><small>Tu enlace propio</small><b>legionestudio.com/${esc(window.SLUG)}/</b><span>Pídele a LEGION que lo grabe en el chip de tu tarjeta: así abre directo al acercar el celular.</span></div>
         </div>`;
       cuerpo.innerHTML = h; cuerpo.scrollTop = 0;
       pie.innerHTML = p === "listo" ? `<button type="button" class="vx-btn" id="w-fin">Ver mi tarjeta</button>` :
@@ -521,4 +559,7 @@ window.LEGION_VEHICULO = function (N, raiz) {
     };
     pintar();
   }
+
+  const tk = (location.hash.match(/^#t=([0-9a-f]{32})$/) || [])[1];
+  if (ACTIVAR && tk) { history.replaceState(null, "", location.pathname); asistente({ token: tk, activar: true, docs: [] }); }
 };

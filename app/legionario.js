@@ -6,7 +6,7 @@ window.LEGION_LEGIONARIO = function (N, raiz) {
   const R = L.redes || {};
   const $ = (s, el = document) => el.querySelector(s);
   const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-  if (!document.getElementById("vx-css")) document.head.appendChild(Object.assign(document.createElement("link"), { id: "vx-css", rel: "stylesheet", href: "/app/vial.css?v=4" }));
+  if (!document.getElementById("vx-css")) document.head.appendChild(Object.assign(document.createElement("link"), { id: "vx-css", rel: "stylesheet", href: "/app/vial.css?v=5" }));
 
   const SVG = {
     candado: '<rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/>',

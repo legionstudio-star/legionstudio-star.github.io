@@ -292,3 +292,15 @@ body.vx { transition: background-color .3s; }
 .vx-fondo.mia:not([style*="--t"]) { align-items: center; justify-content: center; gap: 6px; border-style: dashed; color: #C3C7CD; text-align: center; }
 .vx-fondo.mia .vx-i { width: 24px; height: 24px; color: var(--c); }
 .vx-cambiar-foto { margin: 4px 0 0; justify-content: flex-start; padding: 6px 0; }
+/* Entrada del QR compartido */
+.vx-buscar { display: grid; gap: 10px; margin-top: 18px; }
+.vx-buscar .vx-placa-in { justify-content: center; }
+.vx-buscar .vx-btn { margin: 0; }
+.vx-buscar .vx-err { min-height: 1.1em; }
+.vx-o { display: flex; align-items: center; gap: 12px; color: var(--mu); font-size: .8rem; margin: 6px 0 10px; }
+.vx-o::before, .vx-o::after { content: ""; flex: 1; height: 1px; background: var(--linea2); }
+#nueva { margin-top: 0; }
+.vx-enlace { margin-top: 22px; text-align: left; background: var(--sup); border: 1px solid var(--linea2); border-radius: 14px; padding: 14px; }
+.vx-enlace small { display: block; font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; color: var(--mu); font-weight: 600; }
+.vx-enlace b { display: block; font-size: 1.05rem; color: var(--c); margin-top: 4px; word-break: break-all; }
+.vx-enlace span { display: block; font-size: .8rem; color: var(--mu); margin-top: 6px; line-height: 1.45; }
