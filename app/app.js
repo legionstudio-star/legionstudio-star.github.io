@@ -43,6 +43,12 @@
   }
   document.title = N.nombre;
 
+  // Portafolio de Legionario (chip NFC de la tarjeta)
+  if (N.tipo === "legionario") {
+    await new Promise((ok, mal) => { const s = document.createElement("script"); s.src = "/app/legionario.js?v=1"; s.onload = ok; s.onerror = mal; document.head.appendChild(s); });
+    return window.LEGION_LEGIONARIO(N, raiz);
+  }
+
   // Tarjeta de vehículo (Carpeta Vial): página aparte
   if (N.tipo === "vehiculo") {
     await new Promise((ok, mal) => { const s = document.createElement("script"); s.src = "/app/vehiculo.js?v=4"; s.onload = ok; s.onerror = mal; document.head.appendChild(s); });

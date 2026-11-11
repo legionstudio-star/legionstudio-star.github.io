@@ -218,3 +218,50 @@ body.vx { --bg: #0A0B0D; --sup: #131518; --sup2: #1A1D21; --linea: rgba(255,255,
 
 @keyframes vxSube { from { transform: translateY(24px); opacity: 0; } to { transform: none; opacity: 1; } }
 @media (max-width: 370px) { .vx-hero-full h1 { font-size: 2.1rem; } .vx-placa-in input { font-size: 1.9rem; } .vx-tecl button { width: 58px; height: 58px; } }
+
+/* Portafolio de Legionario */
+.lg-hero { --c: #C9A24A; background-position: center 30%; }
+.lg-perfil-hero { min-height: 300px; }
+.lg-cuerpo { margin-top: -78px; position: relative; z-index: 3; }
+.lg-cab { text-align: center; }
+.lg-avatar { width: 128px; height: 128px; margin: 0 auto; border-radius: 50%; overflow: hidden; border: 3px solid var(--bg); box-shadow: 0 0 0 1.5px var(--c), 0 20px 40px -18px rgba(0,0,0,.9); background: linear-gradient(145deg, #2A2418, #12100C); display: grid; place-items: center; }
+.lg-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.lg-avatar span { font-size: 2.4rem; font-weight: 700; color: var(--c); letter-spacing: .02em; }
+.lg-avatar.grande { width: 140px; height: 140px; }
+.lg-cab h1 { font-size: 1.75rem; font-weight: 700; letter-spacing: -.03em; margin-top: 14px; }
+.lg-cargo { color: var(--mu); font-size: .9rem; margin-top: 2px; }
+.lg-cargo b { color: var(--c); font-weight: 600; }
+.lg-frase { color: #C3C7CD; font-size: .95rem; line-height: 1.5; margin: 12px auto 0; max-width: 34ch; }
+.lg-acc { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 22px; }
+.lg-acc .vx-btn { margin: 0; font-size: .92rem; }
+.lg-acc .vx-btn:only-child { grid-column: 1 / -1; }
+.lg-redes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.lg-redes a { display: grid; justify-items: center; gap: 7px; padding: 14px 4px 12px; border-radius: 16px; background: var(--sup); border: 1px solid var(--linea); color: var(--tx); text-decoration: none; font-size: .72rem; font-weight: 600; }
+.lg-redes a .vx-i { width: 26px; height: 26px; color: var(--c); }
+.lg-estudio { position: relative; display: block; border-radius: 18px; overflow: hidden; padding: 18px 18px 16px; min-height: 170px; color: #fff; text-decoration: none; background: linear-gradient(90deg, rgba(10,11,13,.96) 30%, rgba(10,11,13,.35)), var(--foto) 70% 40% / cover; border: 1px solid var(--linea); display: flex; flex-direction: column; justify-content: flex-end; }
+.lg-estudio small { font-size: .7rem; letter-spacing: .18em; text-transform: uppercase; color: var(--c); font-weight: 600; }
+.lg-estudio b { font-size: 1.12rem; font-weight: 700; letter-spacing: -.02em; line-height: 1.3; margin-top: 6px; max-width: 22ch; }
+.lg-estudio span { display: inline-flex; align-items: center; gap: 6px; font-size: .84rem; font-weight: 600; margin-top: 12px; color: #E9E1CC; }
+.lg-estudio span .vx-i { width: 16px; height: 16px; }
+.lg-lista { margin-top: 10px; }
+.lg-lista li { padding: 0; }
+.lg-lista a { display: flex; align-items: center; gap: 14px; width: 100%; padding: 14px 0; color: var(--tx); text-decoration: none; }
+.lg-lista a > div { flex: 1; }
+.lg-lista a > .vx-i:first-child { color: var(--c); }
+.lg-lista a > .vx-i:last-child { color: #50565E; width: 18px; height: 18px; }
+.lg-foto-in { display: flex; align-items: center; gap: 14px; padding: 12px; border-radius: 16px; background: var(--sup); border: 1px solid var(--linea); cursor: pointer; }
+.lg-foto-in img, .lg-foto-in > span { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+.lg-foto-in > span { display: grid; place-items: center; border: 1.5px dashed var(--linea2); color: var(--c); }
+.lg-foto-in b { display: block; font-size: .94rem; font-weight: 600; }
+.lg-foto-in small { color: var(--mu); font-size: .8rem; }
+.lg-redes-in { background: var(--sup); border: 1px solid var(--linea); border-radius: 16px; padding: 0 14px; }
+.lg-redes-in label { display: flex; align-items: center; gap: 12px; padding: 10px 0; }
+.lg-redes-in label + label { border-top: 1px solid var(--linea); }
+.lg-redes-in label > .vx-i { width: 24px; height: 24px; color: var(--c); }
+.lg-redes-in div { flex: 1; min-width: 0; }
+.lg-redes-in span { display: block; font-size: .74rem; font-weight: 600; color: var(--mu); }
+.lg-redes-in input { width: 100%; border: 0; background: none; color: var(--tx); font: inherit; font-size: 1rem; padding: 2px 0; height: 30px; }
+.lg-redes-in input::placeholder { color: #50565E; }
+.lg-redes-in input:focus { outline: none; }
+.lg-redes-in label:focus-within > .vx-i { color: #fff; }
+@media (max-width: 370px) { .lg-redes { grid-template-columns: repeat(3, 1fr); } }
