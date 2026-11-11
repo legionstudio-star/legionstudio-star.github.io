@@ -45,7 +45,7 @@
 
   // Tarjeta de vehículo (Carpeta Vial): página aparte
   if (N.tipo === "vehiculo") {
-    await new Promise((ok, mal) => { const s = document.createElement("script"); s.src = "/app/vehiculo.js?v=2"; s.onload = ok; s.onerror = mal; document.head.appendChild(s); });
+    await new Promise((ok, mal) => { const s = document.createElement("script"); s.src = "/app/vehiculo.js?v=3"; s.onload = ok; s.onerror = mal; document.head.appendChild(s); });
     return window.LEGION_VEHICULO(N, raiz);
   }
 
