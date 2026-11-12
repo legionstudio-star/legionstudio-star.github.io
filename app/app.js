@@ -51,7 +51,7 @@
 
   // Carpeta Vial Flotas: tarjeta de un bus de empresa
   if (N.tipo === "flota_bus") {
-    await new Promise((ok, mal) => { const s = document.createElement("script"); s.src = "/app/flota.js?v=1"; s.onload = ok; s.onerror = mal; document.head.appendChild(s); });
+    await new Promise((ok, mal) => { const s = document.createElement("script"); s.src = "/app/flota.js?v=2"; s.onload = ok; s.onerror = mal; document.head.appendChild(s); });
     return window.LEGION_FLOTA(N, raiz);
   }
 

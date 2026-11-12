@@ -15,11 +15,15 @@ window.LEGION_FLOTA = function (N, raiz) {
     escudo: '<path d="M12 3 4.5 6v5.5c0 4.8 3.2 8 7.5 9.5 4.3-1.5 7.5-4.7 7.5-9.5V6L12 3Z"/><path d="m9 12 2 2 4-4"/>',
     reloj: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
     bus: '<rect x="4" y="3.5" width="16" height="14" rx="2.5"/><path d="M4 11h16M8 17.5v2.5M16 17.5v2.5"/><circle cx="8" cy="14.3" r=".9" fill="currentColor"/><circle cx="16" cy="14.3" r=".9" fill="currentColor"/>',
-    buscar: '<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>'
+    buscar: '<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>',
+    ley: '<path d="M12 3v18M5 21h14M6 7h12M6 7l-3 7a3 3 0 0 0 6 0L6 7ZM18 7l-3 7a3 3 0 0 0 6 0l-3-7Z"/>',
+    tel: '<path d="M6 3.5h3.2l1.6 4.3-2.2 1.4a11 11 0 0 0 6.2 6.2l1.4-2.2 4.3 1.6V18a2.5 2.5 0 0 1-2.5 2.5A16.5 16.5 0 0 1 3.5 6 2.5 2.5 0 0 1 6 3.5Z"/>',
+    wa: '<path d="M4 20l1.3-4A8 8 0 1 1 8 18.8L4 20Z"/><path d="M9 9.5c.3 2.2 2.3 4.3 4.8 5l1.2-1.3-1.8-1-1 .6a4.5 4.5 0 0 1-2-2l.6-1-1-1.8L9 9.5Z"/>',
+    radio: '<rect x="5" y="8" width="14" height="13" rx="2"/><path d="M8 8 15 3M9 13h6M9 16.5h6"/>'
   };
   const ic = (n) => `<svg class="fl-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${SVG[n]}</svg>`;
 
-  if (!document.getElementById("fl-css")) document.head.appendChild(Object.assign(document.createElement("link"), { id: "fl-css", rel: "stylesheet", href: "/app/flota.css?v=1" }));
+  if (!document.getElementById("fl-css")) document.head.appendChild(Object.assign(document.createElement("link"), { id: "fl-css", rel: "stylesheet", href: "/app/flota.css?v=2" }));
   document.head.appendChild(Object.assign(document.createElement("link"), { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&display=swap" }));
   document.title = `Móvil ${B.movil || ""} · ${B.interno || ""} · ${E.nombre || "Flota"}`;
   document.body.className = "fl";
@@ -74,6 +78,15 @@ window.LEGION_FLOTA = function (N, raiz) {
       <div class="fl-cont"><i class="ok">${nOk}</i><i class="ojo">${nOjo}</i><i class="mal">${nMal}</i></div>
     </section>
 
+    ${(N.contactos || []).length ? `<section class="fl-contactos">
+      <h2 class="fl-h">${ic("radio")} Novedades del vehículo</h2>
+      ${N.contactos.map((c) => `<div class="fl-contacto">
+        <span><b>${esc(c.t)}</b><small>${esc(c.s || "")}</small></span>
+        <a href="tel:${esc(c.tel)}" aria-label="Llamar">${ic("tel")}</a>
+        ${c.wa !== false ? `<a href="https://wa.me/57${esc(c.tel)}?text=${encodeURIComponent(`Novedad del móvil ${B.movil} (${B.interno}, placa ${B.placa}): `)}" target="_blank" rel="noopener" class="wa" aria-label="WhatsApp">${ic("wa")}</a>` : ""}
+      </div>`).join("")}
+    </section>` : ""}
+
     <section class="fl-datos">
       ${[["Marca y línea", B.marca], ["Modelo", B.modelo], ["Capacidad", B.capacidad], ["Servicio", B.servicio], ["Patio", B.patio], ["Combustible", B.combustible]].filter((x) => x[1]).map(([a, b]) => `<div><small>${a}</small><b>${esc(b)}</b></div>`).join("")}
     </section>
@@ -90,6 +103,12 @@ window.LEGION_FLOTA = function (N, raiz) {
         </span>
       </button>`).join("")}
     </div>
+
+    <section class="fl-ley">
+      <span>${ic("ley")}</span>
+      <div><b>Documentos exhibidos en formato digital</b>
+      <p>De acuerdo con la <strong>Ley 2251 de 2022</strong>, la autoridad de tránsito verifica el SOAT, la revisión técnico-mecánica y de gases y la licencia de tránsito en sus sistemas de información (RUNT), sin exigir su presentación en físico. Las pólizas y la tarjeta de operación se exhiben aquí como copia digital vigente, cargada y actualizada por ${esc(E.nombre || "la empresa")}.</p></div>
+    </section>
 
     <a class="fl-runt" href="https://www.runt.gov.co/" target="_blank" rel="noopener">${ic("buscar")}<span><b>Verificación oficial en el RUNT</b><small>El SOAT y la revisión técnico-mecánica también se pueden consultar con la placa.</small></span>${ic("abrir")}</a>
 
