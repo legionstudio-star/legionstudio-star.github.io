@@ -1,0 +1,91 @@
+/* Carpeta Vial Flotas — LEGION Studio Digital */
+body.fl{--c:#1F4FBF;--a:#F2C200;--tx:#0E1A2B;--mu:#5A6878;--bd:#E2E7EF;--bg:#F2F5FA;--ok:#11875A;--ojo:#C97A00;--mal:#C8302A;
+  margin:0;background:var(--bg);color:var(--tx);font-family:Archivo,"Plus Jakarta Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.fl *{box-sizing:border-box}
+.fl-i{width:18px;height:18px;flex:none}
+.fl-demo{background:#0E1A2B;color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;text-align:center;padding:7px 16px}
+.fl-top{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--c);color:#fff}
+.fl-marca{display:flex;align-items:center;gap:12px}
+.fl-marca b{font-size:1.55rem;font-weight:900;letter-spacing:.06em;line-height:1}
+.fl-marca img{height:30px}
+.fl-marca small{font-size:.66rem;line-height:1.2;letter-spacing:.08em;text-transform:uppercase;opacity:.82;border-left:1px solid rgba(255,255,255,.35);padding-left:12px;font-weight:600}
+.fl-nfc{display:inline-flex;align-items:center;gap:6px;font-size:.74rem;font-weight:700;background:rgba(255,255,255,.14);border-radius:999px;padding:6px 11px}
+.fl-nfc .fl-i{width:15px;height:15px}
+
+.fl-hero{position:relative;min-height:300px;background:var(--foto) center 58%/cover no-repeat #1b2a44;display:flex;align-items:flex-end}
+.fl-hero::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,16,32,0) 25%,rgba(8,16,32,.55) 60%,rgba(8,16,32,.92))}
+.fl-hero-txt{position:relative;width:100%;padding:20px 18px 18px;color:#fff;max-width:720px;margin:0 auto}
+.fl-chip{display:inline-flex;align-items:center;gap:6px;background:var(--a);color:#14110a;font-weight:800;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;border-radius:6px;padding:5px 9px}
+.fl-chip .fl-i{width:15px;height:15px}
+.fl-hero h1{margin:8px 0 12px;font-size:4.1rem;line-height:.9;font-weight:900;letter-spacing:-.02em;display:flex;align-items:baseline;gap:10px}
+.fl-hero h1 small{font-size:1rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.85}
+.fl-ids{display:flex;gap:10px;align-items:stretch}
+.fl-placa{background:#fff;color:#111;border:2.5px solid #111;border-radius:7px;padding:5px 14px 3px;text-align:center;box-shadow:0 6px 18px rgba(0,0,0,.3)}
+.fl-placa b{display:block;font-size:1.55rem;font-weight:900;letter-spacing:.06em;line-height:1}
+.fl-placa small{display:block;font-size:.55rem;letter-spacing:.2em;font-weight:700;margin-top:2px}
+.fl-int{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(6px);border-radius:7px;padding:6px 14px;display:flex;flex-direction:column;justify-content:center}
+.fl-int small{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;opacity:.8;font-weight:600}
+.fl-int b{font-size:1.3rem;font-weight:800;letter-spacing:.04em}
+.fl-franja{height:6px;background:var(--a)}
+
+.fl-main{max-width:720px;margin:0 auto;padding:18px 16px 40px}
+.fl-estado{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--bd);border-left:5px solid var(--ok);border-radius:14px;padding:14px 16px;box-shadow:0 2px 10px rgba(14,26,43,.05)}
+.fl-estado.ojo{border-left-color:var(--ojo)}.fl-estado.mal{border-left-color:var(--mal)}
+.fl-estado-ic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;flex:none;background:#E5F5EE;color:var(--ok)}
+.fl-estado.ojo .fl-estado-ic{background:#FFF3DC;color:var(--ojo)}.fl-estado.mal .fl-estado-ic{background:#FDE7E5;color:var(--mal)}
+.fl-estado-ic .fl-i{width:22px;height:22px}
+.fl-estado b{font-size:1.02rem;font-weight:800}
+.fl-estado p{margin:2px 0 0;font-size:.82rem;color:var(--mu);line-height:1.35}
+.fl-cont{margin-left:auto;display:flex;gap:4px}
+.fl-cont i{font-style:normal;font-weight:800;font-size:.78rem;min-width:24px;height:24px;border-radius:7px;display:grid;place-items:center;color:#fff}
+.fl-cont .ok{background:var(--ok)}.fl-cont .ojo{background:var(--ojo)}.fl-cont .mal{background:var(--mal)}
+
+.fl-datos{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--bd);border:1px solid var(--bd);border-radius:14px;overflow:hidden;margin-top:12px}
+.fl-datos div{background:#fff;padding:11px 14px}
+.fl-datos small{display:block;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mu);font-weight:600}
+.fl-datos b{display:block;font-size:.92rem;font-weight:700;margin-top:2px}
+
+.fl-h{display:flex;align-items:center;gap:8px;font-size:1.05rem;font-weight:800;margin:26px 2px 12px}
+.fl-h span{background:var(--c);color:#fff;font-size:.72rem;border-radius:999px;padding:2px 8px}
+.fl-docs{display:grid;gap:10px}
+.fl-doc{display:flex;gap:14px;align-items:center;width:100%;text-align:left;background:#fff;border:1px solid var(--bd);border-radius:14px;padding:10px;cursor:pointer;font:inherit;color:inherit;transition:transform .15s,box-shadow .15s}
+.fl-doc:active{transform:scale(.985)}
+.fl-doc:hover{box-shadow:0 6px 20px rgba(14,26,43,.08)}
+.fl-mini{width:64px;height:82px;flex:none;border-radius:8px;background:#eef1f6 center top/cover no-repeat;border:1px solid var(--bd)}
+.fl-doc-txt{display:flex;flex-direction:column;gap:3px;min-width:0}
+.fl-doc-txt b{font-size:.95rem;font-weight:800;line-height:1.2}
+.fl-doc-txt small{font-size:.76rem;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fl-vence{display:inline-flex;align-items:center;gap:5px;font-size:.76rem;font-weight:700;margin-top:3px;color:var(--ok)}
+.fl-vence .fl-i{width:14px;height:14px}
+.fl-vence em{font-style:normal;font-weight:500;color:var(--mu)}
+.fl-vence.ojo{color:var(--ojo)}.fl-vence.mal{color:var(--mal)}
+
+.fl-runt{display:flex;align-items:center;gap:12px;margin-top:18px;padding:14px 16px;border-radius:14px;background:#E9EFFC;color:var(--tx);text-decoration:none}
+.fl-runt>.fl-i:first-child{color:var(--c);width:22px;height:22px}
+.fl-runt b{display:block;font-size:.9rem}
+.fl-runt small{display:block;font-size:.76rem;color:var(--mu);line-height:1.35}
+.fl-runt>.fl-i:last-child{margin-left:auto;color:var(--mu)}
+.fl-pie{margin-top:26px;text-align:center;color:var(--mu);font-size:.8rem;line-height:1.45}
+.fl-pie p{margin:0 0 8px;display:flex;align-items:center;justify-content:center;gap:6px}
+.fl-pie p:nth-child(2){display:block}
+.fl-pie small{display:block;margin-top:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:.66rem}
+
+.fl-visor{position:fixed;inset:0;z-index:50;background:rgba(8,14,26,.6);display:flex;align-items:flex-end;justify-content:center;opacity:0;transition:opacity .2s}
+.fl-visor.on{opacity:1}
+.fl-visor-caja{background:#fff;width:100%;max-width:560px;max-height:94svh;border-radius:20px 20px 0 0;display:flex;flex-direction:column;transform:translateY(30px);transition:transform .25s}
+.fl-visor.on .fl-visor-caja{transform:none}
+.fl-visor header{display:flex;align-items:flex-start;gap:12px;padding:16px 16px 12px;border-bottom:1px solid var(--bd)}
+.fl-visor header b{display:block;font-size:1rem;font-weight:800}
+.fl-visor header small{display:block;font-size:.78rem;color:var(--mu);margin-top:2px}
+.fl-visor header button{margin-left:auto;border:0;background:var(--bg);width:36px;height:36px;border-radius:50%;display:grid;place-items:center;cursor:pointer;color:var(--tx)}
+.fl-visor-img{overflow:auto;padding:14px;background:var(--bg);flex:1}
+.fl-visor-img img{display:block;width:100%;border-radius:8px;box-shadow:0 4px 18px rgba(14,26,43,.12)}
+.fl-visor-acc{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px 16px calc(14px + env(safe-area-inset-bottom))}
+.fl-btn{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--c);color:#fff;text-decoration:none;font-weight:800;font-size:.92rem;border-radius:12px;padding:14px}
+.fl-btn.sec{background:var(--bg);color:var(--tx);border:1px solid var(--bd)}
+@media (min-width:640px){.fl-hero{min-height:380px}.fl-hero h1{font-size:5rem}.fl-datos{grid-template-columns:repeat(3,1fr)}.fl-visor{align-items:center}.fl-visor-caja{border-radius:20px}}
+@media (max-width:370px){.fl-hero h1{font-size:3.4rem}.fl-marca small{display:none}}
+.fl-visor[hidden]{display:none}
+.fl-estado>div:nth-child(2){flex:1;min-width:0}
+.fl-cont{flex-direction:column;gap:3px}
+.fl-cont i{min-width:22px;height:20px;font-size:.7rem;border-radius:6px}

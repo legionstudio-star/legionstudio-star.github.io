@@ -49,6 +49,12 @@
     return window.LEGION_LEGIONARIO(N, raiz);
   }
 
+  // Carpeta Vial Flotas: tarjeta de un bus de empresa
+  if (N.tipo === "flota_bus") {
+    await new Promise((ok, mal) => { const s = document.createElement("script"); s.src = "/app/flota.js?v=1"; s.onload = ok; s.onerror = mal; document.head.appendChild(s); });
+    return window.LEGION_FLOTA(N, raiz);
+  }
+
   // Tarjeta de vehículo (Carpeta Vial): página aparte
   if (N.tipo === "vehiculo" || N.tipo === "vial_entrada") {
     await new Promise((ok, mal) => { const s = document.createElement("script"); s.src = "/app/vehiculo.js?v=6"; s.onload = ok; s.onerror = mal; document.head.appendChild(s); });
