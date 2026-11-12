@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Surtidora de Aves La 22 · Pide a domicilio</title>
+<meta name="description" content="Pollo asado, broaster y frito a domicilio. Pide en un minuto y sigue tu moto en vivo.">
+<meta name="theme-color" content="#e3141b">
+<link rel="icon" href="img/icono.png">
+<link rel="preload" href="fonts/tanker-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="cliente.css?v=3">
+<link rel="stylesheet" href="mapa.css?v=2">
+</head>
+<body>
+
+<div class="franja">Domicilio <b>GRATIS</b> desde $60.000 · Abierto hoy hasta las 10:00 p. m.</div>
+
+<header class="cab">
+  <div class="cab-in">
+    <a class="marca" href="#">
+      <img src="img/logo.png" alt="Surtidora de Aves La 22">
+      <div><span class="t">La 22</span><small>La Esquina del Sabor</small></div>
+    </a>
+    <button class="dir-chip" id="dirChip">
+      <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+      <span>Entregar en: <b id="dirTxt">elige tu dirección</b></span>
+    </button>
+    <div class="cab-der">
+      <a class="btn-seguir" id="btnSeguir" href="#"><i></i><span>Seguir mi pedido</span></a>
+      <button class="btn-carro" id="btnCarro" aria-label="Carrito">
+        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M7 18a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM5.2 4l.9 2H21l-3.6 7H8.1l-.9 1.6c-.1.2 0 .4.2.4H19v2H7.4a2 2 0 0 1-1.7-3l1.2-2.2L3.2 4H1V2h3.2l1 2z"/></svg>
+        <span>Mi pedido</span><em id="nCarro">0</em>
+      </button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="slider" id="slider">
+    <div class="slide on">
+      <div class="slide-txt">
+        <span class="eti">El favorito del barrio</span>
+        <h1 class="t">El asado más <span>jugoso</span> del sur</h1>
+        <p>Combo 1: pollo asado entero con papa salada, plátano, arepa, salsas y gaseosa 1.5 L.</p>
+        <div class="slide-cta">
+          <button class="btn-a" data-abrir="1">Pedir ahora →</button>
+          <div class="precio-burst"><small>SOLO</small>$38.000</div>
+        </div>
+      </div>
+      <div class="slide-img"><img src="img/hero_asado.webp" alt="Pollo asado"></div>
+    </div>
+    <div class="slide s2">
+      <div class="slide-txt">
+        <span class="eti">Crujiente de verdad</span>
+        <h2 class="t">Broaster <span>dorado</span> y crocante</h2>
+        <p>Combo 3: pollo broaster entero con papa francesa, plátano, arepa y gaseosa 1.5 L.</p>
+        <div class="slide-cta">
+          <button class="btn-a" data-abrir="3">Lo quiero →</button>
+          <div class="precio-burst"><small>SOLO</small>$40.000</div>
+        </div>
+      </div>
+      <div class="slide-img"><img src="img/hero_broaster.webp" alt="Pollo broaster"></div>
+    </div>
+    <div class="slide s3">
+      <div class="slide-txt">
+        <span class="eti">Nuevo</span>
+        <h2 class="t">¿Prefieres <span>WhatsApp</span>?</h2>
+        <p>Nuestro asistente toma tu pedido por chat, a cualquier hora, y te manda el enlace para seguir tu moto.</p>
+        <div class="slide-cta"><a class="btn-a" href="whatsapp.html">Pedir por chat →</a></div>
+      </div>
+      <div class="slide-img"><img src="img/hero_mesa.webp" alt="Pedido familiar"></div>
+    </div>
+    <div class="dots" id="dots"></div>
+  </div>
+</section>
+
+<section class="benef">
+  <div class="bn"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg><div><b>Pides en 1 minuto</b><span>Sin llamadas ni esperas en línea</span></div></div>
+  <div class="bn"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><div><b>Sigue tu moto en vivo</b><span>Ves en el mapa cuánto le falta</span></div></div>
+  <div class="bn"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M2 6h20v12H2V6zm2 2v8h16V8H4zm8 1.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5z"/></svg><div><b>Paga como quieras</b><span>Efectivo, Nequi o datáfono</span></div></div>
+</section>
+
+<div class="cuerpo">
+  <main>
+    <nav class="cats" id="cats"></nav>
+    <section class="sec" id="sec-favs">
+      <h2 class="t">Los más pedidos <small>lo que más sale esta semana</small></h2>
+      <div class="favs" id="favs"></div>
+    </section>
+    <div id="menu"></div>
+  </main>
+
+  <aside class="carro" id="carro">
+    <div class="carro-cab"><span class="t">Mi pedido</span><button id="cerrarCarro" aria-label="Cerrar">×</button></div>
+    <div class="carro-items" id="carroItems"></div>
+    <div class="upsell" id="upsell"></div>
+    <div class="totales">
+      <div class="fila"><span>Subtotal</span><span id="tSub">$0</span></div>
+      <div class="fila"><span>Domicilio</span><span id="tEnv">$0</span></div>
+      <div class="barra-gratis"><i id="barGratis" style="width:0"></i></div>
+      <div class="msg-gratis" id="msgGratis"></div>
+      <div class="fila tot"><span>Total</span><span id="tTot">$0</span></div>
+      <button class="btn-pagar" id="btnPagar" disabled><span>Ir a pagar</span><span id="tBtn">$0</span></button>
+    </div>
+  </aside>
+</div>
+
+<button class="barra-movil" id="barraMovil"><span><em id="nMovil">0</em>Ver mi pedido</span><span id="tMovil">$0</span></button>
+
+<!-- modal producto -->
+<div class="velo" id="velo"></div>
+<div class="modal" id="modal" role="dialog" aria-modal="true">
+  <button class="m-x" id="mX" aria-label="Cerrar">×</button>
+  <div class="m-img"><img id="mImg" alt=""></div>
+  <div class="m-b">
+    <h3 class="t" id="mNom"></h3>
+    <p class="desc" id="mDesc"></p>
+    <div class="opc" id="mGas" hidden>
+      <b>Elige tu gaseosa 1.5 L</b>
+      <label><input type="radio" name="gas" value="Postobón" checked> Postobón <span>incluida</span></label>
+      <label><input type="radio" name="gas" value="Coca-Cola"> Coca-Cola <span>+$2.000</span></label>
+    </div>
+    <textarea id="mNota" placeholder="¿Alguna indicación? Ej: sin ají, presas de pierna…"></textarea>
+    <div class="m-pie">
+      <div class="cant"><button id="mMenos">−</button><span id="mQ">1</span><button id="mMas">+</button></div>
+      <button class="btn-agregar" id="mAgregar"><span>Agregar</span><span id="mTot">$0</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- checkout -->
+<section class="chk" id="chk" aria-hidden="true">
+  <div class="chk-in">
+    <div class="chk-cab"><button id="chkVolver" aria-label="Volver">←</button><span class="t">Finalizar pedido</span></div>
+    <div>
+      <div class="caja">
+        <h4 class="t"><i>1</i>¿Dónde te lo llevamos?</h4>
+        <div id="mapaChk"></div>
+        <div class="mapa-ayuda"><span>Mueve el pin hasta la puerta de tu casa</span><button id="miUbic">◎ Usar mi ubicación</button></div>
+        <div class="campo" style="margin-top:12px"><label>Dirección</label><input id="fDir" placeholder="Ej: Calle 90 Sur # 14-20" autocomplete="street-address"></div>
+        <div class="campo"><label>Barrio, torre, apto o referencia</label><input id="fRef" placeholder="Ej: Torre 3 apto 502, portería azul"></div>
+      </div>
+      <div class="caja">
+        <h4 class="t"><i>2</i>Tus datos</h4>
+        <div class="dos">
+          <div class="campo"><label>Nombre</label><input id="fNom" placeholder="¿A nombre de quién?" autocomplete="name"></div>
+          <div class="campo"><label>Celular</label><input id="fTel" placeholder="300 000 0000" inputmode="tel" autocomplete="tel"></div>
+        </div>
+      </div>
+      <div class="caja">
+        <h4 class="t"><i>3</i>¿Cómo vas a pagar?</h4>
+        <div class="pagos">
+          <button class="pago on" data-pago="efectivo">Efectivo<small>al recibir</small></button>
+          <button class="pago" data-pago="nequi">Nequi<small>transferencia</small></button>
+          <button class="pago" data-pago="tarjeta">Datáfono<small>al recibir</small></button>
+        </div>
+        <div class="campo" id="campoCambio" style="margin-top:12px"><label>¿Con cuánto pagas? (para llevarte el cambio)</label><input id="fCambio" placeholder="Ej: 50.000" inputmode="numeric"></div>
+      </div>
+    </div>
+    <div>
+      <div class="caja resumen">
+        <h4 class="t">Tu pedido</h4>
+        <div id="chkItems"></div>
+        <div class="eta-chip"><span>Llega en</span><b>35–45 min</b></div>
+        <div class="fila"><span>Subtotal</span><span id="cSub"></span></div>
+        <div class="fila"><span>Domicilio</span><span id="cEnv"></span></div>
+        <div class="fila tot"><span>Total</span><span id="cTot"></span></div>
+        <button class="btn-pagar" id="btnConfirmar"><span>Confirmar pedido</span><span id="cBtn"></span></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="pie">
+  <div class="pie-in">
+    <div><span class="t">Surtidora de Aves La 22</span><p style="margin-top:8px">La Esquina del Sabor. Pollo asado, broaster y frito, a la carta, arroces y más, directo a tu casa.</p></div>
+    <div><h5>Horario</h5><p>Lunes a domingo<br>10:00 a. m. – 10:00 p. m.</p></div>
+    <div><h5>Pide también</h5><p><a href="whatsapp.html">Por WhatsApp con el asistente</a><br><a href="sistema.html">Ver el sistema completo</a></p></div>
+  </div>
+  <div class="pie-leg"><span>© 2026 Surtidora de Aves La 22 · Demo</span><span>Tecnología <b>LEGION Studio</b></span></div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="app.js?v=1"></script>
+<script src="cliente.js?v=1"></script>
+</body>
+</html>

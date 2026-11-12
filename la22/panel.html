@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Central de domicilios · La 22</title>
+<meta name="theme-color" content="#120c0a">
+<link rel="icon" href="img/icono.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="fonts/fuentes.css">
+<link rel="stylesheet" href="mapa.css?v=2">
+<style>
+:root{--bg:#120c0a;--bg2:#1c1411;--bg3:#271c18;--tx:#f6efe8;--mu:#a99b91;--li:rgba(255,255,255,.08);--rojo:#e3141b;--amar:#ffc20e;--ok:#22c55e;--azul:#3b82f6;--f-t:'Tanker',Impact,sans-serif;--f-b:'General Sans',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:var(--f-b);font-size:14px;-webkit-font-smoothing:antialiased;height:100vh;overflow:hidden}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+.t{font-family:var(--f-t);font-weight:400;text-transform:uppercase;letter-spacing:.01em;line-height:.95}
+.pin{position:fixed;inset:0;z-index:99;display:grid;place-items:center;background:radial-gradient(60% 60% at 50% 40%,#3a1210,var(--bg))}
+.pin form{background:var(--bg2);padding:34px;border-radius:24px;text-align:center;width:min(360px,92vw);border:1px solid var(--li)}
+.pin img{width:90px;margin:0 auto 14px}
+.pin h2{font-size:34px}
+.pin p{color:var(--mu);margin:6px 0 18px}
+.pin input{width:100%;padding:14px;border-radius:14px;border:1px solid var(--li);background:var(--bg);text-align:center;font-size:24px;letter-spacing:.5em;outline:none}
+.pin button{width:100%;margin-top:12px;padding:14px;border-radius:14px;background:var(--rojo);font-weight:700}
+.pin .err{color:#ff6b6b;margin-top:10px;min-height:18px}
+.app{display:grid;grid-template-rows:auto 1fr;height:100vh}
+.top{display:flex;align-items:center;gap:18px;padding:12px 18px;border-bottom:1px solid var(--li);background:var(--bg2)}
+.top img{width:40px}
+.top .t{font-size:24px}
+.top .t small{display:block;font-family:var(--f-b);font-size:11px;color:var(--mu);letter-spacing:.1em;font-weight:600}
+.kpis{display:flex;gap:10px;margin-left:16px}
+.kpi{background:var(--bg3);border-radius:14px;padding:8px 14px;min-width:118px}
+.kpi small{display:block;font-size:10.5px;color:var(--mu);letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+.kpi b{font-family:var(--f-t);font-weight:400;font-size:24px}
+.acc{margin-left:auto;display:flex;gap:8px;flex:none}
+.acc a{color:inherit;text-decoration:none}
+.acc button{white-space:nowrap;padding:10px 14px;border-radius:12px;background:var(--bg3);font-weight:600;font-size:13px;border:1px solid var(--li)}
+.acc button.pri{background:var(--rojo);border-color:var(--rojo)}
+.vivo{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ok);font-weight:700}
+.vivo::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok);animation:l 1.2s infinite}
+@keyframes l{50%{opacity:.25}}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 420px;min-height:0}
+.tablero{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding:14px;overflow:hidden;min-height:0}
+.col{background:var(--bg2);border-radius:18px;display:flex;flex-direction:column;min-height:0;border:1px solid var(--li)}
+.col-cab{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--li)}
+.col-cab .t{font-size:20px}
+.col-cab em{font-style:normal;min-width:26px;height:26px;border-radius:99px;background:var(--bg3);display:grid;place-items:center;font-weight:700;font-size:13px;padding:0 8px}
+.col[data-e=nuevo] .col-cab em{background:var(--rojo)}
+.lista{overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:10px;flex:1}
+.ped{background:var(--bg3);border-radius:14px;padding:12px;border:1px solid var(--li);animation:ent .4s}
+@keyframes ent{from{transform:translateY(-8px);opacity:0}}
+.ped.urge{border-color:rgba(227,20,27,.6)}
+.ped-cab{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.ped-cab b{font-size:16px}
+.canal{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 7px;border-radius:99px;background:rgba(255,255,255,.08)}
+.canal.whatsapp{background:rgba(34,197,94,.18);color:#4ade80}
+.canal.llamada{background:rgba(255,194,14,.16);color:var(--amar)}
+.canal.web{background:rgba(59,130,246,.18);color:#93c5fd}
+.min{margin-left:auto;font-size:12px;font-weight:700;color:var(--mu)}
+.min.alerta{color:#ff6b6b}
+.ped p{font-size:12.5px;color:var(--mu);line-height:1.35}
+.ped .it{color:var(--tx);font-size:13px;margin:6px 0}
+.ped-pie{display:flex;align-items:center;gap:8px;margin-top:8px}
+.ped-pie strong{font-size:14px}
+.ped-pie small{color:var(--mu);font-size:11.5px;text-transform:capitalize}
+.ped-pie button{margin-left:auto;padding:8px 12px;border-radius:10px;background:var(--rojo);font-weight:700;font-size:12.5px}
+.ped-pie button.ok{background:var(--ok);color:#06240f}
+.ped select{width:100%;margin-top:8px;padding:8px;border-radius:10px;background:var(--bg);border:1px solid var(--li)}
+.ped .domi-t{font-size:12px;color:#93c5fd;margin-top:4px}
+.der{display:grid;grid-template-rows:1fr auto;border-left:1px solid var(--li);min-height:0}
+#mapa{min-height:0}
+.domis{padding:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px;background:var(--bg2);border-top:1px solid var(--li)}
+.dm{display:flex;align-items:center;gap:10px;background:var(--bg3);border-radius:12px;padding:9px 10px}
+.dm i{width:34px;height:34px;border-radius:50%;background:var(--azul);display:grid;place-items:center;font-style:normal;font-weight:700;font-size:12px;flex:none}
+.dm.libre i{background:#3f3a37}
+.dm b{display:block;font-size:13px}
+.dm small{font-size:11.5px;color:var(--mu)}
+.vacio{color:var(--mu);font-size:12.5px;text-align:center;padding:20px 8px}
+#toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,30px);z-index:99;background:#fff;color:#111;padding:12px 18px;border-radius:12px;font-weight:600;opacity:0;transition:.3s;pointer-events:none}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+#toast.err{background:var(--rojo);color:#fff}
+@media (max-width:1560px){.kpis .kpi:nth-child(n+4){display:none}.vivo{display:none}}
+@media (max-width:1200px){.kpis .kpi:nth-child(n+3){display:none}.main{grid-template-columns:minmax(0,1fr) 340px}}
+@media (max-width:900px){body{overflow:auto;height:auto}.app{height:auto;grid-template-columns:minmax(0,1fr)}.main{grid-template-columns:minmax(0,1fr)}.tablero{grid-template-columns:1fr 1fr;overflow:visible}.der{height:520px}.kpis{display:none}.col{max-height:70vh}}
+@media (max-width:700px){.top{flex-wrap:wrap;gap:10px}.acc{margin-left:0;width:100%;overflow-x:auto;scrollbar-width:none}.acc button{white-space:nowrap}.tablero{grid-template-columns:minmax(0,1fr)}.col{max-height:none}}
+</style>
+</head>
+<body>
+<div class="pin" id="pin"><form id="pinF"><img src="img/logo.png" alt=""><h2 class="t">Central de domicilios</h2><p>Ingresa el PIN del personal</p><input id="pinI" type="password" inputmode="numeric" maxlength="6" autocomplete="off" autofocus><button>Entrar</button><div class="err" id="pinE"></div></form></div>
+
+<div class="app">
+  <header class="top">
+    <img src="img/logo.png" alt="">
+    <div class="t">La 22<small>CENTRAL DE DOMICILIOS</small></div>
+    <span class="vivo">En vivo</span>
+    <div class="kpis">
+      <div class="kpi"><small>Pedidos hoy</small><b id="kP">0</b></div>
+      <div class="kpi"><small>Ventas hoy</small><b id="kV">$0</b></div>
+      <div class="kpi"><small>Ticket promedio</small><b id="kT">$0</b></div>
+      <div class="kpi"><small>Entrega promedio</small><b id="kE">—</b></div>
+      <div class="kpi"><small>Por canal</small><b id="kC" style="font-size:15px;font-family:var(--f-b);font-weight:700">—</b></div>
+    </div>
+    <div class="acc">
+      <button id="bLlamada">☎ Simular llamada</button>
+      <a href="whatsapp.html" target="_blank"><button>💬 Pedir por WhatsApp</button></a>
+      <a href="index.html" target="_blank"><button class="pri">Abrir tienda web</button></a>
+      <button id="bReset" title="Reiniciar demo">↺</button>
+    </div>
+  </header>
+  <div class="main">
+    <section class="tablero">
+      <div class="col" data-e="nuevo"><div class="col-cab"><span class="t">Nuevos</span><em>0</em></div><div class="lista"></div></div>
+      <div class="col" data-e="cocina"><div class="col-cab"><span class="t">En cocina</span><em>0</em></div><div class="lista"></div></div>
+      <div class="col" data-e="listo"><div class="col-cab"><span class="t">Listos</span><em>0</em></div><div class="lista"></div></div>
+      <div class="col" data-e="camino"><div class="col-cab"><span class="t">En camino</span><em>0</em></div><div class="lista"></div></div>
+    </section>
+    <aside class="der"><div id="mapa"></div><div class="domis" id="domis"></div></aside>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="app.js?v=1"></script>
+<script>
+(async function () {
+  let PIN = sessionStorage.getItem('dom22_pin') || '';
+  let datos = null, desfase = 0, conocidos = null, mapa, capas = {}, motos = {};
+  const ahora = () => new Date(Date.now() + desfase);
+
+  async function entrar(p) {
+    try { const d = await rpc('dom22_panel', { pin: p }); PIN = p; sessionStorage.setItem('dom22_pin', p); $('#pin').remove(); iniciar(d); }
+    catch { $('#pinE').textContent = 'PIN incorrecto'; $('#pinI').value = ''; }
+  }
+  $('#pinF').onsubmit = (e) => { e.preventDefault(); entrar($('#pinI').value); };
+  if (PIN) entrar(PIN);
+
+  function iniciar(d) {
+    mapa = L.map('mapa', { zoomControl: false, attributionControl: false }).setView([TIENDA.lat, TIENDA.lng], 15);
+    mapa.getContainer().classList.add('mapa-osc'); L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap' }).addTo(mapa);
+    L.marker([TIENDA.lat, TIENDA.lng], { icon: iconoPin('tienda', ''), zIndexOffset: 500 }).addTo(mapa).bindTooltip('La 22');
+    recibir(d); setInterval(cargar, 3000); setInterval(animar, 500);
+  }
+  async function cargar() { try { recibir(await rpc('dom22_panel', { pin: PIN })); } catch (e) { console.log(e); } }
+
+  function recibir(d) {
+    desfase = new Date(d.ahora) - new Date(); datos = d;
+    const ids = new Set(d.pedidos.map((p) => p.id));
+    if (conocidos) { const nuevos = d.pedidos.filter((p) => !conocidos.has(p.id) && p.estado === 'nuevo'); if (nuevos.length) { beep(); toast(`Nuevo pedido #${nuevos[0].codigo} por ${CANAL[nuevos[0].canal]}`); } }
+    conocidos = ids;
+    // demo: si la moto llegó y nadie usa la app del domiciliario, se marca entregado solo
+    d.pedidos.filter((p) => p.estado === 'camino' && minDesde(p.camino_at, ahora()) > DEMO_MIN_CAMINO + .3 && (!p.gps_at || minDesde(p.gps_at, ahora()) > 1))
+      .forEach((p) => mover(p.id, 'entregado'));
+    pintar();
+  }
+
+  const nombreDomi = (id) => (datos.domis.find((x) => x.id === id) || {}).nombre || '';
+  function libres() { const ocup = new Set(datos.pedidos.filter((p) => p.estado === 'camino').map((p) => p.domi_id)); return datos.domis.filter((x) => !ocup.has(x.id)); }
+  function cercano(p) { const L0 = libres(); return L0.length ? L0[0].id : (datos.domis[0] || {}).id; }
+
+  function pintar() {
+    const ped = datos.pedidos;
+    ['nuevo', 'cocina', 'listo', 'camino'].forEach((e) => {
+      const col = $(`.col[data-e=${e}]`), lst = ped.filter((p) => p.estado === e).sort((a, b) => a.id - b.id);
+      $('em', col).textContent = lst.length;
+      $('.lista', col).innerHTML = lst.length ? lst.map(tarjeta).join('') : '<div class="vacio">Sin pedidos</div>';
+    });
+    const hoy = ped.filter((p) => p.estado !== 'cancelado'), ventas = hoy.reduce((s, p) => s + p.total, 0);
+    const ent = ped.filter((p) => p.entregado_at), prom = ent.length ? ent.reduce((s, p) => s + (new Date(p.entregado_at) - new Date(p.creado)) / 60000, 0) / ent.length : 0;
+    $('#kP').textContent = hoy.length; $('#kV').textContent = pesos(ventas); $('#kT').textContent = pesos(hoy.length ? ventas / hoy.length : 0); $('#kE').textContent = ent.length ? Math.round(prom) + ' min' : '—';
+    const cn = (k) => hoy.filter((p) => p.canal === k).length;
+    $('#kC').textContent = `Web ${cn('web')} · WA ${cn('whatsapp')} · Tel ${cn('llamada')}`;
+    const L0 = new Set(libres().map((x) => x.id));
+    $('#domis').innerHTML = datos.domis.map((x) => { const p = ped.find((q) => q.estado === 'camino' && q.domi_id === x.id); return `<div class="dm ${L0.has(x.id) ? 'libre' : ''}"><i>${x.nombre.split(' ').map((s) => s[0]).join('')}</i><div><b>${esc(x.nombre)}</b><small>${p ? 'Llevando #' + p.codigo : 'Disponible en tienda'}</small></div></div>`; }).join('');
+    // marcadores de casas
+    const activos = new Set(ped.filter((p) => ['nuevo', 'cocina', 'listo', 'camino'].includes(p.estado)).map((p) => p.id));
+    Object.keys(capas).forEach((id) => { if (!activos.has(+id)) { mapa.removeLayer(capas[id]); delete capas[id]; } });
+    ped.filter((p) => activos.has(p.id) && p.lat).forEach((p) => { if (!capas[p.id]) capas[p.id] = L.marker([p.lat, p.lng], { icon: iconoPin(p.estado === 'camino' ? 'casa' : 'otro', '⌂') }).addTo(mapa).bindTooltip(`#${p.codigo} · ${p.cliente || ''}`); else capas[p.id].setIcon(iconoPin(p.estado === 'camino' ? 'casa' : 'otro', '⌂')); });
+  }
+
+  function tarjeta(p) {
+    const m = Math.floor(minDesde(p.creado, ahora())), items = (p.items || []).map((l) => `${l.q}× ${l.n}`).join(', ');
+    let acc = '';
+    if (p.estado === 'nuevo') acc = `<button data-mov="${p.id}" data-e="cocina">Aceptar → cocina</button>`;
+    if (p.estado === 'cocina') acc = `<button data-mov="${p.id}" data-e="listo">Marcar listo</button>`;
+    if (p.estado === 'camino') acc = `<button class="ok" data-mov="${p.id}" data-e="entregado">Entregado</button>`;
+    const sel = p.estado === 'listo' ? `<select data-domi="${p.id}">${datos.domis.map((x) => `<option value="${x.id}" ${x.id === cercano(p) ? 'selected' : ''}>${esc(x.nombre)} · ${esc(x.placa)}</option>`).join('')}</select>` : '';
+    if (p.estado === 'listo') acc = `<button data-desp="${p.id}">Despachar</button>`;
+    return `<div class="ped ${m > 35 && p.estado !== 'camino' ? 'urge' : ''}">
+      <div class="ped-cab"><b>#${esc(p.codigo)}</b><span class="canal ${p.canal}">${CANAL[p.canal]}</span><span class="min ${m > 35 ? 'alerta' : ''}">${m} min</span></div>
+      <p><b style="color:var(--tx)">${esc(p.cliente || '')}</b> · ${esc(p.tel || '')}</p>
+      <p>${esc(p.direccion || '')}${p.referencia ? ' · ' + esc(p.referencia) : ''}</p>
+      <div class="it">${esc(items)}</div>${p.nota ? `<p>📝 ${esc(p.nota)}</p>` : ''}
+      ${p.estado === 'camino' && p.domi_id ? `<div class="domi-t">🛵 ${esc(nombreDomi(p.domi_id))}${p.gps_at && minDesde(p.gps_at, ahora()) < 1 ? ' · GPS en vivo' : ''}</div>` : ''}
+      ${sel}
+      <div class="ped-pie"><strong>${pesos(p.total)}</strong><small>${esc(p.pago)}</small>${acc}</div></div>`;
+  }
+
+  async function mover(id, e, domi) {
+    try { await rpc('dom22_mover', { pin: PIN, pid: id, est: e, domi: domi || null }); } catch (err) { toast(err.message, 'err'); }
+  }
+  document.addEventListener('click', async (ev) => {
+    const b = ev.target.closest('[data-mov]');
+    if (b) { b.disabled = true; await mover(+b.dataset.mov, b.dataset.e); return cargar(); }
+    const d = ev.target.closest('[data-desp]');
+    if (d) { const id = +d.dataset.desp, s = $(`select[data-domi="${id}"]`); d.disabled = true; await mover(id, 'camino', +s.value); toast('Despachado con ' + nombreDomi(+s.value)); return cargar(); }
+  });
+
+  function animar() {
+    if (!datos) return;
+    const enCamino = datos.pedidos.filter((p) => p.estado === 'camino');
+    const vistos = new Set();
+    enCamino.forEach((p) => {
+      const dm = datos.domis.find((x) => x.id === p.domi_id) || {};
+      const pos = posMoto({ ...p, dlat: dm.lat, dlng: dm.lng, gps_at: dm.gps_at }, ahora()); if (!pos) return;
+      vistos.add(p.id);
+      if (!motos[p.id]) motos[p.id] = L.marker([pos.lat, pos.lng], { icon: iconoMoto(), zIndexOffset: 1000 }).addTo(mapa).bindTooltip(nombreDomi(p.domi_id));
+      else motos[p.id].setLatLng([pos.lat, pos.lng]);
+    });
+    Object.keys(motos).forEach((id) => { if (!vistos.has(+id)) { mapa.removeLayer(motos[id]); delete motos[id]; } });
+    $$('.ped .min').forEach(() => {});
+  }
+
+  // llamada simulada: la operadora registra un pedido telefónico
+  const NOMBRES = ['Doña Marta', 'Carlos R.', 'Yeimy P.', 'Don Óscar', 'Laura G.', 'Jhonatan M.', 'Paola C.', 'Andrés F.'];
+  const CALLES = ['Cl 88 Sur # 13-21', 'Cra 14 # 90-12 Sur', 'Dg 91 Sur # 14B-40', 'Tv 15 # 87-30 Sur', 'Cl 92 Sur # 12-08', 'Cra 13 # 85-44 Sur'];
+  $('#bLlamada').onclick = async () => {
+    const m = await cargarMenu(), todo = m.flatMap((c) => c.items), r = (a) => a[Math.floor(Math.random() * a.length)];
+    const base = r(todo.filter((i) => [1, 2, 3, 7, 8, 35, 36, 45, 46, 20, 21].includes(i.id)));
+    const items = [{ id: base.id, n: base.n, p: base.p, q: 1 }]; if (Math.random() < .5) { const b = r(todo.filter((i) => [57, 61, 48, 56].includes(i.id))); items.push({ id: b.id, n: b.n, p: b.p, q: 1 }); }
+    const ang = Math.random() * 6.28, d = .004 + Math.random() * .007;
+    try { await rpc('dom22_pedir', { p: { canal: 'llamada', cliente: r(NOMBRES), tel: '3' + Math.floor(100000000 + Math.random() * 899999999), direccion: r(CALLES), lat: TIENDA.lat + Math.sin(ang) * d, lng: TIENDA.lng + Math.cos(ang) * d, items, pago: r(['efectivo', 'nequi', 'tarjeta']) } }); cargar(); }
+    catch (e) { toast(e.message, 'err'); }
+  };
+  $('#bReset').onclick = async () => { await rpc('dom22_demo_reset', { pin: PIN }); conocidos = null; Object.values(capas).forEach((c) => mapa.removeLayer(c)); capas = {}; toast('Demo reiniciado'); cargar(); };
+})();
+</script>
+</body>
+</html>

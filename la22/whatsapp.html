@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pide por WhatsApp · La 22</title>
+<meta name="theme-color" content="#0b141a">
+<link rel="icon" href="img/icono.png">
+<link rel="stylesheet" href="fonts/fuentes.css">
+<style>
+:root{--f-t:'Tanker',Impact,sans-serif;--f-b:'General Sans',system-ui,sans-serif;--wa:#00a884;--rojo:#e3141b}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--f-b);background:radial-gradient(70% 80% at 30% 30%,#2a0d0c,#110907);color:#f6efe8;min-height:100vh;display:grid;grid-template-columns:1fr auto;align-items:center;gap:60px;padding:30px clamp(20px,6vw,90px);-webkit-font-smoothing:antialiased}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+.t{font-family:var(--f-t);font-weight:400;text-transform:uppercase;line-height:.92}
+.lado img{width:80px;margin-bottom:18px}
+.lado h1{font-size:clamp(46px,6vw,88px)}
+.lado h1 span{color:#25d366}
+.lado p{color:#c9bcb2;font-size:17px;max-width:470px;margin:16px 0 24px}
+.lado ul{list-style:none;display:grid;gap:12px;margin-bottom:28px}
+.lado li{display:flex;gap:12px;align-items:center;font-size:15px}
+.lado li b{width:30px;height:30px;border-radius:50%;background:rgba(37,211,102,.16);color:#25d366;display:grid;place-items:center;flex:none}
+.lado .bts{display:flex;gap:10px;flex-wrap:wrap}
+.lado .bts a{padding:13px 18px;border-radius:99px;background:#fff;color:#111;font-weight:700;text-decoration:none;font-size:14px}
+.lado .bts a.s{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.25)}
+.tel{width:390px;height:min(800px,92vh);border-radius:46px;background:#0b141a;border:10px solid #000;box-shadow:0 40px 100px rgba(0,0,0,.6),0 0 0 2px #333;display:flex;flex-direction:column;overflow:hidden;position:relative}
+.wa-cab{display:flex;align-items:center;gap:10px;padding:34px 14px 10px;background:#202c33}
+.wa-cab img{width:40px;height:40px;border-radius:50%;background:#fff}
+.wa-cab b{display:block;font-size:15.5px}
+.wa-cab small{font-size:12px;color:#8696a0}
+.wa-cab .vb{display:inline-block;width:15px;height:15px;border-radius:50%;background:#25d366;color:#fff;font-size:10px;text-align:center;line-height:15px;margin-left:4px;vertical-align:1px}
+.chat{flex:1;overflow-y:auto;padding:14px 12px;display:flex;flex-direction:column;gap:6px;background:#0b141a url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cg fill='%23ffffff' fill-opacity='.025'%3E%3Ccircle cx='10' cy='10' r='3'/%3E%3Ccircle cx='50' cy='40' r='2'/%3E%3Cpath d='M30 60h10v4H30z'/%3E%3C/g%3E%3C/svg%3E")}
+.m{max-width:84%;min-width:118px;padding:7px 10px 19px;border-radius:10px;font-size:14.2px;line-height:1.38;position:relative;white-space:pre-line;animation:in .25s}
+@keyframes in{from{transform:translateY(6px);opacity:0}}
+.m.bot{background:#202c33;align-self:flex-start;border-top-left-radius:2px}
+.m.yo{background:#005c4b;align-self:flex-end;border-top-right-radius:2px}
+.m small{position:absolute;right:8px;bottom:3px;font-size:10.5px;color:#8696a0}
+.m.yo small::after{content:" ✓✓";color:#53bdeb}
+.m a{color:#53bdeb;word-break:break-all}
+.m b{font-weight:700}
+.esc{align-self:flex-start;background:#202c33;border-radius:10px;padding:12px 14px;display:flex;gap:4px}
+.esc i{width:7px;height:7px;border-radius:50%;background:#8696a0;animation:pu 1s infinite}
+.esc i:nth-child(2){animation-delay:.15s}.esc i:nth-child(3){animation-delay:.3s}
+@keyframes pu{50%{opacity:.3;transform:translateY(-2px)}}
+.chips{display:flex;gap:6px;flex-wrap:wrap;padding:8px 10px;background:#0b141a}
+.chips button{padding:8px 12px;border-radius:99px;border:1px solid #2a3942;color:#00a884;font-size:13px;font-weight:600;background:#111b21}
+.pie{display:flex;gap:8px;padding:8px 10px 18px;background:#0b141a}
+.pie input{flex:1;padding:12px 16px;border-radius:99px;border:0;background:#2a3942;outline:none;font-size:14.5px}
+.pie button{width:46px;height:46px;border-radius:50%;background:var(--wa);display:grid;place-items:center;flex:none}
+.pie svg{width:20px;height:20px}
+@media (max-width:900px){body{grid-template-columns:1fr;padding:0;gap:0}.lado{display:none}.tel{width:100%;height:100vh;height:100dvh;border-radius:0;border:0}.wa-cab{padding-top:14px}}
+</style>
+</head>
+<body>
+<section class="lado">
+  <img src="img/logo.png" alt="">
+  <h1 class="t">Tu asistente de <span>WhatsApp</span> toma pedidos solo</h1>
+  <p>Atiende a todos los clientes al mismo tiempo, a cualquier hora. Entiende pedidos escritos normal, calcula el total y los manda directo a la central de domicilios.</p>
+  <ul>
+    <li><b>1</b>El cliente escribe como habla: “un combo 1 y una coca”</li>
+    <li><b>2</b>El asistente confirma productos, dirección y forma de pago</li>
+    <li><b>3</b>El pedido aparece en la central con sonido, listo para cocina</li>
+    <li><b>4</b>El cliente recibe el enlace para seguir su moto en vivo</li>
+  </ul>
+  <div class="bts"><a href="panel.html" target="_blank">Abrir la central para verlo llegar</a><a class="s" href="index.html">Ver la tienda web</a></div>
+</section>
+
+<div class="tel">
+  <div class="wa-cab"><img src="img/logo.png" alt=""><div><b>La 22 · Domicilios <span class="vb">✓</span></b><small id="estado">en línea</small></div></div>
+  <div class="chat" id="chat"></div>
+  <div class="chips" id="chips"></div>
+  <form class="pie" id="f"><input id="txt" placeholder="Escribe un mensaje" autocomplete="off"><button aria-label="Enviar"><svg viewBox="0 0 24 24"><path fill="#fff" d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg></button></form>
+</div>
+
+<script src="app.js?v=1"></script>
+<script>
+(async function () {
+  const menu = await cargarMenu();
+  const todos = menu.flatMap((c) => c.items);
+  const porId = Object.fromEntries(todos.map((i) => [i.id, i]));
+  const norm = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/½/g, 'medio ').replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
+  // alias: los del menú + formas comunes de pedir
+  const EXTRA = { 1: ['combo 1', 'combo uno', 'pollo asado', 'un asado', 'pollo entero asado'], 2: ['combo 2', 'combo dos', 'pollo frito'], 3: ['combo 3', 'combo tres', 'broaster', 'pollo broaster'],
+    7: ['medio pollo', 'medio asado', 'medio pollo asado'], 8: ['medio frito', 'medio pollo frito'], 57: ['coca cola', 'coca', 'cocacola'], 56: ['gaseosa', 'postobon', 'gaseosa grande'],
+    61: ['papas', 'papa francesa', 'papas fritas'], 48: ['jugo', 'jugos'], 29: ['hamburguesa'], 33: ['salchipapa'], 9: ['churrasco'], 15: ['costillas', 'costilla'], 44: ['arroz paisa'], 41: ['arroz chino'], 26: ['ajiaco'], 58: ['cerveza', 'pola', 'polas', 'cervezas'] };
+  const ALIAS = [];
+  todos.forEach((i) => { const set = new Set([norm(i.n), ...(i.a ? [norm(i.a)] : []), ...(EXTRA[i.id] || []).map(norm)]); set.forEach((a) => a && a.length > 2 && ALIAS.push([a, i.id])); });
+  ALIAS.sort((a, b) => b[0].length - a[0].length);
+  const NUM = { un: 1, una: 1, uno: 1, dos: 2, tres: 3, cuatro: 4, cinco: 5, seis: 6 };
+
+  function leerPedido(txt) {
+    let s = ' ' + norm(txt) + ' '; const out = [];
+    for (const [a, id] of ALIAS) {
+      const re = new RegExp(`(?:\\b(\\d+|un|una|uno|dos|tres|cuatro|cinco|seis)\\s+)?\\b${a.replace(/ /g, '\\s+')}s?\\b`, 'g');
+      s = s.replace(re, (m, q) => { const n = q ? (NUM[q] || +q) : 1; const ex = out.find((o) => o.id === id); if (ex) ex.q += n; else out.push({ id, q: n }); return ' # '; });
+    }
+    return out;
+  }
+  function leerDireccion(txt) {
+    const m = txt.match(/\b(calle|cl|cll|carrera|cra|kr|kra|diagonal|dg|transversal|tv|avenida|av|ak|ac)\.?\s*\d+[^,.;]*/i);
+    return m ? m[0].replace(/\s+/g, ' ').trim() : null;
+  }
+
+  const chat = $('#chat');
+  const hhmm = () => new Date().toLocaleTimeString('es-CO', { hour: 'numeric', minute: '2-digit', hour12: true });
+  function msg(txt, quien = 'bot') { const d = document.createElement('div'); d.className = 'm ' + quien; d.innerHTML = txt + `<small>${hhmm()}</small>`; chat.appendChild(d); chat.scrollTop = chat.scrollHeight; }
+  function chips(arr) { $('#chips').innerHTML = arr.map((c) => `<button>${c}</button>`).join(''); }
+  async function bot(txt, ch = []) {
+    chips([]); $('#estado').textContent = 'escribiendo…';
+    const e = document.createElement('div'); e.className = 'esc'; e.innerHTML = '<i></i><i></i><i></i>'; chat.appendChild(e); chat.scrollTop = chat.scrollHeight;
+    await new Promise((r) => setTimeout(r, 650 + Math.min(1400, txt.length * 12)));
+    e.remove(); $('#estado').textContent = 'en línea'; msg(txt); chips(ch);
+  }
+
+  const st = { paso: 'pedido', items: [], dir: null, nom: null, pago: null };
+  const linea = (l) => `${l.q} × ${porId[l.id].n} — ${pesos(porId[l.id].p * l.q)}`;
+  const sub = () => st.items.reduce((s, l) => s + porId[l.id].p * l.q, 0);
+  const env = () => (sub() >= GRATIS_DESDE ? 0 : ENVIO);
+  const resumen = () => `${st.items.map(linea).join('\n')}\nDomicilio: ${env() ? pesos(env()) : 'GRATIS'}\n<b>Total: ${pesos(sub() + env())}</b>`;
+
+  async function siguiente() {
+    if (!st.items.length) return bot('¿Qué te provoca hoy? 🍗', ['Combo 1', 'Medio pollo asado', 'Ver menú']);
+    if (!st.dir) { st.paso = 'dir'; return bot('¿A qué dirección te lo llevamos? 📍\nEj: Calle 90 Sur # 14-20, torre 2 apto 301'); }
+    if (!st.nom) { st.paso = 'nom'; return bot('¿A nombre de quién lo enviamos?'); }
+    if (!st.pago) { st.paso = 'pago'; return bot('¿Cómo vas a pagar?', ['Efectivo', 'Nequi', 'Datáfono']); }
+    st.paso = 'conf';
+    return bot(`Listo, ${st.nom.split(' ')[0]} 🙌 Este es tu pedido:\n\n${resumen()}\n\n📍 ${st.dir}\n💳 ${st.pago}\n\n¿Lo confirmo?`, ['Sí, confirmar', 'Cambiar algo']);
+  }
+
+  async function recibir(txt) {
+    msg(esc(txt), 'yo');
+    const n = norm(txt);
+    if (st.paso === 'fin') { return bot('¡Gracias! Si quieres hacer otro pedido escribe <b>nuevo pedido</b>.', ['Nuevo pedido']); }
+    if (/^nuevo pedido/.test(n)) { Object.assign(st, { paso: 'pedido', items: [], pago: null }); return siguiente(); }
+    if (/\bmenu|carta|que tienen|que venden\b/.test(n)) {
+      return bot(`Estos son los favoritos 🔥\n\n${[1, 2, 3, 7, 35, 47, 9, 15].map((id) => `• ${porId[id].n} — ${pesos(porId[id].p)}`).join('\n')}\n\nCarta completa con fotos: <a href="index.html" target="_blank">${location.host}/…/index.html</a>\n\n¿Qué te anoto?`, ['Combo 1', 'Combo 3', 'Medio pollo asado']);
+    }
+    if (/horario|abren|cierran/.test(n)) return bot('Atendemos todos los días de 10:00 a. m. a 10:00 p. m. ⏰');
+    if (st.paso === 'dir') { st.dir = txt.trim(); return siguiente(); }
+    if (st.paso === 'nom') { st.nom = txt.trim().replace(/^(soy|a nombre de|me llamo)\s+/i, ''); return siguiente(); }
+    if (st.paso === 'pago') {
+      st.pago = /nequi/.test(n) ? 'Nequi' : /datafono|tarjeta/.test(n) ? 'Datáfono' : 'Efectivo';
+      return siguiente();
+    }
+    if (st.paso === 'conf') {
+      if (/^(si|sí|confirm|dale|listo|ok|de una)/.test(n)) return confirmar();
+      Object.assign(st, { paso: 'pedido', items: [], dir: null, pago: null });
+      return bot('Sin problema, empecemos de nuevo. ¿Qué te anoto?', ['Combo 1', 'Ver menú']);
+    }
+    // paso pedido
+    const nuevos = leerPedido(txt), d = leerDireccion(txt);
+    if (d) st.dir = d;
+    if (nuevos.length) {
+      nuevos.forEach((x) => { const ex = st.items.find((o) => o.id === x.id); if (ex) ex.q += x.q; else st.items.push(x); });
+      const gas = nuevos.some((x) => llevaGaseosa(porId[x.id])) ? '\n\n🥤 Los combos traen gaseosa Postobón 1.5 L. Si la quieres Coca-Cola son +$2.000.' : '';
+      return bot(`¡Anotado! ✍️\n\n${resumen()}${gas}\n\n¿Algo más o así está bien?`, ['Así está bien', 'Agregar papas', 'Agregar Coca-Cola']);
+    }
+    if (st.items.length && /(asi esta|eso es todo|nada mas|solo eso|no gracias|^no$|listo|esta bien)/.test(n)) return siguiente();
+    if (/hola|buenas|buenos|hey/.test(n)) return bot('¡Hola! 👋 Soy el asistente de <b>La 22</b>. Escríbeme tu pedido normal, por ejemplo:\n<i>“un combo 1 y una coca cola para la calle 90 sur 14-20”</i>', ['Ver menú', 'Combo 1', 'Medio pollo asado']);
+    return bot('Mmm, no te entendí 🙈 Escríbeme el nombre del plato, por ejemplo <b>combo 3</b> o <b>medio pollo asado</b>, o pide el <b>menú</b>.', ['Ver menú']);
+  }
+
+  async function confirmar() {
+    st.paso = 'enviando';
+    const ang = Math.random() * 6.28, dd = .004 + Math.random() * .006;
+    try {
+      const r = await rpc('dom22_pedir', { p: { canal: 'whatsapp', cliente: st.nom, tel: '300 123 4567', direccion: st.dir, lat: TIENDA.lat + Math.sin(ang) * dd, lng: TIENDA.lng + Math.cos(ang) * dd,
+        items: st.items.map((l) => ({ id: l.id, n: porId[l.id].n, p: porId[l.id].p, q: l.q })), pago: st.pago.toLowerCase().replace('datáfono', 'tarjeta') } });
+      st.paso = 'fin';
+      const url = new URL(`seguir.html?c=${r.codigo}&t=${r.token}`, location.href).href;
+      await bot(`✅ <b>Pedido #${r.codigo} confirmado</b>\nYa está en la central de La 22. Llega en <b>35–45 min</b>.\n\nSigue tu moto en vivo aquí 👇\n<a href="${url}" target="_blank">${url}</a>`, ['Nuevo pedido']);
+    } catch (e) { st.paso = 'conf'; bot('Uy, hubo un problema enviando el pedido. ¿Lo intento otra vez?', ['Sí, confirmar']); }
+  }
+
+  $('#f').onsubmit = (e) => { e.preventDefault(); const v = $('#txt').value.trim(); if (!v) return; $('#txt').value = ''; recibir(v); };
+  $('#chips').onclick = (e) => { const b = e.target.closest('button'); if (!b) return; const t = b.textContent;
+    recibir(t === 'Agregar papas' ? 'una papa francesa' : t === 'Agregar Coca-Cola' ? 'una coca cola' : t); };
+  await bot('¡Hola! 👋 Soy el asistente de <b>La 22 · La Esquina del Sabor</b>.\n\nEscríbeme tu pedido como le hablarías a una persona, por ejemplo:\n<i>“un combo 1 y una coca cola para la calle 90 sur 14-20”</i>', ['Ver menú', 'Combo 1', 'Medio pollo asado']);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sigue tu pedido · La 22</title>
+<meta name="theme-color" content="#e3141b">
+<link rel="icon" href="img/icono.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="cliente.css?v=3">
+<link rel="stylesheet" href="mapa.css?v=2">
+<style>
+body{background:var(--crema)}
+.sg{display:grid;grid-template-columns:minmax(0,1fr) 440px;height:100vh;height:100dvh}
+#mapa{height:100%;min-height:300px}
+.panel{background:#fff;overflow-y:auto;padding:20px 22px 30px;box-shadow:-10px 0 30px rgba(0,0,0,.06);position:relative;z-index:5}
+.top{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.top img{width:42px;height:42px}
+.top .t{font-size:20px;color:var(--rojo)}
+.top a{margin-left:auto;font-size:13px;font-weight:600;color:var(--gris)}
+.cod{font-size:12.5px;color:var(--gris);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.estado{font-size:46px;margin:6px 0 4px}
+.sub{color:var(--gris);margin-bottom:16px}
+.eta{display:flex;align-items:center;gap:14px;background:var(--rojo);color:#fff;border-radius:20px;padding:16px 18px;margin-bottom:18px}
+.eta b{font-family:var(--f-t);font-weight:400;font-size:44px;line-height:1}
+.eta small{display:block;font-size:12px;opacity:.85;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+.eta.ok{background:var(--ok)}
+.pasos{list-style:none;margin:6px 0 20px;position:relative}
+.pasos li{display:grid;grid-template-columns:34px 1fr auto;gap:12px;align-items:start;padding-bottom:18px;position:relative;color:#b3aaa2}
+.pasos li::before{content:"";position:absolute;left:16px;top:30px;bottom:0;width:2px;background:var(--linea)}
+.pasos li:last-child::before{display:none}
+.pasos i{width:34px;height:34px;border-radius:50%;border:2px solid var(--linea);background:#fff;display:grid;place-items:center;font-style:normal;font-weight:700;font-size:14px;position:relative;z-index:1}
+.pasos b{display:block;font-size:15px}
+.pasos span{font-size:12.5px}
+.pasos em{font-style:normal;font-size:12px;font-weight:600}
+.pasos li.hecho{color:var(--tinta)}
+.pasos li.hecho i{background:var(--ok);border-color:var(--ok);color:#fff}
+.pasos li.hecho::before{background:var(--ok)}
+.pasos li.actual{color:var(--tinta)}
+.pasos li.actual i{background:var(--rojo);border-color:var(--rojo);color:#fff;box-shadow:0 0 0 6px rgba(227,20,27,.15)}
+.domi{display:flex;align-items:center;gap:14px;border:1px solid var(--linea);border-radius:18px;padding:14px;margin-bottom:18px}
+.domi .av{width:50px;height:50px;border-radius:50%;background:#2f6bff;color:#fff;display:grid;place-items:center;font-weight:700;font-size:18px;flex:none}
+.domi b{display:block}
+.domi small{color:var(--gris);font-size:12.5px}
+.domi a{margin-left:auto;width:44px;height:44px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;flex:none}
+.domi a svg{width:20px;height:20px}
+.gps{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--ok);text-transform:uppercase;letter-spacing:.06em}
+.gps::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--ok);animation:lat 1.2s infinite}
+.res h4{font-size:22px;margin-bottom:6px}
+.res .ci{grid-template-columns:44px 1fr auto}
+.res .ci img{width:44px;height:44px}
+.nuevo-ok{position:fixed;inset:0;z-index:90;background:var(--rojo);color:#fff;display:grid;place-items:center;text-align:center;padding:30px;animation:salir .6s 2.4s forwards}
+.nuevo-ok .t{font-size:clamp(54px,12vw,110px)}
+.nuevo-ok p{font-size:18px;margin-top:10px}
+.check{width:110px;height:110px;border-radius:50%;background:#fff;color:var(--rojo);display:grid;place-items:center;margin:0 auto 20px;font-size:60px;animation:pop .6s cubic-bezier(.3,1.6,.5,1)}
+@keyframes pop{from{transform:scale(0)}}
+@keyframes salir{to{opacity:0;visibility:hidden}}
+@media (max-width:900px){
+  .sg{grid-template-columns:1fr;grid-template-rows:46vh auto;height:auto}
+  #mapa{height:46vh;position:sticky;top:0}
+  .panel{border-radius:24px 24px 0 0;margin-top:-24px;box-shadow:0 -10px 30px rgba(0,0,0,.08);min-height:60vh}
+  .estado{font-size:40px}
+}
+</style>
+</head>
+<body>
+<div class="sg">
+  <div id="mapa"></div>
+  <div class="panel">
+    <div class="top"><img src="img/logo.png" alt=""><span class="t">La 22</span><a href="index.html">← Volver al menú</a></div>
+    <div id="cont"><p class="sub">Cargando tu pedido…</p></div>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="app.js?v=1"></script>
+<script>
+(async function () {
+  const q = new URLSearchParams(location.search), c = q.get('c'), t = q.get('t');
+  if (q.get('nuevo')) { const d = document.createElement('div'); d.className = 'nuevo-ok'; d.innerHTML = '<div><div class="check">✓</div><div class="t">¡Pedido recibido!</div><p>Ya lo estamos preparando. Sigue tu moto aquí.</p></div>'; document.body.appendChild(d); beep('ok'); history.replaceState(null, '', `seguir.html?c=${c}&t=${t}`); }
+  const mapa = L.map('mapa', { zoomControl: false }).setView([TIENDA.lat, TIENDA.lng], 15);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap' }).addTo(mapa);
+  L.marker([TIENDA.lat, TIENDA.lng], { icon: iconoPin('tienda', '') }).addTo(mapa).bindTooltip('La 22');
+  let casa = null, moto = null, linea = null, ped = null, desfase = 0, encuadrado = false, ultimoEstado = null;
+
+  async function cargar() {
+    try {
+      const p = await rpc('dom22_seguir', { c, t });
+      if (!p) { $('#cont').innerHTML = '<p class="sub">No encontramos este pedido.</p>'; return; }
+      desfase = new Date(p.ahora) - new Date();
+      if (ultimoEstado && ultimoEstado !== p.estado) beep('ok');
+      ultimoEstado = p.estado; ped = p; pintar();
+    } catch (e) { console.log(e); }
+  }
+  const ahora = () => new Date(Date.now() + desfase);
+
+  function pintar() {
+    const p = ped, i = ESTADOS.findIndex((e) => e.k === p.estado), est = ESTADOS[Math.max(0, i)];
+    if (!casa && p.lat) {
+      casa = L.marker([p.lat, p.lng], { icon: iconoPin('casa', '⌂') }).addTo(mapa).bindTooltip('Tu casa');
+      linea = L.polyline(rutaPuntos(TIENDA, p), { color: '#e3141b', weight: 4, opacity: .35, dashArray: '8 8' }).addTo(mapa);
+    }
+    if (!encuadrado && p.lat) { mapa.fitBounds([[TIENDA.lat, TIENDA.lng], [p.lat, p.lng]], { padding: [60, 60] }); encuadrado = true; }
+    let etaHtml;
+    if (p.estado === 'entregado') etaHtml = `<div class="eta ok"><div><small>Entregado</small><b>${hora(p.entregado_at)}</b></div></div>`;
+    else if (p.estado === 'cancelado') etaHtml = `<div class="eta"><div><small>Pedido</small><b>Cancelado</b></div></div>`;
+    else {
+      let min;
+      if (p.estado === 'camino') min = Math.max(1, Math.ceil(DEMO_MIN_CAMINO - minDesde(p.camino_at, ahora())));
+      else min = Math.max(12, Math.round(38 - minDesde(p.creado, ahora())));
+      etaHtml = `<div class="eta"><div><small>Llega en</small><b>${min} min</b></div><div style="margin-left:auto;text-align:right"><small>Hora estimada</small><b style="font-size:26px">${hora(new Date(ahora().getTime() + min * 60000))}</b></div></div>`;
+    }
+    const marcas = { nuevo: p.creado, cocina: p.cocina_at, listo: p.listo_at, camino: p.camino_at, entregado: p.entregado_at };
+    const ini = (p.domi || '?').split(' ').map((x) => x[0]).join('').slice(0, 2);
+    const pos = posMoto(p, ahora());
+    $('#cont').innerHTML = `
+      <div class="cod">Pedido #${esc(p.codigo)} · ${CANAL[p.canal] || ''}</div>
+      <h1 class="t estado">${est.t}</h1><p class="sub">${est.d}</p>
+      ${etaHtml}
+      ${p.domi && ['camino', 'entregado'].includes(p.estado) ? `<div class="domi"><div class="av">${esc(ini)}</div><div><b>${esc(p.domi)}</b><small>Moto ${esc(p.placa || '')}</small><br>${pos && pos.real ? '<span class="gps">GPS en vivo</span>' : ''}</div><a href="#" onclick="toast('En el sistema real esto llama al domiciliario');return false" aria-label="Llamar"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg></a></div>` : ''}
+      <ol class="pasos">${ESTADOS.map((e, k) => `<li class="${k < i || p.estado === 'entregado' ? 'hecho' : k === i ? 'actual' : ''}"><i>${k < i || p.estado === 'entregado' ? '✓' : k + 1}</i><div><b>${e.t}</b><span>${e.d}</span></div><em>${marcas[e.k] ? hora(marcas[e.k]) : ''}</em></li>`).join('')}</ol>
+      <div class="res"><h4 class="t">Tu pedido</h4>
+        ${(p.items || []).map((l) => `<div class="ci"><img src="${foto(l.id)}" alt="" onerror="this.style.visibility='hidden'"><div><b>${l.q} × ${esc(l.n)}</b></div><strong>${pesos(l.p * l.q)}</strong></div>`).join('')}
+        <div class="fila" style="margin-top:12px"><span>Domicilio</span><span>${p.envio ? pesos(p.envio) : 'GRATIS'}</span></div>
+        <div class="fila tot"><span>Total · ${esc(p.pago)}</span><span>${pesos(p.total)}</span></div>
+        <p class="sub" style="font-size:13px">${esc(p.direccion || '')}</p></div>`;
+  }
+
+  function moverMoto() {
+    if (!ped) return;
+    const pos = posMoto(ped, ahora());
+    if (pos) {
+      if (!moto) moto = L.marker([pos.lat, pos.lng], { icon: iconoMoto(), zIndexOffset: 1000 }).addTo(mapa);
+      else moto.setLatLng([pos.lat, pos.lng]);
+    } else if (moto) { mapa.removeLayer(moto); moto = null; }
+  }
+  await cargar(); setInterval(cargar, 3000); setInterval(moverMoto, 500); setInterval(() => ped && ped.estado !== 'entregado' && pintar(), 15000);
+})();
+</script>
+</body>
+</html>

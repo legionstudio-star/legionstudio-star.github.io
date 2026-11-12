@@ -1,0 +1,504 @@
+[
+ {
+  "cat": "Combos de pollo",
+  "emoji": "🐔",
+  "items": [
+   {
+    "n": "Combo 1 · Pollo asado entero",
+    "p": 38000,
+    "d": "Papa salada · Plátano · Arepa · Gaseosa 1.5L · Salsas · Miel · Ají",
+    "a": "pollo asado entero combo 1",
+    "id": 1
+   },
+   {
+    "n": "Combo 2 · Pollo frito entero",
+    "p": 38000,
+    "d": "Papa salada · Plátano · Arepa · Gaseosa 1.5L · Salsas · Miel · Ají",
+    "a": "pollo frito entero combo 2",
+    "id": 2
+   },
+   {
+    "n": "Combo 3 · Pollo broaster entero",
+    "p": 40000,
+    "d": "Papa francesa · Plátano · Arepa · Gaseosa 1.5L · Salsas · Miel · Ají",
+    "a": "pollo broaster entero combo 3",
+    "id": 3
+   },
+   {
+    "n": "Pollo asado entero (sin gaseosa)",
+    "p": 33000,
+    "d": "Papa salada · Plátano · Arepa · Salsas · Ají",
+    "a": "pollo asado sin gaseosa",
+    "id": 4
+   },
+   {
+    "n": "Pollo frito entero (sin gaseosa)",
+    "p": 33000,
+    "d": "Papa salada · Plátano · Arepa · Salsas · Ají",
+    "a": "pollo frito sin gaseosa",
+    "id": 5
+   },
+   {
+    "n": "Pollo broaster entero (sin gaseosa)",
+    "p": 35000,
+    "d": "Papa francesa · Plátano · Arepa · Salsas · Miel · Ají",
+    "a": "pollo broaster sin gaseosa",
+    "id": 6
+   },
+   {
+    "n": "½ Pollo asado",
+    "p": 18000,
+    "d": "Papa salada · Plátano · Arepa · Salsas · Miel · Ají",
+    "a": "medio pollo asado",
+    "id": 7
+   },
+   {
+    "n": "½ Pollo frito",
+    "p": 19000,
+    "d": "Papa salada · Plátano · Yuca · Arepa · Salsas · Miel · Ají",
+    "a": "medio pollo frito",
+    "id": 8
+   }
+  ]
+ },
+ {
+  "cat": "A la carta",
+  "emoji": "🍽️",
+  "items": [
+   {
+    "n": "Churrasco",
+    "p": 29000,
+    "d": "Arroz · Yuca · Papa francesa · Ensalada",
+    "a": "",
+    "id": 9
+   },
+   {
+    "n": "Carne a la plancha",
+    "p": 26000,
+    "d": "Arroz · Papa francesa · Ensalada",
+    "a": "carne plancha",
+    "id": 10
+   },
+   {
+    "n": "Bandeja mixta",
+    "p": 30000,
+    "d": "Arroz · Papa francesa · Ensalada",
+    "a": "",
+    "id": 11
+   },
+   {
+    "n": "Lomo de cerdo a la plancha",
+    "p": 26000,
+    "d": "Arroz · Yuca · Papa francesa · Ensalada",
+    "a": "lomo cerdo",
+    "id": 12
+   },
+   {
+    "n": "Pechuga a la plancha",
+    "p": 26000,
+    "d": "Arroz · Yuca · Papa francesa · Ensalada",
+    "a": "pechuga plancha",
+    "id": 13
+   },
+   {
+    "n": "Pechuga gratinada",
+    "p": 28000,
+    "d": "Arroz · Yuca · Papa francesa · Ensalada",
+    "a": "pechuga gratinada",
+    "id": 14
+   },
+   {
+    "n": "Costillas BBQ",
+    "p": 26000,
+    "d": "Arroz · Yuca · Papa francesa · Ensalada",
+    "a": "costillas",
+    "id": 15
+   },
+   {
+    "n": "Ternera",
+    "p": 29000,
+    "d": "Arroz · Yuca · Papa francesa · Ensalada",
+    "a": "",
+    "id": 16
+   },
+   {
+    "n": "Sobrebarriga asada",
+    "p": 26000,
+    "d": "Arroz · Yuca · Papa francesa · Ensalada",
+    "a": "sobrebarriga",
+    "id": 17
+   },
+   {
+    "n": "Sobrebarriga en salsa",
+    "p": 28000,
+    "d": "Arroz · Yuca · Papa francesa · Ensalada",
+    "a": "",
+    "id": 18
+   },
+   {
+    "n": "Arroz con pollo",
+    "p": 19000,
+    "d": "Verduras · Papa francesa · Ensalada",
+    "a": "",
+    "id": 19
+   },
+   {
+    "n": "Bandeja pollo frito",
+    "p": 19000,
+    "d": "Arroz · Yuca · Papa francesa · Ensalada",
+    "a": "",
+    "id": 20
+   },
+   {
+    "n": "Bandeja pollo broaster",
+    "p": 20000,
+    "d": "Arroz · Yuca · Papa francesa · Ensalada",
+    "a": "",
+    "id": 21
+   }
+  ]
+ },
+ {
+  "cat": "Pescados",
+  "emoji": "🐟",
+  "items": [
+   {
+    "n": "Bagre frito",
+    "p": 29000,
+    "d": "Arroz · Papa francesa · Ensalada",
+    "a": "bagre",
+    "id": 22
+   },
+   {
+    "n": "Bagre en salsa",
+    "p": 31000,
+    "d": "Arroz · Papa francesa · Ensalada",
+    "a": "",
+    "id": 23
+   },
+   {
+    "n": "Mojarra",
+    "p": 29000,
+    "d": "Arroz · Papa francesa · Patacón · Ensalada",
+    "a": "mojarra frita",
+    "id": 24
+   },
+   {
+    "n": "Trucha",
+    "p": 29000,
+    "d": "Arroz · Papa francesa · Ensalada",
+    "a": "",
+    "id": 25
+   }
+  ]
+ },
+ {
+  "cat": "Sopas (fines de semana)",
+  "emoji": "🍲",
+  "items": [
+   {
+    "n": "Ajiaco con pollo",
+    "p": 12000,
+    "d": "Arroz · Presa de pollo · Aguacate",
+    "a": "ajiaco",
+    "id": 26
+   },
+   {
+    "n": "Mondongo",
+    "p": 10000,
+    "d": "Arroz · Yuca",
+    "a": "",
+    "id": 27
+   },
+   {
+    "n": "Menudencias",
+    "p": 9000,
+    "d": "Arroz",
+    "a": "sopa de menudencias",
+    "id": 28
+   }
+  ]
+ },
+ {
+  "cat": "Comida rápida",
+  "emoji": "🍔",
+  "items": [
+   {
+    "n": "Hamburguesa sencilla",
+    "p": 12000,
+    "d": "Carne artesanal · Lechuga · Queso · Jamón",
+    "a": "hamburguesa",
+    "id": 29
+   },
+   {
+    "n": "Hamburguesa combo",
+    "p": 17000,
+    "d": "Con papa francesa y gaseosa 250 ml",
+    "a": "",
+    "id": 30
+   },
+   {
+    "n": "Perro americano",
+    "p": 12000,
+    "d": "Salchicha americana · Salsas",
+    "a": "perro",
+    "id": 31
+   },
+   {
+    "n": "Perro americano combo",
+    "p": 17000,
+    "d": "Con papa francesa y gaseosa 250 ml",
+    "a": "",
+    "id": 32
+   },
+   {
+    "n": "Salchipapa sencilla",
+    "p": 12000,
+    "d": "Salchicha · Papa francesa · Salsas",
+    "a": "salchipapa",
+    "id": 33
+   },
+   {
+    "n": "Salchipapa combo",
+    "p": 15000,
+    "d": "Con queso, jamón y gaseosa 250 ml",
+    "a": "",
+    "id": 34
+   }
+  ]
+ },
+ {
+  "cat": "Arroz chino",
+  "emoji": "🍚",
+  "items": [
+   {
+    "n": "C1 · 1 Pollo + arroz chino",
+    "p": 61000,
+    "d": "Papa francesa · Yuca · Arepa · Gaseosa 1.5L · Salsas · Miel · Ají",
+    "a": "pollo entero arroz chino",
+    "id": 35
+   },
+   {
+    "n": "C2 · ½ Pollo + arroz chino",
+    "p": 41000,
+    "d": "Papa francesa · Yuca · Arepa · Gaseosa 1.5L · Salsas · Miel · Ají",
+    "a": "medio pollo arroz chino",
+    "id": 36
+   },
+   {
+    "n": "C3 · ¼ Pollo + arroz chino",
+    "p": 35000,
+    "d": "Papa francesa · Arepa · Gaseosa 1.5L · Salsas",
+    "a": "cuarto de pollo arroz chino",
+    "id": 37
+   },
+   {
+    "n": "C1 · 1 Pollo broaster + arroz chino",
+    "p": 63000,
+    "d": "Papa francesa · Yuca · Arepa · Gaseosa 1.5L · Salsas · Miel · Ají",
+    "a": "",
+    "id": 38
+   },
+   {
+    "n": "C2 · ½ Pollo broaster + arroz chino",
+    "p": 43000,
+    "d": "Papa francesa · Yuca · Arepa · Gaseosa 1.5L · Salsas · Miel · Ají",
+    "a": "",
+    "id": 39
+   },
+   {
+    "n": "C3 · ¼ Pollo broaster + arroz chino",
+    "p": 37000,
+    "d": "Papa francesa · Arepa · Gaseosa 1.5L · Salsas",
+    "a": "",
+    "id": 40
+   },
+   {
+    "n": "Arroz chino personal",
+    "p": 22000,
+    "d": "",
+    "a": "arroz chino",
+    "id": 41
+   }
+  ]
+ },
+ {
+  "cat": "Arroz paisa",
+  "emoji": "🥘",
+  "items": [
+   {
+    "n": "Arroz paisa para 5-6 personas",
+    "p": 50000,
+    "d": "Con gaseosa 1.5L",
+    "a": "",
+    "id": 42
+   },
+   {
+    "n": "Arroz paisa para 4 personas",
+    "p": 39000,
+    "d": "Con gaseosa 1.5L",
+    "a": "",
+    "id": 43
+   },
+   {
+    "n": "Arroz paisa para 2 personas",
+    "p": 24000,
+    "d": "Sin gaseosa",
+    "a": "arroz paisa",
+    "id": 44
+   },
+   {
+    "n": "¼ Pollo + arroz paisa",
+    "p": 37000,
+    "d": "Con gaseosa 1.5L",
+    "a": "",
+    "id": 45
+   },
+   {
+    "n": "½ Pollo + arroz paisa",
+    "p": 53000,
+    "d": "Con gaseosa 1.5L",
+    "a": "",
+    "id": 46
+   },
+   {
+    "n": "1 Pollo + arroz paisa",
+    "p": 78000,
+    "d": "Con yuca, arepa y gaseosa 1.5L",
+    "a": "",
+    "id": 47
+   }
+  ]
+ },
+ {
+  "cat": "Bebidas",
+  "emoji": "🥤",
+  "items": [
+   {
+    "n": "Jugo natural en agua",
+    "p": 7000,
+    "d": "Mora · Lulo · Maracuyá · Fresa · Mango · Guanábana",
+    "a": "jugo agua",
+    "id": 48
+   },
+   {
+    "n": "Jugo natural en leche",
+    "p": 7000,
+    "d": "Mora · Lulo · Maracuyá · Fresa · Mango · Guanábana",
+    "a": "jugo leche",
+    "id": 49
+   },
+   {
+    "n": "Limonada de coco",
+    "p": 7000,
+    "d": "",
+    "a": "limonada coco",
+    "id": 50
+   },
+   {
+    "n": "Limonada natural",
+    "p": 3000,
+    "d": "",
+    "a": "limonada",
+    "id": 51
+   },
+   {
+    "n": "Jarra de limonada",
+    "p": 10000,
+    "d": "",
+    "a": "jarra limonada",
+    "id": 52
+   },
+   {
+    "n": "Media jarra de limonada",
+    "p": 5000,
+    "d": "",
+    "a": "media jarra",
+    "id": 53
+   },
+   {
+    "n": "Gaseosa 250 ml",
+    "p": 2500,
+    "d": "Postobón",
+    "a": "gaseosa pequeña",
+    "id": 54
+   },
+   {
+    "n": "Gaseosa 400 ml",
+    "p": 4000,
+    "d": "Postobón",
+    "a": "gaseosa personal",
+    "id": 55
+   },
+   {
+    "n": "Gaseosa 1.5 L",
+    "p": 6000,
+    "d": "Postobón",
+    "a": "gaseosa litro y medio",
+    "id": 56
+   },
+   {
+    "n": "Coca-Cola 1.5 L",
+    "p": 8000,
+    "d": "",
+    "a": "coca cola",
+    "id": 57
+   },
+   {
+    "n": "Cerveza",
+    "p": 3500,
+    "d": "",
+    "a": "cerveza pola",
+    "id": 58
+   }
+  ]
+ },
+ {
+  "cat": "Porciones",
+  "emoji": "🍟",
+  "items": [
+   {
+    "n": "Papa salada",
+    "p": 4000,
+    "d": "",
+    "a": "",
+    "id": 59
+   },
+   {
+    "n": "Yuca",
+    "p": 4000,
+    "d": "",
+    "a": "",
+    "id": 60
+   },
+   {
+    "n": "Papa francesa",
+    "p": 4000,
+    "d": "",
+    "a": "papas fritas",
+    "id": 61
+   },
+   {
+    "n": "Plátano",
+    "p": 4000,
+    "d": "",
+    "a": "",
+    "id": 62
+   },
+   {
+    "n": "Arroz",
+    "p": 3000,
+    "d": "",
+    "a": "porcion de arroz",
+    "id": 63
+   },
+   {
+    "n": "Ensalada",
+    "p": 3000,
+    "d": "",
+    "a": "",
+    "id": 64
+   }
+  ]
+ }
+]

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sistema de domicilios · La 22</title>
+<meta name="theme-color" content="#e3141b">
+<link rel="icon" href="img/icono.png">
+<link rel="stylesheet" href="fonts/fuentes.css">
+<style>
+:root{--rojo:#e3141b;--amar:#ffc20e;--f-t:'Tanker',Impact,sans-serif;--f-b:'General Sans',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--f-b);background:#120c0a;color:#f6efe8;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.t{font-family:var(--f-t);font-weight:400;text-transform:uppercase;line-height:.92}
+.hero{position:relative;padding:60px clamp(18px,6vw,90px) 70px;background:linear-gradient(180deg,rgba(18,12,10,.2),#120c0a),url(img/hero_asado.webp) center/cover;overflow:hidden}
+.hero img{width:90px}
+.hero small{display:block;margin:22px 0 10px;color:var(--amar);font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:13px}
+.hero h1{font-size:clamp(48px,9vw,128px);max-width:1000px}
+.hero h1 span{color:var(--rojo);-webkit-text-stroke:0}
+.hero p{max-width:620px;font-size:18px;color:#e2d6cc;margin-top:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:18px;padding:10px clamp(18px,6vw,90px) 40px}
+.c{position:relative;border-radius:26px;padding:26px;background:#1c1411;border:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;gap:10px;min-height:250px;transition:transform .25s,border-color .25s;overflow:hidden}
+.c:hover{transform:translateY(-4px);border-color:var(--rojo)}
+.c .n{font-family:var(--f-t);font-size:64px;color:rgba(255,255,255,.07);position:absolute;right:20px;top:8px}
+.c i{font-style:normal;font-size:34px}
+.c h2{font-size:34px}
+.c p{color:#b9aca2;font-size:15px;flex:1}
+.c b{display:inline-flex;gap:8px;align-items:center;align-self:flex-start;padding:11px 16px;border-radius:99px;background:var(--rojo);font-size:14px}
+.c em{font-style:normal;font-size:12.5px;color:var(--amar);font-weight:600}
+.c.d{background:var(--rojo);border-color:var(--rojo)}
+.c.d p{color:#ffe1df}
+.c.d b{background:#fff;color:var(--rojo)}
+.flujo{padding:30px clamp(18px,6vw,90px) 70px}
+.flujo h3{font-size:clamp(34px,5vw,56px);margin-bottom:22px}
+.pasos{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:12px;counter-reset:p}
+.pasos div{padding:18px;border-radius:18px;background:#1c1411;border-left:4px solid var(--amar);font-size:14.5px;color:#d8ccc2}
+.pasos div::before{counter-increment:p;content:counter(p,decimal-leading-zero);display:block;font-family:var(--f-t);font-size:28px;color:#fff;margin-bottom:6px}
+footer{padding:30px clamp(18px,6vw,90px);border-top:1px solid rgba(255,255,255,.07);color:#8a7d73;font-size:13px}
+</style>
+</head>
+<body>
+<header class="hero">
+  <img src="img/logo.png" alt="La 22">
+  <small>Sistema de domicilios · Demo en vivo</small>
+  <h1 class="t">Tu propia app de <span>domicilios</span>, sin comisiones</h1>
+  <p>Página web de pedidos, asistente de WhatsApp, central de despacho y app para los domiciliarios con GPS. Todo conectado en tiempo real: lo que pide el cliente suena en la central al instante.</p>
+</header>
+
+<section class="grid">
+  <a class="c d" href="index.html" target="_blank"><span class="n">01</span><i>🍗</i><h2 class="t">Tienda web</h2><p>La carta completa con fotos, combos, carrito y pago contra entrega o Nequi. El cliente marca su casa en el mapa.</p><b>Abrir tienda →</b></a>
+  <a class="c" href="whatsapp.html" target="_blank"><span class="n">02</span><i>💬</i><h2 class="t">Asistente WhatsApp</h2><p>Toma pedidos escritos normal, a cualquier hora y con muchos clientes a la vez. Calcula el total y lo manda a la central.</p><b>Probar chat →</b></a>
+  <a class="c" href="panel.html" target="_blank"><span class="n">03</span><i>📋</i><h2 class="t">Central de pedidos</h2><p>Todos los pedidos en un tablero: cocina, listos, en camino. Mapa con las motos, ventas del día y tiempo de entrega.</p><b>Abrir central →</b><em>PIN 2222</em></a>
+  <a class="c" href="domi.html" target="_blank"><span class="n">04</span><i>🛵</i><h2 class="t">App domiciliario</h2><p>Cada domiciliario ve sus pedidos, la ruta en Google Maps, cuánto cobrar y comparte su GPS con un botón.</p><b>Abrir en el celular →</b><em>PIN 2222</em></a>
+  <a class="c" href="seguir.html?c=2201&t=demo1" target="_blank" id="seg"><span class="n">05</span><i>📍</i><h2 class="t">Seguimiento en vivo</h2><p>El cliente ve su pedido paso a paso y la moto moviéndose en el mapa hasta su puerta, como en las apps grandes.</p><b>Ver ejemplo →</b></a>
+</section>
+
+<section class="flujo">
+  <h3 class="t">Así se prueba en la reunión</h3>
+  <div class="pasos">
+    <div>Abre la central en el computador con el PIN 2222.</div>
+    <div>Desde el celular pide en la tienda web o por el chat de WhatsApp.</div>
+    <div>El pedido suena en la central: Aceptar, Marcar listo y Despachar a un domiciliario.</div>
+    <div>Abre la app del domiciliario, activa el GPS y mira la moto moverse en el seguimiento.</div>
+  </div>
+</section>
+<footer>Desarrollado por LEGION Estudio · Demo con datos de prueba</footer>
+<script src="app.js?v=1"></script>
+<script>
+// el ejemplo de seguimiento usa el último pedido hecho en este navegador, si existe
+try { const u = JSON.parse(localStorage.getItem('la22_ultimo') || 'null'); if (u && u.c) document.getElementById('seg').href = `seguir.html?c=${u.c}&t=${u.t}`; } catch {}
+</script>
+</body>
+</html>
