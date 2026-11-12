@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Panel de flota · SOMOS U Usme</title>
+<meta name="theme-color" content="#0B1730">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/marca/logo-legion.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--c:#1F4FBF;--c2:#173E99;--a:#F2C200;--nav:#0B1730;--tx:#0E1A2B;--mu:#5A6878;--bd:#E3E8F0;--bg:#F3F6FA;--ok:#11875A;--ojo:#D08300;--mal:#C8302A;--okb:#E4F5EC;--ojob:#FFF3DA;--malb:#FDE8E6}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{font-family:Archivo,system-ui,sans-serif;background:var(--bg);color:var(--tx);-webkit-font-smoothing:antialiased;font-size:15px}
+button{font:inherit;cursor:pointer}
+svg.i{width:18px;height:18px;flex:none}
+/* ---------- PIN ---------- */
+.pin{position:fixed;inset:0;z-index:99;background:radial-gradient(90% 60% at 50% 0%,#1F4FBF 0%,#0B1730 70%);display:grid;place-items:center;padding:20px}
+.pin form{background:#fff;border-radius:22px;padding:34px 30px;width:100%;max-width:380px;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.35)}
+.pin .logo{font-weight:900;font-size:2rem;letter-spacing:.08em;color:var(--c)}
+.pin .logo span{display:block;font-size:.72rem;letter-spacing:.24em;color:var(--mu);font-weight:700;margin-top:4px}
+.pin h1{font-size:1.15rem;margin:22px 0 6px}
+.pin p{color:var(--mu);font-size:.88rem}
+.pin input{width:100%;margin-top:18px;font:inherit;font-size:1.6rem;letter-spacing:.6em;text-align:center;padding:12px;border:1.5px solid var(--bd);border-radius:12px;outline:none}
+.pin input:focus{border-color:var(--c)}
+.pin button{width:100%;margin-top:12px;background:var(--c);color:#fff;border:0;border-radius:12px;padding:14px;font-weight:800}
+.pin small{display:block;margin-top:16px;color:var(--mu);font-size:.74rem}
+.pin .err{color:var(--mal);font-size:.84rem;min-height:1.2em;margin-top:8px}
+/* ---------- Estructura ---------- */
+.app{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+.side{background:var(--nav);color:#c9d3e6;display:flex;flex-direction:column;padding:22px 14px;position:sticky;top:0;height:100vh}
+.marca{padding:0 10px 22px;border-bottom:1px solid rgba(255,255,255,.08)}
+.marca b{display:block;color:#fff;font-weight:900;font-size:1.7rem;letter-spacing:.08em;line-height:1}
+.marca small{display:block;margin-top:6px;font-size:.68rem;letter-spacing:.2em;font-weight:700;color:var(--a)}
+.nav{display:flex;flex-direction:column;gap:3px;margin-top:18px}
+.nav a{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;color:#c9d3e6;text-decoration:none;font-weight:600;font-size:.92rem}
+.nav a:hover{background:rgba(255,255,255,.06);color:#fff}
+.nav a.on{background:var(--c);color:#fff;box-shadow:0 6px 16px rgba(31,79,191,.45)}
+.nav a em{margin-left:auto;font-style:normal;background:var(--mal);color:#fff;font-size:.7rem;font-weight:800;border-radius:999px;padding:2px 7px}
+.side .yo{margin-top:auto;display:flex;align-items:center;gap:10px;padding:12px;border-radius:12px;background:rgba(255,255,255,.05)}
+.yo i{width:36px;height:36px;border-radius:50%;background:var(--a);color:var(--nav);display:grid;place-items:center;font-style:normal;font-weight:900}
+.yo b{display:block;color:#fff;font-size:.86rem}.yo small{font-size:.72rem}
+.side .leg{margin-top:12px;text-align:center;font-size:.64rem;letter-spacing:.14em;color:#6f7d96;font-weight:700}
+.main{min-width:0;display:flex;flex-direction:column}
+.bar{display:flex;align-items:center;gap:16px;padding:18px 30px;background:#fff;border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:5}
+.bar h1{font-size:1.35rem;font-weight:800}
+.bar .sub{color:var(--mu);font-size:.84rem;margin-top:2px}
+.bar .der{margin-left:auto;display:flex;align-items:center;gap:10px}
+.buscar{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:9px 12px;color:var(--mu);width:280px}
+.buscar input{border:0;background:none;outline:none;font:inherit;width:100%}
+.campana{position:relative;width:42px;height:42px;border-radius:10px;border:1px solid var(--bd);background:#fff;display:grid;place-items:center;color:var(--tx)}
+.campana em{position:absolute;top:-5px;right:-5px;background:var(--mal);color:#fff;font-style:normal;font-size:.68rem;font-weight:800;border-radius:999px;padding:2px 6px;border:2px solid #fff}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--c);color:#fff;border:0;border-radius:10px;padding:11px 16px;font-weight:700;font-size:.88rem;text-decoration:none}
+.btn.sec{background:#fff;color:var(--tx);border:1px solid var(--bd)}
+.btn.chico{padding:7px 11px;font-size:.8rem}
+.cont{padding:26px 30px 40px;display:flex;flex-direction:column;gap:20px}
+.card{background:#fff;border:1px solid var(--bd);border-radius:16px;padding:20px}
+.card h2{font-size:1rem;font-weight:800;display:flex;align-items:center;gap:8px}
+.card h2 small{margin-left:auto;font-weight:600;color:var(--mu);font-size:.8rem}
+/* ---------- KPIs ---------- */
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.kpi{background:#fff;border:1px solid var(--bd);border-radius:16px;padding:18px;position:relative;overflow:hidden}
+.kpi small{display:block;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mu);font-weight:700}
+.kpi b{display:block;font-size:2.3rem;font-weight:900;margin-top:6px;line-height:1}
+.kpi span{display:block;font-size:.8rem;color:var(--mu);margin-top:6px}
+.kpi::after{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c)}
+.kpi.ok::after{background:var(--ok)}.kpi.ojo::after{background:var(--ojo)}.kpi.mal::after{background:var(--mal)}
+.kpi.ok b{color:var(--ok)}.kpi.ojo b{color:var(--ojo)}.kpi.mal b{color:var(--mal)}
+.grid2{display:grid;grid-template-columns:1.5fr 1fr;gap:20px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+/* ---------- Alertas ---------- */
+.alertas{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.al{display:flex;align-items:center;gap:14px;padding:12px 14px;border:1px solid var(--bd);border-radius:12px;background:#fff}
+.al .s{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;flex:none}
+.al.mal .s{background:var(--malb);color:var(--mal)}.al.ojo .s{background:var(--ojob);color:var(--ojo)}
+.al .t{flex:1;min-width:0}
+.al .t b{display:block;font-size:.92rem}
+.al .t small{display:block;color:var(--mu);font-size:.8rem;margin-top:2px}
+.al .d{font-weight:800;font-size:.84rem;border-radius:8px;padding:5px 10px;white-space:nowrap}
+.al.mal .d{background:var(--malb);color:var(--mal)}.al.ojo .d{background:var(--ojob);color:var(--ojo)}
+.canales{display:flex;gap:4px}
+.canales i{width:26px;height:26px;border-radius:7px;display:grid;place-items:center;background:var(--bg);color:var(--mu)}
+.canales i.on{background:#E3F6EC;color:#1DAA61}.canales i.on.c{background:#E9EFFC;color:var(--c)}
+.canales svg{width:14px;height:14px}
+/* ---------- Gráficos ---------- */
+.dona{display:flex;align-items:center;gap:24px;margin-top:14px}
+.dona ul{list-style:none;padding:0;display:flex;flex-direction:column;gap:10px;flex:1}
+.dona li{display:flex;align-items:center;gap:10px;font-size:.9rem}
+.dona li i{width:12px;height:12px;border-radius:4px}
+.dona li b{margin-left:auto}
+.barras{display:flex;align-items:flex-end;gap:14px;height:180px;margin-top:20px;padding-bottom:26px;position:relative}
+.barras div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;position:relative}
+.barras div i{width:100%;max-width:46px;border-radius:8px 8px 3px 3px;background:linear-gradient(180deg,var(--c),#4b7be0)}
+.barras div i.ojo{background:linear-gradient(180deg,var(--ojo),#f2b33d)}
+.barras div i.mal{background:linear-gradient(180deg,var(--mal),#e86a5f)}
+.barras div b{font-size:.8rem;margin-bottom:6px}
+.barras div small{position:absolute;bottom:-24px;font-size:.74rem;color:var(--mu);white-space:nowrap}
+.actividad{list-style:none;padding:0;margin-top:12px;display:flex;flex-direction:column}
+.actividad li{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--bd);font-size:.86rem}
+.actividad li:last-child{border:0}
+.actividad li i{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;flex:none;background:#E9EFFC;color:var(--c)}
+.actividad li i.v{background:var(--okb);color:var(--ok)}.actividad li i.n{background:var(--ojob);color:var(--ojo)}
+.actividad li small{display:block;color:var(--mu);font-size:.76rem;margin-top:2px}
+/* ---------- Tabla flota ---------- */
+.filtros{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1px solid var(--bd);background:#fff;border-radius:999px;padding:8px 14px;font-weight:700;font-size:.82rem;color:var(--tx);display:inline-flex;align-items:center;gap:7px}
+.chip.on{background:var(--tx);color:#fff;border-color:var(--tx)}
+.chip i{width:9px;height:9px;border-radius:50%}
+.tabla{width:100%;border-collapse:collapse;font-size:.88rem}
+.tabla th{text-align:left;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mu);font-weight:700;padding:10px 12px;border-bottom:1px solid var(--bd);white-space:nowrap}
+.tabla td{padding:12px;border-bottom:1px solid var(--bd);vertical-align:middle}
+.tabla tr.fila{cursor:pointer}
+.tabla tr.fila:hover td{background:#F7F9FD}
+.mov{display:flex;align-items:center;gap:10px}
+.mov i{width:38px;height:38px;border-radius:10px;background:var(--c);color:#fff;font-style:normal;font-weight:900;display:grid;place-items:center}
+.mov b{display:block}.mov small{color:var(--mu);font-size:.78rem}
+.placa{display:inline-block;border:2px solid #111;border-radius:5px;padding:1px 7px;font-weight:900;letter-spacing:.04em;font-size:.82rem;background:#fff}
+.puntos{display:flex;gap:5px}
+.puntos span{width:30px;height:24px;border-radius:6px;display:grid;place-items:center;font-size:.6rem;font-weight:800;color:#fff;background:var(--ok)}
+.puntos span.ojo{background:var(--ojo)}.puntos span.mal{background:var(--mal)}
+.est{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:.8rem;border-radius:8px;padding:5px 10px}
+.est.ok{background:var(--okb);color:var(--ok)}.est.ojo{background:var(--ojob);color:var(--ojo)}.est.mal{background:var(--malb);color:var(--mal)}
+/* ---------- Detalle de bus ---------- */
+.det{display:grid;grid-template-columns:380px 1fr;gap:20px;align-items:start}
+.bus-card{border-radius:16px;overflow:hidden;background:#fff;border:1px solid var(--bd)}
+.bus-card .foto{height:200px;background:url('/flota/somos/bus.webp') center 60%/cover;position:relative}
+.bus-card .foto::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(8,16,32,.85))}
+.bus-card .foto div{position:absolute;left:18px;bottom:14px;z-index:1;color:#fff}
+.bus-card .foto small{font-size:.74rem;letter-spacing:.16em;font-weight:700;opacity:.85}
+.bus-card .foto b{display:block;font-size:3rem;font-weight:900;line-height:.9}
+.bus-card .datos{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--bd)}
+.bus-card .datos div{background:#fff;padding:12px 16px}
+.bus-card .datos small{display:block;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mu);font-weight:700}
+.bus-card .datos b{font-size:.9rem}
+.tarjeta-mini{margin:16px;border-radius:12px;padding:14px;background:var(--bg);display:flex;align-items:center;gap:14px}
+.tarjeta-mini img{width:118px;border-radius:7px;box-shadow:0 4px 12px rgba(0,0,0,.18)}
+.tarjeta-mini b{display:block;font-size:.88rem}.tarjeta-mini small{display:block;color:var(--mu);font-size:.78rem;margin-top:3px}
+.tarjeta-mini a{color:var(--c);font-weight:700;font-size:.8rem;text-decoration:none;display:inline-block;margin-top:6px}
+.docs{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.doc{display:flex;align-items:center;gap:14px;padding:12px;border:1px solid var(--bd);border-radius:12px}
+.doc .mini{width:46px;height:60px;border-radius:6px;background:#eef1f6 center top/cover;border:1px solid var(--bd);flex:none}
+.doc .t{flex:1;min-width:0}
+.doc .t b{display:block;font-size:.92rem}
+.doc .t small{display:block;color:var(--mu);font-size:.78rem;margin-top:2px}
+.doc .fecha{text-align:right;font-size:.8rem;color:var(--mu);white-space:nowrap}
+.doc .fecha b{display:block;color:var(--tx);font-size:.86rem}
+.doc.nuevo{border-color:var(--ok);box-shadow:0 0 0 3px rgba(17,135,90,.14);animation:brilla 1.6s ease}
+@keyframes brilla{0%{background:#E4F5EC}100%{background:#fff}}
+.hist{list-style:none;padding:0;margin-top:12px;position:relative}
+.hist li{position:relative;padding:0 0 16px 26px;font-size:.84rem}
+.hist li::before{content:"";position:absolute;left:6px;top:4px;width:10px;height:10px;border-radius:50%;background:var(--c);box-shadow:0 0 0 3px #E9EFFC}
+.hist li::after{content:"";position:absolute;left:10px;top:16px;bottom:0;width:2px;background:var(--bd)}
+.hist li:last-child::after{display:none}
+.hist li small{display:block;color:var(--mu);font-size:.76rem;margin-top:2px}
+/* ---------- Modal reemplazar ---------- */
+.velo{position:fixed;inset:0;background:rgba(8,14,26,.55);z-index:40;display:grid;place-items:center;padding:20px}
+.modal{background:#fff;border-radius:20px;width:100%;max-width:640px;box-shadow:0 30px 80px rgba(0,0,0,.35);overflow:hidden}
+.modal header{padding:20px 24px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:12px}
+.modal header b{font-size:1.08rem;display:block}.modal header small{color:var(--mu);font-size:.82rem}
+.modal header button{margin-left:auto;border:0;background:var(--bg);width:36px;height:36px;border-radius:50%;display:grid;place-items:center}
+.modal .cuerpo{padding:22px 24px;display:flex;flex-direction:column;gap:16px}
+.compara{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:center}
+.compara .lado{border:1px solid var(--bd);border-radius:12px;padding:12px;display:flex;gap:12px;align-items:center}
+.compara .lado.viejo{opacity:.6;background:var(--bg)}
+.compara .lado.viejo b{text-decoration:line-through}
+.compara .lado .mini{width:44px;height:58px;border-radius:6px;background:#eef1f6 center top/cover;border:1px solid var(--bd);flex:none}
+.compara .lado b{display:block;font-size:.86rem}.compara .lado small{display:block;font-size:.76rem;color:var(--mu)}
+.compara>i{color:var(--c)}
+.soltar{border:2px dashed #b9c7e3;border-radius:14px;padding:26px;text-align:center;background:#F6F9FF;color:var(--mu)}
+.soltar b{display:block;color:var(--tx);margin-top:8px}
+.soltar.listo{border-style:solid;border-color:var(--ok);background:#F1FAF5;color:var(--ok)}
+.campos{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.campos label{display:flex;flex-direction:column;gap:6px;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);font-weight:700}
+.campos input{width:100%;min-width:0;font:inherit;font-size:.92rem;padding:10px 12px;border:1.5px solid var(--bd);border-radius:10px;color:var(--tx);text-transform:none;letter-spacing:0}
+.modal footer{padding:16px 24px;border-top:1px solid var(--bd);display:flex;justify-content:flex-end;gap:10px;background:#FAFBFD}
+.exito{text-align:center;padding:34px 24px}
+.exito .ok{width:76px;height:76px;border-radius:50%;background:var(--okb);color:var(--ok);display:grid;place-items:center;margin:0 auto}
+.exito .ok svg{width:40px;height:40px}
+.exito h3{font-size:1.3rem;margin-top:16px}
+.exito p{color:var(--mu);margin-top:6px;line-height:1.5}
+.exito .pasos{display:flex;justify-content:center;gap:10px;margin-top:20px;flex-wrap:wrap}
+.exito .pasos span{display:inline-flex;align-items:center;gap:6px;background:var(--bg);border-radius:999px;padding:7px 12px;font-size:.8rem;font-weight:700}
+.exito .pasos svg{width:15px;height:15px;color:var(--ok)}
+/* ---------- Novedades ---------- */
+.nov{display:flex;gap:14px;padding:14px;border:1px solid var(--bd);border-radius:12px;align-items:flex-start}
+.nov .s{width:42px;height:42px;border-radius:10px;display:grid;place-items:center;flex:none;background:var(--ojob);color:var(--ojo)}
+.nov .s.r{background:var(--malb);color:var(--mal)}.nov .s.b{background:#E9EFFC;color:var(--c)}
+.nov b{display:block}.nov p{color:var(--mu);font-size:.86rem;margin-top:3px;line-height:1.4}
+.nov .h{margin-left:auto;text-align:right;font-size:.78rem;color:var(--mu);white-space:nowrap}
+.tag{display:inline-block;font-size:.7rem;font-weight:800;border-radius:6px;padding:3px 8px;margin-top:6px;background:var(--okb);color:var(--ok)}
+.tag.a{background:var(--ojob);color:var(--ojo)}
+/* ---------- Reportes ---------- */
+.prog{display:flex;flex-direction:column;gap:14px;margin-top:16px}
+.prog div{display:grid;grid-template-columns:200px 1fr 60px;gap:12px;align-items:center;font-size:.88rem}
+.prog i{height:12px;border-radius:999px;background:var(--bg);overflow:hidden;display:block}
+.prog i span{display:block;height:100%;border-radius:999px;background:var(--ok)}
+.prog b{text-align:right}
+@media (max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}.grid2,.grid3,.det{grid-template-columns:1fr}}
+@media (max-width:760px){.app{grid-template-columns:1fr}.side{display:none}.bar{padding:14px 16px}.buscar{display:none}.cont{padding:16px}.kpis{grid-template-columns:1fr 1fr}.tabla .ocultar{display:none}.campos{grid-template-columns:1fr}.compara{grid-template-columns:1fr}.compara>i{display:none}}
+</style>
+</head>
+<body>
+<div id="raiz"></div>
+<script>
+(() => {
+const ICON = {
+  casa:'<path d="M3.5 11 12 4l8.5 7M6 9.5V20h12V9.5"/>',
+  alerta:'<path d="M12 4 3 19.5h18L12 4Z"/><path d="M12 10v4.2M12 17v.3"/>',
+  bus:'<rect x="4" y="3.5" width="16" height="14" rx="2.5"/><path d="M4 11h16M8 17.5v2.5M16 17.5v2.5"/><circle cx="8" cy="14.3" r=".9" fill="currentColor"/><circle cx="16" cy="14.3" r=".9" fill="currentColor"/>',
+  doc:'<path d="M7 3h7l4 4v14H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M14 3v4h4M9.5 12.5h5M9.5 16h5"/>',
+  radio:'<rect x="5" y="8" width="14" height="13" rx="2"/><path d="M8 8 15 3M9 13h6M9 16.5h6"/>',
+  grafico:'<path d="M4 20V4M4 20h16M8 16v-5M12 16V8M16 16v-3"/>',
+  usuarios:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6.5 6.5 0 0 1 3.5 5.5"/>',
+  ajustes:'<circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/>',
+  campana:'<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15L6 16ZM10 20a2 2 0 0 0 4 0"/>',
+  buscar:'<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>',
+  ok:'<path d="m5.5 12.5 4 4 9-9.5"/>',
+  reloj:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+  subir:'<path d="M12 15.5V4.5M7.5 9 12 4.5 16.5 9"/><path d="M4.5 14.5v4a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5v-4"/>',
+  x:'<path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/>',
+  flecha:'<path d="M5 12h13M13 7l5 5-5 5"/>',
+  wa:'<path d="M4 20l1.3-4A8 8 0 1 1 8 18.8L4 20Z"/><path d="M9 9.5c.3 2.2 2.3 4.3 4.8 5l1.2-1.3-1.8-1-1 .6a4.5 4.5 0 0 1-2-2l.6-1-1-1.8L9 9.5Z"/>',
+  correo:'<rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="m4 7 8 6 8-6"/>',
+  nfc:'<path d="M7 7.5a6.5 6.5 0 0 1 0 9M10.5 5a10 10 0 0 1 0 14M14 3a13.5 13.5 0 0 1 0 18"/>',
+  qr:'<rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><path d="M14 14h2v2h-2zM18 18h2v2h-2zM14 18h2M18 14h2"/>',
+  lapiz:'<path d="M4.5 19.5h3.8L19 8.8 15.2 5 4.5 15.7v3.8Z"/>',
+  bajar:'<path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 19.5h14"/>',
+  ojo:'<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3"/>',
+  llave:'<circle cx="8" cy="15" r="4"/><path d="m11 12 8-8M16 7l2 2"/>',
+  pin:'<path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/>'
+};
+const ic = (n, c = 'i') => `<svg class="${c}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICON[n]}</svg>`;
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+/* ---------- Datos de demostración (ficticios) ---------- */
+const TIPOS = [
+  { k: 'licencia', t: 'Licencia de tránsito', c: 'LT', ent: 'Tarjeta de propiedad', vence: false },
+  { k: 'soat', t: 'SOAT', c: 'SOAT', ent: 'Seguros Ejemplo S.A.' },
+  { k: 'rtm', t: 'Revisión técnico-mecánica', c: 'RTM', ent: 'CDA Ejemplo' },
+  { k: 'operacion', t: 'Tarjeta de operación', c: 'TO', ent: 'Servicio público urbano' },
+  { k: 'rcc', t: 'Póliza RC contractual', c: 'RCC', ent: 'Seguros Ejemplo S.A.' },
+  { k: 'rce', t: 'Póliza RC extracontractual', c: 'RCE', ent: 'Seguros Ejemplo S.A.' },
+  { k: 'todoriesgo', t: 'Póliza todo riesgo', c: 'TR', ent: 'Seguros Ejemplo S.A.' },
+  { k: 'preventiva', t: 'Revisión preventiva', c: 'MP', ent: 'Mantenimiento' }
+];
+const HOY = new Date(); HOY.setHours(0, 0, 0, 0);
+const masDias = (n) => { const d = new Date(HOY); d.setDate(d.getDate() + n); return d; };
+const MES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+const fecha = (d) => `${d.getDate()} ${MES[d.getMonth()]} ${d.getFullYear()}`;
+let semilla = 7; const azar = () => (semilla = (semilla * 16807) % 2147483647) / 2147483647;
+const PATIOS = ['Patio Usme', 'Patio Usme', 'Patio Usme', 'Patio Yomasa'];
+const RUTAS = ['Ruta zonal 1', 'Ruta zonal 2', 'Ruta zonal 3', 'Ruta zonal 4', 'Ruta zonal 5'];
+// Casos fijos para que la demostración siempre muestre alertas reales
+const FIJOS = { 50: { rtm: 3, todoriesgo: 24, soat: 33, preventiva: 39, rcc: 109, rce: 109, operacion: 231 }, 44: { soat: -2 }, 57: { rtm: -5 }, 61: { preventiva: 1 }, 47: { soat: 6 }, 53: { rcc: 12, rce: 12 }, 59: { operacion: 19 }, 42: { todoriesgo: 9 }, 63: { rtm: 15 }, 48: { preventiva: -1 }, 55: { soat: 27 } };
+const BUSES = [];
+for (let m = 41; m <= 64; m++) {
+  const docs = TIPOS.map((T) => {
+    let n = T.vence === false ? null : Math.round(40 + azar() * 300);
+    if (FIJOS[m] && FIJOS[m][T.k] !== undefined) n = FIJOS[m][T.k];
+    return { ...T, dias: n, hasta: n === null ? null : masDias(n), num: `${T.c}-${String(m).padStart(4, '0')}-2026` };
+  });
+  BUSES.push({ movil: m, interno: 'Z90' + String(m - 20).padStart(2, '0'), placa: 'SOM ' + String(m).padStart(3, '0'), patio: PATIOS[m % 4], ruta: RUTAS[m % 5], modelo: 2017 + (m % 4), marca: m % 3 ? 'Mercedes-Benz OF 1721' : 'Chevrolet NPR Bus', docs, escaneo: Math.round(azar() * 70) });
+}
+const est = (d) => d.dias === null ? 'ok' : d.dias < 0 ? 'mal' : d.dias <= 30 ? 'ojo' : 'ok';
+const estBus = (b) => b.docs.some((d) => est(d) === 'mal') ? 'mal' : b.docs.some((d) => est(d) === 'ojo') ? 'ojo' : 'ok';
+const diasTxt = (n) => n < 0 ? `Vencido hace ${-n} día${n === -1 ? '' : 's'}` : n === 0 ? 'Vence hoy' : `Vence en ${n} día${n === 1 ? '' : 's'}`;
+const ALERTAS = BUSES.flatMap((b) => b.docs.filter((d) => est(d) !== 'ok').map((d) => ({ b, d, e: est(d) }))).sort((x, y) => x.d.dias - y.d.dias);
+const MINI = (k) => `/flota/somos/docs/${k}-t.webp`;
+
+/* ---------- Estado de la demo (cambios guardados en este navegador) ---------- */
+let cambios = []; try { cambios = JSON.parse(localStorage.getItem('somos_cambios') || '[]'); } catch (e) {}
+cambios.forEach((c) => { const b = BUSES.find((x) => x.movil === c.movil); const d = b && b.docs.find((x) => x.k === c.k); if (d) { d.dias = c.dias; d.hasta = masDias(c.dias); d.num = c.num; d.nuevo = true; } });
+
+/* ---------- PIN (demostración) ---------- */
+const raiz = document.getElementById('raiz');
+const q = new URLSearchParams(location.search);
+let dentro = q.get('k') === '2222'; try { dentro = dentro || sessionStorage.getItem('somos_ok') === '1'; } catch (e) {}
+if (!dentro) {
+  raiz.innerHTML = `<div class="pin"><form id="f"><div class="logo">SOMOS<span>U · USME</span></div><h1>Panel de la flota</h1><p>Ingrese el PIN de acceso</p>
+  <input id="p" type="password" inputmode="numeric" maxlength="4" autocomplete="off" autofocus><p class="err" id="e"></p><button>Entrar</button><small>Demostración · PIN 2222 · LEGION Studio</small></form></div>`;
+  document.getElementById('f').onsubmit = (e) => { e.preventDefault(); if (document.getElementById('p').value === '2222') { try { sessionStorage.setItem('somos_ok', '1'); } catch (x) {} location.reload(); } else document.getElementById('e').textContent = 'PIN incorrecto'; };
+  return;
+}
+
+/* ---------- Vistas ---------- */
+const nAl = ALERTAS.length, nMal = ALERTAS.filter((a) => a.e === 'mal').length, nOjo = nAl - nMal;
+const totalDocs = BUSES.length * TIPOS.length, alDia = totalDocs - nAl;
+const NAV = [['resumen', 'casa', 'Resumen'], ['alertas', 'alerta', 'Alertas', nAl], ['flota', 'bus', 'Flota'], ['novedades', 'radio', 'Novedades', 3], ['reportes', 'grafico', 'Reportes'], ['usuarios', 'usuarios', 'Usuarios'], ['ajustes', 'ajustes', 'Configuración']];
+
+const alertaHTML = ({ b, d, e }) => `<div class="al ${e}"><span class="s">${ic(e === 'mal' ? 'alerta' : 'reloj')}</span>
+  <div class="t"><b>Tarjeta ${b.movil} · Bus ${b.interno} — ${esc(d.t)}</b><small>${b.placa} · ${b.patio} · ${d.hasta ? 'Vigencia hasta ' + fecha(d.hasta) : ''}</small></div>
+  <div class="canales" title="Avisado por"><i class="on c">${ic('campana')}</i><i class="on">${ic('wa')}</i><i class="on c">${ic('correo')}</i></div>
+  <span class="d">${diasTxt(d.dias)}</span>
+  <a class="btn chico" href="#bus/${b.movil}/reemplazar/${d.k}">${ic('subir')} Renovar</a></div>`;
+
+function vResumen() {
+  const ok = alDia / totalDocs, r = 62, C = 2 * Math.PI * r;
+  const seg = [[alDia, 'var(--ok)'], [nOjo, 'var(--ojo)'], [nMal, 'var(--mal)']];
+  let acc = 0;
+  const arcos = seg.map(([v, c]) => { const l = (v / totalDocs) * C; const s = `<circle r="${r}" cx="80" cy="80" fill="none" stroke="${c}" stroke-width="20" stroke-dasharray="${l} ${C - l}" stroke-dashoffset="${-acc}" transform="rotate(-90 80 80)"/>`; acc += l; return s; }).join('');
+  const sem = [0, 0, 0, 0, 0, 0];
+  BUSES.forEach((b) => b.docs.forEach((d) => { if (d.dias !== null && d.dias >= 0 && d.dias < 90) sem[Math.floor(d.dias / 15)]++; }));
+  const mx = Math.max(...sem, 1);
+  const etq = ['0–15 días', '16–30', '31–45', '46–60', '61–75', '76–90'];
+  return `
+  <div class="kpis">
+    <div class="kpi"><small>Buses en la flota</small><b>${BUSES.length}</b><span>Todos con tarjeta NFC/QR</span></div>
+    <div class="kpi"><small>Documentos</small><b>${totalDocs}</b><span>${TIPOS.length} por bus</span></div>
+    <div class="kpi ok"><small>Al día</small><b>${alDia}</b><span>${Math.round(ok * 100)}% de la flota documental</span></div>
+    <div class="kpi ojo"><small>Por vencer</small><b>${nOjo}</b><span>En los próximos 30 días</span></div>
+    <div class="kpi mal"><small>Vencidos</small><b>${nMal}</b><span>Requieren acción hoy</span></div>
+  </div>
+  <div class="grid2">
+    <div class="card"><h2>${ic('alerta')} Alertas prioritarias<small>Avisadas por panel, WhatsApp y correo</small></h2>
+      <div class="alertas">${ALERTAS.slice(0, 5).map(alertaHTML).join('')}</div>
+      <a href="#alertas" class="btn sec chico" style="margin-top:14px">Ver las ${nAl} alertas ${ic('flecha')}</a></div>
+    <div class="card"><h2>${ic('grafico')} Estado documental</h2>
+      <div class="dona"><svg width="160" height="160" viewBox="0 0 160 160">${arcos}<text x="80" y="78" text-anchor="middle" font-size="30" font-weight="900" fill="#0E1A2B">${Math.round(ok * 100)}%</text><text x="80" y="100" text-anchor="middle" font-size="11" fill="#5A6878" font-weight="700">AL DÍA</text></svg>
+      <ul><li><i style="background:var(--ok)"></i>Vigentes<b>${alDia}</b></li><li><i style="background:var(--ojo)"></i>Por vencer<b>${nOjo}</b></li><li><i style="background:var(--mal)"></i>Vencidos<b>${nMal}</b></li></ul></div>
+      <h2 style="margin-top:22px">${ic('reloj')} Vencimientos próximos 90 días</h2>
+      <div class="barras">${sem.map((v, i) => `<div><b>${v}</b><i class="${i === 0 ? 'mal' : i === 1 ? 'ojo' : ''}" style="height:${Math.max(6, (v / mx) * 120)}px"></i><small>${etq[i]}</small></div>`).join('')}</div>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="card"><h2>${ic('nfc')} Actividad de las tarjetas<small>Hoy</small></h2>
+      <ul class="actividad">
+        <li><i>${ic('qr')}</i><div><b>Tarjeta 50 · Z9030 escaneada</b><small>Control de tránsito · Av. Boyacá con Calle 91 Sur · 8:14 a. m.</small></div></li>
+        <li><i class="v">${ic('subir')}</i><div><b>Póliza todo riesgo actualizada · Tarjeta 42</b><small>Por Documentación · 7:52 a. m. · la tarjeta ya muestra la nueva versión</small></div></li>
+        <li><i class="n">${ic('radio')}</i><div><b>Novedad reportada · Tarjeta 57 · Z9037</b><small>Varada por falla mecánica · Central de novedades · 7:31 a. m.</small></div></li>
+        <li><i>${ic('nfc')}</i><div><b>Tarjeta 61 · Z9041 leída por NFC</b><small>Inspección de patio · Patio Usme · 6:05 a. m.</small></div></li>
+      </ul></div>
+    <div class="card"><h2>${ic('bus')} Buses con documentos pendientes</h2>
+      <table class="tabla" style="margin-top:8px"><tbody>${BUSES.filter((b) => estBus(b) !== 'ok').slice(0, 6).map((b) => `<tr class="fila" onclick="location.hash='bus/${b.movil}'"><td><div class="mov"><i>${b.movil}</i><div><b>${b.interno}</b><small>${b.placa}</small></div></div></td><td><span class="est ${estBus(b)}">${estBus(b) === 'mal' ? 'Vencido' : 'Por vencer'}</span></td></tr>`).join('')}</tbody></table></div>
+  </div>`;
+}
+
+function vAlertas() {
+  return `<div class="filtros"><span class="chip on">Todas · ${nAl}</span><span class="chip"><i style="background:var(--mal)"></i>Vencidas · ${nMal}</span><span class="chip"><i style="background:var(--ojo)"></i>Por vencer · ${nOjo}</span><span class="chip">SOAT</span><span class="chip">Técnico-mecánica</span><span class="chip">Pólizas</span></div>
+  <div class="card"><h2>${ic('campana')} Alertas automáticas<small>Avisos a 30, 15, 7, 3 y 1 día · panel, WhatsApp y correo</small></h2>
+  <div class="alertas">${ALERTAS.map(alertaHTML).join('')}</div></div>`;
+}
+
+function vFlota() {
+  return `<div class="filtros"><span class="chip on">Toda la flota · ${BUSES.length}</span><span class="chip"><i style="background:var(--ok)"></i>Al día · ${BUSES.filter((b) => estBus(b) === 'ok').length}</span><span class="chip"><i style="background:var(--ojo)"></i>Por vencer · ${BUSES.filter((b) => estBus(b) === 'ojo').length}</span><span class="chip"><i style="background:var(--mal)"></i>Con vencidos · ${BUSES.filter((b) => estBus(b) === 'mal').length}</span><span style="margin-left:auto"></span><a class="btn sec chico">${ic('subir')} Carga masiva (Excel)</a><a class="btn chico">${ic('bus')} Agregar bus</a></div>
+  <div class="card" style="padding:6px 8px;overflow:auto"><table class="tabla"><thead><tr><th>Móvil</th><th>Placa</th><th class="ocultar">Patio</th><th>Documentos</th><th>Estado</th><th class="ocultar">Último escaneo</th></tr></thead><tbody>
+  ${BUSES.map((b) => `<tr class="fila" onclick="location.hash='bus/${b.movil}'"><td><div class="mov"><i>${b.movil}</i><div><b>${b.interno}</b><small>${b.ruta}</small></div></div></td><td><span class="placa">${b.placa}</span></td><td class="ocultar">${b.patio}</td>
+  <td><div class="puntos">${b.docs.map((d) => `<span class="${est(d)}" title="${esc(d.t)}">${d.c}</span>`).join('')}</div></td>
+  <td><span class="est ${estBus(b)}">${estBus(b) === 'ok' ? 'Al día' : estBus(b) === 'ojo' ? 'Por vencer' : 'Vencido'}</span></td><td class="ocultar" style="color:var(--mu)">Hace ${b.escaneo < 60 ? b.escaneo + ' min' : Math.round(b.escaneo / 24) + ' h'}</td></tr>`).join('')}
+  </tbody></table></div>`;
+}
+
+function vBus(m, accion, k) {
+  const b = BUSES.find((x) => x.movil === +m); if (!b) return vFlota();
+  const docs = b.docs.map((d) => `<div class="doc ${d.nuevo ? 'nuevo' : ''}"><span class="mini" style="background-image:url('${MINI(d.k)}')"></span>
+    <div class="t"><b>${esc(d.t)}</b><small>${esc(d.ent)} · ${d.num}</small></div>
+    <div class="fecha">${d.hasta ? `<b>${fecha(d.hasta)}</b><span class="est ${est(d)}" style="margin-top:4px">${est(d) === 'ok' ? 'Vigente' : diasTxt(d.dias)}</span>` : '<span class="est ok">Sin vencimiento</span>'}</div>
+    <a class="btn ${est(d) === 'ok' ? 'sec' : ''} chico" href="#bus/${b.movil}/reemplazar/${d.k}">${ic('subir')} ${est(d) === 'ok' ? 'Reemplazar' : 'Renovar'}</a></div>`).join('');
+  let modal = '';
+  const d = k && b.docs.find((x) => x.k === k);
+  if (accion === 'reemplazar' && d) {
+    const nueva = masDias(365 + (d.dias > 0 ? d.dias : 0));
+    modal = `<div class="velo" id="velo"><div class="modal">
+      <header>${ic('subir')}<div><b>Renovar ${esc(d.t)}</b><small>Tarjeta ${b.movil} · Bus ${b.interno} · ${b.placa}</small></div><button onclick="location.hash='bus/${b.movil}'">${ic('x')}</button></header>
+      <div class="cuerpo">
+        <div class="compara">
+          <div class="lado viejo"><span class="mini" style="background-image:url('${MINI(d.k)}')"></span><div><b>${d.num}</b><small>Hasta ${d.hasta ? fecha(d.hasta) : '—'} · se archiva</small></div></div>
+          ${ic('flecha')}
+          <div class="lado"><span class="mini" style="background-image:url('${MINI(d.k)}')"></span><div><b>${d.c}-${String(b.movil).padStart(4, '0')}-2027</b><small>Hasta ${fecha(nueva)} · nueva</small></div></div>
+        </div>
+        <label class="soltar listo" id="soltar">${ic('ok')}<b>${d.k}_${b.placa.replace(' ', '')}_2027.pdf</b><span>PDF cargado · 1 página · 214 KB</span></label>
+        <div class="campos"><label>Número<input value="${d.c}-${String(b.movil).padStart(4, '0')}-2027"></label><label>Vigente desde<input value="${fecha(d.hasta && d.dias > 0 ? d.hasta : HOY)}"></label><label>Vigente hasta<input value="${fecha(nueva)}"></label></div>
+      </div>
+      <footer><a class="btn sec" href="#bus/${b.movil}">Cancelar</a><a class="btn" href="#bus/${b.movil}/listo/${d.k}" id="publicar">${ic('nfc')} Publicar en la tarjeta</a></footer>
+    </div></div>`;
+  }
+  if (accion === 'listo' && d) {
+    if (!d.nuevo) { d.dias = 365 + (d.dias > 0 ? d.dias : 0); d.hasta = masDias(d.dias); d.num = `${d.c}-${String(b.movil).padStart(4, '0')}-2027`; d.nuevo = true; cambios.push({ movil: b.movil, k: d.k, dias: d.dias, num: d.num }); try { localStorage.setItem('somos_cambios', JSON.stringify(cambios)); } catch (e) {} }
+    modal = `<div class="velo" id="velo"><div class="modal"><div class="exito"><span class="ok">${ic('ok')}</span>
+      <h3>¡Listo! La tarjeta ${b.movil} ya está actualizada</h3>
+      <p>Quien escanee el bus <b>${b.interno}</b> ahora ve la nueva ${esc(d.t.toLowerCase())}, vigente hasta <b>${fecha(d.hasta)}</b>.<br>La versión anterior quedó archivada en el historial.</p>
+      <div class="pasos"><span>${ic('ok')} Tarjeta NFC/QR actualizada</span><span>${ic('ok')} Alerta cerrada</span><span>${ic('ok')} Registrado en historial</span></div>
+      <p style="margin-top:22px"><a class="btn" href="#bus/${b.movil}">Volver al bus</a></p></div></div></div>`;
+  }
+  return `
+  <div class="det">
+    <div class="bus-card">
+      <div class="foto"><div><small>MÓVIL</small><b>${b.movil}</b></div></div>
+      <div class="datos"><div><small>No. interno</small><b>${b.interno}</b></div><div><small>Placa</small><b><span class="placa">${b.placa}</span></b></div><div><small>Marca</small><b>${b.marca}</b></div><div><small>Modelo</small><b>${b.modelo}</b></div><div><small>Patio</small><b>${b.patio}</b></div><div><small>Ruta</small><b>${b.ruta}</b></div></div>
+      <div class="tarjeta-mini"><img src="/flota/somos/tarjeta-frente.webp" alt=""><div><b>Tarjeta ${b.movil} · NFC + QR</b><small>Enlace único de este bus</small><a href="/somos-z9030/" target="_blank">Ver lo que ve el agente ${ic('flecha')}</a></div></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div class="card"><h2>${ic('doc')} Documentos del bus<small>${b.docs.filter((x) => est(x) === 'ok').length} de ${b.docs.length} al día</small></h2><div class="docs">${docs}</div></div>
+      <div class="card"><h2>${ic('reloj')} Historial</h2><ul class="hist">
+        ${b.docs.filter((x) => x.nuevo).map((x) => `<li><b>${esc(x.t)} renovada</b><small>Documentación · hoy · versión anterior archivada</small></li>`).join('')}
+        <li><b>Tarjeta escaneada por control de tránsito</b><small>Av. Boyacá con Calle 91 Sur · hoy 8:14 a. m.</small></li>
+        <li><b>Alerta enviada: ${esc(b.docs.find((x) => est(x) !== 'ok')?.t || 'SOAT')} por vencer</b><small>Panel, WhatsApp de Documentación y correo · ayer 6:00 a. m.</small></li>
+        <li><b>Revisión preventiva cargada</b><small>Mantenimiento · hace 3 semanas</small></li>
+      </ul></div>
+    </div>
+  </div>${modal}`;
+}
+
+function vNovedades() {
+  const N = [
+    ['r', 'alerta', 'Varada por falla mecánica', 'Tarjeta 57 · Z9037 · SOM 057', 'El conductor reportó desde la tarjeta: “se apagó el motor en la Av. Caracas con Calle 75 Sur”. Se envió grúa.', '7:31 a. m.', 'En atención', 'a'],
+    ['', 'radio', 'Incidente leve con un tercero', 'Tarjeta 44 · Z9024 · SOM 044', 'Roce con un particular en el paradero. Se adjuntaron fotos y datos del otro vehículo.', 'Ayer 5:48 p. m.', 'Cerrado', ''],
+    ['b', 'bus', 'Control de tránsito superado', 'Tarjeta 50 · Z9030 · SOM 050', 'El agente revisó los documentos escaneando la tarjeta. Sin novedad.', 'Hoy 8:14 a. m.', 'Sin novedad', '']
+  ];
+  return `<div class="card"><h2>${ic('radio')} Central de novedades<small>Reportes enviados desde la tarjeta de cada bus</small></h2>
+  <div style="display:flex;flex-direction:column;gap:10px;margin-top:14px">${N.map(([s, i, t, b, p, h, e, a]) => `<div class="nov"><span class="s ${s}">${ic(i)}</span><div><b>${t}</b><small style="color:var(--c);font-weight:700;font-size:.8rem">${b}</small><p>${p}</p><span class="tag ${a}">${e}</span></div><span class="h">${h}</span></div>`).join('')}</div></div>`;
+}
+
+function vReportes() {
+  const porTipo = TIPOS.map((T) => { const n = BUSES.filter((b) => est(b.docs.find((d) => d.k === T.k)) === 'ok').length; return [T.t, n]; });
+  const meses = Array.from({ length: 6 }, (_, i) => { const d = new Date(HOY); d.setMonth(d.getMonth() + i); return [MES[d.getMonth()], BUSES.reduce((s, b) => s + b.docs.filter((x) => x.hasta && x.hasta.getMonth() === d.getMonth() && x.hasta.getFullYear() === d.getFullYear()).length, 0)]; });
+  const mx = Math.max(...meses.map((x) => x[1]), 1);
+  return `<div class="grid2"><div class="card"><h2>${ic('grafico')} Cumplimiento por documento<small>${BUSES.length} buses</small></h2>
+  <div class="prog">${porTipo.map(([t, n]) => `<div><span>${t}</span><i><span style="width:${(n / BUSES.length) * 100}%;background:${n === BUSES.length ? 'var(--ok)' : n / BUSES.length > .9 ? 'var(--c)' : 'var(--ojo)'}"></span></i><b>${Math.round((n / BUSES.length) * 100)}%</b></div>`).join('')}</div></div>
+  <div class="card"><h2>${ic('reloj')} Renovaciones por mes</h2><div class="barras">${meses.map(([m, v], i) => `<div><b>${v}</b><i class="${i === 0 ? 'ojo' : ''}" style="height:${Math.max(6, (v / mx) * 120)}px"></i><small>${m}</small></div>`).join('')}</div>
+  <a class="btn sec chico" style="margin-top:16px">${ic('bajar')} Descargar informe (Excel / PDF)</a></div></div>`;
+}
+
+function vUsuarios() {
+  const U = [['Gerencia', 'Ve todo · recibe el resumen semanal', 'G'], ['Documentación', 'Carga y renueva documentos · recibe alertas', 'D'], ['Jurídico / pólizas', 'Pólizas RCC, RCE y todo riesgo', 'J'], ['Patio Usme', 'Consulta y reporta novedades', 'P'], ['Mantenimiento', 'Revisión preventiva y técnico-mecánica', 'M']];
+  return `<div class="card"><h2>${ic('usuarios')} Usuarios y permisos</h2><div style="display:flex;flex-direction:column;gap:10px;margin-top:14px">${U.map(([t, s, l]) => `<div class="nov"><span class="s b" style="font-weight:900">${l}</span><div><b>${t}</b><p>${s}</p></div><span class="h"><span class="tag">Activo</span></span></div>`).join('')}</div></div>`;
+}
+
+const TIT = { resumen: ['Resumen de la flota', 'Estado documental de todos los buses en tiempo real'], alertas: ['Alertas', 'Vencimientos que necesitan atención'], flota: ['Flota', 'Cada bus con su tarjeta NFC/QR y sus documentos'], novedades: ['Novedades', 'Lo que reportan los buses desde su tarjeta'], reportes: ['Reportes', 'Cumplimiento y renovaciones'], usuarios: ['Usuarios', 'Quién ve y quién edita'], ajustes: ['Configuración', 'Alertas, canales y marca'] };
+
+function pintar() {
+  const [v, m, accion, k] = (location.hash.replace('#', '') || 'resumen').split('/');
+  const vista = TIT[v] || v === 'bus' ? v : 'resumen';
+  const bus = vista === 'bus' && BUSES.find((x) => x.movil === +m);
+  const [t, s] = bus ? [`Móvil ${bus.movil} · Bus ${bus.interno}`, `${bus.placa} · ${bus.patio} · ${bus.ruta}`] : TIT[vista] || TIT.resumen;
+  const cuerpo = vista === 'alertas' ? vAlertas() : vista === 'flota' ? vFlota() : vista === 'bus' ? vBus(m, accion, k) : vista === 'novedades' ? vNovedades() : vista === 'reportes' ? vReportes() : vista === 'usuarios' ? vUsuarios() : vista === 'ajustes' ? vAjustes() : vResumen();
+  raiz.innerHTML = `<div class="app">
+    <aside class="side"><div class="marca"><b>SOMOS</b><small>U · USME</small></div>
+      <nav class="nav">${NAV.map(([id, i, n, c]) => `<a href="#${id}" class="${(vista === id || (vista === 'bus' && id === 'flota')) ? 'on' : ''}">${ic(i)} ${n}${c ? `<em>${c}</em>` : ''}</a>`).join('')}</nav>
+      <div class="yo"><i>D</i><div><b>Documentación</b><small>Patio Usme</small></div></div>
+      <div class="leg">CARPETA VIAL FLOTAS · LEGION STUDIO</div></aside>
+    <div class="main">
+      <header class="bar"><div><h1>${t}</h1><div class="sub">${s}</div></div>
+        <div class="der"><label class="buscar">${ic('buscar')}<input placeholder="Buscar móvil, placa o interno…"></label><a class="campana" href="#alertas">${ic('campana')}<em>${nAl}</em></a></div></header>
+      <section class="cont">${cuerpo}</section>
+    </div></div>`;
+  window.scrollTo(0, 0);
+}
+function vAjustes() {
+  return `<div class="grid2"><div class="card"><h2>${ic('campana')} Cuándo avisar</h2><div class="filtros" style="margin-top:14px">${['30 días', '15 días', '7 días', '3 días', '1 día', 'El día del vencimiento'].map((x) => `<span class="chip on">${x}</span>`).join('')}</div>
+  <h2 style="margin-top:22px">${ic('wa')} Por dónde avisar</h2><div class="filtros" style="margin-top:14px"><span class="chip on">${ic('campana')} Panel</span><span class="chip on">${ic('wa')} WhatsApp</span><span class="chip on">${ic('correo')} Correo</span></div></div>
+  <div class="card"><h2>${ic('ajustes')} Marca de la empresa</h2><p style="color:var(--mu);margin-top:10px;line-height:1.5">Las tarjetas, la página de cada bus y este panel usan el logo y los colores de SOMOS U. Dominio propio opcional.</p><div class="filtros" style="margin-top:14px"><span class="chip"><i style="background:#1F4FBF"></i>Azul SOMOS</span><span class="chip"><i style="background:#F2C200"></i>Amarillo</span><span class="chip"><i style="background:#0B1730"></i>Azul noche</span></div></div></div>`;
+}
+window.addEventListener('hashchange', pintar);
+pintar();
+})();
+</script>
+</body>
+</html>
