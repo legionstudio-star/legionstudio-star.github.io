@@ -41,6 +41,8 @@
     raiz.innerHTML = `<div class="cargando"><p style="text-align:center;padding:24px">Este enlace no existe o ya no está activo.<br><a href="/" style="text-decoration:underline">Ir a LEGION Studio</a></p></div>`;
     return;
   }
+  // Enlace que solo reenvía (p. ej. una tarjeta impresa que ahora debe abrir otra página)
+  if (N.ir) { location.replace(N.ir); return; }
   document.title = N.nombre;
 
   // QR de demostración con varios negocios: el vendedor escoge cuál mostrar (Restaurante / Bar / Heladería…)
