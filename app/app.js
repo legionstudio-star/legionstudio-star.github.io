@@ -43,6 +43,47 @@
   }
   document.title = N.nombre;
 
+  // QR de demostración con varios negocios: el vendedor escoge cuál mostrar (Restaurante / Bar / Heladería…)
+  if (N.tipo === "selector") {
+    const e = (s) => String(s || "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    const flecha = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+    document.body.style.background = "#0A0A0C";
+    const meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.content = "#0A0A0C";
+    raiz.innerHTML = `
+      <style>
+        .sel{min-height:100svh;color:#fff;display:flex;flex-direction:column;max-width:560px;margin:0 auto;padding:22px 16px 26px;gap:12px}
+        .sel-top{display:flex;align-items:center;gap:12px;padding:4px 2px 8px}
+        .sel-top img{width:42px;height:42px;border-radius:12px;object-fit:contain;background:#111}
+        .sel-top b{display:block;font-size:1.3rem;letter-spacing:-.02em;line-height:1.1}
+        .sel-top small{color:rgba(255,255,255,.55);font-size:.82rem}
+        .sel-op{position:relative;flex:1;min-height:150px;border-radius:24px;overflow:hidden;display:flex;align-items:flex-end;padding:18px;color:#fff;text-decoration:none;isolation:isolate;box-shadow:0 20px 40px -20px rgba(0,0,0,.9);opacity:0;transform:translateY(18px);animation:sel-in .6s cubic-bezier(.2,.8,.2,1) forwards}
+        .sel-op img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform .5s;animation:sel-zoom 9s ease-in-out infinite alternate}
+        .sel-op::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,.05) 25%,rgba(0,0,0,.78))}
+        .sel-op::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 1.5px var(--k);opacity:.75;pointer-events:none}
+        .sel-op:active img{transform:scale(1.08)}
+        .sel-op span{flex:1}
+        .sel-op em{display:inline-block;font-style:normal;font-size:.68rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;background:var(--k);color:#111;padding:4px 10px;border-radius:999px;margin-bottom:7px}
+        .sel-op b{display:block;font-size:1.65rem;line-height:1.05;letter-spacing:-.02em}
+        .sel-op small{display:block;color:rgba(255,255,255,.78);font-size:.86rem;margin-top:3px}
+        .sel-op i{flex:none;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:var(--k);color:#111}
+        .sel-pie{text-align:center;color:rgba(255,255,255,.4);font-size:.75rem;padding-top:6px}
+        @keyframes sel-in{to{opacity:1;transform:none}}
+        @keyframes sel-zoom{from{transform:scale(1)}to{transform:scale(1.1)}}
+      </style>
+      <main class="sel">
+        <div class="sel-top"><img src="${e(N.logo || "/marca/logo-legion.png")}" alt=""><div><b>${e(N.titulo || "¿Qué negocio quieres ver?")}</b><small>${e(N.subtitulo || "Toca una opción")}</small></div></div>
+        ${(N.opciones || []).map((o, i) => `
+          <a class="sel-op" href="/${encodeURIComponent(o.slug)}/" style="--k:${e(o.color || "#F5B942")};animation-delay:${i * 0.12}s">
+            <img src="${e(o.foto)}" alt="">
+            <span><em>${e(o.t)}</em><b>${e(o.n)}</b>${o.s ? `<small>${e(o.s)}</small>` : ""}</span>
+            <i>${flecha}</i>
+          </a>`).join("")}
+        <div class="sel-pie">Tecnología LEGION Studio Digital</div>
+      </main>`;
+    document.title = N.nombre || "LEGION";
+    return;
+  }
+
   // Portafolio de Legionario (chip NFC de la tarjeta)
   if (N.tipo === "legionario") {
     await new Promise((ok, mal) => { const s = document.createElement("script"); s.src = "/app/legionario.js?v=2"; s.onload = ok; s.onerror = mal; document.head.appendChild(s); });
@@ -196,7 +237,7 @@
         </div>
         <nav class="hv-acc">
           ${(() => { const dx = (N.extras || []).filter((b) => b && b.destacado && b.url); window.__hvx = dx; return !tieneMenu && dx[0] ? `<a class="hv-b dest" href="${dx[0].url}">${ic(SVG[dx[0].i] ? dx[0].i : "flecha")}<span><b>${esc(dx[0].t)}</b><small>${esc(dx[0].s || "")}</small></span>${ic("flecha", "icon fl")}</a>` : ""; })()}
-          ${tieneMenu ? `<button type="button" class="hv-b dest" data-accion="menu">${ic(N.menu.vista === "3d" ? "cubo" : "menu")}<span><b>${N.menu.vista === "3d" ? "Carta 3D" : "Ver menú"}</b><small>${N.menu.vista === "3d" ? "Desliza y mira cada bebida" : "Fotos, precios y pedido"}</small></span>${ic("flecha", "icon fl")}</button>` : ""}
+          ${tieneMenu ? `<button type="button" class="hv-b dest" data-accion="menu">${ic(N.menu.vista === "3d" || N.menu.vista === "vitrina" ? "cubo" : "menu")}<span><b>${N.menu.vista === "vitrina" ? "Vitrina 3D" : N.menu.vista === "3d" ? "Carta 3D" : "Ver menú"}</b><small>${N.menu.vista === "vitrina" ? "Desliza y antójate de todo" : N.menu.vista === "3d" ? "Desliza y mira cada bebida" : "Fotos, precios y pedido"}</small></span>${ic("flecha", "icon fl")}</button>` : ""}
           <a class="hv-b" href="${N.google ? "#google" : N.resenas}" ${N.google ? "" : 'target="_blank" rel="noopener"'}>${ic("estrella")}<span><b>Reseñas</b><small>${N.google ? String((+N.google.nota).toFixed(1)).replace(".", ",") + " en Google" : "Califícanos"}</small></span></a>
           ${!tieneMenu && window.__hvx[1] ? `<a class="hv-b" href="${window.__hvx[1].url}">${ic(SVG[window.__hvx[1].i] ? window.__hvx[1].i : "flecha")}<span><b>${esc(window.__hvx[1].t)}</b><small>${esc(window.__hvx[1].s || "")}</small></span></a>` : N.premio ? `<button type="button" class="hv-b" data-accion="premio">${ic("regalo")}<span><b>Premio</b><small>Gira y gana</small></span></button>` : N.mapa ? `<a class="hv-b" href="#google">${ic("pin")}<span><b>Ubicación</b><small>Cómo llegar</small></span></a>` : ""}
           ${N.whatsapp ? `<a class="hv-b wa" href="${wa(`Hola ${N.nombre}, vengo de su página.`)}" target="_blank" rel="noopener">${ic("wa")}<span><b>WhatsApp</b><small>Escríbenos</small></span></a>` : ""}
@@ -466,21 +507,35 @@
     Object.keys(carrito).forEach((k) => { if (!ITEMS[k] || !(carrito[k] > 0)) delete carrito[k]; });
 
     const mesaQR = MESA;
-    const catalogo = M.vista === "catalogo", vista3d = M.vista === "3d";
+    const catalogo = M.vista === "catalogo", vitrina = M.vista === "vitrina", vista3d = M.vista === "3d" || vitrina;
+    // Vitrina: los destacados (dest:true) o el primero de cada categoría
+    const DEST = [];
+    M.categorias.forEach((c, i) => c.items.forEach((it, j) => it.dest && DEST.push(`${i}-${j}`)));
+    if (vitrina && !DEST.length) M.categorias.forEach((c, i) => c.items.length && DEST.push(`${i}-0`));
     const fotosDe = (it) => [it.foto, ...(it.fotos || [])].filter(Boolean);
 
     document.body.insertAdjacentHTML("beforeend", `
-      <div class="hoja" id="h-menu" role="dialog" aria-modal="true" aria-label="Menú">
+      <div class="hoja${vitrina ? " vitrina" : ""}" id="h-menu" role="dialog" aria-modal="true" aria-label="Menú">
         <div class="hoja-top"><button class="btn-icono" type="button" data-volver aria-label="Volver">${ic("atras")}</button><h2>Menú · ${esc(N.nombre)}</h2></div>
         <div class="hoja-cuerpo" id="menu-cuerpo">
-          <nav class="cats" id="cats">${M.categorias.map((c, i) => `<button type="button" data-cat="${i}" class="${i === 0 ? "on" : ""}">${esc(c.nombre)}</button>`).join("")}</nav>
+          ${vitrina ? `<section class="vt" id="vt" aria-label="Los favoritos">
+            <div class="vt-pista" id="vt-pista">${DEST.map((k) => { const it = ITEMS[k], f = fotosDe(it)[0]; return `
+              <article class="vt-slide" data-ver="${k}">
+                <div class="vt-fondo" style="background-image:url('${f}')"></div>
+                <div class="vt-foto"><img src="${f}" alt="" draggable="false"><i class="vt-luz"></i></div>
+                <div class="vt-txt">${it.tag ? `<span class="tag">${esc(it.tag)}</span>` : ""}<h3>${esc(it.n)}</h3><span class="precio">${pesos(it.p)}</span>
+                ${carritoOn ? `<div class="acc" data-id="${k}"></div>` : ""}</div>
+              </article>`; }).join("")}</div>
+            <div class="vt-puntos" id="vt-puntos">${DEST.map((_, i) => `<i class="${i ? "" : "on"}"></i>`).join("")}</div>
+          </section>` : ""}
+          <nav class="cats" id="cats">${M.categorias.map((c, i) => `<button type="button" data-cat="${i}" class="${i === 0 ? "on" : ""}">${vitrina && c.items[0] && fotosDe(c.items[0])[0] ? `<img src="${fotosDe(c.items[0])[0]}" alt="">` : ""}${esc(c.nombre)}</button>`).join("")}</nav>
           <div class="hoja-int">
             ${mesaQR && carritoOn ? `<div class="aviso-mesa">${ic("plato")} Estás en la mesa ${mesaQR}. Tu pedido llegará a tu mesa.</div>` : ""}
             ${M.categorias.map((c, i) => `
               <h3 class="cat-titulo" id="cat-${i}">${esc(c.nombre)}</h3>
               ${vista3d ? `<div class="c3d"><div class="c3d-pista">${c.items.map((it, j) => `
                 <article class="c3d-item" data-ver="${i}-${j}">
-                  <div class="c3d-foto">${fotosDe(it)[0] ? `<img src="${fotosDe(it)[0]}" alt="" loading="lazy" draggable="false">` : `<span>${ic("plato")}</span>`}${it.tag ? `<span class="tag">${esc(it.tag)}</span>` : ""}</div>
+                  <div class="c3d-foto">${fotosDe(it)[0] ? `<img src="${fotosDe(it)[0]}" alt="" loading="lazy" draggable="false">` : `<span>${ic("plato")}</span>`}${it.tag ? `<span class="tag">${esc(it.tag)}</span>` : ""}${vitrina ? `<span class="vt-precio">${pesos(it.p)}</span><i class="vt-luz"></i>` : ""}</div>
                   <div class="c3d-txt"><h3>${esc(it.n)}</h3>${it.d ? `<p>${esc(it.d)}</p>` : ""}<span class="precio">${pesos(it.p)}</span>
                   ${carritoOn ? `<div class="acc" data-id="${i}-${j}"></div>` : ""}</div>
                 </article>`).join("")}</div></div>` : catalogo ? `<div class="cg">${c.items.map((it, j) => `
@@ -578,6 +633,40 @@
         });
       };
       pistas.forEach((p) => p.addEventListener("scroll", () => requestAnimationFrame(() => girar(p)), { passive: true }));
+      if (vitrina) {
+        // Color de cada foto (promedio pesado por saturación) para pintar el ambiente detrás del producto
+        const colorDe = (img) => new Promise((ok) => {
+          const hacer = () => { try {
+            const cv = document.createElement("canvas"); cv.width = cv.height = 12; const cx = cv.getContext("2d");
+            const W = img.naturalWidth, H = img.naturalHeight; cx.drawImage(img, W * .25, H * .25, W * .5, H * .5, 0, 0, 12, 12); const d = cx.getImageData(0, 0, 12, 12).data; let r = 0, g = 0, b = 0, n = 0;
+            for (let i = 0; i < d.length; i += 4) { const sat = Math.max(d[i], d[i + 1], d[i + 2]) - Math.min(d[i], d[i + 1], d[i + 2]), w = sat * sat + 20; r += d[i] * w; g += d[i + 1] * w; b += d[i + 2] * w; n += w; }
+            ok(`rgb(${Math.round(r / n)},${Math.round(g / n)},${Math.round(b / n)})`); } catch (e) { ok(null); } };
+          img.complete && img.naturalWidth ? hacer() : img.addEventListener("load", hacer, { once: true });
+        });
+        hMenu.querySelectorAll(".c3d-item").forEach((el) => { const im = el.querySelector("img"); if (im) colorDe(im).then((c) => c && el.style.setProperty("--ac", c)); });
+        const amb = (p) => { const c = p.querySelector(".c3d-item.centro"); const v = c && c.style.getPropertyValue("--ac"); if (v) p.parentElement.style.setProperty("--amb", v); };
+        pistas.forEach((p) => p.addEventListener("scroll", () => requestAnimationFrame(() => amb(p)), { passive: true }));
+        addEventListener("hashchange", () => setTimeout(() => pistas.forEach(amb), 700)); setTimeout(() => pistas.forEach(amb), 900);
+
+        // Escaparate de favoritos: pasa solo cada 3.8 s y se detiene si el cliente lo toca
+        const vp = $("#vt-pista"), vpts = $("#vt-puntos");
+        if (vp) {
+          let quieto = 0;
+          const slides = [...vp.children];
+          const idx = () => Math.round(vp.scrollLeft / vp.clientWidth);
+          const mover = () => slides.forEach((s) => {
+            const d = (s.offsetLeft - vp.scrollLeft) / vp.clientWidth, f = s.querySelector(".vt-foto");
+            f.style.transform = `perspective(1000px) rotateY(${(-d * 35).toFixed(1)}deg) translateX(${(d * 30).toFixed(1)}px) scale(${(1 - Math.min(Math.abs(d), 1) * .18).toFixed(3)})`;
+          });
+          vp.addEventListener("scroll", () => requestAnimationFrame(() => { mover(); vpts.querySelectorAll("i").forEach((p, j) => p.classList.toggle("on", j === idx())); }), { passive: true });
+          ["pointerdown", "touchstart", "wheel"].forEach((ev) => vp.addEventListener(ev, () => (quieto = Date.now() + 7000), { passive: true }));
+          setInterval(() => {
+            if (!hMenu.classList.contains("abierta") || Date.now() < quieto || document.hidden || $("#m-detalle").classList.contains("abierta")) return;
+            vp.scrollTo({ left: ((idx() + 1) % slides.length) * vp.clientWidth, behavior: "smooth" });
+          }, 3800);
+          setTimeout(mover, 80); addEventListener("hashchange", () => setTimeout(mover, 80));
+        }
+      }
       const todas = () => pistas.forEach(girar);
       addEventListener("resize", todas); addEventListener("hashchange", () => setTimeout(todas, 80)); setTimeout(todas, 80);
     }
