@@ -192,10 +192,11 @@
           ${N.eslogan ? `<p>${esc(N.eslogan)}</p>` : ""}
         </div>
         <nav class="hv-acc">
+          ${(() => { const dx = (N.extras || []).filter((b) => b && b.destacado && b.url); window.__hvx = dx; return !tieneMenu && dx[0] ? `<a class="hv-b dest" href="${dx[0].url}">${ic(SVG[dx[0].i] ? dx[0].i : "flecha")}<span><b>${esc(dx[0].t)}</b><small>${esc(dx[0].s || "")}</small></span>${ic("flecha", "icon fl")}</a>` : ""; })()}
           ${tieneMenu ? `<button type="button" class="hv-b dest" data-accion="menu">${ic(N.menu.vista === "3d" ? "cubo" : "menu")}<span><b>${N.menu.vista === "3d" ? "Carta 3D" : "Ver menú"}</b><small>${N.menu.vista === "3d" ? "Desliza y mira cada bebida" : "Fotos, precios y pedido"}</small></span>${ic("flecha", "icon fl")}</button>` : ""}
           <a class="hv-b" href="${N.google ? "#google" : N.resenas}" ${N.google ? "" : 'target="_blank" rel="noopener"'}>${ic("estrella")}<span><b>Reseñas</b><small>${N.google ? String((+N.google.nota).toFixed(1)).replace(".", ",") + " en Google" : "Califícanos"}</small></span></a>
-          ${N.premio ? `<button type="button" class="hv-b" data-accion="premio">${ic("regalo")}<span><b>Premio</b><small>Gira y gana</small></span></button>` : N.mapa ? `<a class="hv-b" href="#google">${ic("pin")}<span><b>Ubicación</b><small>Cómo llegar</small></span></a>` : ""}
-          <a class="hv-b wa" href="${wa(`Hola ${N.nombre}, vengo de su página.`)}" target="_blank" rel="noopener">${ic("wa")}<span><b>WhatsApp</b><small>Escríbenos</small></span></a>
+          ${!tieneMenu && window.__hvx[1] ? `<a class="hv-b" href="${window.__hvx[1].url}">${ic(SVG[window.__hvx[1].i] ? window.__hvx[1].i : "flecha")}<span><b>${esc(window.__hvx[1].t)}</b><small>${esc(window.__hvx[1].s || "")}</small></span></a>` : N.premio ? `<button type="button" class="hv-b" data-accion="premio">${ic("regalo")}<span><b>Premio</b><small>Gira y gana</small></span></button>` : N.mapa ? `<a class="hv-b" href="#google">${ic("pin")}<span><b>Ubicación</b><small>Cómo llegar</small></span></a>` : ""}
+          ${N.whatsapp ? `<a class="hv-b wa" href="${wa(`Hola ${N.nombre}, vengo de su página.`)}" target="_blank" rel="noopener">${ic("wa")}<span><b>WhatsApp</b><small>Escríbenos</small></span></a>` : ""}
         </nav>
       </header>` : `
       <div class="portada">${N.portada ? `<img src="${N.portada}" alt="">` : ""}</div>`}

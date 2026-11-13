@@ -481,3 +481,4 @@ body.vial { background: #0B0D10; color: #F2F4F7; }
 .pg-copiar .icon { width: 16px; height: 16px; }
 .pg-copiar.ok { border-color: #25D366; color: #25D366; }
 .pg-nota { font-size: .78rem; color: var(--gris); margin-top: 6px; }
+.hv-acc { display: flex; flex-wrap: wrap; } .hv-acc .hv-b { flex: 1 1 0; } .hv-acc .hv-b.dest { flex: 1 1 100%; }
