@@ -2,15 +2,20 @@
 (() => {
   const { A, BARBEROS, SERVICIOS, esc, pesos, nombre1, iniciales, dias, fecha, I, SV, sellos, toast, confeti, ls } = LK;
   const $app = document.getElementById("app");
+  // Dentro del panel de barberos de Look (iframe): token y barbero llegan en el hash
+  const H = new URLSearchParams(location.hash.slice(1)), EMB = H.has("tk");
+  if (EMB) { ls.set("lk_tk", H.get("tk")); if (H.get("b")) ls.set("lk_barbero", H.get("b")); history.replaceState(null, "", location.pathname + location.search); document.body.classList.add("emb"); }
   let TK = ls.get("lk_tk"), tab = "atender", barbero = ls.get("lk_barbero") || BARBEROS[0].id, servicio = 0, M = null, stream = null;
 
   async function rpc(fn, args) {
     try { return await LK.rpc(fn, Object.assign({ p_token: TK }, args)); }
-    catch (e) { if (/Sesi[oó]n vencida/.test(e.message)) { ls.del("lk_tk"); TK = null; login(); } throw e; }
+    catch (e) { if (/Sesi[oó]n vencida/.test(e.message)) { ls.del("lk_tk"); TK = null; EMB ? vencida() : login(); } throw e; }
   }
   const wa = (tel, txt) => `https://wa.me/57${tel}?text=${encodeURIComponent(txt)}`;
 
+  function vencida() { $app.innerHTML = `<p class="warn" style="margin-top:30vh;text-align:center">La sesión del club venció. Sal del panel y vuelve a entrar con tu PIN.</p>`; }
   function login(err) {
+    if (EMB) return vencida();
     let pin = "";
     $app.innerHTML = `<div class="stack fade-in" style="padding-top:8vh">
       <div style="text-align:center"><img src="${A}logo.webp" alt="" style="width:110px"><h1 class="h-display" style="margin:10px 0 2px">Panel <span class="red-t">Club Look</span></h1><p class="muted">Solo para la barbería</p></div>
@@ -32,11 +37,11 @@
   function app() {
     paraCamara();
     $app.innerHTML = `<div class="stack">
-      <div style="display:flex;align-items:center;gap:10px"><img src="${A}logo.webp" alt="" style="width:54px"><div style="flex:1"><b style="font-family:var(--display);font-size:20px;letter-spacing:1px">CLUB LOOK</b><div class="muted" style="font-size:12px">Panel de la barbería</div></div><button class="btn ghost" id="bSalir" style="padding:8px 12px;font-size:12px">Salir</button></div>
-      <div class="tabs">${[["atender", "Atender"], ["clientes", "Clientes"], ["ajustes", "Ajustes"]].map(([k, t]) => `<button data-t="${k}" class="${tab === k ? "on" : ""}">${t}</button>`).join("")}</div>
+      <div style="display:flex;align-items:center;gap:10px"><img src="${A}logo.webp" alt="" style="width:54px"><div style="flex:1"><b style="font-family:var(--display);font-size:20px;letter-spacing:1px">CLUB LOOK</b><div class="muted" style="font-size:12px">Panel de la barbería</div></div>${EMB ? "" : `<button class="btn ghost" id="bSalir" style="padding:8px 12px;font-size:12px">Salir</button>`}</div>
+      <div class="tabs">${[["atender", "Atender"], ["clientes", "Clientes"], ...(EMB ? [] : [["ajustes", "Ajustes"]])].map(([k, t]) => `<button data-t="${k}" class="${tab === k ? "on" : ""}">${t}</button>`).join("")}</div>
       <div id="vista"></div></div>`;
     document.querySelector(".tabs").onclick = (e) => { const t = e.target.dataset.t; if (t) { tab = t; M = null; app(); } };
-    document.getElementById("bSalir").onclick = () => { ls.del("lk_tk"); TK = null; login(); };
+    if (!EMB) document.getElementById("bSalir").onclick = () => { ls.del("lk_tk"); TK = null; login(); };
     ({ atender, clientes, ajustes })[tab]();
   }
   const $v = () => document.getElementById("vista");
@@ -45,7 +50,7 @@
   function atender() {
     if (M) return miembro();
     $v().innerHTML = `<div class="stack fade-in">
-      ${"BarcodeDetector" in window ? `<button class="btn gold block" id="bCam">${I.camara} Escanear tarjeta del cliente</button><div id="cam"></div>` : ""}
+      ${navigator.mediaDevices && navigator.mediaDevices.getUserMedia ? `<button class="btn gold block" id="bCam">${I.camara} Escanear tarjeta del cliente</button><div id="cam"></div>` : ""}
       <form id="fB" class="row" style="gap:8px"><input class="inp" id="q" placeholder="Celular, nombre o código" autocomplete="off" style="flex:3"><button class="btn dark" style="flex:1">${I.buscar}</button></form>
       <div id="res"></div></div>`;
     document.getElementById("fB").onsubmit = (e) => { e.preventDefault(); buscar(document.getElementById("q").value); };
@@ -66,14 +71,23 @@
     const $c = document.getElementById("cam");
     if (stream) return paraCamara();
     try {
-      stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+      stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: "environment" } }, audio: false });
       $c.innerHTML = `<div class="scan"><video id="vid" playsinline muted style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></video><div class="frame"><i></i><i></i><i></i><i></i></div><div class="laser"></div></div>`;
       const v = document.getElementById("vid"); v.srcObject = stream; await v.play();
-      const det = new BarcodeDetector({ formats: ["qr_code"] });
+      // Android: lector nativo. iPhone (Safari no lo trae): jsQR
+      let det = null; try { if ("BarcodeDetector" in window) det = new BarcodeDetector({ formats: ["qr_code"] }); } catch (e) {}
+      if (!det && !window.jsQR) await new Promise((ok, no) => { const sc = document.createElement("script"); sc.src = A + "jsqr.js"; sc.onload = ok; sc.onerror = no; document.head.appendChild(sc); });
+      const cv = document.createElement("canvas"), cx = cv.getContext("2d", { willReadFrequently: true });
+      const leer = async () => {
+        if (det) { const r = await det.detect(v); return r.length ? r[0].rawValue : null; }
+        if (!v.videoWidth) return null; const k = Math.min(1, 640 / v.videoWidth);
+        cv.width = v.videoWidth * k; cv.height = v.videoHeight * k; cx.drawImage(v, 0, 0, cv.width, cv.height);
+        const r = jsQR(cx.getImageData(0, 0, cv.width, cv.height).data, cv.width, cv.height, { inversionAttempts: "dontInvert" }); return r ? r.data : null;
+      };
       const loop = async () => {
         if (!stream) return;
-        try { const r = await det.detect(v); if (r.length) { const t = r[0].rawValue; paraCamara(); if (navigator.vibrate) navigator.vibrate(80); return buscar(t); } } catch (e) {}
-        requestAnimationFrame(loop);
+        try { const t = await leer(); if (t) { paraCamara(); if (navigator.vibrate) navigator.vibrate(80); return buscar(t); } } catch (e) {}
+        setTimeout(loop, det ? 60 : 180);
       };
       loop();
     } catch (e) { $c.innerHTML = `<p class="warn">No se pudo abrir la cámara. Busca al cliente por su celular.</p>`; stream = null; }

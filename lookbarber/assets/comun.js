@@ -2,6 +2,7 @@
 window.LK = (() => {
   const A = "/lookbarber/assets/";
   const BARBEROS = [{ id: "Diego", c: "#C8202F" }, { id: "Sebastián", c: "#3E6BC4" }, { id: "Felipe", c: "#8E44AD" }];
+  try { const b = localStorage.getItem("lk_barbero"); if (b && !BARBEROS.some((x) => x.id === b)) BARBEROS.push({ id: b, c: "#C8202F" }); } catch (e) {}
   const SERVICIOS = [
     { n: "Corte caballero", p: 18000, img: "corte1" }, { n: "Corte desde la cero", p: 20000, img: "corte2" },
     { n: "Corte con shaver y cejas", p: 25000, img: "corte3" }, { n: "Barba", p: 10000, img: "corte4" },

@@ -281,3 +281,6 @@ button.nm { background: none; border: 0; color: inherit; padding: 0; cursor: poi
 .pill.green .ico, .pill .ico { vertical-align: -2px; }
 .pin .pad button[data-k="x"] { font-size: 13px; }
 .btn:disabled { cursor: not-allowed; }
+/* Panel dentro del panel de barberos de Look */
+body.emb .stage, body.emb .phone { min-height: 0; }
+body.emb .tabs { grid-template-columns: repeat(2, 1fr); }
