@@ -105,15 +105,15 @@
       <div class="mcard">
         <div class="who" style="margin-top:0"><div><div class="s">Miembro · ${m.codigo}</div><div class="n">${esc(m.nombre)}</div></div><a class="pill green" href="${wa(m.tel, `Hola ${nombre1(m.nombre)}, te escribimos de Look Barbershop Store.`)}" target="_blank" rel="noopener">${I.wa} ${m.tel}</a></div>
         <div class="stamps cinco">${sellos(m.sellos, meta, popAt)}</div>
-        <div class="progress">${lleno ? "<b>Tarjeta completa: este corte es GRATIS</b>" : `Lleva <b>${m.sellos}</b> de ${meta} · ${m.visitas} visitas · ${m.canjes} gratis`}</div>
+        <div class="progress">${lleno ? "<b>Tarjeta completa: este corte es VIP con descuento</b>" : `Lleva <b>${m.sellos}</b> de ${meta} · ${m.visitas} visitas · ${m.canjes} VIP`}</div>
       </div>
       <div><p class="ceja" style="margin:0 0 8px">Barbero</p><div class="chips" id="cB">${BARBEROS.map((b) => `<button data-b="${b.id}" class="${b.id === barbero ? "on" : ""}">${b.id}</button>`).join("")}</div></div>
-      ${lleno ? `<p class="hint">Este cliente completó su tarjeta. Canjea su corte gratis y la tarjeta vuelve a empezar.</p>
-        <button class="btn gold bigstamp" id="bCanje">${I.regalo} Canjear corte gratis</button>`
+      ${lleno ? `<p class="hint">Este cliente completó su tarjeta. Canjea su corte VIP con descuento y la tarjeta vuelve a empezar.</p>
+        <button class="btn gold bigstamp" id="bCanje">${I.regalo} Canjear corte VIP</button>`
       : `<div><p class="ceja" style="margin:0 0 8px">Servicio</p><div class="chips" id="cS">${SERVICIOS.map((s, i) => `<button data-s="${i}" class="${i === servicio ? "on" : ""}">${esc(s.n)} · ${pesos(s.p)}</button>`).join("")}</div></div>
         ${m.hoy ? `<p class="warn">Ya recibió un sello en las últimas 12 horas. Solo se permite uno por visita.</p>` : ""}
         <button class="btn gold bigstamp" id="bSello" ${m.hoy ? "disabled style='opacity:.45'" : ""}>${I.tijera} Poner sello</button>`}
-      ${(m.historial || []).length ? `<div class="list">${m.historial.slice(0, 8).map((h) => `<div class="li"><span class="av">${h.tipo === "canje" ? I.regalo : I.tijera}</span><div class="nm"><b>${esc(h.tipo === "canje" ? "Corte gratis" : h.tipo === "bienvenida" ? "Bienvenida" : h.tipo === "referido" ? "Por invitar" : h.servicio || "Sello")}</b><span>${h.barbero ? esc(h.barbero) : "Club"}${h.precio ? " · " + pesos(h.precio) : ""}</span></div><span class="when">${fecha(h.t)}</span></div>`).join("")}</div>` : ""}
+      ${(m.historial || []).length ? `<div class="list">${m.historial.slice(0, 8).map((h) => `<div class="li"><span class="av">${h.tipo === "canje" ? I.regalo : I.tijera}</span><div class="nm"><b>${esc(h.tipo === "canje" ? "Corte VIP" : h.tipo === "bienvenida" ? "Bienvenida" : h.tipo === "referido" ? "Por invitar" : h.servicio || "Sello")}</b><span>${h.barbero ? esc(h.barbero) : "Club"}${h.precio ? " · " + pesos(h.precio) : ""}</span></div><span class="when">${fecha(h.t)}</span></div>`).join("")}</div>` : ""}
     </div>`;
     document.getElementById("bVolver").onclick = () => { M = null; app(); };
     document.getElementById("cB").onclick = (e) => { const b = e.target.dataset.b; if (b) { barbero = b; ls.set("lk_barbero", b); miembro(); } };
@@ -128,7 +128,7 @@
     const bk = document.getElementById("bCanje");
     if (bk) bk.onclick = async () => {
       bk.disabled = true;
-      try { await rpc("lk_admin_canjear", { p_id: m.id, p_barbero: barbero }); M = await rpc("lk_admin_miembro", { p_id: m.id }); confeti(); miembro(); toast("Corte gratis canjeado"); }
+      try { await rpc("lk_admin_canjear", { p_id: m.id, p_barbero: barbero }); M = await rpc("lk_admin_miembro", { p_id: m.id }); confeti(); miembro(); toast("Corte VIP canjeado"); }
       catch (e) { bk.disabled = false; toast(e.message, 3500); }
     };
   }
@@ -146,11 +146,11 @@
         <div class="kpi"><b>${R.visitas_mes}</b><span>Visitas este mes</span></div>
         <div class="kpi"><b>${R.volvieron}%</b><span>Volvieron 2 o más veces</span></div>
         <div class="kpi"><b style="font-size:24px">${pesos(R.ventas_mes)}</b><span>Ventas del mes (club)</span></div>
-        <div class="kpi"><b>${R.canjes}</b><span>Cortes gratis dados</span></div>
+        <div class="kpi"><b>${R.canjes}</b><span>Cortes VIP dados</span></div>
       </div>
       ${pb.length ? `<div class="box"><p class="ceja" style="margin:0 0 8px">Visitas por barbero este mes</p>${pb.map(([b, n]) => `<div style="display:flex;justify-content:space-between;padding:6px 0"><span>${esc(b)}</span><b>${n}</b></div>`).join("")}</div>` : ""}
       ${R.cumple.length ? `<div><p class="ceja" style="margin:0 0 8px">${I.torta} Cumplen años este mes</p><div class="list">${R.cumple.map((m) => fila(m, m.tel, (x) => `Hola ${nombre1(x.nombre)}, en Look Barbershop Store sabemos que este es tu mes. Ven por tu regalo de cumpleaños del Club Look.`)).join("")}</div></div>` : ""}
-      ${R.inactivos.length ? `<div><p class="ceja" style="margin:0 0 8px">${I.reloj} No han vuelto (más de 30 días)</p><div class="list">${R.inactivos.map((m) => fila(m, `Hace ${dias(m.ultima)} días · ${m.sellos} sellos`, (x) => `Hola ${nombre1(x.nombre)}, te extrañamos en Look Barbershop Store. Llevas ${x.sellos} sellos en tu Club Look, ven y sigue sumando para tu corte gratis. Agenda aquí: ${LK.AGENDA}`)).join("")}</div></div>` : ""}
+      ${R.inactivos.length ? `<div><p class="ceja" style="margin:0 0 8px">${I.reloj} No han vuelto (más de 30 días)</p><div class="list">${R.inactivos.map((m) => fila(m, `Hace ${dias(m.ultima)} días · ${m.sellos} sellos`, (x) => `Hola ${nombre1(x.nombre)}, te extrañamos en Look Barbershop Store. Llevas ${x.sellos} sellos en tu Club Look, ven y sigue sumando para tu corte VIP con descuento. Agenda aquí: ${LK.AGENDA}`)).join("")}</div></div>` : ""}
       <div><p class="ceja" style="margin:0 0 8px">${I.grupo} Miembros recientes</p>${R.recientes.length ? `<div class="list">${R.recientes.map((m) => fila(m, `${m.sellos} sellos · ${fecha(m.ultima)}`, (x) => `Hola ${nombre1(x.nombre)}, te escribimos de Look Barbershop Store.`)).join("")}</div>` : `<p class="muted">Todavía no hay miembros. Los clientes se unen escaneando el QR o tocando la tarjeta Look.</p>`}</div>
     </div>`;
     $v().onclick = (e) => { const b = e.target.closest("button[data-id]"); if (b) abrir(b.dataset.id); };

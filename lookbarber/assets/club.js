@@ -25,7 +25,7 @@
             <div class="sello5">${[1, 2, 3, 4, 5].map((i) => `<i class="${i === 1 ? "on" : i === 5 ? "g" : ""}">${i === 5 ? I.regaloS : i}</i>`).join("")}</div></div></div>
         ${REF ? `<div class="ref"><div style="flex:1"><b>Te invitó un parcero</b><span>Únete y tu amigo gana un sello.</span></div></div>` : ""}
         <div class="perks">
-          <div class="perk"><span class="ic">${I.tijera}</span><div><b>5 cortes = 1 gratis</b><span>Cada visita es un sello en tu tarjeta</span></div></div>
+          <div class="perk"><span class="ic">${I.tijera}</span><div><b>5 cortes = 1 corte VIP con descuento</b><span>Cada visita es un sello en tu tarjeta</span></div></div>
           <div class="perk"><span class="ic">${I.torta}</span><div><b>Regalo de cumpleaños</b><span>Una sorpresa en tu mes</span></div></div>
           <div class="perk"><span class="ic">${I.amigos}</span><div><b>Trae un parcero</b><span>Si se une con tu enlace, ganas un sello</span></div></div>
           <div class="perk"><span class="ic">${I.cel}</span><div><b>Tu tarjeta en el celular</b><span>Sin descargar apps. Toca tu tarjeta Look y aparece</span></div></div>
@@ -57,21 +57,21 @@
 
   function vistaTarjeta() {
     const m = T, meta = m.meta || 5, falta = meta - m.sellos, lleno = m.sellos >= meta;
-    const inv = `https://wa.me/?text=${encodeURIComponent(`Parcero, únete al Club Look de Look Barbershop Store: cada 5 cortes, 1 gratis. Entra con mi enlace: ${LK.URL}?ref=${m.codigo}`)}`;
-    const NOM = { bienvenida: "Sello de bienvenida", sello: "Sello", canje: "Corte gratis canjeado", referido: "Sello por invitar", ajuste: "Ajuste" };
+    const inv = `https://wa.me/?text=${encodeURIComponent(`Parcero, únete al Club Look de Look Barbershop Store: cada 5 cortes ganas un corte VIP con descuento. Entra con mi enlace: ${LK.URL}?ref=${m.codigo}`)}`;
+    const NOM = { bienvenida: "Sello de bienvenida", sello: "Sello", canje: "Corte VIP canjeado", referido: "Sello por invitar", ajuste: "Ajuste" };
     $app.innerHTML = `
       <div class="stack fade-in">
         <div class="mcard">
           <div class="top"><img src="${A}logo.webp" alt="" style="width:78px"><div><div class="t1">CLUB LOOK</div><div class="t2">Barbershop Store · Miembro</div></div></div>
           <div class="who"><div><div class="s">Miembro</div><div class="n">${esc(m.nombre)}</div></div><div style="text-align:right"><div class="s">Código</div><b>${m.codigo}</b></div></div>
           <div class="stamps cinco">${sellos(m.sellos, meta, popAt)}</div>
-          <div class="progress">${lleno ? "<b>¡Tarjeta completa!</b>" : `Te ${falta === 1 ? "falta" : "faltan"} <b>${falta}</b> ${falta === 1 ? "corte" : "cortes"} para tu corte <b>GRATIS</b>`}</div>
+          <div class="progress">${lleno ? "<b>¡Tarjeta completa!</b>" : `Te ${falta === 1 ? "falta" : "faltan"} <b>${falta}</b> ${falta === 1 ? "corte" : "cortes"} para tu <b>corte VIP con descuento</b>`}</div>
         </div>
-        ${lleno ? `<div class="reward fade-in"><h3>Corte gratis desbloqueado</h3><p style="margin:6px 0 0;font-weight:600">Muéstrale este código a tu barbero</p></div>` : ""}
+        ${lleno ? `<div class="reward fade-in"><h3>Corte VIP con descuento desbloqueado</h3><p style="margin:6px 0 0;font-weight:600">Muéstrale este código a tu barbero</p></div>` : ""}
         <div class="box"><div class="qrbox">${qrSvg(LK.URL + "?c=" + m.codigo)}</div>
           <p class="qrcap">MUESTRA ESTE CÓDIGO EN CADA VISITA · ${m.codigo}</p></div>
         <div class="ref"><div style="flex:1"><b>Trae un parcero</b><span>Si se une con tu enlace, ganas un sello.</span></div><a href="${inv}" target="_blank" rel="noopener">Invitar</a></div>
-        <div class="row"><div class="kpi"><b>${m.visitas}</b><span>Visitas</span></div><div class="kpi"><b>${m.canjes}</b><span>Cortes gratis</span></div></div>
+        <div class="row"><div class="kpi"><b>${m.visitas}</b><span>Visitas</span></div><div class="kpi"><b>${m.canjes}</b><span>Cortes VIP</span></div></div>
         ${(m.historial || []).length ? `<div><p class="ceja" style="margin:0 0 8px">Tu historial</p><div class="hist">${m.historial.map((h) => `
           <div class="li"><span class="av">${h.tipo === "canje" ? I.regalo : I.tijera}</span><div class="nm"><b>${esc(h.tipo === "sello" ? h.servicio || "Sello" : NOM[h.tipo] || h.servicio)}</b><span>${h.barbero ? "Con " + esc(h.barbero) : esc(h.tipo === "referido" ? h.servicio : "Club Look")}</span></div><span class="when">${fecha(h.t)}</span></div>`).join("")}</div></div>` : ""}
         ${links()}
@@ -98,10 +98,10 @@
       const n = await rpc("lk_club_tarjeta", { p_codigo: T.codigo }); if (!n) return;
       if (n.sellos !== T.sellos || n.canjes !== T.canjes) {
         const antes = T; T = n;
-        if (n.canjes > antes.canjes) { confeti(); vistaTarjeta(); notificar(`Disfruta tu corte gratis, ${nombre1(n.nombre)}. Tu nueva tarjeta ya empezó.`); }
+        if (n.canjes > antes.canjes) { confeti(); vistaTarjeta(); notificar(`Disfruta tu corte VIP, ${nombre1(n.nombre)}. Tu nueva tarjeta ya empezó.`); }
         else { popAt = n.sellos - 1; vistaTarjeta(); const f = (n.meta || 5) - n.sellos;
-          if (f <= 0) { confeti(); notificar(`¡Completaste tu tarjeta, ${nombre1(n.nombre)}! Tu próximo corte es GRATIS.`); }
-          else notificar(`¡Sello agregado! Llevas ${n.sellos} de ${n.meta || 5}. Te ${f === 1 ? "falta 1" : "faltan " + f} para tu corte gratis.`); }
+          if (f <= 0) { confeti(); notificar(`¡Completaste tu tarjeta, ${nombre1(n.nombre)}! Tu próximo corte es VIP con descuento.`); }
+          else notificar(`¡Sello agregado! Llevas ${n.sellos} de ${n.meta || 5}. Te ${f === 1 ? "falta 1" : "faltan " + f} para tu corte VIP con descuento.`); }
       }
     } catch (e) {}
   }, 10000);
