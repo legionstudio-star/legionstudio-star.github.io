@@ -179,3 +179,22 @@ html.sin-maison .cabecera { grid-template-columns: 1fr auto; }
 .link-pdf { display: inline-flex; align-items: center; gap: 10px; margin-top: 18px; padding: 11px 18px; border: 1px solid rgba(201, 169, 107, .4); color: var(--acento); font-size: 12px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; transition: background .25s, color .25s; }
 .link-pdf:hover { background: var(--acento); color: #0c0b0a; }
 @media (max-width: 600px) { .ver-mas .btn-s { width: 100%; justify-content: center; } }
+
+/* Hero con el video banner de la colección */
+.s-hero.con-video { grid-template-columns: minmax(0, 620px); max-width: none; isolation: isolate; align-items: center;
+  padding-left: max(clamp(16px, 4vw, 48px), calc((100vw - 1440px) / 2 + 48px)); }
+.s-hero-video { position: absolute; right: 0; top: 50%; width: min(76%, calc((100vh - 70px) * 16 / 9)); aspect-ratio: 16 / 9; transform: translateY(-50%); z-index: -1; background: #030302; overflow: hidden; }
+.s-hero.con-video { background: #050403; }
+.s-hero-video video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.s-hero-video::after { content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, #050403 0%, rgba(5, 4, 3, .7) 14%, rgba(5, 4, 3, .1) 34%, transparent 46%),
+              linear-gradient(0deg, #050403 0%, transparent 16%), linear-gradient(180deg, #050403 0%, transparent 12%); }
+.s-hero.con-video::before { display: none; }
+html.intro-on .s-hero-video { opacity: 0; }
+.s-hero-video { transition: opacity 1.2s ease; }
+@media (max-width: 860px) {
+  .s-hero.con-video { grid-template-columns: 1fr; padding: 0 16px 40px; }
+  .s-hero-video { position: relative; inset: auto; top: auto; right: auto; width: auto; transform: none; z-index: 0; order: -1; margin: 0 -16px -70px; aspect-ratio: 4 / 5; }
+  .s-hero-video::after { background: linear-gradient(0deg, var(--fondo, #0c0b0a) 0%, rgba(12, 11, 10, .6) 22%, transparent 42%), linear-gradient(180deg, rgba(12, 11, 10, .5), transparent 18%); }
+  .s-hero.con-video .s-hero-txt { position: relative; z-index: 1; }
+}

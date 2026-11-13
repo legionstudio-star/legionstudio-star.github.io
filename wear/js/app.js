@@ -50,7 +50,7 @@ function tarjeta(p, i = 0) {
 function inicioStreet() {
   const nuevos = deMundo('street');
   return `
-  <section class="s-hero">
+  <section class="s-hero con-video">
     <div class="s-hero-txt">
       <p class="s-kicker rev">COLECCIÓN 01 · 2026</p>
       <h1 class="s-titulo" aria-label="Legion Wear">
@@ -66,12 +66,8 @@ function inicioStreet() {
         <span>NUEVOS INGRESOS EN</span><b data-cr="d">00</b>D <b data-cr="h">00</b>H <b data-cr="m">00</b>M <b data-cr="s">00</b>S
       </div>
     </div>
-    <div class="s-hero-arte">
-      <div class="s-aro"></div>
-      <a class="s-hero-foto" href="#/street/tienda"><img src="catalogo/img/01-polo-tommy-rosado/01.jpg" alt="Polo rosa de la colección"></a>
-      <span class="s-sello">EST. 2026<br>BOGOTÁ</span>
-      <span class="s-num">COLECCIÓN 01</span>
-    </div>
+    <div class="s-hero-video" aria-hidden="true">${(() => { const m = matchMedia('(max-width: 860px)').matches ? 'v' : 'h';
+      return `<video autoplay muted loop playsinline preload="auto" poster="video/banner-${m}.jpg" src="video/banner-${m}.mp4"></video>`; })()}</div>
   </section>
   <div class="s-cinta"><div>${'<span>LEGION WEAR</span><b>·</b><span>POLOS</span><b>·</b><span>CAMISAS EN SEDA</span><b>·</b><span>JEANS</span><b>·</b><span>GORRAS</span><b>·</b>'.repeat(4)}</div></div>
   <section class="seccion">
