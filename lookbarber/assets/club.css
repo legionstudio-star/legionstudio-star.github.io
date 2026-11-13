@@ -260,3 +260,15 @@ dialog li + li { margin-top: 8px; }
 .pass .pbanner { background: radial-gradient(circle at 50% 120%, rgba(200,32,47,.65), transparent 60%), linear-gradient(160deg, #1d1d22, #050505); }
 .pass .pbanner img { width: 150px; }
 .ref span b { display: inline; font-size: inherit; }
+
+/* íconos de línea (sin emojis) */
+.ico { display: inline-block; vertical-align: middle; flex: none; }
+.perk .ic { color: var(--gold2); }
+.links a span { color: var(--gold2); line-height: 0; }
+.h-display .ico { color: var(--gold2); margin: -3px 4px 0 0; }
+.li .av .ico { width: 18px; height: 18px; color: var(--gold2); }
+.pill .ico { width: 14px; height: 14px; }
+.sello5 i .ico { color: #fff; }
+.scan .ok .ico { color: #fff; }
+.btn .ico { width: 20px; height: 20px; }
+.bigstamp .ico { width: 26px; height: 26px; }
