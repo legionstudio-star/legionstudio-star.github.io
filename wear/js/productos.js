@@ -1,116 +1,922 @@
-// Catálogo. "fotos" son las imágenes del producto (la primera es la principal); sin fotos se dibuja la prenda.
-// Las fotos actuales son de ejemplo (Unsplash, ver creditos-fotos.txt): se reemplazan por las propias en img/productos/.
-const F = n => 'img/productos/' + n + '.jpg';
+// Prendas reales de LEGION WEAR. Archivo generado por FOTOS/_tienda.py (no editar a mano: cambiar _datos.py y volver a correr).
+// precio: 0 = "Consultar precio" (se confirma por WhatsApp). Tallas provisionales hasta que el dueño las confirme.
 const PRODUCTOS = [
-  // ── STREET ──
-  { id: 'tee-legio', mundo: 'street', categoria: 'Camisetas', tipo: 'tee', nombre: 'Oversize Tee "LGN"', precio: 89000, etiqueta: 'Nuevo',
-    fotos: [F('tee-negra-1'), F('tee-negra-2')], estampado: 'LGN',
-    colores: [{ n: 'Negro', h: '#151515' }, { n: 'Hueso', h: '#e6e0d3' }, { n: 'Sangre', h: '#7a0c16' }],
-    tallas: ['S', 'M', 'L', 'XL'], desc: 'Camiseta oversize de algodón pesado 240 g con hombro caído y estampado frontal en serigrafía.',
-    detalles: ['Algodón peinado 100 %, 240 g/m²', 'Corte boxy, hombro caído', 'Cuello acanalado reforzado', 'Serigrafía al agua'] },
-  { id: 'hoodie-battalion', mundo: 'street', categoria: 'Hoodies', tipo: 'hoodie', nombre: 'Hoodie Heavyweight Battalion', precio: 189000, etiqueta: 'Más vendido',
-    fotos: [F('hoodie-1'), F('hoodie-2')],
-    colores: [{ n: 'Negro', h: '#141414' }, { n: 'Carbón', h: '#2c2c2e' }, { n: 'Sangre', h: '#6e0b14' }],
-    tallas: ['S', 'M', 'L', 'XL'], desc: 'Hoodie de felpa perchada de 400 g, capota doble y bolsillo canguro. Hecho para durar.',
-    detalles: ['Felpa perchada 400 g/m²', 'Capota doble', 'Bordado LGN en el pecho', 'Puños y pretina en rib'] },
-  { id: 'cargo-tactical', mundo: 'street', categoria: 'Pantalones', tipo: 'cargo', nombre: 'Cargo Pant Tactical', precio: 169000,
-    fotos: [F('cargo-1'), F('cargo-2')],
-    colores: [{ n: 'Oliva', h: '#3c4130' }, { n: 'Negro', h: '#161616' }, { n: 'Arena', h: '#8b7f68' }],
-    tallas: ['28', '30', '32', '34', '36'], desc: 'Cargo de dril con seis bolsillos, bota ajustable y caída relajada.',
-    detalles: ['Dril 100 % algodón', 'Seis bolsillos funcionales', 'Bota con cordón ajustable', 'Etiqueta roja LGN'] },
-  { id: 'chaqueta-vanguard', mundo: 'street', categoria: 'Chaquetas', tipo: 'bomber', nombre: 'Chaqueta Vanguard', precio: 289000, etiqueta: 'Edición limitada',
-    fotos: [F('chaqueta-1'), F('chaqueta-2')],
-    colores: [{ n: 'Negro', h: '#121212' }, { n: 'Hueso', h: '#d9d2c3' }],
-    tallas: ['S', 'M', 'L', 'XL'], desc: 'Chaqueta de cuero sintético mate con forro interior rojo. Solo 100 unidades numeradas.',
-    detalles: ['Cuero sintético mate', 'Forro interior rojo sangre', 'Cremallera metálica', 'Numerada a mano'] },
-  { id: 'tee-nomercy', mundo: 'street', categoria: 'Camisetas', tipo: 'tee', nombre: 'Boxy Tee "NO MERCY"', precio: 95000,
-    fotos: [F('tee-blanca-1'), F('tee-blanca-2')], estampado: 'NO MERCY',
-    colores: [{ n: 'Hueso', h: '#e6e0d3' }, { n: 'Negro', h: '#151515' }],
-    tallas: ['S', 'M', 'L', 'XL'], desc: 'Camiseta boxy con gráfico NO MERCY en la espalda. Lavado vintage.',
-    detalles: ['Algodón 230 g/m² con lavado vintage', 'Corte boxy', 'Gráfico en serigrafía', 'Etiqueta tejida'] },
-  { id: 'short-riot', mundo: 'street', categoria: 'Pantalones', tipo: 'shorts', nombre: 'Short Mesh Riot', precio: 99000,
-    colores: [{ n: 'Negro', h: '#151515' }, { n: 'Carbón', h: '#2e2e30' }],
-    tallas: ['S', 'M', 'L', 'XL'], desc: 'Short de malla doble capa con franjas rojas laterales.',
-    detalles: ['Malla doble capa', 'Pretina elástica con cordón', 'Franjas laterales', 'Bolsillos laterales'] },
-  { id: 'cap-sixpanel', mundo: 'street', categoria: 'Gorras', tipo: 'cap', nombre: 'Cap Washed "LGN"', precio: 69000,
-    fotos: [F('gorra-1'), F('gorra-2')],
-    colores: [{ n: 'Gris lavado', h: '#4a4a4c' }, { n: 'Negro', h: '#141414' }, { n: 'Sangre', h: '#7a0c16' }],
-    tallas: ['Única'], desc: 'Gorra de seis paneles en gabardina lavada, visera curva y bordado LGN en tono sobre tono.',
-    detalles: ['Gabardina de algodón lavada', 'Bordado tono sobre tono', 'Correa metálica ajustable', 'Talla única'] },
-  { id: 'cap-trucker', mundo: 'street', categoria: 'Gorras', tipo: 'cap', nombre: 'Trucker Cap Riot', precio: 65000, etiqueta: 'Nuevo',
-    fotos: [F('trucker-1')],
-    colores: [{ n: 'Negro / Blanco', h: '#1a1a1a' }, { n: 'Negro / Sangre', h: '#7a0c16' }],
-    tallas: ['Única'], desc: 'Trucker de frente en espuma y malla trasera, con broche ajustable. Clásico de la calle.',
-    detalles: ['Frente de espuma', 'Malla trasera transpirable', 'Broche plástico ajustable', 'Talla única'] },
-  { id: 'reloj-steel', mundo: 'street', categoria: 'Relojes', tipo: 'cap', nombre: 'Reloj Steel Ops', precio: 349000, etiqueta: 'Nuevo',
-    fotos: [F('reloj-steel-1'), F('reloj-steel-2')],
-    colores: [{ n: 'Acero / Negro', h: '#9a9a9e' }, { n: 'Negro total', h: '#141414' }],
-    tallas: ['Única'], desc: 'Reloj de cuarzo con caja y pulsera de acero, esfera negra mate e índices luminiscentes.',
-    detalles: ['Caja de acero 42 mm', 'Movimiento de cuarzo japonés', 'Resistente al agua 50 m', 'Cristal mineral endurecido'] },
-  { id: 'reloj-crono', mundo: 'street', categoria: 'Relojes', tipo: 'cap', nombre: 'Cronógrafo Night Shift', precio: 389000,
-    fotos: [F('reloj-crono-1')],
-    colores: [{ n: 'Negro', h: '#141414' }],
-    tallas: ['Única'], desc: 'Cronógrafo de esfera negra con correa de nylon y tres subesferas. Hecho para la noche.',
-    detalles: ['Caja 44 mm', 'Cronógrafo funcional', 'Correa de nylon táctica', 'Resistente al agua 100 m'] },
-
-  // ── MAISON ──
-  { id: 'polo-riviera', mundo: 'maison', categoria: 'Polos', tipo: 'polo', nombre: 'Polo de Punto Riviera', precio: 179000, etiqueta: 'Nueva temporada',
-    fotos: [F('polo-1'), F('polo-2')],
-    colores: [{ n: 'Verde salvia', h: '#7d8461' }, { n: 'Crema', h: '#ece2cc' }, { n: 'Marino', h: '#1c2943' }],
-    tallas: ['S', 'M', 'L', 'XL'], desc: 'Polo tejido en punto con cuello abierto y botones de nácar. Para tardes en la costa.',
-    detalles: ['Punto de algodón pima', 'Botones de nácar', 'Ajuste relajado', 'Escudo bordado en hilo dorado'] },
-  { id: 'sueter-oxford', mundo: 'maison', categoria: 'Punto', tipo: 'sweater', nombre: 'Suéter de Punto Oxford', precio: 239000,
-    fotos: [F('sueter-1'), F('sueter-2')],
-    colores: [{ n: 'Chocolate', h: '#6b3a26' }, { n: 'Avena', h: '#cfc2a6' }, { n: 'Marino', h: '#1d2a44' }],
-    tallas: ['S', 'M', 'L', 'XL'], desc: 'Suéter de punto grueso con cuello redondo y caída suave. Un heredado instantáneo.',
-    detalles: ['Mezcla de lana merino', 'Punto grueso', 'Puños y bajo en rib', 'Lavar a mano'] },
-  { id: 'blazer-kensington', mundo: 'maison', categoria: 'Sastrería', tipo: 'blazer', nombre: 'Blazer Kensington', precio: 469000, etiqueta: 'Pieza insignia',
-    fotos: [F('blazer-1'), F('blazer-2')],
-    colores: [{ n: 'Marino', h: '#1b2640' }, { n: 'Petróleo', h: '#355a63' }, { n: 'Camel', h: '#a8835a' }],
-    tallas: ['S', 'M', 'L', 'XL'], desc: 'Blazer de corte sastre sin estructura, solapa de muesca y bolsillos de parche.',
-    detalles: ['Lana y lino', 'Hombro natural sin hombrera', 'Bolsillos de parche', 'Forro parcial'] },
-  { id: 'camisa-heritage', mundo: 'maison', categoria: 'Camisas', tipo: 'camisa', nombre: 'Camisa Oxford Heritage', precio: 159000,
-    fotos: [F('camisa-1'), F('camisa-2')],
-    colores: [{ n: 'Blanco', h: '#f3f0e8' }, { n: 'Celeste', h: '#c6d6e6' }],
-    tallas: ['S', 'M', 'L', 'XL'], desc: 'Camisa oxford blanca de cuello clásico, tejido con textura y botones de nácar.',
-    detalles: ['Algodón oxford', 'Cuello clásico', 'Botones de nácar', 'Ajuste clásico'] },
-  { id: 'chino-belgravia', mundo: 'maison', categoria: 'Pantalones', tipo: 'chino', nombre: 'Chino Belgravia', precio: 199000,
-    fotos: [F('chino-1'), F('chino-2')],
-    colores: [{ n: 'Arena', h: '#d6cab0' }, { n: 'Camel', h: '#b28c5e' }, { n: 'Marino', h: '#1e2b45' }],
-    tallas: ['28', '30', '32', '34', '36'], desc: 'Pantalón de tiro alto con pinza y bota recta. La base de todo buen armario.',
-    detalles: ['Gabardina de algodón', 'Pinza delantera', 'Tiro alto', 'Bota recta'] },
-  { id: 'cardigan-clubhouse', mundo: 'maison', categoria: 'Punto', tipo: 'cardigan', nombre: 'Cárdigan Club House', precio: 259000,
-    fotos: [F('cardigan-1'), F('cardigan-2')],
-    colores: [{ n: 'Gris perla', h: '#a9a7a2' }, { n: 'Tostado', h: '#8a6a55' }, { n: 'Verde inglés', h: '#2c4536' }],
-    tallas: ['S', 'M', 'L', 'XL'], desc: 'Cárdigan de punto con botones de carey y tejido acanalado. Elegancia sin esfuerzo.',
-    detalles: ['Punto de lana y alpaca', 'Botones de carey', 'Tejido acanalado', 'Ajuste relajado'] },
-  { id: 'boina-windsor', mundo: 'maison', categoria: 'Gorras', tipo: 'cap', nombre: 'Boina Tweed Windsor', precio: 119000, etiqueta: 'Nuevo',
-    fotos: [F('boina-1'), F('boina-2')],
-    colores: [{ n: 'Pata de gallo', h: '#bdb6a6' }, { n: 'Gris tweed', h: '#8d8a84' }],
-    tallas: ['S', 'M', 'L'], desc: 'Boina plana de tweed con forro de satín. El toque británico que completa cualquier atuendo.',
-    detalles: ['Tweed de lana', 'Forro interior de satín', 'Visera cosida', 'Tallas S, M y L'] },
-  { id: 'reloj-heritage', mundo: 'maison', categoria: 'Relojes', tipo: 'cap', nombre: 'Reloj Heritage Oro', precio: 690000, etiqueta: 'Pieza insignia',
-    fotos: [F('reloj-oro-1'), F('reloj-oro-2')],
-    colores: [{ n: 'Oro', h: '#c9a45c' }, { n: 'Oro rosa', h: '#c08a6a' }],
-    tallas: ['Única'], desc: 'Reloj de caja y brazalete integrados en acabado dorado cepillado. Discreto, preciso, para siempre.',
-    detalles: ['Acero con baño de oro', 'Movimiento automático', 'Cristal de zafiro', 'Estuche de madera incluido'] },
-  { id: 'reloj-mayfair', mundo: 'maison', categoria: 'Relojes', tipo: 'cap', nombre: 'Reloj de Vestir Mayfair', precio: 459000,
-    fotos: [F('reloj-dress-1')],
-    colores: [{ n: 'Plata / Cuero negro', h: '#c7c7c7' }],
-    tallas: ['Única'], desc: 'Reloj de vestir ultradelgado con esfera blanca minimalista y correa de cuero italiano.',
-    detalles: ['Caja de 38 mm, 7 mm de grosor', 'Correa de cuero italiano', 'Cristal de zafiro', 'Resistente al agua 30 m'] },
+ {
+  "id": "polo-tommy-rosado",
+  "mundo": "street",
+  "categoria": "Polos",
+  "tipo": "polo",
+  "nombre": "Polo Tommy Hilfiger Rosa",
+  "precio": 0,
+  "fotos": [
+   "catalogo/img/01-polo-tommy-rosado/01.jpg",
+   "catalogo/img/01-polo-tommy-rosado/02.jpg",
+   "catalogo/img/01-polo-tommy-rosado/03.jpg",
+   "catalogo/img/01-polo-tommy-rosado/04.jpg",
+   "catalogo/img/01-polo-tommy-rosado/05.jpg",
+   "catalogo/img/01-polo-tommy-rosado/06.jpg"
+  ],
+  "colores": [
+   {
+    "n": "Rosa",
+    "h": "#e9c4c9"
+   }
+  ],
+  "tallas": [
+   "S",
+   "M",
+   "L",
+   "XL"
+  ],
+  "desc": "Piqué suave en rosa pastel, cuello con contraste gris y bandera bordada al pecho.",
+  "detalles": [
+   "Tejido piqué de textura fina",
+   "Cuello y tapeta con contraste gris jaspeado",
+   "Tres botones oscuros",
+   "Bandera bordada al pecho",
+   "Llega con etiqueta de la marca"
+  ],
+  "combina": "Con jean azul oscuro y tenis blancos para el día; con pantalón beige para un look más sobrio."
+ },
+ {
+  "id": "polo-tommy-negro",
+  "mundo": "street",
+  "categoria": "Polos",
+  "tipo": "polo",
+  "nombre": "Polo Tommy Hilfiger Negra",
+  "precio": 0,
+  "fotos": [
+   "catalogo/img/02-polo-tommy-negro/01.jpg",
+   "catalogo/img/02-polo-tommy-negro/02.jpg",
+   "catalogo/img/02-polo-tommy-negro/03.jpg",
+   "catalogo/img/02-polo-tommy-negro/04.jpg"
+  ],
+  "colores": [
+   {
+    "n": "Negra",
+    "h": "#141414"
+   }
+  ],
+  "tallas": [
+   "S",
+   "M",
+   "L",
+   "XL"
+  ],
+  "desc": "Negra profunda con botones dorados y cuello en contraste. Elegante de día y de noche.",
+  "detalles": [
+   "Negro profundo de tono parejo",
+   "Botones dorados que la elevan",
+   "Cuello con ribete en contraste",
+   "Bandera bordada al pecho"
+  ],
+  "combina": "Con jean negro clásico y gorra negra para un total black; con jean azul claro para contrastar."
+ },
+ {
+  "id": "polo-tommy-azul-claro",
+  "mundo": "street",
+  "categoria": "Polos",
+  "tipo": "polo",
+  "nombre": "Polo Tommy Hilfiger Azul Cielo",
+  "precio": 0,
+  "fotos": [
+   "catalogo/img/03-polo-tommy-azul-claro/01.jpg",
+   "catalogo/img/03-polo-tommy-azul-claro/02.jpg",
+   "catalogo/img/03-polo-tommy-azul-claro/03.jpg",
+   "catalogo/img/03-polo-tommy-azul-claro/04.jpg"
+  ],
+  "colores": [
+   {
+    "n": "Azul Cielo",
+    "h": "#9db3e0"
+   }
+  ],
+  "tallas": [
+   "S",
+   "M",
+   "L",
+   "XL"
+  ],
+  "desc": "Azul cielo fresco con bandera bordada. Un clásico que combina con todo.",
+  "detalles": [
+   "Azul cielo de tono fresco",
+   "Cuello con interior en contraste",
+   "Bandera bordada al pecho",
+   "Corte recto, cómoda para todo el día"
+  ],
+  "combina": "Con jean azul oscuro o negro; queda muy bien con gorra blanca."
+ },
+ {
+  "id": "polo-ralph-blanco",
+  "mundo": "street",
+  "categoria": "Polos",
+  "tipo": "polo",
+  "nombre": "Polo Ralph Lauren Blanca",
+  "precio": 0,
+  "fotos": [
+   "catalogo/img/04-polo-ralph-blanco/01.jpg",
+   "catalogo/img/04-polo-ralph-blanco/02.jpg",
+   "catalogo/img/04-polo-ralph-blanco/03.jpg"
+  ],
+  "colores": [
+   {
+    "n": "Blanca",
+    "h": "#efefea"
+   }
+  ],
+  "tallas": [
+   "S",
+   "M",
+   "L",
+   "XL"
+  ],
+  "desc": "Blanca impecable con el caballo bordado en azul marino y cuello en contraste.",
+  "detalles": [
+   "Blanco limpio",
+   "Caballo bordado en azul marino",
+   "Cuello con interior gris jaspeado",
+   "Botones oscuros de contraste",
+   "Etiqueta de la marca al cuello"
+  ],
+  "combina": "La base de cualquier clóset: con jean de cualquier tono, tenis o zapato casual."
+ },
+ {
+  "id": "polo-ralph-rosado",
+  "mundo": "street",
+  "categoria": "Polos",
+  "tipo": "polo",
+  "nombre": "Polo Ralph Lauren Rosa",
+  "precio": 0,
+  "fotos": [
+   "catalogo/img/05-polo-ralph-rosado/01.jpg",
+   "catalogo/img/05-polo-ralph-rosado/02.jpg",
+   "catalogo/img/05-polo-ralph-rosado/03.jpg",
+   "catalogo/img/05-polo-ralph-rosado/04.jpg"
+  ],
+  "colores": [
+   {
+    "n": "Rosa",
+    "h": "#efc9cf"
+   }
+  ],
+  "tallas": [
+   "S",
+   "M",
+   "L",
+   "XL"
+  ],
+  "desc": "Rosa suave con caballo bordado en azul marino. Estilo old money puro.",
+  "detalles": [
+   "Rosa suave de tono pastel",
+   "Caballo bordado en azul marino",
+   "Cuello con interior en contraste",
+   "Llega con etiqueta de la marca"
+  ],
+  "combina": "Con jean azul oscuro y reloj plateado: estilo old money sin esfuerzo."
+ },
+ {
+  "id": "polo-ralph-azul-jaspe",
+  "mundo": "street",
+  "categoria": "Polos",
+  "tipo": "polo",
+  "nombre": "Polo Ralph Lauren Azul Jaspe",
+  "precio": 0,
+  "fotos": [
+   "catalogo/img/06-polo-ralph-azul-jaspe/01.jpg",
+   "catalogo/img/06-polo-ralph-azul-jaspe/02.jpg",
+   "catalogo/img/06-polo-ralph-azul-jaspe/03.jpg",
+   "catalogo/img/06-polo-ralph-azul-jaspe/04.jpg"
+  ],
+  "colores": [
+   {
+    "n": "Azul Jaspe",
+    "h": "#4f6ea8"
+   }
+  ],
+  "tallas": [
+   "S",
+   "M",
+   "L",
+   "XL"
+  ],
+  "desc": "Tejido jaspeado en azul con caballo blanco bordado. Textura que se nota.",
+  "detalles": [
+   "Tejido jaspeado con textura visible",
+   "Caballo bordado en blanco",
+   "Cuello con interior en azul claro",
+   "Llega con etiqueta de la marca"
+  ],
+  "combina": "Con jean negro o gris para resaltar la textura del azul."
+ },
+ {
+  "id": "polo-ralph-rojo",
+  "mundo": "street",
+  "categoria": "Polos",
+  "tipo": "polo",
+  "nombre": "Polo Ralph Lauren Roja",
+  "precio": 0,
+  "fotos": [
+   "catalogo/img/07-polo-ralph-rojo/01.jpg",
+   "catalogo/img/07-polo-ralph-rojo/02.jpg",
+   "catalogo/img/07-polo-ralph-rojo/03.jpg"
+  ],
+  "colores": [
+   {
+    "n": "Roja",
+    "h": "#9b1b2a"
+   }
+  ],
+  "tallas": [
+   "S",
+   "M",
+   "L",
+   "XL"
+  ],
+  "desc": "Rojo vino intenso con caballo bordado en azul marino.",
+  "detalles": [
+   "Rojo vino intenso",
+   "Caballo bordado en azul marino",
+   "Cuello con interior gris",
+   "Llega con etiqueta de la marca"
+  ],
+  "combina": "Con jean negro y gorra negra; el rojo se vuelve la pieza protagonista."
+ },
+ {
+  "id": "polo-lacoste-blanco",
+  "mundo": "street",
+  "categoria": "Polos",
+  "tipo": "polo",
+  "nombre": "Polo Lacoste Blanca",
+  "precio": 0,
+  "fotos": [
+   "catalogo/img/08-polo-lacoste-blanco/01.jpg",
+   "catalogo/img/08-polo-lacoste-blanco/02.jpg",
+   "catalogo/img/08-polo-lacoste-blanco/03.jpg",
+   "catalogo/img/08-polo-lacoste-blanco/04.jpg",
+   "catalogo/img/08-polo-lacoste-blanco/05.jpg",
+   "catalogo/img/08-polo-lacoste-blanco/06.jpg"
+  ],
+  "colores": [
+   {
+    "n": "Blanca",
+    "h": "#f2f2ee"
+   }
+  ],
+  "tallas": [
+   "S",
+   "M",
+   "L",
+   "XL"
+  ],
+  "desc": "Blanca con el cocodrilo bordado al pecho. Limpia, fresca y siempre en tendencia.",
+  "detalles": [
+   "Blanco limpio",
+   "Cocodrilo bordado al pecho",
+   "Cuello con interior gris",
+   "Tres botones a tono",
+   "Llega con etiqueta de la marca"
+  ],
+  "combina": "Con jean azul claro o negro; perfecta para clima cálido."
+ },
+ {
+  "id": "polo-lacoste-gris-oscuro",
+  "mundo": "street",
+  "categoria": "Polos",
+  "tipo": "polo",
+  "nombre": "Polo Lacoste Gris Grafito",
+  "precio": 0,
+  "fotos": [
+   "catalogo/img/09-polo-lacoste-gris-oscuro/01.jpg"
+  ],
+  "colores": [
+   {
+    "n": "Gris Grafito",
+    "h": "#3a3d3c"
+   }
+  ],
+  "tallas": [
+   "S",
+   "M",
+   "L",
+   "XL"
+  ],
+  "desc": "Gris grafito con parche de cocodrilo bordado y cuello en contraste.",
+  "detalles": [
+   "Gris grafito",
+   "Parche de cocodrilo bordado",
+   "Cuello con interior gris claro",
+   "Botones claros de contraste"
+  ],
+  "combina": "Con jean negro y tenis blancos: sobrio y moderno."
+ },
+ {
+  "id": "polo-lacoste-gris",
+  "mundo": "street",
+  "categoria": "Polos",
+  "tipo": "polo",
+  "nombre": "Polo Lacoste Gris Acero",
+  "precio": 0,
+  "fotos": [
+   "catalogo/img/10-polo-lacoste-gris/01.jpg",
+   "catalogo/img/10-polo-lacoste-gris/02.jpg"
+  ],
+  "colores": [
+   {
+    "n": "Gris Acero",
+    "h": "#6f8191"
+   }
+  ],
+  "tallas": [
+   "S",
+   "M",
+   "L",
+   "XL"
+  ],
+  "desc": "Gris acero con cocodrilo bordado. Sobria y moderna.",
+  "detalles": [
+   "Gris acero",
+   "Cocodrilo bordado al pecho",
+   "Cuello con interior en contraste",
+   "Corte recto"
+  ],
+  "combina": "Con jean azul oscuro; combina con gorras blancas o negras."
+ },
+ {
+  "id": "camisa-formal-beige",
+  "mundo": "street",
+  "categoria": "Camisas formales",
+  "tipo": "camisa",
+  "nombre": "Camisa Formal en Seda Marfil",
+  "precio": 0,
+  "fotos": [
+   "catalogo/img/12-camisa-formal-beige/01.jpg"
+  ],
+  "colores": [
+   {
+    "n": "Marfil",
+    "h": "#e4dccd"
+   }
+  ],
+  "tallas": [
+   "S",
+   "M",
+   "L",
+   "XL"
+  ],
+  "desc": "Manga corta, cuello mao en contraste negro y botones oscuros. Lujo silencioso.",
+  "detalles": [
+   "Tela de caída suave tipo seda",
+   "Cuello mao en contraste negro",
+   "Botones negros",
+   "Manga corta"
+  ],
+  "combina": "Con jean negro o pantalón de vestir oscuro: elegante para una noche fuera."
+ },
+ {
+  "id": "camisa-formal-verde-salvia",
+  "mundo": "street",
+  "categoria": "Camisas formales",
+  "tipo": "camisa",
+  "nombre": "Camisa Formal en Seda Verde Salvia",
+  "precio": 0,
+  "fotos": [
+   "catalogo/img/13-camisa-formal-verde-salvia/01.jpg"
+  ],
+  "colores": [
+   {
+    "n": "Verde salvia",
+    "h": "#b5bfa0"
+   }
+  ],
+  "tallas": [
+   "S",
+   "M",
+   "L",
+   "XL"
+  ],
+  "desc": "Manga corta con cuello mao negro. El color de la temporada.",
+  "detalles": [
+   "Tela de caída suave tipo seda",
+   "Verde salvia, el color de la temporada",
+   "Cuello mao negro",
+   "Botones negros",
+   "Manga corta"
+  ],
+  "combina": "Con jean negro clásico; el contraste verde y negro se ve muy fino."
+ },
+ {
+  "id": "camisa-formal-blanca-manga-corta",
+  "mundo": "street",
+  "categoria": "Camisas formales",
+  "tipo": "camisa",
+  "nombre": "Camisa Formal en Seda Blanca",
+  "precio": 0,
+  "fotos": [
+   "catalogo/img/14-camisa-formal-blanca-manga-corta/01.jpg",
+   "catalogo/img/14-camisa-formal-blanca-manga-corta/02.jpg",
+   "catalogo/img/14-camisa-formal-blanca-manga-corta/03.jpg",
+   "catalogo/img/14-camisa-formal-blanca-manga-corta/04.jpg",
+   "catalogo/img/14-camisa-formal-blanca-manga-corta/05.jpg"
+  ],
+  "colores": [
+   {
+    "n": "Blanco",
+    "h": "#f1f1ee"
+   }
+  ],
+  "tallas": [
+   "S",
+   "M",
+   "L",
+   "XL"
+  ],
+  "desc": "Manga corta, cuello mao y botones negros. Fresca y elegante.",
+  "detalles": [
+   "Tela de caída suave tipo seda",
+   "Cuello mao",
+   "Botones negros a todo lo largo",
+   "Manga corta",
+   "Corte recto con bajo redondeado"
+  ],
+  "combina": "Con jean negro o azul oscuro; fresca para el día y elegante en la noche."
+ },
+ {
+  "id": "camisa-formal-negra-manga-corta",
+  "mundo": "street",
+  "categoria": "Camisas formales",
+  "tipo": "camisa",
+  "nombre": "Camisa Formal en Seda Negra",
+  "precio": 0,
+  "fotos": [
+   "catalogo/img/15-camisa-formal-negra-manga-corta/01.jpg",
+   "catalogo/img/15-camisa-formal-negra-manga-corta/02.jpg",
+   "catalogo/img/15-camisa-formal-negra-manga-corta/03.jpg",
+   "catalogo/img/15-camisa-formal-negra-manga-corta/04.jpg",
+   "catalogo/img/15-camisa-formal-negra-manga-corta/05.jpg"
+  ],
+  "colores": [
+   {
+    "n": "Negro",
+    "h": "#141414"
+   }
+  ],
+  "tallas": [
+   "S",
+   "M",
+   "L",
+   "XL"
+  ],
+  "desc": "Manga corta, cuello mao y caída de seda. Negra profunda para noches que exigen presencia.",
+  "detalles": [
+   "Tela de caída suave tipo seda",
+   "Cuello mao",
+   "Botones a tono",
+   "Manga corta",
+   "Logo dorado discreto en el cuello"
+  ],
+  "combina": "Total black con jean negro, o con jean gris ceniza para un look urbano elegante."
+ },
+ {
+  "id": "jean-gris-ceniza",
+  "mundo": "street",
+  "categoria": "Jeans",
+  "tipo": "chino",
+  "nombre": "Jean Slim Gris Ceniza",
+  "precio": 0,
+  "fotos": [
+   "catalogo/img/16-jean-gris-ceniza/01.jpg",
+   "catalogo/img/16-jean-gris-ceniza/02.jpg",
+   "catalogo/img/16-jean-gris-ceniza/03.jpg"
+  ],
+  "colores": [
+   {
+    "n": "Gris ceniza",
+    "h": "#55555a"
+   }
+  ],
+  "tallas": [
+   "28",
+   "30",
+   "32",
+   "34",
+   "36"
+  ],
+  "desc": "Denim gris ceniza con lavado marmoleado y corte slim.",
+  "detalles": [
+   "Lavado gris marmoleado",
+   "Corte slim",
+   "Cinco bolsillos",
+   "Bota recta ajustada"
+  ],
+  "combina": "Con polo negra o blanca; queda muy bien con camisas formales oscuras."
+ },
+ {
+  "id": "jean-negro-desgastado",
+  "mundo": "street",
+  "categoria": "Jeans",
+  "tipo": "chino",
+  "nombre": "Jean Negro Desgastado",
+  "precio": 0,
+  "fotos": [
+   "catalogo/img/17-jean-negro-desgastado/01.jpg",
+   "catalogo/img/17-jean-negro-desgastado/02.jpg",
+   "catalogo/img/17-jean-negro-desgastado/03.jpg"
+  ],
+  "colores": [
+   {
+    "n": "Negro",
+    "h": "#202022"
+   }
+  ],
+  "tallas": [
+   "28",
+   "30",
+   "32",
+   "34",
+   "36"
+  ],
+  "desc": "Negro con desgastes sutiles y corte ajustado. Actitud de calle.",
+  "detalles": [
+   "Negro con desgastes sutiles",
+   "Corte ajustado",
+   "Cinco bolsillos",
+   "Etiqueta de cuero en la pretina"
+  ],
+  "combina": "Con cualquier polo de color claro para contrastar."
+ },
+ {
+  "id": "jean-azul-medio",
+  "mundo": "street",
+  "categoria": "Jeans",
+  "tipo": "chino",
+  "nombre": "Jean Azul Medio Destroyed",
+  "precio": 0,
+  "fotos": [
+   "catalogo/img/18-jean-azul-medio/01.jpg",
+   "catalogo/img/18-jean-azul-medio/02.jpg"
+  ],
+  "colores": [
+   {
+    "n": "Azul medio",
+    "h": "#2f4f8f"
+   }
+  ],
+  "tallas": [
+   "28",
+   "30",
+   "32",
+   "34",
+   "36"
+  ],
+  "desc": "Azul medio con desgastes y bigotes marcados. Corte slim.",
+  "detalles": [
+   "Azul medio con efecto destroyed",
+   "Bigotes marcados en la cadera",
+   "Corte slim",
+   "Cinco bolsillos"
+  ],
+  "combina": "Con polo blanca o rosa y tenis blancos."
+ },
+ {
+  "id": "jean-azul-oscuro",
+  "mundo": "street",
+  "categoria": "Jeans",
+  "tipo": "chino",
+  "nombre": "Jean Azul Oscuro Desgastado",
+  "precio": 0,
+  "fotos": [
+   "catalogo/img/19-jean-azul-oscuro/01.jpg",
+   "catalogo/img/19-jean-azul-oscuro/02.jpg",
+   "catalogo/img/19-jean-azul-oscuro/03.jpg"
+  ],
+  "colores": [
+   {
+    "n": "Azul oscuro",
+    "h": "#1f2c4a"
+   }
+  ],
+  "tallas": [
+   "28",
+   "30",
+   "32",
+   "34",
+   "36"
+  ],
+  "desc": "Índigo oscuro con desgastes discretos. Combina con todo.",
+  "detalles": [
+   "Índigo oscuro",
+   "Desgastes discretos",
+   "Corte slim",
+   "Cinco bolsillos"
+  ],
+  "combina": "El jean más versátil: con polos de cualquier color y camisas formales."
+ },
+ {
+  "id": "jean-negro-liso",
+  "mundo": "street",
+  "categoria": "Jeans",
+  "tipo": "chino",
+  "nombre": "Jean Negro Clásico",
+  "precio": 0,
+  "fotos": [
+   "catalogo/img/20-jean-negro-liso/01.jpg",
+   "catalogo/img/20-jean-negro-liso/02.jpg",
+   "catalogo/img/20-jean-negro-liso/03.jpg"
+  ],
+  "colores": [
+   {
+    "n": "Negro",
+    "h": "#151516"
+   }
+  ],
+  "tallas": [
+   "28",
+   "30",
+   "32",
+   "34",
+   "36"
+  ],
+  "desc": "Negro liso, limpio y versátil. El básico que no puede faltar.",
+  "detalles": [
+   "Negro liso sin desgastes",
+   "Corte slim",
+   "Cinco bolsillos",
+   "Etiqueta en la pretina trasera"
+  ],
+  "combina": "El básico: con camisa formal para la noche o polo para el día."
+ },
+ {
+  "id": "jean-azul-claro-roto",
+  "mundo": "street",
+  "categoria": "Jeans",
+  "tipo": "chino",
+  "nombre": "Jean Azul Claro Roto",
+  "precio": 0,
+  "fotos": [
+   "catalogo/img/21-jean-azul-claro-roto/01.jpg",
+   "catalogo/img/21-jean-azul-claro-roto/02.jpg",
+   "catalogo/img/21-jean-azul-claro-roto/03.jpg"
+  ],
+  "colores": [
+   {
+    "n": "Azul claro",
+    "h": "#8fb3cf"
+   }
+  ],
+  "tallas": [
+   "28",
+   "30",
+   "32",
+   "34",
+   "36"
+  ],
+  "desc": "Azul claro con rotos frontales. Fresco y urbano.",
+  "detalles": [
+   "Azul claro",
+   "Rotos frontales",
+   "Corte slim",
+   "Cinco bolsillos"
+  ],
+  "combina": "Con polo negra o azul oscura y tenis blancos."
+ },
+ {
+  "id": "gorra-clemont-negra",
+  "mundo": "street",
+  "categoria": "Gorras",
+  "tipo": "cap",
+  "nombre": "Gorra Clemont Negra",
+  "precio": 0,
+  "fotos": [
+   "catalogo/img/22-gorra-clemont-negra/01.jpg",
+   "catalogo/img/22-gorra-clemont-negra/02.jpg",
+   "catalogo/img/22-gorra-clemont-negra/03.jpg",
+   "catalogo/img/22-gorra-clemont-negra/04.jpg",
+   "catalogo/img/22-gorra-clemont-negra/05.jpg",
+   "catalogo/img/22-gorra-clemont-negra/06.jpg",
+   "catalogo/img/22-gorra-clemont-negra/07.jpg",
+   "catalogo/img/22-gorra-clemont-negra/08.jpg",
+   "catalogo/img/22-gorra-clemont-negra/09.jpg",
+   "catalogo/img/22-gorra-clemont-negra/10.jpg",
+   "catalogo/img/22-gorra-clemont-negra/11.jpg",
+   "catalogo/img/22-gorra-clemont-negra/12.jpg"
+  ],
+  "colores": [
+   {
+    "n": "Negro",
+    "h": "#121212"
+   }
+  ],
+  "tallas": [
+   "Única"
+  ],
+  "desc": "Bordado gótico tono sobre tono, aplicaciones brillantes y parche de rosa roja.",
+  "detalles": [
+   "Bordado gótico tono sobre tono al frente",
+   "Aplicaciones brillantes en toda la corona",
+   "Parche lateral con rosa roja",
+   "Visera curva"
+  ],
+  "combina": "Con cualquier polo negra o blanca para un look total urbano."
+ },
+ {
+  "id": "gorra-gg-trucker",
+  "mundo": "street",
+  "categoria": "Gorras",
+  "tipo": "cap",
+  "nombre": "Gorra Gucci Trucker GG",
+  "precio": 0,
+  "fotos": [
+   "catalogo/img/23-gorra-gg-trucker/01.jpg",
+   "catalogo/img/23-gorra-gg-trucker/02.jpg",
+   "catalogo/img/23-gorra-gg-trucker/03.jpg",
+   "catalogo/img/23-gorra-gg-trucker/04.jpg"
+  ],
+  "colores": [
+   {
+    "n": "Beige y azul",
+    "h": "#b9b19a"
+   }
+  ],
+  "tallas": [
+   "Única"
+  ],
+  "desc": "Monograma GG con parche azul y logo dorado, franja web verde y roja, malla trasera.",
+  "detalles": [
+   "Monograma en toda la corona",
+   "Parche frontal azul con logo dorado en relieve",
+   "Franja lateral verde y roja",
+   "Malla trasera transpirable"
+  ],
+  "combina": "Con polo blanca o azul y jean claro."
+ },
+ {
+  "id": "gorra-lv-monograma",
+  "mundo": "street",
+  "categoria": "Gorras",
+  "tipo": "cap",
+  "nombre": "Gorra Louis Vuitton Monogram",
+  "precio": 0,
+  "fotos": [
+   "catalogo/img/24-gorra-lv-monograma/01.jpg",
+   "catalogo/img/24-gorra-lv-monograma/02.jpg",
+   "catalogo/img/24-gorra-lv-monograma/03.jpg",
+   "catalogo/img/24-gorra-lv-monograma/04.jpg",
+   "catalogo/img/24-gorra-lv-monograma/05.jpg",
+   "catalogo/img/24-gorra-lv-monograma/06.jpg",
+   "catalogo/img/24-gorra-lv-monograma/07.jpg"
+  ],
+  "colores": [
+   {
+    "n": "Monograma café",
+    "h": "#8d7560"
+   }
+  ],
+  "tallas": [
+   "Única"
+  ],
+  "desc": "Lona monograma con visera en cuero café y LV metálico dorado.",
+  "detalles": [
+   "Lona con monograma",
+   "Visera con ribete en cuero café",
+   "Logo metálico dorado al frente",
+   "Seis paneles"
+  ],
+  "combina": "Con polo blanca, beige o negra; la pieza que eleva el look."
+ },
+ {
+  "id": "gorra-boss-beige-verde",
+  "mundo": "street",
+  "categoria": "Gorras",
+  "tipo": "cap",
+  "nombre": "Gorra BOSS Beige y Oliva",
+  "precio": 0,
+  "fotos": [
+   "catalogo/img/25-gorra-boss-beige-verde/01.jpg",
+   "catalogo/img/25-gorra-boss-beige-verde/02.jpg",
+   "catalogo/img/25-gorra-boss-beige-verde/03.jpg",
+   "catalogo/img/25-gorra-boss-beige-verde/04.jpg",
+   "catalogo/img/25-gorra-boss-beige-verde/05.jpg",
+   "catalogo/img/25-gorra-boss-beige-verde/06.jpg",
+   "catalogo/img/25-gorra-boss-beige-verde/07.jpg"
+  ],
+  "colores": [
+   {
+    "n": "Beige y oliva",
+    "h": "#d8ccb0"
+   }
+  ],
+  "tallas": [
+   "Única"
+  ],
+  "desc": "Beige con logo BOSS en relieve verde oliva y visera a tono.",
+  "detalles": [
+   "Corona beige",
+   "Logo en relieve verde oliva",
+   "Visera verde oliva con pespuntes",
+   "Parche de marca en la visera"
+  ],
+  "combina": "Con polo blanca o verde y jean azul oscuro."
+ },
+ {
+  "id": "gorra-b-blanca-cruces",
+  "mundo": "street",
+  "categoria": "Gorras",
+  "tipo": "cap",
+  "nombre": "Gorra B Blanca con Cruces",
+  "precio": 0,
+  "fotos": [
+   "catalogo/img/26-gorra-b-blanca-cruces/01.jpg",
+   "catalogo/img/26-gorra-b-blanca-cruces/02.jpg",
+   "catalogo/img/26-gorra-b-blanca-cruces/03.jpg",
+   "catalogo/img/26-gorra-b-blanca-cruces/04.jpg",
+   "catalogo/img/26-gorra-b-blanca-cruces/05.jpg",
+   "catalogo/img/26-gorra-b-blanca-cruces/06.jpg"
+  ],
+  "colores": [
+   {
+    "n": "Blanco",
+    "h": "#ecebe6"
+   }
+  ],
+  "tallas": [
+   "Única"
+  ],
+  "desc": "Blanca con la B gótica y cruces en relieve, broche snapback.",
+  "detalles": [
+   "Blanca",
+   "B gótica bordada en relieve",
+   "Cruces bordadas a los lados",
+   "Visera plana con sticker",
+   "Cierre snapback"
+  ],
+  "combina": "Con polo negra o camisa formal negra para contrastar."
+ },
+ {
+  "id": "gorra-la-negra-cruz",
+  "mundo": "street",
+  "categoria": "Gorras",
+  "tipo": "cap",
+  "nombre": "Gorra LA Negra Cruz Dorada",
+  "precio": 0,
+  "fotos": [
+   "catalogo/img/27-gorra-la-negra-cruz/01.jpg",
+   "catalogo/img/27-gorra-la-negra-cruz/02.jpg",
+   "catalogo/img/27-gorra-la-negra-cruz/03.jpg",
+   "catalogo/img/27-gorra-la-negra-cruz/04.jpg",
+   "catalogo/img/27-gorra-la-negra-cruz/05.jpg",
+   "catalogo/img/27-gorra-la-negra-cruz/06.jpg",
+   "catalogo/img/27-gorra-la-negra-cruz/07.jpg"
+  ],
+  "colores": [
+   {
+    "n": "Negro y dorado",
+    "h": "#121212"
+   }
+  ],
+  "tallas": [
+   "Única"
+  ],
+  "desc": "Negra con LA tono sobre tono, cruz dorada al frente y alambre de púas bordado.",
+  "detalles": [
+   "Negra",
+   "LA tono sobre tono al frente",
+   "Cruz metálica dorada",
+   "Alambre de púas bordado en blanco",
+   "Aplicaciones brillantes"
+  ],
+  "combina": "Con polo negra y jean negro: total black con un toque dorado."
+ }
 ];
 
-// Looks del lookbook. "foto" es la imagen del look completo; "piezas" son los productos que lo forman.
 const LOOKS = {
-  street: [
-    { titulo: 'Look 01 — Battalion', foto: F('hoodie-1'), piezas: ['hoodie-battalion', 'cargo-tactical', 'cap-sixpanel'] },
-    { titulo: 'Look 02 — No Mercy', foto: F('street-1'), piezas: ['tee-nomercy', 'cargo-tactical', 'reloj-steel'] },
-    { titulo: 'Look 03 — Vanguard', foto: F('street-2'), piezas: ['chaqueta-vanguard', 'tee-legio', 'reloj-crono'] },
-  ],
-  maison: [
-    { titulo: 'I. Kensington', foto: F('blazer-2'), piezas: ['blazer-kensington', 'camisa-heritage', 'reloj-mayfair'] },
-    { titulo: 'II. Riviera', foto: F('chino-1'), piezas: ['polo-riviera', 'chino-belgravia', 'reloj-heritage'] },
-    { titulo: 'III. Club House', foto: F('boina-1'), piezas: ['cardigan-clubhouse', 'boina-windsor', 'chino-belgravia'] },
-  ],
+ "street": [
+  {
+   "titulo": "Look 01 — Tres clásicos",
+   "foto": "catalogo/img/00-grupo-banner/01.jpg",
+   "piezas": [
+    "polo-tommy-rosado",
+    "polo-lacoste-blanco",
+    "polo-ralph-rojo"
+   ]
+  },
+  {
+   "titulo": "Look 02 — Total black",
+   "foto": "catalogo/img/15-camisa-formal-negra-manga-corta/01.jpg",
+   "piezas": [
+    "camisa-formal-negra-manga-corta",
+    "jean-negro-liso",
+    "gorra-la-negra-cruz"
+   ]
+  },
+  {
+   "titulo": "Look 03 — Old money",
+   "foto": "catalogo/img/00-grupo-banner/02.jpg",
+   "piezas": [
+    "polo-ralph-rosado",
+    "jean-azul-oscuro",
+    "gorra-lv-monograma"
+   ]
+  }
+ ],
+ "maison": []
 };

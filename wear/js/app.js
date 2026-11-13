@@ -4,6 +4,9 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const html = document.documentElement;
 const vista = $('#vista');
 const pesos = n => '$' + Math.round(n).toLocaleString('es-CO');
+// precio 0 = aún sin precio publicado: se confirma por WhatsApp
+const precioDe = p => p.precio ? pesos(p.precio) : 'Consultar precio';
+const conPrecio = items => items.every(x => producto(x.id).precio);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const mundoActual = () => html.dataset.mundo;
 const deMundo = m => PRODUCTOS.filter(p => p.mundo === m);
@@ -12,9 +15,9 @@ const producto = id => PRODUCTOS.find(p => p.id === id);
 // Textos de cada mundo: la misma tienda habla distinto en cada uno
 const TXT = {
   street: {
-    tienda: 'Drop 01', ver: 'Ver producto', agregar: 'Agregar al carrito', directo: 'Pedir directo por WhatsApp',
-    completa: 'Completa el fit', talla: 'Talla', color: 'Color', vacio: 'Tu carrito está vacío. La calle te espera.',
-    agregado: 'Agregado. Ya es tuyo.',
+    tienda: 'Colección', ver: 'Ver prenda', agregar: 'Agregar al carrito', directo: 'Pedir directo por WhatsApp',
+    completa: 'Completa el look', talla: 'Talla', color: 'Color', vacio: 'Tu carrito está vacío.',
+    agregado: 'Agregado a tu carrito.',
   },
   maison: {
     tienda: 'La Colección', ver: 'Descubrir', agregar: 'Añadir a la selección', directo: 'Solicitar por WhatsApp',
@@ -24,20 +27,21 @@ const TXT = {
 };
 
 // ── IMAGEN DE PRODUCTO ── foto real si existe, si no la ilustración
-function imagen(p, color, i = 0) {
-  if (p.fotos && p.fotos[i]) return `<img src="${esc(p.fotos[i])}" alt="${esc(p.nombre)}" loading="lazy">`;
+const mini = f => f.replace(/\/(\d+)\.jpg$/, '/t$1.jpg');   // miniatura liviana para tarjetas y listas
+function imagen(p, color, i = 0, grande = false) {
+  if (p.fotos && p.fotos[i]) return `<img src="${esc(grande ? p.fotos[i] : mini(p.fotos[i]))}" alt="${esc(p.nombre)}" loading="lazy">`;
   return PRENDAS.svg(p.tipo, color || p.colores[0].h, { estampado: p.estampado, titulo: p.nombre, acento: p.mundo === 'maison' ? '#b08d57' : '#b3001b' });
 }
 
 function tarjeta(p, i = 0) {
   const m = p.mundo;
   return `<a class="tarjeta rev" style="--i:${i}" href="#/${m}/p/${p.id}">
-    <div class="tarjeta-img">${imagen(p)}${p.fotos && p.fotos[1] ? `<img class="alt" src="${esc(p.fotos[1])}" alt="" loading="lazy">` : ''}${p.etiqueta ? `<span class="etiqueta">${esc(p.etiqueta)}</span>` : ''}
+    <div class="tarjeta-img">${imagen(p)}${p.fotos && p.fotos[1] ? `<img class="alt" src="${esc(mini(p.fotos[1]))}" alt="" loading="lazy">` : ''}${p.etiqueta ? `<span class="etiqueta">${esc(p.etiqueta)}</span>` : ''}
       <span class="tarjeta-ver">${TXT[m].ver}</span></div>
     <div class="tarjeta-info">
       <span class="tarjeta-cat">${esc(p.categoria)}</span>
       <h3>${esc(p.nombre)}</h3>
-      <div class="tarjeta-pie"><span class="precio">${pesos(p.precio)}</span>
+      <div class="tarjeta-pie"><span class="precio${p.precio ? '' : ' consultar'}">${precioDe(p)}</span>
         <span class="puntos">${p.colores.map(c => `<i style="background:${c.h}" title="${esc(c.n)}"></i>`).join('')}</span></div>
     </div></a>`;
 }
@@ -48,43 +52,44 @@ function inicioStreet() {
   return `
   <section class="s-hero">
     <div class="s-hero-txt">
-      <p class="s-kicker rev"><span class="punto-vivo"></span> DROP 01 · ARMADURA URBANA</p>
+      <p class="s-kicker rev">COLECCIÓN 01 · 2026</p>
       <h1 class="s-titulo" aria-label="Legion Wear">
         <span class="lin rev" data-txt="LEGION">LEGION</span>
         <span class="lin hueca rev" style="--i:1" data-txt="WEAR">WEAR</span>
       </h1>
-      <p class="s-sub rev" style="--i:2">Ropa pesada para gente que no se dobla. Producción limitada, sin reposición.</p>
+      <p class="s-sub rev" style="--i:2">Polos de marca, camisas formales en seda, jeans y gorras. Piezas seleccionadas una a una, en unidades limitadas.</p>
       <div class="s-ctas rev" style="--i:3">
-        <a href="#/street/tienda" class="btn-s">Ver el drop <span>→</span></a>
+        <a href="#/street/tienda" class="btn-s">Ver la colección <span>→</span></a>
         <a href="#/street/lookbook" class="btn-s fantasma">Lookbook</a>
       </div>
       <div class="cuenta-regresiva rev" style="--i:4" aria-label="Próximo drop">
-        <span>PRÓXIMO DROP EN</span><b data-cr="d">00</b>D <b data-cr="h">00</b>H <b data-cr="m">00</b>M <b data-cr="s">00</b>S
+        <span>NUEVOS INGRESOS EN</span><b data-cr="d">00</b>D <b data-cr="h">00</b>H <b data-cr="m">00</b>M <b data-cr="s">00</b>S
       </div>
     </div>
     <div class="s-hero-arte">
       <div class="s-aro"></div>
-      <a class="s-hero-foto" href="#/street/p/hoodie-battalion"><img src="img/productos/hoodie-1.jpg" alt="Hoodie Heavyweight Battalion"></a>
+      <a class="s-hero-foto" href="#/street/tienda"><img src="catalogo/img/01-polo-tommy-rosado/01.jpg" alt="Polo rosa de la colección"></a>
       <span class="s-sello">EST. 2026<br>BOGOTÁ</span>
-      <span class="s-num">001/100</span>
+      <span class="s-num">COLECCIÓN 01</span>
     </div>
   </section>
-  <div class="s-cinta"><div>${'<span>LEGION WEAR</span><b>✕</b><span>DROP 01</span><b>✕</b><span>NO RESTOCK</span><b>✕</b><span>LIMITED</span><b>✕</b>'.repeat(4)}</div></div>
+  <div class="s-cinta"><div>${'<span>LEGION WEAR</span><b>·</b><span>POLOS</span><b>·</b><span>CAMISAS EN SEDA</span><b>·</b><span>JEANS</span><b>·</b><span>GORRAS</span><b>·</b>'.repeat(4)}</div></div>
   <section class="seccion">
-    <div class="seccion-cab"><h2 class="s-h2 rev">LO NUEVO</h2><a href="#/street/tienda" class="ver-todo">Ver todo →</a></div>
+    <div class="seccion-cab"><h2 class="s-h2 rev">Lo <i>nuevo</i></h2><a href="#/street/tienda" class="ver-todo">Ver todo →</a></div>
     <div class="rejilla">${nuevos.slice(0, 4).map(tarjeta).join('')}</div>
   </section>
   <section class="s-manifiesto">
-    <p class="rev">NO HACEMOS ROPA PARA <em>ENCAJAR</em>.<br>LA HACEMOS PARA <em>RESISTIR</em>.</p>
+    <p class="rev">No vestimos para <em>encajar</em>.<br>Vestimos para que te <em>miren</em>.</p>
     <div class="s-datos">
-      <div class="rev"><b>400G</b><span>Felpa pesada</span></div>
-      <div class="rev" style="--i:1"><b>100</b><span>Unidades por drop</span></div>
-      <div class="rev" style="--i:2"><b>0</b><span>Reposiciones</span></div>
+      <div class="rev"><b>4</b><span>Líneas</span></div>
+      <div class="rev" style="--i:1"><b>1 a 1</b><span>Piezas seleccionadas</span></div>
+      <div class="rev" style="--i:2"><b>24 h</b><span>Respuesta por WhatsApp</span></div>
     </div>
   </section>
   <section class="seccion">
-    <div class="seccion-cab"><h2 class="s-h2 rev">MÁS DEL DROP</h2></div>
-    <div class="rejilla">${nuevos.slice(4).map(tarjeta).join('')}</div>
+    <div class="seccion-cab"><h2 class="s-h2 rev">Más de la <i>colección</i></h2></div>
+    <div class="rejilla">${nuevos.slice(4, 12).map(tarjeta).join('')}</div>
+    <div class="ver-mas"><a href="#/street/tienda" class="btn-s fantasma">Ver las ${nuevos.length} prendas <span>→</span></a></div>
   </section>
   ${puenteMundo('street')}`;
 }
@@ -137,6 +142,7 @@ function escudo(cls = '') {
 }
 
 function puenteMundo(m) {
+  if (!TIENDA.maison) return '';
   return m === 'street'
     ? `<section class="puente puente-a-maison"><a href="#/maison" class="rev"><span>¿Otro estilo?</span><b>Entra a <i>Legion Maison</i></b><em>Old money, lujo silencioso →</em></a></section>`
     : `<section class="puente puente-a-street"><a href="#/street" class="rev"><span>Otro lado de la casa</span><b>LGN STREET</b><em>Streetwear, Drop 01 →</em></a></section>`;
@@ -152,8 +158,8 @@ function tienda(m, q) {
   const url = (c, o) => `#/${m}/tienda?` + new URLSearchParams({ ...(c ? { cat: c } : {}), ...(o ? { orden: o } : {}) });
   return `<section class="seccion tienda">
     <header class="tienda-cab">
-      <h1 class="${m === 'street' ? 's-h1' : 'm-h1'} rev">${m === 'street' ? 'DROP 01' : 'La <i>Colección</i>'}</h1>
-      <p class="rev">${m === 'street' ? `${prods.length} piezas · producción limitada` : `${prods.length} piezas atemporales`}</p>
+      <h1 class="${m === 'street' ? 's-h1' : 'm-h1'} rev">La <i>colección</i></h1>
+      <p class="rev">${m === 'street' ? `${prods.length} piezas · unidades limitadas` : `${prods.length} piezas atemporales`}</p>
     </header>
     <div class="filtros">
       <div class="chips"><a href="${url('', orden)}" class="chip ${!cat ? 'on' : ''}">Todo</a>
@@ -172,12 +178,15 @@ let sel = {};
 function paginaProducto(p) {
   const t = TXT[p.mundo];
   sel = { id: p.id, color: p.colores[0].n, talla: p.tallas.length === 1 ? p.tallas[0] : '', cant: 1 };
-  const otros = deMundo(p.mundo).filter(x => x.id !== p.id && x.categoria !== p.categoria).slice(0, 3);
+  // Completa el look: una prenda de cada una de las otras categorías, variando según la prenda
+  const todos = deMundo(p.mundo), k = todos.indexOf(p);
+  const otros = [...new Set(todos.map(x => x.categoria))].filter(c => c !== p.categoria)
+    .map(c => { const l = todos.filter(x => x.categoria === c); return l[k % l.length]; }).slice(0, 3);
   return `<section class="seccion producto">
-    <nav class="migas"><a href="#/${p.mundo}">${p.mundo === 'street' ? 'LGN Street' : 'Maison'}</a> / <a href="#/${p.mundo}/tienda?cat=${encodeURIComponent(p.categoria)}">${esc(p.categoria)}</a> / <span>${esc(p.nombre)}</span></nav>
+    <nav class="migas"><a href="#/${p.mundo}">${p.mundo === 'street' ? 'Inicio' : 'Maison'}</a> / <a href="#/${p.mundo}/tienda?cat=${encodeURIComponent(p.categoria)}">${esc(p.categoria)}</a> / <span>${esc(p.nombre)}</span></nav>
     <div class="producto-grid">
       <div class="galeria">
-        <div class="galeria-principal" id="galeria">${imagen(p)}</div>
+        <div class="galeria-principal" id="galeria">${imagen(p, null, 0, true)}</div>
         <div class="galeria-miniaturas">${p.fotos
           ? p.fotos.map((f, i) => `<button class="mini ${i ? '' : 'on'}" data-foto="${i}" aria-label="Foto ${i + 1}">${imagen(p, null, i)}</button>`).join('')
           : p.colores.map((c, i) => `<button class="mini ${i ? '' : 'on'}" data-color="${esc(c.n)}" aria-label="Ver en ${esc(c.n)}">${imagen(p, c.h)}</button>`).join('')}</div>
@@ -185,7 +194,7 @@ function paginaProducto(p) {
       <div class="ficha">
         ${p.etiqueta ? `<span class="etiqueta">${esc(p.etiqueta)}</span>` : ''}
         <h1>${esc(p.nombre)}</h1>
-        <p class="precio-grande">${pesos(p.precio)}</p>
+        <p class="precio-grande${p.precio ? '' : ' consultar'}">${precioDe(p)}</p>
         <p class="desc">${esc(p.desc)}</p>
         <div class="opcion"><span class="opcion-tit">${t.color}: <b id="colorSel">${esc(sel.color)}</b></span>
           <div class="colores">${p.colores.map((c, i) => `<button class="color ${i ? '' : 'on'}" data-color="${esc(c.n)}" style="--c:${c.h}" aria-label="${esc(c.n)}"></button>`).join('')}</div></div>
@@ -197,7 +206,8 @@ function paginaProducto(p) {
         </div>
         <button class="btn-directo">${t.directo}</button>
         <details open><summary>Detalles</summary><ul>${p.detalles.map(d => `<li>${esc(d)}</li>`).join('')}</ul></details>
-        <details><summary>Envíos y cambios</summary><p>Envíos a toda Colombia en 2 a 5 días hábiles. Envío gratis desde ${pesos(TIENDA.envioGratisDesde)}. Cambios de talla dentro de los 15 días siguientes.</p></details>
+        ${p.combina ? `<details open><summary>Cómo llevarla</summary><p class="combina">${esc(p.combina)}</p></details>` : ''}
+        <details><summary>Envíos y cambios</summary><p>Hacemos envíos a toda Colombia. El costo y el tiempo de entrega te los confirmamos por WhatsApp según tu ciudad. Si la talla no te queda, escríbenos y te ayudamos con el cambio.</p></details>
       </div>
     </div>
     ${otros.length ? `<div class="seccion-cab"><h2 class="${p.mundo === 'street' ? 's-h2' : 'm-h2'}">${t.completa}</h2></div><div class="rejilla">${otros.map(tarjeta).join('')}</div>` : ''}
@@ -213,7 +223,7 @@ function activarProducto(p) {
     $$('[data-color]').forEach(b => b.classList.toggle('on', b.dataset.color === n));
   };
   $$('[data-color]').forEach(b => b.onclick = () => ponerColor(b.dataset.color));
-  $$('[data-foto]').forEach(b => b.onclick = () => { $('#galeria').innerHTML = imagen(p, null, Number(b.dataset.foto)); $$('[data-foto]').forEach(x => x.classList.toggle('on', x === b)); });
+  $$('[data-foto]').forEach(b => b.onclick = () => { $('#galeria').innerHTML = imagen(p, null, Number(b.dataset.foto), true); $$('[data-foto]').forEach(x => x.classList.toggle('on', x === b)); });
   $$('.talla').forEach(b => b.onclick = () => { sel.talla = b.dataset.talla; $$('.talla').forEach(x => x.classList.toggle('on', x === b)); $('.tallas').classList.remove('falta'); });
   $$('[data-cant]').forEach(b => b.onclick = () => { sel.cant = Math.max(1, Math.min(10, sel.cant + Number(b.dataset.cant))); $('#cant').textContent = sel.cant; });
   const guia = $('.link-guia'); if (guia) guia.onclick = () => $('#guia').showModal();
@@ -243,15 +253,15 @@ function activarProducto(p) {
 // ── LOOKBOOK ──
 function lookbook(m) {
   return `<section class="seccion lookbook">
-    <header class="tienda-cab"><h1 class="${m === 'street' ? 's-h1' : 'm-h1'} rev">${m === 'street' ? 'LOOKBOOK' : 'Lookbook <i>MMXXVI</i>'}</h1>
-      <p class="rev">${m === 'street' ? 'Fits del Drop 01' : 'Atuendos de la colección de otoño'}</p></header>
+    <header class="tienda-cab"><h1 class="${m === 'street' ? 's-h1' : 'm-h1'} rev">${m === 'street' ? 'Lookbook' : 'Lookbook <i>MMXXVI</i>'}</h1>
+      <p class="rev">${m === 'street' ? 'Looks de la colección' : 'Atuendos de la colección de otoño'}</p></header>
     <div class="looks">${LOOKS[m].map((l, i) => {
       const piezas = l.piezas.map(producto);
       return `<article class="look rev" style="--i:${i}">
         <div class="look-lienzo${l.foto ? ' con-foto' : ''}">${l.foto ? `<img src="${esc(l.foto)}" alt="${esc(l.titulo)}" loading="lazy">` : piezas.map((p, k) => `<div class="look-pieza k${k}">${imagen(p)}</div>`).join('')}</div>
         <div class="look-info"><h3>${esc(l.titulo)}</h3>
-          <ul>${piezas.map(p => `<li><a href="#/${m}/p/${p.id}"><span class="look-mini">${imagen(p)}</span>${esc(p.nombre)}</a><span>${pesos(p.precio)}</span></li>`).join('')}</ul>
-          <p class="look-total">Total del look <b>${pesos(piezas.reduce((s, p) => s + p.precio, 0))}</b></p></div>
+          <ul>${piezas.map(p => `<li><a href="#/${m}/p/${p.id}"><span class="look-mini">${imagen(p)}</span>${esc(p.nombre)}</a><span>${precioDe(p)}</span></li>`).join('')}</ul>
+          ${piezas.every(p => p.precio) ? `<p class="look-total">Total del look <b>${pesos(piezas.reduce((s, p) => s + p.precio, 0))}</b></p>` : `<p class="look-total">Pide el look completo por WhatsApp</p>`}</div>
       </article>`;
     }).join('')}</div>
   </section>`;
@@ -260,12 +270,12 @@ function lookbook(m) {
 // ── INFORMACIÓN ──
 function info(m) {
   return `<section class="seccion info">
-    <header class="tienda-cab"><h1 class="${m === 'street' ? 's-h1' : 'm-h1'}">${m === 'street' ? 'INFO' : 'La <i>Casa</i>'}</h1></header>
+    <header class="tienda-cab"><h1 class="${m === 'street' ? 's-h1' : 'm-h1'}">${m === 'street' ? 'Información' : 'La <i>Casa</i>'}</h1></header>
     <div class="info-grid">
-      <div><h3>Sobre nosotros</h3><p>LEGION WEAR es la línea de ropa de Legion Estudio. Dos mundos bajo una misma casa: LGN Street, streetwear pesado de producción limitada, y Legion Maison, prendas atemporales de inspiración clásica.</p></div>
+      <div><h3>Sobre nosotros</h3><p>LEGION WEAR es la línea de ropa de Legion Estudio: polos, camisas formales en seda, jeans y gorras seleccionados pieza por pieza, en unidades limitadas.</p></div>
       <div><h3>Cómo comprar</h3><p>Elige tus prendas, talla y color, y envía tu pedido por WhatsApp. Te confirmamos disponibilidad, costo de envío y forma de pago (transferencia, Nequi, Daviplata o contraentrega según tu ciudad).</p></div>
-      <div><h3>Envíos</h3><p>A toda Colombia en 2 a 5 días hábiles. Envío gratis en compras desde ${pesos(TIENDA.envioGratisDesde)}.</p></div>
-      <div><h3>Cambios y devoluciones</h3><p>Cambios de talla dentro de los 15 días siguientes a la entrega, con la prenda sin uso y con etiquetas.</p></div>
+      <div><h3>Envíos</h3><p>Enviamos a toda Colombia. El costo y el tiempo de entrega se confirman por WhatsApp según tu ciudad.</p></div>
+      <div><h3>Cambios de talla</h3><p>Si la talla no te queda, escríbenos por WhatsApp con la prenda sin uso y con sus etiquetas, y te ayudamos con el cambio.</p></div>
     </div>
   </section>`;
 }
@@ -273,13 +283,13 @@ function info(m) {
 function pie() {
   const m = mundoActual();
   $('#pie').innerHTML = `<div class="pie-grid">
-    <div class="pie-marca">${m === 'street' ? '<b class="pie-logo">LGN<span>/</span>WEAR</b>' : `${escudo('pie-escudo')}<b class="pie-logo">Legion <i>Maison</i></b>`}
-      <p>${m === 'street' ? 'Ropa pesada para gente que no se dobla.' : 'Elegancia atemporal, hecha para durar.'}</p></div>
-    <div><h4>Tienda</h4><a href="#/${m}/tienda">${TXT[m].tienda}</a><a href="#/${m}/lookbook">Lookbook</a><a href="#/${m === 'street' ? 'maison' : 'street'}">${m === 'street' ? 'Legion Maison' : 'LGN Street'}</a></div>
+    <div class="pie-marca">${m === 'street' ? '<b class="pie-logo">Legion <span>Wear</span></b>' : `${escudo('pie-escudo')}<b class="pie-logo">Legion <i>Maison</i></b>`}
+      <p>${m === 'street' ? 'Vestimos para que te miren.' : 'Elegancia atemporal, hecha para durar.'}</p></div>
+    <div><h4>Tienda</h4><a href="#/${m}/tienda">${TXT[m].tienda}</a><a href="#/${m}/lookbook">Lookbook</a>${TIENDA.maison ? `<a href="#/${m === 'street' ? 'maison' : 'street'}">${m === 'street' ? 'Legion Maison' : 'LGN Street'}</a>` : ''}</div>
     <div><h4>Ayuda</h4><a href="#/${m}/info">Envíos y cambios</a><a href="#/${m}/info">Cómo comprar</a><a href="#" data-wa>WhatsApp</a></div>
-    <div><h4>Síguenos</h4><a href="${esc(TIENDA.instagram)}" target="_blank" rel="noopener">Instagram</a><span class="pie-ciudad">${esc(TIENDA.ciudad)}</span></div>
+    <div><h4>Síguenos</h4>${TIENDA.instagram ? `<a href="${esc(TIENDA.instagram)}" target="_blank" rel="noopener">Instagram</a>` : ''}<span class="pie-ciudad">${esc(TIENDA.ciudad)}</span></div>
   </div>
-  <div class="pie-legal"><span>© 2026 LEGION WEAR · Una extensión de Legion Estudio</span><span>${m === 'street' ? 'NO RESTOCK · NO MERCY' : 'Est. MMXXVI'}</span></div>`;
+  <div class="pie-legal"><span>© 2026 LEGION WEAR · Una extensión de Legion Estudio</span><span>${m === 'street' ? 'Colección 01 · 2026' : 'Est. MMXXVI'}</span></div>`;
   $('[data-wa]', $('#pie')).onclick = e => { e.preventDefault(); abrirWhatsApp('Hola LEGION WEAR, quiero más información.'); };
 }
 
@@ -300,18 +310,18 @@ function pintarCarrito() {
   carrito = carrito.filter(x => producto(x.id));
   const n = carrito.reduce((s, x) => s + x.cant, 0), total = carrito.reduce((s, x) => s + producto(x.id).precio * x.cant, 0);
   $$('.cuenta').forEach(c => c.textContent = n);
-  $('.total').textContent = pesos(total);
+  $('.total').textContent = conPrecio(carrito) ? pesos(total) : (total ? pesos(total) + ' + por confirmar' : 'Por confirmar');
   $('.btn-pedir').disabled = !n;
   $('.carrito-lista').innerHTML = n ? carrito.map((x, i) => {
     const p = producto(x.id), c = p.colores.find(k => k.n === x.color) || p.colores[0];
     return `<div class="item item-${p.mundo}">
       <div class="item-img">${imagen(p, c.h)}</div>
-      <div class="item-info"><span class="item-mundo">${p.mundo === 'street' ? 'LGN Street' : 'Legion Maison'}</span>
+      <div class="item-info"><span class="item-mundo">${esc(p.categoria)}</span>
         <b>${esc(p.nombre)}</b><span>${esc(x.color)} · Talla ${esc(x.talla)}</span>
         <div class="item-cant"><button data-i="${i}" data-d="-1" aria-label="Menos">−</button><span>${x.cant}</span><button data-i="${i}" data-d="1" aria-label="Más">+</button>
           <button class="quitar" data-q="${i}">Quitar</button></div></div>
-      <span class="item-precio">${pesos(p.precio * x.cant)}</span></div>`;
-  }).join('') + (total < TIENDA.envioGratisDesde ? `<p class="envio-falta">Te faltan <b>${pesos(TIENDA.envioGratisDesde - total)}</b> para envío gratis</p>` : `<p class="envio-falta ok">Tienes envío gratis</p>`)
+      <span class="item-precio">${p.precio ? pesos(p.precio * x.cant) : 'Consultar'}</span></div>`;
+  }).join('') + (!conPrecio(carrito) ? `<p class="envio-falta">El precio y el envío te los confirmamos por WhatsApp</p>` : !TIENDA.envioGratisDesde ? `<p class="envio-falta">El envío te lo confirmamos por WhatsApp</p>` : total < TIENDA.envioGratisDesde ? `<p class="envio-falta">Te faltan <b>${pesos(TIENDA.envioGratisDesde - total)}</b> para envío gratis</p>` : `<p class="envio-falta ok">Tienes envío gratis</p>`)
     : `<p class="vacio">${TXT[mundoActual()].vacio}</p>`;
   $$('[data-d]').forEach(b => b.onclick = () => { const x = carrito[b.dataset.i]; x.cant += Number(b.dataset.d); if (x.cant < 1) carrito.splice(b.dataset.i, 1); else x.cant = Math.min(10, x.cant); guardar(); });
   $$('[data-q]').forEach(b => b.onclick = () => { carrito.splice(b.dataset.q, 1); guardar(); });
@@ -335,9 +345,9 @@ function pedirWhatsApp(items) {
   let total = 0;
   const lineas = items.map((x, i) => {
     const p = producto(x.id), sub = p.precio * x.cant; total += sub;
-    return `${i + 1}. ${p.nombre} (${p.mundo === 'street' ? 'Street' : 'Maison'})\n   ${x.color} · Talla ${x.talla} · x${x.cant} — ${pesos(sub)}`;
+    return `${i + 1}. ${p.nombre}\n   ${x.color} · Talla ${x.talla} · x${x.cant}${p.precio ? ' — ' + pesos(sub) : ''}`;
   });
-  abrirWhatsApp(`Hola LEGION WEAR, quiero hacer este pedido:\n\n${lineas.join('\n')}\n\nSubtotal: ${pesos(total)}${total >= TIENDA.envioGratisDesde ? ' (envío gratis)' : ''}\n\nNombre:\nCiudad y dirección:\nForma de pago:`);
+  abrirWhatsApp(`Hola LEGION WEAR, quiero hacer este pedido:\n\n${lineas.join('\n')}\n\n${conPrecio(items) ? `Subtotal: ${pesos(total)}${TIENDA.envioGratisDesde && total >= TIENDA.envioGratisDesde ? ' (envío gratis)' : ''}` : '¿Me confirman precio y disponibilidad?'}\n\nNombre:\nCiudad y dirección:\nForma de pago:`);
 }
 
 // ── AVISO ──
@@ -376,7 +386,7 @@ function cambiarMundo(nuevo, alTerminar) {
 // ── ENRUTADOR ──
 function ruta() {
   const [camino, qs] = (location.hash.slice(2) || 'street').split('?');
-  const partes = camino.split('/'), m = partes[0] === 'maison' ? 'maison' : 'street', q = new URLSearchParams(qs || '');
+  const partes = camino.split('/'), m = partes[0] === 'maison' && TIENDA.maison ? 'maison' : 'street', q = new URLSearchParams(qs || '');
   const pintar = () => {
     let p;
     if (partes[1] === 'tienda') vista.innerHTML = tienda(m, q);
@@ -388,7 +398,7 @@ function ruta() {
     const sec = ['tienda', 'lookbook'].includes(partes[1]) ? partes[1] : partes[1] === 'p' ? 'tienda' : 'inicio';
     $$('[data-sec]').forEach(a => a.classList.toggle('on', a.dataset.sec === sec));
     $$('[data-ir]').forEach(a => a.href = `#/${m}${a.dataset.ir === 'inicio' ? '' : '/' + a.dataset.ir}`);
-    document.title = (m === 'street' ? 'LGN STREET' : 'LEGION MAISON') + ' — LEGION WEAR';
+    document.title = m === 'street' ? 'LEGION WEAR' : 'LEGION MAISON — LEGION WEAR';
     pie(); pintarCarrito();
     window.scrollTo(0, 0);
     $$('.rev').forEach(el => obs.observe(el));
@@ -408,4 +418,5 @@ window.addEventListener('hashchange', ruta);
   (function mover() { cx += (x - cx) * 0.16; cy += (y - cy) * 0.16; c.style.transform = `translate(${cx}px, ${cy}px)`; requestAnimationFrame(mover); })();
 })();
 
+html.classList.toggle('sin-maison', !TIENDA.maison);
 ruta();
