@@ -466,3 +466,18 @@ body.vial { background: #0B0D10; color: #F2F4F7; }
 .hero-v .estado::before { display: none; }
 .hv-top { gap: 12px; } .hv-b { min-width: 0; } .hv-b b, .hv-b small { overflow-wrap: anywhere; }
 .hero-v { max-width: 100vw; } .pagina { overflow-x: clip; }
+
+/* Medios de pago */
+.pagos { background: var(--card); border: 1px solid var(--linea); border-radius: 22px; padding: 16px; }
+.pg-tit { display: flex; align-items: center; gap: 8px; font-size: 1rem; margin-bottom: 10px; }
+.pg-tit .icon { color: var(--c); }
+.pg-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid var(--linea); }
+.pg-item > div { flex: 1; min-width: 0; }
+.pg-item b { display: block; font-size: .92rem; }
+.pg-item span { font-size: 1.05rem; font-weight: 800; letter-spacing: .04em; }
+.pg-item small { display: block; color: var(--gris); font-size: .74rem; }
+.pg-logo { width: 42px; height: 42px; border-radius: 12px; color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 1.1rem; flex-shrink: 0; }
+.pg-copiar { display: inline-flex; align-items: center; gap: 6px; padding: 9px 12px; border-radius: 999px; border: 1.5px solid var(--linea); background: transparent; font-weight: 700; font-size: .8rem; cursor: pointer; }
+.pg-copiar .icon { width: 16px; height: 16px; }
+.pg-copiar.ok { border-color: #25D366; color: #25D366; }
+.pg-nota { font-size: .78rem; color: var(--gris); margin-top: 6px; }

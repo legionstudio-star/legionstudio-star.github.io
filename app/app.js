@@ -258,6 +258,18 @@
           <a class="gm-ir" href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(N.mapa)}" target="_blank" rel="noopener">${ic("pin")} Cómo llegar</a></div>` : ""}
       </section>`; })() : ""}
 
+      ${(N.pagos || []).length ? `
+      <section class="bloque pagos" aria-label="Medios de pago">
+        <h2 class="pg-tit">${ic("recibo")} Medios de pago</h2>
+        ${N.pagos.map((m) => `
+        <div class="pg-item">
+          <span class="pg-logo" style="background:${m.c || "var(--c)"}">${esc((m.t || "?")[0])}</span>
+          <div><b>${esc(m.t)}</b><span>${esc(String(m.v).replace(/^(\d{3})(\d{3})(\d{4})$/, "$1 $2 $3"))}</span>${m.a ? `<small>${esc(m.a)}</small>` : ""}</div>
+          <button type="button" class="pg-copiar" data-copiar="${esc(m.v)}">${ic("copiar")} Copiar</button>
+        </div>`).join("")}
+        <p class="pg-nota">${esc(N.pagosNota || "Envía el comprobante por WhatsApp junto con tu pedido.")}</p>
+      </section>` : ""}
+
       ${N.promo ? `<div class="bloque"><div class="promo">${ic("regalo")}<div><strong>${esc(N.promo.titulo)}</strong><span>${esc(N.promo.texto)}</span></div></div></div>` : ""}
 
       ${lista.length ? `<div class="bloque botones">${(() => { const anchos = lista.filter((b) => b.destacado || b.accion === "mesa").length, resto = lista.length - anchos;
@@ -427,6 +439,12 @@
   if (tieneMenu) montarMenu();
 
   document.addEventListener("click", (e) => {
+    const cp = e.target.closest("[data-copiar]");
+    if (cp) {
+      const txt = cp.dataset.copiar, ok = () => { cp.classList.add("ok"); cp.lastChild.textContent = " Copiado"; setTimeout(() => { cp.classList.remove("ok"); cp.lastChild.textContent = " Copiar"; }, 1800); };
+      if (navigator.clipboard) navigator.clipboard.writeText(txt).then(ok, () => {});
+      return;
+    }
     const a = e.target.closest("[data-accion]"); if (!a) return;
     if (a.dataset.accion === "wifi") mWifi.classList.add("abierta");
     if (a.dataset.accion === "menu") location.hash = "menu";
@@ -500,7 +518,7 @@
           <div class="grupo" data-para="domicilio"><label for="p-dir">Dirección y barrio</label><input class="campo" id="p-dir" autocomplete="street-address" placeholder="Ej: Calle 8 # 20-31, Centro"></div>
           <div class="grupo" data-para="mesa"><label for="p-mesa">Número de mesa</label><input class="campo" id="p-mesa" inputmode="numeric" value="${mesaQR}" placeholder="Ej: 4"></div>
           <div class="grupo" data-para="domicilio recoger"><label for="p-nombre">Nombre</label><input class="campo" id="p-nombre" autocomplete="name" placeholder="¿A nombre de quién?"></div>
-          <div class="grupo" data-para="domicilio recoger"><label for="p-pago">Forma de pago</label><select class="campo" id="p-pago"><option>Efectivo</option><option>Nequi</option><option>Daviplata</option><option>Tarjeta (datáfono)</option></select></div>
+          <div class="grupo" data-para="domicilio recoger"><label for="p-pago">Forma de pago</label><select class="campo" id="p-pago">${(N.pagos || []).length ? ["Efectivo", ...N.pagos.map((m) => m.t)].map((o) => `<option>${esc(o)}</option>`).join("") : `<option>Efectivo</option><option>Nequi</option><option>Daviplata</option><option>Tarjeta (datáfono)</option>`}</select></div>
           <div class="grupo"><label for="p-nota">Notas (opcional)</label><textarea class="campo" id="p-nota" rows="2" placeholder="Término de la carne, sin cebolla, cambio para…"></textarea></div>
           <div class="totales" id="totales"></div>
           <div class="error" id="p-error" role="alert"></div>
@@ -670,7 +688,7 @@
         Object.entries(carrito).map(([k, q]) => `${q} x ${ITEMS[k].n} — ${pesos(ITEMS[k].p * q)}`).join("\n") +
         `\n\nSubtotal: ${pesos(subtotal())}` + (dom ? `\nDomicilio: ${pesos(dom)}` : "") + `\nTotal: ${pesos(subtotal() + dom)}\n` +
         (tipo === "domicilio" ? `\nEntrega: Domicilio\nDirección: ${dir}` : tipo === "recoger" ? "\nEntrega: Para recoger" : "") +
-        (tipo !== "mesa" ? `\nNombre: ${nombre}\nPago: ${$("#p-pago").value}` : "") +
+        (tipo !== "mesa" ? `\nNombre: ${nombre}\nPago: ${$("#p-pago").value}${(() => { const m = (N.pagos || []).find((x) => x.t === $("#p-pago").value); return m ? ` (${m.v}) — te envío el comprobante` : ""; })()}` : "") +
         (nota ? `\nNotas: ${nota}` : "");
       if (tipo === "mesa" && MESERO && MESERO.aviso !== "whatsapp") {
         const lineas = Object.entries(carrito).map(([k, q]) => `${q} x ${ITEMS[k].n}`).join("\n") + `\nTotal: ${pesos(subtotal())}` + (nota ? `\nNotas: ${nota}` : "");
