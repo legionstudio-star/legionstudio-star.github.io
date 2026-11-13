@@ -124,6 +124,9 @@
 
   document.documentElement.style.setProperty("--c", N.color || "#E8590C");
   if (N.tema === "oscuro") document.body.classList.add("oscuro");
+  // Si el color de la marca es oscuro (rojo, azul…), el texto encima va en blanco
+  { const h = (N.color || "#E8590C").replace("#", ""), [r, g, b] = [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16) / 255);
+    if (0.2126 * r + 0.7152 * g + 0.0722 * b < 0.42) document.body.classList.add("c-osc"); }
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.content = N.tema === "oscuro" ? "#0F0F10" : N.color;
   const fav = document.querySelector('link[rel="icon"]');

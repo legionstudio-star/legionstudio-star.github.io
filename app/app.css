@@ -482,3 +482,8 @@ body.vial { background: #0B0D10; color: #F2F4F7; }
 .pg-copiar.ok { border-color: #25D366; color: #25D366; }
 .pg-nota { font-size: .78rem; color: var(--gris); margin-top: 6px; }
 .hv-acc { display: flex; flex-wrap: wrap; } .hv-acc .hv-b { flex: 1 1 0; } .hv-acc .hv-b.dest { flex: 1 1 100%; }
+
+/* Color de marca oscuro: texto blanco encima */
+.c-osc .hv-b.dest, .c-osc .hv-b.dest .icon, .c-osc .resena, .c-osc .resena .estrellas, .c-osc .boton.fuerte, .c-osc .boton.fuerte .ic, .c-osc .gm-esc, .c-osc .premio-b .flecha, .c-osc .agregar, .c-osc .cats button.on { color: #fff !important; }
+.c-osc .hv-b.dest small, .c-osc .boton.fuerte small { color: rgba(255,255,255,.78) !important; }
+.c-osc .resena .flecha, .c-osc .boton.fuerte .ic { background: rgba(255,255,255,.18) !important; }
