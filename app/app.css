@@ -462,3 +462,7 @@ body.vial { background: #0B0D10; color: #F2F4F7; }
 @media (min-width: 560px) { .c3d-item { flex-basis: 36%; } .c3d-pista { padding-inline: 32%; } }
 .det3d .galeria { background: radial-gradient(circle at 50% 40%, color-mix(in srgb, var(--c) 35%, #111), #050505); }
 .det3d .galeria img { transition: transform .15s ease-out; transform: perspective(700px) scale(1.04); }
+.hero-v .estado { margin-top: 0; font-size: .74rem; line-height: 1.25; max-width: calc(100% - 74px); white-space: normal; text-align: left; }
+.hero-v .estado::before { display: none; }
+.hv-top { gap: 12px; } .hv-b { min-width: 0; } .hv-b b, .hv-b small { overflow-wrap: anywhere; }
+.hero-v { max-width: 100vw; } .pagina { overflow-x: clip; }
