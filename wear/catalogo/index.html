@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LEGION WEAR — Colección</title>
+<meta name="description" content="Catálogo LEGION WEAR: polos, camisas formales en seda, jeans y gorras.">
+<meta name="theme-color" content="#0c0b0a">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--noir:#0c0b0a;--noir2:#151311;--linea:#2a2622;--marfil:#efe9df;--gris:#9d958a;--oro:#c9a96b;--oro2:#e3c991}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--noir);color:var(--marfil);font-family:Jost,system-ui,sans-serif;font-weight:300;letter-spacing:.01em;min-height:100vh;overflow-x:hidden}
+img{display:block;max-width:100%}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.grano{position:fixed;inset:0;pointer-events:none;opacity:.05;z-index:50;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+/* cabecera */
+header{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:18px clamp(16px,4vw,56px);background:linear-gradient(var(--noir) 60%,transparent)}
+.marca{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:22px;letter-spacing:.42em;text-transform:uppercase}
+.marca b{color:var(--oro);font-weight:500}
+.sello{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--gris)}
+/* portada */
+.portada{padding:clamp(40px,9vw,120px) clamp(16px,4vw,56px) clamp(28px,5vw,60px);text-align:center}
+.portada small{display:block;font-size:11px;letter-spacing:.45em;text-transform:uppercase;color:var(--oro);margin-bottom:22px}
+.portada h1{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:clamp(46px,9vw,118px);line-height:.95;letter-spacing:-.01em}
+.portada h1 i{color:var(--oro2)}
+.portada p{max-width:520px;margin:22px auto 0;color:var(--gris);font-size:15px;line-height:1.7}
+.filete{width:64px;height:1px;background:var(--oro);margin:34px auto 0;opacity:.7}
+/* filtros */
+.filtros{position:sticky;top:62px;z-index:15;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:12px 16px 18px;background:linear-gradient(var(--noir) 70%,transparent)}
+.filtros button{padding:10px 18px;border:1px solid var(--linea);border-radius:99px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gris);transition:.3s}
+.filtros button:hover{color:var(--marfil);border-color:#4a433b}
+.filtros button.on{background:var(--marfil);color:var(--noir);border-color:var(--marfil)}
+.filtros sup{font-size:9px;margin-left:4px;opacity:.7}
+/* grilla */
+.grilla{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:clamp(14px,2vw,28px);padding:8px clamp(16px,4vw,56px) 90px;max-width:1500px;margin:0 auto}
+.seccion{grid-column:1/-1;display:flex;align-items:baseline;gap:16px;margin-top:34px}
+.seccion h2{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:clamp(30px,4vw,44px)}
+.seccion span{flex:1;height:1px;background:var(--linea)}
+.seccion em{font-style:normal;font-size:11px;letter-spacing:.3em;color:var(--gris);text-transform:uppercase}
+.card{text-align:left;opacity:0;transform:translateY(24px);transition:opacity .8s,transform .8s}
+.card.vis{opacity:1;transform:none}
+.marco{position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--noir2);border-radius:2px}
+.marco img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .7s,transform 1.4s cubic-bezier(.2,.7,.2,1)}
+.marco img+img{opacity:0}
+.card:hover .marco img{transform:scale(1.045)}
+.card:hover .marco img+img{opacity:1}
+.cuantas{position:absolute;right:12px;bottom:12px;display:flex;align-items:center;gap:6px;padding:6px 10px;font-size:11px;letter-spacing:.12em;background:rgba(12,11,10,.62);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-radius:99px}
+.cuantas svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.6}
+.info{padding:14px 2px 0;display:flex;gap:12px;align-items:flex-start;justify-content:space-between}
+.info h3{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:21px;line-height:1.15}
+.info small{display:block;margin-top:5px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gris)}
+.punto{flex:none;width:14px;height:14px;border-radius:50%;margin-top:6px;box-shadow:0 0 0 1px rgba(255,255,255,.25),0 0 0 4px var(--noir),0 0 0 5px var(--linea)}
+/* detalle */
+.detalle{position:fixed;inset:0;z-index:40;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(320px,.75fr);background:var(--noir);opacity:0;visibility:hidden;transition:opacity .45s,visibility .45s}
+.detalle.on{opacity:1;visibility:visible}
+.escena{position:relative;overflow:hidden;background:#090807;touch-action:pan-y}
+.pista{display:flex;height:100%;transition:transform .6s cubic-bezier(.2,.75,.2,1)}
+.pista figure{flex:0 0 100%;height:100%;display:flex;align-items:center;justify-content:center}
+.pista figure{overflow:hidden;cursor:zoom-in}
+.pista img{max-height:100%;max-width:100%;object-fit:contain;transition:transform .35s ease}
+.pista figure.zoom{cursor:zoom-out}
+.pista figure.zoom img{transform:scale(2.4)}
+.lupa{position:absolute;right:20px;bottom:18px;display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--marfil);opacity:.75;pointer-events:none}
+.lupa svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.5}
+.flecha{position:absolute;top:50%;translate:0 -50%;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:rgba(12,11,10,.55);border:1px solid rgba(239,233,223,.18);backdrop-filter:blur(6px);transition:.25s}
+.flecha:hover{background:var(--marfil);color:var(--noir)}
+.flecha svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.5}
+.flecha.izq{left:18px}.flecha.der{right:18px}
+.contador{position:absolute;left:22px;bottom:20px;font-size:12px;letter-spacing:.3em;color:var(--marfil);opacity:.8}
+.panel{display:flex;flex-direction:column;padding:clamp(24px,4vw,56px);overflow:auto;border-left:1px solid var(--linea)}
+.cerrar{align-self:flex-end;width:46px;height:46px;border-radius:50%;border:1px solid var(--linea);display:grid;place-items:center;transition:.25s}
+.cerrar:hover{border-color:var(--marfil)}
+.cerrar svg{width:18px;height:18px;stroke:currentColor;stroke-width:1.5}
+.panel .cat{margin-top:clamp(20px,6vh,70px);font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:var(--oro)}
+.panel h2{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:clamp(36px,3.6vw,54px);line-height:1.02;margin-top:14px}
+.panel p{margin-top:20px;color:#c9c1b5;line-height:1.75;font-size:15px}
+.tono{display:flex;align-items:center;gap:12px;margin-top:26px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gris)}
+.miniaturas{display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:10px;margin-top:34px}
+.miniaturas button{aspect-ratio:4/5;overflow:hidden;border-radius:2px;outline:1px solid transparent;outline-offset:3px;opacity:.55;transition:.3s}
+.miniaturas button img{width:100%;height:100%;object-fit:cover}
+.miniaturas button.on,.miniaturas button:hover{opacity:1;outline-color:var(--oro)}
+.lista{margin-top:28px;border-top:1px solid var(--linea)}
+.lista h4,.combina h4{font-weight:400;font-size:11px;letter-spacing:.35em;text-transform:uppercase;color:var(--oro);margin:22px 0 12px}
+.lista li{list-style:none;position:relative;padding:9px 0 9px 22px;border-bottom:1px solid var(--linea);font-size:14.5px;color:#d8d0c4}
+.lista li::before{content:'';position:absolute;left:2px;top:17px;width:8px;height:1px;background:var(--oro)}
+.combina p{margin-top:0;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:20px;line-height:1.45;color:var(--marfil)}
+.pie-panel{margin-top:auto;padding-top:34px;font-size:11px;letter-spacing:.25em;color:#6f685f;text-transform:uppercase}
+footer{text-align:center;padding:0 16px 50px;font-size:11px;letter-spacing:.35em;text-transform:uppercase;color:#6f685f}
+@media (max-width:860px){
+  .detalle{grid-template-columns:1fr;grid-template-rows:auto 1fr;overflow:auto;display:block}
+  .escena{height:min(125vw,74vh)}
+  .panel{border-left:0;padding:22px 16px 40px}
+  .panel .cat{margin-top:4px}
+  .cerrar{position:fixed;top:14px;right:14px;z-index:3;background:rgba(12,11,10,.6);backdrop-filter:blur(8px)}
+  .flecha{width:42px;height:42px}.flecha.izq{left:10px}.flecha.der{right:10px}
+  .filtros{top:58px}
+}
+@media (max-width:600px){
+  .grilla{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 10px}
+  .info h3{font-size:16px}.info small{font-size:9.5px;letter-spacing:.16em}
+  .punto{width:10px;height:10px}
+  .marca{font-size:17px;letter-spacing:.32em}.sello{display:none}
+  .filtros button{padding:9px 13px;font-size:10.5px;letter-spacing:.14em}
+  .cuantas{right:8px;bottom:8px;padding:4px 8px;font-size:10px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="grano" aria-hidden="true"></div>
+<header>
+  <div class="marca">Legion <b>Wear</b></div>
+  <div class="sello">Colección 2026</div>
+</header>
+<section class="portada">
+  <small>Lookbook privado</small>
+  <h1>La <i>colección</i></h1>
+  <p>Polos, camisas formales en seda, jeans y gorras. Toca cualquier prenda para ver todas sus fotos.</p>
+  <div class="filete"></div>
+</section>
+<nav class="filtros" id="filtros" aria-label="Categorías"></nav>
+<main class="grilla" id="grilla"></main>
+<footer>Legion Wear · Una extensión de Lejión Estudio</footer>
+
+<div class="detalle" id="detalle" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="escena" id="escena">
+    <div class="pista" id="pista"></div>
+    <button class="flecha izq" id="ant" aria-label="Foto anterior"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <button class="flecha der" id="sig" aria-label="Foto siguiente"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+    <div class="contador" id="contador"></div>
+    <div class="lupa" id="lupa"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l5 5M11 8v6M8 11h6"/></svg><span>Toca para ampliar</span></div>
+  </div>
+  <aside class="panel">
+    <button class="cerrar" id="cerrar" aria-label="Cerrar"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="cat" id="dCat"></div>
+    <h2 id="dNom"></h2>
+    <p id="dDesc"></p>
+    <div class="tono"><span class="punto" id="dPunto"></span><span id="dFotos"></span></div>
+    <div class="miniaturas" id="mini"></div>
+    <div class="lista"><h4>Detalles</h4><ul id="dDet"></ul></div>
+    <div class="combina"><h4>Cómo llevarla</h4><p id="dComb"></p></div>
+    <div class="pie-panel">Tallas y precios: próximamente</div>
+  </aside>
+</div>
+
+<script>
+const P=[{"id": "01-polo-tommy-rosado", "nombre": "Polo Tommy Hilfiger Rosa", "cat": "Polos", "color": "#e9c4c9", "desc": "Piqué suave en rosa pastel, cuello con contraste gris y bandera bordada al pecho.", "fotos": ["img/01-polo-tommy-rosado/01.jpg", "img/01-polo-tommy-rosado/02.jpg", "img/01-polo-tommy-rosado/03.jpg", "img/01-polo-tommy-rosado/04.jpg", "img/01-polo-tommy-rosado/05.jpg", "img/01-polo-tommy-rosado/06.jpg"], "det": ["Tejido piqué de textura fina", "Cuello y tapeta con contraste gris jaspeado", "Tres botones oscuros", "Bandera bordada al pecho", "Llega con etiqueta de la marca"], "combina": "Con jean azul oscuro y tenis blancos para el día; con pantalón beige para un look más sobrio."}, {"id": "02-polo-tommy-negro", "nombre": "Polo Tommy Hilfiger Negra", "cat": "Polos", "color": "#141414", "desc": "Negra profunda con botones dorados y cuello en contraste. Elegante de día y de noche.", "fotos": ["img/02-polo-tommy-negro/01.jpg", "img/02-polo-tommy-negro/02.jpg", "img/02-polo-tommy-negro/03.jpg", "img/02-polo-tommy-negro/04.jpg"], "det": ["Negro profundo de tono parejo", "Botones dorados que la elevan", "Cuello con ribete en contraste", "Bandera bordada al pecho"], "combina": "Con jean negro clásico y gorra negra para un total black; con jean azul claro para contrastar."}, {"id": "03-polo-tommy-azul-claro", "nombre": "Polo Tommy Hilfiger Azul Cielo", "cat": "Polos", "color": "#9db3e0", "desc": "Azul cielo fresco con bandera bordada. Un clásico que combina con todo.", "fotos": ["img/03-polo-tommy-azul-claro/01.jpg", "img/03-polo-tommy-azul-claro/02.jpg", "img/03-polo-tommy-azul-claro/03.jpg", "img/03-polo-tommy-azul-claro/04.jpg"], "det": ["Azul cielo de tono fresco", "Cuello con interior en contraste", "Bandera bordada al pecho", "Corte recto, cómoda para todo el día"], "combina": "Con jean azul oscuro o negro; queda muy bien con gorra blanca."}, {"id": "04-polo-ralph-blanco", "nombre": "Polo Ralph Lauren Blanca", "cat": "Polos", "color": "#efefea", "desc": "Blanca impecable con el caballo bordado en azul marino y cuello en contraste.", "fotos": ["img/04-polo-ralph-blanco/01.jpg", "img/04-polo-ralph-blanco/02.jpg", "img/04-polo-ralph-blanco/03.jpg"], "det": ["Blanco limpio", "Caballo bordado en azul marino", "Cuello con interior gris jaspeado", "Botones oscuros de contraste", "Etiqueta de la marca al cuello"], "combina": "La base de cualquier clóset: con jean de cualquier tono, tenis o zapato casual."}, {"id": "05-polo-ralph-rosado", "nombre": "Polo Ralph Lauren Rosa", "cat": "Polos", "color": "#efc9cf", "desc": "Rosa suave con caballo bordado en azul marino. Estilo old money puro.", "fotos": ["img/05-polo-ralph-rosado/01.jpg", "img/05-polo-ralph-rosado/02.jpg", "img/05-polo-ralph-rosado/03.jpg", "img/05-polo-ralph-rosado/04.jpg"], "det": ["Rosa suave de tono pastel", "Caballo bordado en azul marino", "Cuello con interior en contraste", "Llega con etiqueta de la marca"], "combina": "Con jean azul oscuro y reloj plateado: estilo old money sin esfuerzo."}, {"id": "06-polo-ralph-azul-jaspe", "nombre": "Polo Ralph Lauren Azul Jaspe", "cat": "Polos", "color": "#4f6ea8", "desc": "Tejido jaspeado en azul con caballo blanco bordado. Textura que se nota.", "fotos": ["img/06-polo-ralph-azul-jaspe/01.jpg", "img/06-polo-ralph-azul-jaspe/02.jpg", "img/06-polo-ralph-azul-jaspe/03.jpg", "img/06-polo-ralph-azul-jaspe/04.jpg"], "det": ["Tejido jaspeado con textura visible", "Caballo bordado en blanco", "Cuello con interior en azul claro", "Llega con etiqueta de la marca"], "combina": "Con jean negro o gris para resaltar la textura del azul."}, {"id": "07-polo-ralph-rojo", "nombre": "Polo Ralph Lauren Roja", "cat": "Polos", "color": "#9b1b2a", "desc": "Rojo vino intenso con caballo bordado en azul marino.", "fotos": ["img/07-polo-ralph-rojo/01.jpg", "img/07-polo-ralph-rojo/02.jpg", "img/07-polo-ralph-rojo/03.jpg"], "det": ["Rojo vino intenso", "Caballo bordado en azul marino", "Cuello con interior gris", "Llega con etiqueta de la marca"], "combina": "Con jean negro y gorra negra; el rojo se vuelve la pieza protagonista."}, {"id": "08-polo-lacoste-blanco", "nombre": "Polo Lacoste Blanca", "cat": "Polos", "color": "#f2f2ee", "desc": "Blanca con el cocodrilo bordado al pecho. Limpia, fresca y siempre en tendencia.", "fotos": ["img/08-polo-lacoste-blanco/01.jpg", "img/08-polo-lacoste-blanco/02.jpg", "img/08-polo-lacoste-blanco/03.jpg", "img/08-polo-lacoste-blanco/04.jpg", "img/08-polo-lacoste-blanco/05.jpg", "img/08-polo-lacoste-blanco/06.jpg"], "det": ["Blanco limpio", "Cocodrilo bordado al pecho", "Cuello con interior gris", "Tres botones a tono", "Llega con etiqueta de la marca"], "combina": "Con jean azul claro o negro; perfecta para clima cálido."}, {"id": "09-polo-lacoste-gris-oscuro", "nombre": "Polo Lacoste Gris Grafito", "cat": "Polos", "color": "#3a3d3c", "desc": "Gris grafito con parche de cocodrilo bordado y cuello en contraste.", "fotos": ["img/09-polo-lacoste-gris-oscuro/01.jpg"], "det": ["Gris grafito", "Parche de cocodrilo bordado", "Cuello con interior gris claro", "Botones claros de contraste"], "combina": "Con jean negro y tenis blancos: sobrio y moderno."}, {"id": "10-polo-lacoste-gris", "nombre": "Polo Lacoste Gris Acero", "cat": "Polos", "color": "#6f8191", "desc": "Gris acero con cocodrilo bordado. Sobria y moderna.", "fotos": ["img/10-polo-lacoste-gris/01.jpg", "img/10-polo-lacoste-gris/02.jpg"], "det": ["Gris acero", "Cocodrilo bordado al pecho", "Cuello con interior en contraste", "Corte recto"], "combina": "Con jean azul oscuro; combina con gorras blancas o negras."}, {"id": "12-camisa-formal-beige", "nombre": "Camisa Formal en Seda Marfil", "cat": "Camisas formales", "color": "#e4dccd", "desc": "Manga corta, cuello mao en contraste negro y botones oscuros. Lujo silencioso.", "fotos": ["img/12-camisa-formal-beige/01.jpg"], "det": ["Tela de caída suave tipo seda", "Cuello mao en contraste negro", "Botones negros", "Manga corta"], "combina": "Con jean negro o pantalón de vestir oscuro: elegante para una noche fuera."}, {"id": "13-camisa-formal-verde-salvia", "nombre": "Camisa Formal en Seda Verde Salvia", "cat": "Camisas formales", "color": "#b5bfa0", "desc": "Manga corta con cuello mao negro. El color de la temporada.", "fotos": ["img/13-camisa-formal-verde-salvia/01.jpg"], "det": ["Tela de caída suave tipo seda", "Verde salvia, el color de la temporada", "Cuello mao negro", "Botones negros", "Manga corta"], "combina": "Con jean negro clásico; el contraste verde y negro se ve muy fino."}, {"id": "14-camisa-formal-blanca-manga-corta", "nombre": "Camisa Formal en Seda Blanca", "cat": "Camisas formales", "color": "#f1f1ee", "desc": "Manga corta, cuello mao y botones negros. Fresca y elegante.", "fotos": ["img/14-camisa-formal-blanca-manga-corta/01.jpg", "img/14-camisa-formal-blanca-manga-corta/02.jpg", "img/14-camisa-formal-blanca-manga-corta/03.jpg", "img/14-camisa-formal-blanca-manga-corta/04.jpg", "img/14-camisa-formal-blanca-manga-corta/05.jpg"], "det": ["Tela de caída suave tipo seda", "Cuello mao", "Botones negros a todo lo largo", "Manga corta", "Corte recto con bajo redondeado"], "combina": "Con jean negro o azul oscuro; fresca para el día y elegante en la noche."}, {"id": "15-camisa-formal-negra-manga-corta", "nombre": "Camisa Formal en Seda Negra", "cat": "Camisas formales", "color": "#141414", "desc": "Manga corta, cuello mao y caída de seda. Negra profunda para noches que exigen presencia.", "fotos": ["img/15-camisa-formal-negra-manga-corta/01.jpg", "img/15-camisa-formal-negra-manga-corta/02.jpg", "img/15-camisa-formal-negra-manga-corta/03.jpg", "img/15-camisa-formal-negra-manga-corta/04.jpg", "img/15-camisa-formal-negra-manga-corta/05.jpg"], "det": ["Tela de caída suave tipo seda", "Cuello mao", "Botones a tono", "Manga corta", "Logo dorado discreto en el cuello"], "combina": "Total black con jean negro, o con jean gris ceniza para un look urbano elegante."}, {"id": "16-jean-gris-ceniza", "nombre": "Jean Slim Gris Ceniza", "cat": "Jeans", "color": "#55555a", "desc": "Denim gris ceniza con lavado marmoleado y corte slim.", "fotos": ["img/16-jean-gris-ceniza/01.jpg", "img/16-jean-gris-ceniza/02.jpg", "img/16-jean-gris-ceniza/03.jpg"], "det": ["Lavado gris marmoleado", "Corte slim", "Cinco bolsillos", "Bota recta ajustada"], "combina": "Con polo negra o blanca; queda muy bien con camisas formales oscuras."}, {"id": "17-jean-negro-desgastado", "nombre": "Jean Negro Desgastado", "cat": "Jeans", "color": "#202022", "desc": "Negro con desgastes sutiles y corte ajustado. Actitud de calle.", "fotos": ["img/17-jean-negro-desgastado/01.jpg", "img/17-jean-negro-desgastado/02.jpg", "img/17-jean-negro-desgastado/03.jpg"], "det": ["Negro con desgastes sutiles", "Corte ajustado", "Cinco bolsillos", "Etiqueta de cuero en la pretina"], "combina": "Con cualquier polo de color claro para contrastar."}, {"id": "18-jean-azul-medio", "nombre": "Jean Azul Medio Destroyed", "cat": "Jeans", "color": "#2f4f8f", "desc": "Azul medio con desgastes y bigotes marcados. Corte slim.", "fotos": ["img/18-jean-azul-medio/01.jpg", "img/18-jean-azul-medio/02.jpg"], "det": ["Azul medio con efecto destroyed", "Bigotes marcados en la cadera", "Corte slim", "Cinco bolsillos"], "combina": "Con polo blanca o rosa y tenis blancos."}, {"id": "19-jean-azul-oscuro", "nombre": "Jean Azul Oscuro Desgastado", "cat": "Jeans", "color": "#1f2c4a", "desc": "Índigo oscuro con desgastes discretos. Combina con todo.", "fotos": ["img/19-jean-azul-oscuro/01.jpg", "img/19-jean-azul-oscuro/02.jpg", "img/19-jean-azul-oscuro/03.jpg"], "det": ["Índigo oscuro", "Desgastes discretos", "Corte slim", "Cinco bolsillos"], "combina": "El jean más versátil: con polos de cualquier color y camisas formales."}, {"id": "20-jean-negro-liso", "nombre": "Jean Negro Clásico", "cat": "Jeans", "color": "#151516", "desc": "Negro liso, limpio y versátil. El básico que no puede faltar.", "fotos": ["img/20-jean-negro-liso/01.jpg", "img/20-jean-negro-liso/02.jpg", "img/20-jean-negro-liso/03.jpg"], "det": ["Negro liso sin desgastes", "Corte slim", "Cinco bolsillos", "Etiqueta en la pretina trasera"], "combina": "El básico: con camisa formal para la noche o polo para el día."}, {"id": "21-jean-azul-claro-roto", "nombre": "Jean Azul Claro Roto", "cat": "Jeans", "color": "#8fb3cf", "desc": "Azul claro con rotos frontales. Fresco y urbano.", "fotos": ["img/21-jean-azul-claro-roto/01.jpg", "img/21-jean-azul-claro-roto/02.jpg", "img/21-jean-azul-claro-roto/03.jpg"], "det": ["Azul claro", "Rotos frontales", "Corte slim", "Cinco bolsillos"], "combina": "Con polo negra o azul oscura y tenis blancos."}, {"id": "22-gorra-clemont-negra", "nombre": "Gorra Clemont Negra", "cat": "Gorras", "color": "#121212", "desc": "Bordado gótico tono sobre tono, aplicaciones brillantes y parche de rosa roja.", "fotos": ["img/22-gorra-clemont-negra/01.jpg", "img/22-gorra-clemont-negra/02.jpg", "img/22-gorra-clemont-negra/03.jpg", "img/22-gorra-clemont-negra/04.jpg", "img/22-gorra-clemont-negra/05.jpg", "img/22-gorra-clemont-negra/06.jpg", "img/22-gorra-clemont-negra/07.jpg", "img/22-gorra-clemont-negra/08.jpg", "img/22-gorra-clemont-negra/09.jpg", "img/22-gorra-clemont-negra/10.jpg", "img/22-gorra-clemont-negra/11.jpg", "img/22-gorra-clemont-negra/12.jpg"], "det": ["Bordado gótico tono sobre tono al frente", "Aplicaciones brillantes en toda la corona", "Parche lateral con rosa roja", "Visera curva"], "combina": "Con cualquier polo negra o blanca para un look total urbano."}, {"id": "23-gorra-gg-trucker", "nombre": "Gorra Gucci Trucker GG", "cat": "Gorras", "color": "#b9b19a", "desc": "Monograma GG con parche azul y logo dorado, franja web verde y roja, malla trasera.", "fotos": ["img/23-gorra-gg-trucker/01.jpg", "img/23-gorra-gg-trucker/02.jpg", "img/23-gorra-gg-trucker/03.jpg", "img/23-gorra-gg-trucker/04.jpg"], "det": ["Monograma en toda la corona", "Parche frontal azul con logo dorado en relieve", "Franja lateral verde y roja", "Malla trasera transpirable"], "combina": "Con polo blanca o azul y jean claro."}, {"id": "24-gorra-lv-monograma", "nombre": "Gorra Louis Vuitton Monogram", "cat": "Gorras", "color": "#8d7560", "desc": "Lona monograma con visera en cuero café y LV metálico dorado.", "fotos": ["img/24-gorra-lv-monograma/01.jpg", "img/24-gorra-lv-monograma/02.jpg", "img/24-gorra-lv-monograma/03.jpg", "img/24-gorra-lv-monograma/04.jpg", "img/24-gorra-lv-monograma/05.jpg", "img/24-gorra-lv-monograma/06.jpg", "img/24-gorra-lv-monograma/07.jpg"], "det": ["Lona con monograma", "Visera con ribete en cuero café", "Logo metálico dorado al frente", "Seis paneles"], "combina": "Con polo blanca, beige o negra; la pieza que eleva el look."}, {"id": "25-gorra-boss-beige-verde", "nombre": "Gorra BOSS Beige y Oliva", "cat": "Gorras", "color": "#d8ccb0", "desc": "Beige con logo BOSS en relieve verde oliva y visera a tono.", "fotos": ["img/25-gorra-boss-beige-verde/01.jpg", "img/25-gorra-boss-beige-verde/02.jpg", "img/25-gorra-boss-beige-verde/03.jpg", "img/25-gorra-boss-beige-verde/04.jpg", "img/25-gorra-boss-beige-verde/05.jpg", "img/25-gorra-boss-beige-verde/06.jpg", "img/25-gorra-boss-beige-verde/07.jpg"], "det": ["Corona beige", "Logo en relieve verde oliva", "Visera verde oliva con pespuntes", "Parche de marca en la visera"], "combina": "Con polo blanca o verde y jean azul oscuro."}, {"id": "26-gorra-b-blanca-cruces", "nombre": "Gorra B Blanca con Cruces", "cat": "Gorras", "color": "#ecebe6", "desc": "Blanca con la B gótica y cruces en relieve, broche snapback.", "fotos": ["img/26-gorra-b-blanca-cruces/01.jpg", "img/26-gorra-b-blanca-cruces/02.jpg", "img/26-gorra-b-blanca-cruces/03.jpg", "img/26-gorra-b-blanca-cruces/04.jpg", "img/26-gorra-b-blanca-cruces/05.jpg", "img/26-gorra-b-blanca-cruces/06.jpg"], "det": ["Blanca", "B gótica bordada en relieve", "Cruces bordadas a los lados", "Visera plana con sticker", "Cierre snapback"], "combina": "Con polo negra o camisa formal negra para contrastar."}, {"id": "27-gorra-la-negra-cruz", "nombre": "Gorra LA Negra Cruz Dorada", "cat": "Gorras", "color": "#121212", "desc": "Negra con LA tono sobre tono, cruz dorada al frente y alambre de púas bordado.", "fotos": ["img/27-gorra-la-negra-cruz/01.jpg", "img/27-gorra-la-negra-cruz/02.jpg", "img/27-gorra-la-negra-cruz/03.jpg", "img/27-gorra-la-negra-cruz/04.jpg", "img/27-gorra-la-negra-cruz/05.jpg", "img/27-gorra-la-negra-cruz/06.jpg", "img/27-gorra-la-negra-cruz/07.jpg"], "det": ["Negra", "LA tono sobre tono al frente", "Cruz metálica dorada", "Alambre de púas bordado en blanco", "Aplicaciones brillantes"], "combina": "Con polo negra y jean negro: total black con un toque dorado."}];
+const CATS=['Polos','Camisas formales','Jeans','Gorras'];
+const t=f=>f.replace(/\/(\d+)\.jpg$/,'/t$1.jpg');
+const $=id=>document.getElementById(id);
+let filtro='Todo', actual=null, idx=0;
+const ICO_FOTO='<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 8"/></svg>';
+
+function filtros(){
+  const n=c=>c==='Todo'?P.length:P.filter(p=>p.cat===c).length;
+  $('filtros').innerHTML=['Todo',...CATS].map(c=>`<button class="${c===filtro?'on':''}" data-c="${c}">${c}<sup>${n(c)}</sup></button>`).join('');
+}
+function grilla(){
+  const cs=filtro==='Todo'?CATS:[filtro];
+  $('grilla').innerHTML=cs.map(c=>{
+    const ps=P.filter(p=>p.cat===c);
+    return `<div class="seccion"><h2>${c}</h2><span></span><em>${ps.length} referencias</em></div>`+
+    ps.map(p=>`<button class="card" data-id="${p.id}" aria-label="Ver ${p.nombre}">
+      <div class="marco"><img src="${t(p.fotos[0])}" alt="${p.nombre}" loading="lazy">${p.fotos[1]?`<img src="${t(p.fotos[1])}" alt="" loading="lazy">`:''}
+      <span class="cuantas">${ICO_FOTO}${p.fotos.length}</span></div>
+      <div class="info"><div><h3>${p.nombre}</h3><small>${p.cat}</small></div><span class="punto" style="background:${p.color}"></span></div>
+    </button>`).join('');
+  }).join('');
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');io.unobserve(e.target)}}),{rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.card').forEach((c,i)=>{c.style.transitionDelay=(i%4)*70+'ms';io.observe(c)});
+}
+function abrir(id,i=0){
+  actual=P.find(p=>p.id===id); if(!actual) return;
+  $('pista').innerHTML=actual.fotos.map(f=>`<figure><img src="${f}" alt="${actual.nombre}"></figure>`).join('');
+  $('mini').innerHTML=actual.fotos.map((f,k)=>`<button data-k="${k}" aria-label="Foto ${k+1}"><img src="${t(f)}" alt=""></button>`).join('');
+  $('dCat').textContent=actual.cat; $('dNom').textContent=actual.nombre; $('dDesc').textContent=actual.desc;
+  $('dDet').innerHTML=actual.det.map(d=>`<li>${d}</li>`).join(''); $('dComb').textContent=actual.combina;
+  $('dPunto').style.background=actual.color; $('dFotos').textContent=actual.fotos.length+(actual.fotos.length>1?' fotos':' foto');
+  $('ant').hidden=$('sig').hidden=actual.fotos.length<2;
+  ir(i,true); $('detalle').classList.add('on'); $('detalle').setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden'; $('detalle').scrollTop=0;
+  history.replaceState(null,'','#'+id);
+}
+function cerrar(){ $('detalle').classList.remove('on'); $('detalle').setAttribute('aria-hidden','true'); document.body.style.overflow=''; actual=null; history.replaceState(null,'',location.pathname); }
+function ir(i,sin){
+  quitarZoom();
+  const n=actual.fotos.length; idx=(i+n)%n;
+  const pista=$('pista'); if(sin){pista.style.transition='none';requestAnimationFrame(()=>pista.style.transition='')}
+  pista.style.transform=`translateX(${-idx*100}%)`;
+  $('contador').textContent=String(idx+1).padStart(2,'0')+' / '+String(n).padStart(2,'0');
+  document.querySelectorAll('#mini button').forEach((b,k)=>b.classList.toggle('on',k===idx));
+}
+$('filtros').onclick=e=>{const b=e.target.closest('button');if(!b)return;filtro=b.dataset.c;filtros();grilla();};
+$('grilla').onclick=e=>{const c=e.target.closest('.card');if(c)abrir(c.dataset.id);};
+function quitarZoom(){document.querySelectorAll('.pista figure.zoom').forEach(f=>f.classList.remove('zoom'))}
+function origen(fig,x,y){const r=fig.getBoundingClientRect();fig.querySelector('img').style.transformOrigin=`${(x-r.left)/r.width*100}% ${(y-r.top)/r.height*100}%`}
+$('pista').addEventListener('click',e=>{const fig=e.target.closest('figure');if(!fig)return;const on=!fig.classList.contains('zoom');quitarZoom();if(on){origen(fig,e.clientX,e.clientY);fig.classList.add('zoom')}});
+$('pista').addEventListener('mousemove',e=>{const fig=e.target.closest('figure.zoom');if(fig)origen(fig,e.clientX,e.clientY)});
+$('pista').addEventListener('touchmove',e=>{const fig=e.target.closest('figure.zoom');if(fig){e.preventDefault();origen(fig,e.touches[0].clientX,e.touches[0].clientY)}},{passive:false});
+$('mini').onclick=e=>{const b=e.target.closest('button');if(b)ir(+b.dataset.k);};
+$('ant').onclick=()=>ir(idx-1); $('sig').onclick=()=>ir(idx+1); $('cerrar').onclick=cerrar;
+addEventListener('keydown',e=>{if(!actual)return;if(e.key==='Escape')cerrar();if(e.key==='ArrowLeft')ir(idx-1);if(e.key==='ArrowRight')ir(idx+1);});
+let x0=null;
+$('escena').addEventListener('touchstart',e=>x0=e.touches[0].clientX,{passive:true});
+$('escena').addEventListener('touchend',e=>{if(x0===null||document.querySelector('.pista figure.zoom')){x0=null;return;}const dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>40)ir(idx+(dx<0?1:-1));x0=null;});
+filtros(); grilla();
+if(location.hash) abrir(location.hash.slice(1));
+</script>
+</body>
+</html>
