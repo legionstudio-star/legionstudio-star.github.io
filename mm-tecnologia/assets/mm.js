@@ -5,7 +5,7 @@
   // ====== DATOS DEL NEGOCIO (cambiar por los reales) ======
   const NEG = {
     nombre: "MM Accesorios Tecnología",
-    wa: "573000000000",                       // WhatsApp de la tienda (con 57)
+    wa: "573138181209",                       // WhatsApp de la tienda (con 57)
     ig: "https://www.instagram.com/",
     fb: "https://www.facebook.com/",
     tt: "https://www.tiktok.com/",
