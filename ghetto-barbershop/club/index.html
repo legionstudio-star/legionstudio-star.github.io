@@ -111,7 +111,7 @@ function vistaUnirse(err) {
       <button class="btn btn-red full" id="go">Crear mi tarjeta</button>
       <div class="msg" id="m" role="alert">${esc(err || '')}</div>
     </form>
-    <p class="alt">¿Ya tienes tarjeta? <button type="button" id="ya">Entrar con mi código</button></p>`;
+    <p class="alt">¿Ya tienes tarjeta? <button type="button" id="ya">Entrar con mi nombre y WhatsApp</button></p>`;
   document.getElementById('ya').onclick = vistaCodigo;
   document.getElementById('f').onsubmit = async (e) => {
     e.preventDefault();
@@ -135,18 +135,24 @@ function vistaUnirse(err) {
 function vistaCodigo() {
   app.innerHTML = `${cabecera('<a href="./">Volver</a>')}
     <h1>Tu tarjeta</h1>
-    <p class="lead">Escribe el código de 6 letras de tu tarjeta. Si no lo tienes, pídeselo al barbero: lo encuentra con tu número.</p>
+    <p class="lead">Escribe tu nombre y el WhatsApp con el que te uniste al Club.</p>
     <form class="box" id="f" novalidate>
-      <div class="field"><label for="c">Código</label><input id="c" maxlength="6" autocomplete="off" autocapitalize="characters" placeholder="EJ: K7Q2MN" style="text-transform:uppercase;letter-spacing:.2em;font-family:var(--display);font-size:22px"></div>
-      <button class="btn btn-cream full">Ver mi tarjeta</button>
+      <div class="field"><label for="n">Tu nombre</label><input id="n" autocomplete="name" maxlength="60" placeholder="Nombre y apellido"></div>
+      <div class="field"><label for="t">Tu WhatsApp</label><input id="t" type="tel" inputmode="numeric" autocomplete="tel" maxlength="14" placeholder="300 000 0000"></div>
+      <button class="btn btn-cream full" id="go">Ver mi tarjeta</button>
       <div class="msg" id="m" role="alert"></div>
     </form>`;
   document.getElementById('f').onsubmit = async (e) => {
     e.preventDefault();
-    const c = document.getElementById('c').value.trim().toUpperCase();
-    if (c.length !== 6) { document.getElementById('m').textContent = 'El código tiene 6 caracteres.'; return; }
-    const ok = await cargarTarjeta(c, true);
-    if (!ok) document.getElementById('m').textContent = 'No encontramos ese código.';
+    const n = document.getElementById('n').value.trim(), t = document.getElementById('t').value.replace(/\D/g, '').slice(-10);
+    const m = document.getElementById('m'), go = document.getElementById('go');
+    if (n.length < 2) { m.textContent = 'Escribe tu nombre.'; return; }
+    if (t.length !== 10) { m.textContent = 'Escribe tu WhatsApp (10 dígitos).'; return; }
+    go.disabled = true; go.innerHTML = '<span class="spin"></span>';
+    try {
+      const r = await rpc('gb_club_entrar', { p_nombre: n, p_tel: t });
+      await cargarTarjeta(r.codigo, true);
+    } catch (err) { m.textContent = err.message; go.disabled = false; go.textContent = 'Ver mi tarjeta'; }
   };
 }
 
