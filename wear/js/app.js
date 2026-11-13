@@ -66,7 +66,7 @@ function inicioStreet() {
         <span>NUEVOS INGRESOS EN</span><b data-cr="d">00</b>D <b data-cr="h">00</b>H <b data-cr="m">00</b>M <b data-cr="s">00</b>S
       </div>
     </div>
-    <div class="s-hero-video" aria-hidden="true">${(() => { const m = matchMedia('(max-width: 860px)').matches ? 'v' : 'h';
+    <div class="s-hero-video" aria-hidden="true">${(() => { const m = matchMedia('(max-width: 860px)').matches ? 'c' : 'h';
       return `<video autoplay muted loop playsinline preload="auto" poster="video/banner-${m}.jpg" src="video/banner-${m}.mp4"></video>`; })()}</div>
   </section>
   <div class="s-cinta"><div>${'<span>LEGION WEAR</span><b>·</b><span>POLOS</span><b>·</b><span>CAMISAS EN SEDA</span><b>·</b><span>JEANS</span><b>·</b><span>GORRAS</span><b>·</b>'.repeat(4)}</div></div>
