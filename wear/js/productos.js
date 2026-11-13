@@ -1,5 +1,5 @@
 // Prendas reales de LEGION WEAR. Archivo generado por FOTOS/_tienda.py (no editar a mano: cambiar _datos.py y volver a correr).
-// precio: 0 = "Consultar precio" (se confirma por WhatsApp). Tallas provisionales hasta que el dueño las confirme.
+// Precios en COP definidos en _datos.PRECIO. Tallas provisionales hasta que el dueño las confirme.
 const PRODUCTOS = [
  {
   "id": "polo-tommy-rosado",
@@ -7,7 +7,7 @@ const PRODUCTOS = [
   "categoria": "Polos",
   "tipo": "polo",
   "nombre": "Polo Tommy Hilfiger Rosa",
-  "precio": 0,
+  "precio": 45000,
   "fotos": [
    "catalogo/img/01-polo-tommy-rosado/01.jpg",
    "catalogo/img/01-polo-tommy-rosado/02.jpg",
@@ -44,7 +44,7 @@ const PRODUCTOS = [
   "categoria": "Polos",
   "tipo": "polo",
   "nombre": "Polo Tommy Hilfiger Negra",
-  "precio": 0,
+  "precio": 45000,
   "fotos": [
    "catalogo/img/02-polo-tommy-negro/01.jpg",
    "catalogo/img/02-polo-tommy-negro/02.jpg",
@@ -78,7 +78,7 @@ const PRODUCTOS = [
   "categoria": "Polos",
   "tipo": "polo",
   "nombre": "Polo Tommy Hilfiger Azul Cielo",
-  "precio": 0,
+  "precio": 45000,
   "fotos": [
    "catalogo/img/03-polo-tommy-azul-claro/01.jpg",
    "catalogo/img/03-polo-tommy-azul-claro/02.jpg",
@@ -112,7 +112,7 @@ const PRODUCTOS = [
   "categoria": "Polos",
   "tipo": "polo",
   "nombre": "Polo Ralph Lauren Blanca",
-  "precio": 0,
+  "precio": 45000,
   "fotos": [
    "catalogo/img/04-polo-ralph-blanco/01.jpg",
    "catalogo/img/04-polo-ralph-blanco/02.jpg",
@@ -146,7 +146,7 @@ const PRODUCTOS = [
   "categoria": "Polos",
   "tipo": "polo",
   "nombre": "Polo Ralph Lauren Rosa",
-  "precio": 0,
+  "precio": 45000,
   "fotos": [
    "catalogo/img/05-polo-ralph-rosado/01.jpg",
    "catalogo/img/05-polo-ralph-rosado/02.jpg",
@@ -180,7 +180,7 @@ const PRODUCTOS = [
   "categoria": "Polos",
   "tipo": "polo",
   "nombre": "Polo Ralph Lauren Azul Jaspe",
-  "precio": 0,
+  "precio": 45000,
   "fotos": [
    "catalogo/img/06-polo-ralph-azul-jaspe/01.jpg",
    "catalogo/img/06-polo-ralph-azul-jaspe/02.jpg",
@@ -214,7 +214,7 @@ const PRODUCTOS = [
   "categoria": "Polos",
   "tipo": "polo",
   "nombre": "Polo Ralph Lauren Roja",
-  "precio": 0,
+  "precio": 45000,
   "fotos": [
    "catalogo/img/07-polo-ralph-rojo/01.jpg",
    "catalogo/img/07-polo-ralph-rojo/02.jpg",
@@ -247,7 +247,7 @@ const PRODUCTOS = [
   "categoria": "Polos",
   "tipo": "polo",
   "nombre": "Polo Lacoste Blanca",
-  "precio": 0,
+  "precio": 45000,
   "fotos": [
    "catalogo/img/08-polo-lacoste-blanco/01.jpg",
    "catalogo/img/08-polo-lacoste-blanco/02.jpg",
@@ -284,7 +284,7 @@ const PRODUCTOS = [
   "categoria": "Polos",
   "tipo": "polo",
   "nombre": "Polo Lacoste Gris Grafito",
-  "precio": 0,
+  "precio": 45000,
   "fotos": [
    "catalogo/img/09-polo-lacoste-gris-oscuro/01.jpg"
   ],
@@ -315,7 +315,7 @@ const PRODUCTOS = [
   "categoria": "Polos",
   "tipo": "polo",
   "nombre": "Polo Lacoste Gris Acero",
-  "precio": 0,
+  "precio": 45000,
   "fotos": [
    "catalogo/img/10-polo-lacoste-gris/01.jpg",
    "catalogo/img/10-polo-lacoste-gris/02.jpg"
@@ -347,7 +347,7 @@ const PRODUCTOS = [
   "categoria": "Camisas formales",
   "tipo": "camisa",
   "nombre": "Camisa Formal en Seda Marfil",
-  "precio": 0,
+  "precio": 45000,
   "fotos": [
    "catalogo/img/12-camisa-formal-beige/01.jpg"
   ],
@@ -378,7 +378,7 @@ const PRODUCTOS = [
   "categoria": "Camisas formales",
   "tipo": "camisa",
   "nombre": "Camisa Formal en Seda Verde Salvia",
-  "precio": 0,
+  "precio": 45000,
   "fotos": [
    "catalogo/img/13-camisa-formal-verde-salvia/01.jpg"
   ],
@@ -410,7 +410,7 @@ const PRODUCTOS = [
   "categoria": "Camisas formales",
   "tipo": "camisa",
   "nombre": "Camisa Formal en Seda Blanca",
-  "precio": 0,
+  "precio": 45000,
   "fotos": [
    "catalogo/img/14-camisa-formal-blanca-manga-corta/01.jpg",
    "catalogo/img/14-camisa-formal-blanca-manga-corta/02.jpg",
@@ -446,7 +446,7 @@ const PRODUCTOS = [
   "categoria": "Camisas formales",
   "tipo": "camisa",
   "nombre": "Camisa Formal en Seda Negra",
-  "precio": 0,
+  "precio": 45000,
   "fotos": [
    "catalogo/img/15-camisa-formal-negra-manga-corta/01.jpg",
    "catalogo/img/15-camisa-formal-negra-manga-corta/02.jpg",
@@ -482,7 +482,7 @@ const PRODUCTOS = [
   "categoria": "Jeans",
   "tipo": "chino",
   "nombre": "Jean Slim Gris Ceniza",
-  "precio": 0,
+  "precio": 65000,
   "fotos": [
    "catalogo/img/16-jean-gris-ceniza/01.jpg",
    "catalogo/img/16-jean-gris-ceniza/02.jpg",
@@ -516,7 +516,7 @@ const PRODUCTOS = [
   "categoria": "Jeans",
   "tipo": "chino",
   "nombre": "Jean Negro Desgastado",
-  "precio": 0,
+  "precio": 65000,
   "fotos": [
    "catalogo/img/17-jean-negro-desgastado/01.jpg",
    "catalogo/img/17-jean-negro-desgastado/02.jpg",
@@ -550,7 +550,7 @@ const PRODUCTOS = [
   "categoria": "Jeans",
   "tipo": "chino",
   "nombre": "Jean Azul Medio Destroyed",
-  "precio": 0,
+  "precio": 65000,
   "fotos": [
    "catalogo/img/18-jean-azul-medio/01.jpg",
    "catalogo/img/18-jean-azul-medio/02.jpg"
@@ -583,7 +583,7 @@ const PRODUCTOS = [
   "categoria": "Jeans",
   "tipo": "chino",
   "nombre": "Jean Azul Oscuro Desgastado",
-  "precio": 0,
+  "precio": 65000,
   "fotos": [
    "catalogo/img/19-jean-azul-oscuro/01.jpg",
    "catalogo/img/19-jean-azul-oscuro/02.jpg",
@@ -617,7 +617,7 @@ const PRODUCTOS = [
   "categoria": "Jeans",
   "tipo": "chino",
   "nombre": "Jean Negro Clásico",
-  "precio": 0,
+  "precio": 65000,
   "fotos": [
    "catalogo/img/20-jean-negro-liso/01.jpg",
    "catalogo/img/20-jean-negro-liso/02.jpg",
@@ -651,7 +651,7 @@ const PRODUCTOS = [
   "categoria": "Jeans",
   "tipo": "chino",
   "nombre": "Jean Azul Claro Roto",
-  "precio": 0,
+  "precio": 65000,
   "fotos": [
    "catalogo/img/21-jean-azul-claro-roto/01.jpg",
    "catalogo/img/21-jean-azul-claro-roto/02.jpg",
@@ -685,7 +685,7 @@ const PRODUCTOS = [
   "categoria": "Gorras",
   "tipo": "cap",
   "nombre": "Gorra Clemont Negra",
-  "precio": 0,
+  "precio": 45000,
   "fotos": [
    "catalogo/img/22-gorra-clemont-negra/01.jpg",
    "catalogo/img/22-gorra-clemont-negra/02.jpg",
@@ -724,7 +724,7 @@ const PRODUCTOS = [
   "categoria": "Gorras",
   "tipo": "cap",
   "nombre": "Gorra Gucci Trucker GG",
-  "precio": 0,
+  "precio": 50000,
   "fotos": [
    "catalogo/img/23-gorra-gg-trucker/01.jpg",
    "catalogo/img/23-gorra-gg-trucker/02.jpg",
@@ -755,7 +755,7 @@ const PRODUCTOS = [
   "categoria": "Gorras",
   "tipo": "cap",
   "nombre": "Gorra Louis Vuitton Monogram",
-  "precio": 0,
+  "precio": 50000,
   "fotos": [
    "catalogo/img/24-gorra-lv-monograma/01.jpg",
    "catalogo/img/24-gorra-lv-monograma/02.jpg",
@@ -789,7 +789,7 @@ const PRODUCTOS = [
   "categoria": "Gorras",
   "tipo": "cap",
   "nombre": "Gorra BOSS Beige y Oliva",
-  "precio": 0,
+  "precio": 45000,
   "fotos": [
    "catalogo/img/25-gorra-boss-beige-verde/01.jpg",
    "catalogo/img/25-gorra-boss-beige-verde/02.jpg",
@@ -823,7 +823,7 @@ const PRODUCTOS = [
   "categoria": "Gorras",
   "tipo": "cap",
   "nombre": "Gorra B Blanca con Cruces",
-  "precio": 0,
+  "precio": 70000,
   "fotos": [
    "catalogo/img/26-gorra-b-blanca-cruces/01.jpg",
    "catalogo/img/26-gorra-b-blanca-cruces/02.jpg",
@@ -849,7 +849,8 @@ const PRODUCTOS = [
    "Visera plana con sticker",
    "Cierre snapback"
   ],
-  "combina": "Con polo negra o camisa formal negra para contrastar."
+  "combina": "Con polo negra o camisa formal negra para contrastar.",
+  "etiqueta": "Edición premium"
  },
  {
   "id": "gorra-la-negra-cruz",
@@ -857,7 +858,7 @@ const PRODUCTOS = [
   "categoria": "Gorras",
   "tipo": "cap",
   "nombre": "Gorra LA Negra Cruz Dorada",
-  "precio": 0,
+  "precio": 70000,
   "fotos": [
    "catalogo/img/27-gorra-la-negra-cruz/01.jpg",
    "catalogo/img/27-gorra-la-negra-cruz/02.jpg",
@@ -884,7 +885,8 @@ const PRODUCTOS = [
    "Alambre de púas bordado en blanco",
    "Aplicaciones brillantes"
   ],
-  "combina": "Con polo negra y jean negro: total black con un toque dorado."
+  "combina": "Con polo negra y jean negro: total black con un toque dorado.",
+  "etiqueta": "Edición premium"
  }
 ];
 
