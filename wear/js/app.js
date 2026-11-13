@@ -89,7 +89,7 @@ function inicioStreet() {
   <section class="seccion">
     <div class="seccion-cab"><h2 class="s-h2 rev">Más de la <i>colección</i></h2></div>
     <div class="rejilla">${nuevos.slice(4, 12).map(tarjeta).join('')}</div>
-    <div class="ver-mas"><a href="#/street/tienda" class="btn-s fantasma">Ver las ${nuevos.length} prendas <span>→</span></a></div>
+    <div class="ver-mas"><a href="#/street/tienda" class="btn-s">Ver las ${nuevos.length} prendas <span>→</span></a>${btnPdf()}</div>
   </section>
   ${puenteMundo('street')}`;
 }
@@ -160,6 +160,7 @@ function tienda(m, q) {
     <header class="tienda-cab">
       <h1 class="${m === 'street' ? 's-h1' : 'm-h1'} rev">La <i>colección</i></h1>
       <p class="rev">${m === 'street' ? `${prods.length} piezas · unidades limitadas` : `${prods.length} piezas atemporales`}</p>
+      ${m === 'street' ? btnPdf('link-pdf rev', 'Descargar catálogo PDF') : ''}
     </header>
     <div class="filtros">
       <div class="chips"><a href="${url('', orden)}" class="chip ${!cat ? 'on' : ''}">Todo</a>
@@ -285,13 +286,17 @@ function pie() {
   $('#pie').innerHTML = `<div class="pie-grid">
     <div class="pie-marca">${m === 'street' ? '<b class="pie-logo">Legion <span>Wear</span></b>' : `${escudo('pie-escudo')}<b class="pie-logo">Legion <i>Maison</i></b>`}
       <p>${m === 'street' ? 'Vestimos para que te miren.' : 'Elegancia atemporal, hecha para durar.'}</p></div>
-    <div><h4>Tienda</h4><a href="#/${m}/tienda">${TXT[m].tienda}</a><a href="#/${m}/lookbook">Lookbook</a>${TIENDA.maison ? `<a href="#/${m === 'street' ? 'maison' : 'street'}">${m === 'street' ? 'Legion Maison' : 'LGN Street'}</a>` : ''}</div>
+    <div><h4>Tienda</h4><a href="#/${m}/tienda">${TXT[m].tienda}</a><a href="#/${m}/lookbook">Lookbook</a><a href="${PDF}" download="LEGION-WEAR-Catalogo-2026.pdf">Catálogo en PDF</a>${TIENDA.maison ? `<a href="#/${m === 'street' ? 'maison' : 'street'}">${m === 'street' ? 'Legion Maison' : 'LGN Street'}</a>` : ''}</div>
     <div><h4>Ayuda</h4><a href="#/${m}/info">Envíos y cambios</a><a href="#/${m}/info">Cómo comprar</a><a href="#" data-wa>WhatsApp</a></div>
     <div><h4>Síguenos</h4>${TIENDA.instagram ? `<a href="${esc(TIENDA.instagram)}" target="_blank" rel="noopener">Instagram</a>` : ''}<span class="pie-ciudad">${esc(TIENDA.ciudad)}</span></div>
   </div>
   <div class="pie-legal"><span>© 2026 LEGION WEAR · Una extensión de Legion Estudio</span><span>${m === 'street' ? 'Colección 01 · 2026' : 'Est. MMXXVI'}</span></div>`;
   $('[data-wa]', $('#pie')).onclick = e => { e.preventDefault(); abrirWhatsApp('Hola LEGION WEAR, quiero más información.'); };
 }
+
+// ── CATÁLOGO PDF ──
+const PDF = 'catalogo/LEGION-WEAR-Catalogo.pdf';
+const btnPdf = (cls = 'btn-s fantasma', txt = 'Catálogo en PDF') => `<a href="${PDF}" download="LEGION-WEAR-Catalogo-2026.pdf" class="${cls} btn-pdf"><svg class="ico-pdf" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-4.5-4.5M12 15l4.5-4.5M4 17v2.5A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5V17"/></svg>${txt}</a>`;
 
 // ── CARRITO ──
 let carrito = [];

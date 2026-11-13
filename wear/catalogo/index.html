@@ -6,7 +6,6 @@
 <title>LEGION WEAR — Colección</title>
 <meta name="description" content="Catálogo LEGION WEAR: polos, camisas formales en seda, jeans y gorras.">
 <meta name="theme-color" content="#0c0b0a">
-<meta name="robots" content="noindex">
 <link rel="stylesheet" href="../fonts/fuentes.css">
 <style>
 :root{--noir:#0c0b0a;--noir2:#151311;--linea:#2a2622;--marfil:#efe9df;--gris:#9d958a;--oro:#c9a96b;--oro2:#e3c991}
@@ -26,6 +25,8 @@ header{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-
 .portada small{display:block;font-size:11px;letter-spacing:.45em;text-transform:uppercase;color:var(--oro);margin-bottom:22px}
 .portada h1{font-family:Panchang,sans-serif;font-weight:800;text-transform:uppercase;font-size:clamp(38px,8vw,104px);line-height:.95;letter-spacing:-.02em;word-spacing:.14em}
 .portada h1 i{font-style:normal;color:transparent;-webkit-text-stroke:1.5px var(--oro)}
+.pdf{display:inline-flex;align-items:center;gap:10px;margin-top:26px;padding:13px 22px;border:1px solid rgba(201,169,107,.45);color:var(--oro);font-size:12px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;transition:background .25s,color .25s}
+.pdf:hover{background:var(--oro);color:#0b0a09}
 .portada p{max-width:520px;margin:22px auto 0;color:var(--gris);font-size:15px;line-height:1.7}
 .filete{width:64px;height:1px;background:var(--oro);margin:34px auto 0;opacity:.7}
 /* filtros */
@@ -120,6 +121,7 @@ footer{text-align:center;padding:0 16px 50px;font-size:11px;letter-spacing:.35em
   <small>Lookbook privado</small>
   <h1>La <i>colección</i></h1>
   <p>Polos, camisas formales en seda, jeans y gorras. Toca cualquier prenda para ver todas sus fotos.</p>
+  <a class="pdf" href="LEGION-WEAR-Catalogo.pdf" download="LEGION-WEAR-Catalogo-2026.pdf"><svg class="ico-pdf" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-4.5-4.5M12 15l4.5-4.5M4 17v2.5A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5V17"/></svg>Descargar en PDF</a>
   <div class="filete"></div>
 </section>
 <nav class="filtros" id="filtros" aria-label="Categorías"></nav>
