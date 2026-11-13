@@ -104,6 +104,7 @@
     corona: '<path d="m3 8 4.5 4L12 5l4.5 7L21 8l-2 11H5L3 8Z"/>',
     tienda: '<path d="M4 9h16l-1-5H5L4 9Z"/><path d="M5 9v11h14V9M9 20v-6h6v6"/>',
     hoja: '<path d="M5 19c0-8 5-14 15-15-1 10-7 15-15 15Z"/><path d="M5 19 13 11"/>',
+    cubo: '<path d="M12 2 3 7l9 5 9-5-9-5Z"/><path d="m3 17 9 5 9-5M3 12l9 5 9-5"/>',
     copiar: '<rect x="8" y="8" width="13" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/>'
   };
   const ic = (n, cls = "icon") => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${SVG[n]}</svg>`;
@@ -178,8 +179,27 @@
   const orden = [1, 2, 3, 4, 5, 6, 0];
   raiz.innerHTML = `
     <div class="pagina">
-      <div class="portada">${N.portada ? `<img src="${N.portada}" alt="">` : ""}</div>
-      <section class="perfil">
+      ${N.video ? `
+      <header class="hero-v">
+        <video id="hero-video" autoplay muted loop playsinline preload="auto" poster="${N.video.poster || N.portada || ""}"></video>
+        <div class="hv-top">
+          <div class="hv-logo">${N.logo ? `<img src="${N.logo}" alt="Logo de ${esc(N.nombre)}">` : esc(iniciales(N.nombre))}</div>
+          ${est ? `<span class="estado ${est.abierto ? "abierto" : "cerrado"}"><i></i>${est.txt}</span>` : ""}
+        </div>
+        <div class="hv-txt">
+          <span class="hv-ceja"><i></i>${esc(N.categoria || "")}</span>
+          <h1>${esc(N.nombre)}</h1>
+          ${N.eslogan ? `<p>${esc(N.eslogan)}</p>` : ""}
+        </div>
+        <nav class="hv-acc">
+          ${tieneMenu ? `<button type="button" class="hv-b dest" data-accion="menu">${ic(N.menu.vista === "3d" ? "cubo" : "menu")}<span><b>${N.menu.vista === "3d" ? "Carta 3D" : "Ver menú"}</b><small>${N.menu.vista === "3d" ? "Desliza y mira cada bebida" : "Fotos, precios y pedido"}</small></span>${ic("flecha", "icon fl")}</button>` : ""}
+          <a class="hv-b" href="${N.google ? "#google" : N.resenas}" ${N.google ? "" : 'target="_blank" rel="noopener"'}>${ic("estrella")}<span><b>Reseñas</b><small>${N.google ? String((+N.google.nota).toFixed(1)).replace(".", ",") + " en Google" : "Califícanos"}</small></span></a>
+          ${N.premio ? `<button type="button" class="hv-b" data-accion="premio">${ic("regalo")}<span><b>Premio</b><small>Gira y gana</small></span></button>` : N.mapa ? `<a class="hv-b" href="#google">${ic("pin")}<span><b>Ubicación</b><small>Cómo llegar</small></span></a>` : ""}
+          <a class="hv-b wa" href="${wa(`Hola ${N.nombre}, vengo de su página.`)}" target="_blank" rel="noopener">${ic("wa")}<span><b>WhatsApp</b><small>Escríbenos</small></span></a>
+        </nav>
+      </header>` : `
+      <div class="portada">${N.portada ? `<img src="${N.portada}" alt="">` : ""}</div>`}
+      <section class="perfil${N.video ? " oculto" : ""}">
         <div class="logo">${N.logo ? `<img src="${N.logo}" alt="Logo de ${esc(N.nombre)}">` : esc(iniciales(N.nombre))}</div>
         <h1>${esc(N.nombre)}</h1>
         <p class="cat">${esc(N.categoria || "")}</p>
@@ -212,6 +232,31 @@
           <span class="flecha">${ic("flecha")}</span>
         </a>
       </div>
+
+      ${N.premio ? `
+      <div class="bloque"><button type="button" class="premio-b" data-accion="premio">
+        <span class="pr-mini" aria-hidden="true"></span>
+        <div><small>${esc(N.premio.ceja || "Premio de la casa")}</small><strong>${esc(N.premio.titulo || "Gira la ruleta y gana")}</strong><span>${esc(N.premio.texto || "Un giro por visita. Muéstrale el premio a tu mesero.")}</span></div>
+        <span class="flecha">${ic("flecha")}</span>
+      </button></div>` : ""}
+
+      ${N.google ? (() => { const g = N.google, nota = +g.nota || 5;
+        const est5 = (v) => `<span class="gm-est" style="--v:${(v / 5) * 100}%"><i>★★★★★</i><i>★★★★★</i></span>`;
+        return `
+      <section class="bloque gmaps" id="google" aria-label="Google Maps">
+        <div class="gm-cab">
+          <span class="gm-g" aria-hidden="true"><svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg></span>
+          <div><b>${esc(N.nombre)}</b><small>Así nos califican en Google Maps</small></div>
+          ${g.ejemplo ? `<span class="gm-ej">Ejemplo</span>` : ""}
+        </div>
+        <div class="gm-nota"><strong>${String(nota.toFixed(1)).replace(".", ",")}</strong><div>${est5(nota)}<small>${(+g.total || 0).toLocaleString("es-CO")} reseñas</small></div>
+          <a class="gm-esc" href="${N.resenas}" target="_blank" rel="noopener">${ic("estrella")} Calificar</a></div>
+        ${(g.opiniones || []).length ? `<div class="gm-ops">${g.opiniones.map((o) => `
+          <article class="gm-op"><div class="gm-op-cab"><span class="gm-av" style="background:${o.c || "var(--c)"}">${esc((o.n || "?")[0])}</span><div><b>${esc(o.n)}</b><small>${esc(o.h || "")}</small></div></div>
+            ${est5(o.e || 5)}<p>${esc(o.t)}</p></article>`).join("")}</div>` : ""}
+        ${N.mapa ? `<div class="gm-mapa"><iframe title="Mapa de ${esc(N.nombre)}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=${encodeURIComponent(N.mapa)}&z=16&output=embed"></iframe>
+          <a class="gm-ir" href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(N.mapa)}" target="_blank" rel="noopener">${ic("pin")} Cómo llegar</a></div>` : ""}
+      </section>`; })() : ""}
 
       ${N.promo ? `<div class="bloque"><div class="promo">${ic("regalo")}<div><strong>${esc(N.promo.titulo)}</strong><span>${esc(N.promo.texto)}</span></div></div></div>` : ""}
 
@@ -248,6 +293,10 @@
         <div class="mesas-grid">${Array.from({ length: Math.min(60, N.mesero.mesas || 12) }, (_, i) => `<a href="?mesa=${i + 1}">${i + 1}</a>`).join("")}</div>
         <button type="button" class="cerrar-m" data-cerrar>Cancelar</button>
       </div>
+    </div>` : ""}
+    ${N.premio ? `
+    <div class="modal" id="m-premio" role="dialog" aria-modal="true" aria-label="Ruleta de premios">
+      <div class="modal-caja pr-caja" id="pr-caja"></div>
     </div>` : ""}
     ${MESERO ? `
     <div class="modal" id="m-mesero" role="dialog" aria-modal="true" aria-label="Mesero virtual">
@@ -320,6 +369,60 @@
     });
   }
 
+  /* ---------- Video del banner: vertical en celular, horizontal en pantallas anchas ---------- */
+  const hv = $("#hero-video");
+  if (hv) {
+    const ancho = matchMedia("(min-width: 760px)").matches && N.video.pc;
+    hv.src = ancho ? N.video.pc : N.video.movil || N.video.pc;
+    hv.play().catch(() => {});
+  }
+
+  /* ---------- Ruleta de premios (un giro por día en este celular; NO depende de dejar reseña: Google lo prohíbe) ---------- */
+  const mPremio = $("#m-premio");
+  if (mPremio) {
+    const P = N.premio, premios = (P.premios || []).filter(Boolean), n = premios.length;
+    const COL = ["var(--c)", "#1C1C20"], hoyTxt = new Date().toISOString().slice(0, 10), clave = "premio_" + window.SLUG;
+    let guardado = null; try { guardado = JSON.parse(localStorage.getItem(clave) || "null"); } catch (e) {}
+    if (guardado && (guardado.dia !== hoyTxt || !premios[guardado.idx])) guardado = null;
+    const seg = 360 / n;
+    const rueda = `<svg class="pr-svg" viewBox="-110 -110 220 220">${premios.map((t, i) => {
+        const a0 = (i * seg - 90) * Math.PI / 180, a1 = ((i + 1) * seg - 90) * Math.PI / 180, r = 100, am = (i + .5) * seg;
+        return `<path d="M0 0 L${(r * Math.cos(a0)).toFixed(2)} ${(r * Math.sin(a0)).toFixed(2)} A${r} ${r} 0 0 1 ${(r * Math.cos(a1)).toFixed(2)} ${(r * Math.sin(a1)).toFixed(2)} Z" fill="${COL[i % 2]}"/>
+          <text transform="rotate(${am}) translate(0 -60) rotate(90)" class="${i % 2 ? "cl" : "os"}">${esc(t.length > 15 ? t.slice(0, 14) + "…" : t)}</text>`; }).join("")}
+        <circle r="100" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="3"/>${premios.map((_, i) => { const a = (i * seg - 90) * Math.PI / 180; return `<circle cx="${(104 * Math.cos(a)).toFixed(2)}" cy="${(104 * Math.sin(a)).toFixed(2)}" r="3" fill="#fff"/>`; }).join("")}</svg>`;
+    const resultado = (g) => `
+      <div class="pr-gana"><div class="ic">${ic("regalo")}</div><small>¡Ganaste!</small><h3>${esc(premios[g.idx])}</h3>
+        <div class="pr-codigo"><small>Tu código de hoy</small><b>${esc(g.codigo)}</b></div>
+        <p class="ms-p">${esc(P.condicion || "Muéstrale esta pantalla a tu mesero. Válido hoy, en consumo en el local.")}</p>
+        ${P.demo ? `<button type="button" class="vaciar" id="pr-otra">Girar otra vez (modo demo)</button>` : ""}
+        <button type="button" class="cerrar-m" data-cerrar>Cerrar</button></div>`;
+    function pintarRuleta() {
+      $("#pr-caja").innerHTML = guardado ? resultado(guardado) : `
+        <small class="pr-ceja">${esc(P.ceja || "Premio de la casa")}</small><h3>${esc(P.titulo || "Gira la ruleta y gana")}</h3>
+        <div class="pr-rueda"><span class="pr-punta"></span><div class="pr-giro" id="pr-giro">${rueda}</div><span class="pr-centro">${ic("regalo")}</span></div>
+        <button type="button" class="copiar pr-girar" id="pr-girar">Girar la ruleta</button>
+        <p class="ms-p">Un giro por visita. ¡Gracias por venir!</p>
+        <button type="button" class="cerrar-m" data-cerrar>Cerrar</button>`;
+    }
+    mPremio.addEventListener("click", (e) => {
+      if (e.target === mPremio || e.target.closest("[data-cerrar]")) return mPremio.classList.remove("abierta");
+      if (e.target.closest("#pr-otra")) { guardado = null; try { localStorage.removeItem(clave); } catch (e2) {} return pintarRuleta(); }
+      const b = e.target.closest("#pr-girar"); if (!b) return;
+      b.disabled = true; b.textContent = "Girando…";
+      const pesosP = premios.map((_, i) => (P.pesos && P.pesos[i]) || 1), tot = pesosP.reduce((a, x) => a + x, 0);
+      let r = Math.random() * tot, idx = 0; while ((r -= pesosP[idx]) > 0 && idx < n - 1) idx++;
+      const giro = 360 * 6 + (360 - (idx + .5) * seg) + (Math.random() - .5) * seg * .6;
+      $("#pr-giro").style.transform = `rotate(${giro}deg)`;
+      setTimeout(() => {
+        const L = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+        guardado = { dia: hoyTxt, idx, codigo: (P.prefijo || window.SLUG.slice(0, 4)).toUpperCase() + "-" + Array.from({ length: 4 }, () => L[Math.floor(Math.random() * L.length)]).join("") };
+        try { localStorage.setItem(clave, JSON.stringify(guardado)); } catch (e2) {}
+        pintarRuleta(); if (navigator.vibrate) navigator.vibrate([40, 60, 120]);
+      }, 4400);
+    });
+    pintarRuleta();
+  }
+
   /* ---------- Menú ---------- */
   if (tieneMenu) montarMenu();
 
@@ -328,6 +431,7 @@
     if (a.dataset.accion === "wifi") mWifi.classList.add("abierta");
     if (a.dataset.accion === "menu") location.hash = "menu";
     if (a.dataset.accion === "mesa") $("#m-mesa").classList.add("abierta");
+    if (a.dataset.accion === "premio") mPremio.classList.add("abierta");
   });
 
   function montarMenu() {
@@ -340,7 +444,7 @@
     Object.keys(carrito).forEach((k) => { if (!ITEMS[k] || !(carrito[k] > 0)) delete carrito[k]; });
 
     const mesaQR = MESA;
-    const catalogo = M.vista === "catalogo";
+    const catalogo = M.vista === "catalogo", vista3d = M.vista === "3d";
     const fotosDe = (it) => [it.foto, ...(it.fotos || [])].filter(Boolean);
 
     document.body.insertAdjacentHTML("beforeend", `
@@ -352,7 +456,12 @@
             ${mesaQR && carritoOn ? `<div class="aviso-mesa">${ic("plato")} Estás en la mesa ${mesaQR}. Tu pedido llegará a tu mesa.</div>` : ""}
             ${M.categorias.map((c, i) => `
               <h3 class="cat-titulo" id="cat-${i}">${esc(c.nombre)}</h3>
-              ${catalogo ? `<div class="cg">${c.items.map((it, j) => `
+              ${vista3d ? `<div class="c3d"><div class="c3d-pista">${c.items.map((it, j) => `
+                <article class="c3d-item" data-ver="${i}-${j}">
+                  <div class="c3d-foto">${fotosDe(it)[0] ? `<img src="${fotosDe(it)[0]}" alt="" loading="lazy" draggable="false">` : `<span>${ic("plato")}</span>`}${it.tag ? `<span class="tag">${esc(it.tag)}</span>` : ""}</div>
+                  <div class="c3d-txt"><h3>${esc(it.n)}</h3>${it.d ? `<p>${esc(it.d)}</p>` : ""}<span class="precio">${pesos(it.p)}</span>
+                  ${carritoOn ? `<div class="acc" data-id="${i}-${j}"></div>` : ""}</div>
+                </article>`).join("")}</div></div>` : catalogo ? `<div class="cg">${c.items.map((it, j) => `
                 <article class="cg-item" data-ver="${i}-${j}">
                   <div class="cg-foto">${fotosDe(it)[0] ? `<img src="${fotosDe(it)[0]}" alt="" loading="lazy">` : `<span>${ic("plato")}</span>`}
                     ${fotosDe(it).length > 1 ? `<em>${fotosDe(it).length} fotos</em>` : ""}${it.tag ? `<span class="tag">${esc(it.tag)}</span>` : ""}</div>
@@ -434,6 +543,23 @@
       hMenu.querySelectorAll("#cats button").forEach((b, i) => b.classList.toggle("on", i === act));
     }, { passive: true });
 
+    /* ----- Carta 3D: cada tarjeta gira según su distancia al centro ----- */
+    if (vista3d) {
+      const pistas = [...hMenu.querySelectorAll(".c3d-pista")];
+      const girar = (p) => {
+        const mitad = p.scrollLeft + p.clientWidth / 2;
+        p.querySelectorAll(".c3d-item").forEach((el) => {
+          const d = Math.max(-2, Math.min(2, (el.offsetLeft + el.offsetWidth / 2 - mitad) / el.offsetWidth));
+          el.style.transform = `perspective(900px) translateZ(${(-Math.abs(d) * 130).toFixed(1)}px) rotateY(${(-d * 40).toFixed(1)}deg)`;
+          el.style.opacity = (1 - Math.min(Math.abs(d), 1.6) * .32).toFixed(2);
+          el.classList.toggle("centro", Math.abs(d) < .5);
+        });
+      };
+      pistas.forEach((p) => p.addEventListener("scroll", () => requestAnimationFrame(() => girar(p)), { passive: true }));
+      const todas = () => pistas.forEach(girar);
+      addEventListener("resize", todas); addEventListener("hashchange", () => setTimeout(todas, 80)); setTimeout(todas, 80);
+    }
+
     /* ----- Detalle del producto con galería de fotos ----- */
     const mDet = $("#m-detalle"), detCaja = $("#det-caja");
     let detId = null;
@@ -452,6 +578,13 @@
           <button type="button" class="cerrar-m" data-cerrar>Cerrar</button>
         </div>`;
       mDet.classList.add("abierta"); document.body.classList.add("det-abierto");
+      detCaja.classList.toggle("det3d", vista3d);
+      const g0 = vista3d && $("#galeria");
+      if (g0) {
+        const tilt = (x, y) => g0.querySelectorAll("img").forEach((im) => (im.style.transform = `perspective(700px) rotateY(${(x * 18).toFixed(1)}deg) rotateX(${(-y * 14).toFixed(1)}deg) scale(1.06)`));
+        g0.addEventListener("pointermove", (e) => { const r = g0.getBoundingClientRect(); tilt((e.clientX - r.left) / r.width - .5, (e.clientY - r.top) / r.height - .5); });
+        g0.addEventListener("pointerleave", () => tilt(0, 0));
+      }
       const g = $("#galeria"), pts = $("#puntos");
       if (g && pts) g.addEventListener("scroll", () => {
         const i = Math.round(g.scrollLeft / g.clientWidth);
@@ -459,6 +592,11 @@
       }, { passive: true });
       if (carritoOn) pintar();
     }
+    if (vista3d) addEventListener("deviceorientation", (e) => {
+      const g0 = detId != null && $("#galeria"); if (!g0 || e.gamma == null) return;
+      const x = Math.max(-.5, Math.min(.5, e.gamma / 60)), y = Math.max(-.5, Math.min(.5, (e.beta - 45) / 60));
+      g0.querySelectorAll("img").forEach((im) => (im.style.transform = `perspective(700px) rotateY(${(x * 18).toFixed(1)}deg) rotateX(${(-y * 14).toFixed(1)}deg) scale(1.06)`));
+    });
     mDet.addEventListener("click", (e) => {
       if (e.target === mDet || e.target.closest("[data-cerrar]")) { mDet.classList.remove("abierta"); document.body.classList.remove("det-abierto"); detId = null; return; }
       const b = e.target.closest("[data-d]"); if (b && carritoOn) cambiar(detId, +b.dataset.d);
