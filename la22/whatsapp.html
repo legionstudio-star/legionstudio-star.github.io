@@ -90,16 +90,28 @@ button{cursor:pointer;border:0;background:none}
   const NUM = { un: 1, una: 1, uno: 1, dos: 2, tres: 3, cuatro: 4, cinco: 5, seis: 6 };
 
   function leerPedido(txt) {
-    let s = ' ' + norm(txt) + ' '; const out = [];
+    let s = ' ' + norm(txt).replace(/\bcombos\b/g, 'combo') + ' '; const out = [];
     for (const [a, id] of ALIAS) {
       const re = new RegExp(`(?:\\b(\\d+|un|una|uno|dos|tres|cuatro|cinco|seis)\\s+)?\\b${a.replace(/ /g, '\\s+')}s?\\b`, 'g');
       s = s.replace(re, (m, q) => { const n = q ? (NUM[q] || +q) : 1; const ex = out.find((o) => o.id === id); if (ex) ex.q += n; else out.push({ id, q: n }); return ' # '; });
     }
     return out;
   }
+  // palabras que sobran (posible plato que no está en la carta)
+  const RELLENO = new Set('hola buenas buenos dias tardes noches quiero quisiera queria regalas regala regalan regalame mandame manda mande enviame dame deme porfa favor por para con sin del las los unos unas tambien mas otro otra otros otras grande grandes pequeno porcion porciones bien gracias porfavor listo vecino vecina amigo amiga senor senora nada solo todo esta asi quedo pedido pedir domicilio domi que una uno unos unas dos tres cuatro cinco seis agregar agrega agregame agregale ponle ponme sumale suma traer traeme trae mandar enviar llevar llevame entonces bueno buena tambien otra vez cada'.split(' '));
+  const DIRW = /^(calle|cll|carrera|cra|kra|sur|norte|este|apto|apartamento|torre|casa|barrio|interior|piso|bloque|manzana|lote|conjunto|edificio)$/;
+  function sobrante(txt) {
+    let s = ' ' + norm(txt).replace(/\bcombos\b/g, 'combo') + ' ';
+    for (const [a] of ALIAS) s = s.replace(new RegExp(`\\b${a.replace(/ /g, '\\s+')}s?\\b`, 'g'), ' ');
+    const d = leerDireccion(s); if (d) s = s.replace(d, ' ');
+    return s.split(' ').filter((x) => x.length > 2 && !/\d/.test(x) && !RELLENO.has(x) && !DIRW.test(x)).join(' ');
+  }
   function leerDireccion(txt) {
     const m = txt.match(/\b(calle|cl|cll|carrera|cra|kr|kra|diagonal|dg|transversal|tv|avenida|av|ak|ac)\.?\s*\d+[^,.;]*/i);
-    return m ? m[0].replace(/\s+/g, ' ').trim() : null;
+    if (!m) return null;
+    // si después de la dirección sigue el pedido ("calle 92 sur 15-30 un ajiaco y…"), cortarlo
+    const dir = m[0].split(/\s(?:y|un|una|uno|unos|unas|con|porfa|por favor|me|quiero|dos|tres|cuatro|\d+\s+(?:combo|medio|pollo|porcion|gaseosa|coca|cerveza|jugo))\b/i)[0];
+    return dir.replace(/\s+/g, ' ').trim();
   }
 
   const chat = $('#chat');
@@ -149,14 +161,17 @@ button{cursor:pointer;border:0;background:none}
       return bot('Sin problema, empecemos de nuevo. ¿Qué te anoto?', ['Combo 1', 'Ver menú']);
     }
     // paso pedido
-    const nuevos = leerPedido(txt), d = leerDireccion(txt);
+    const nuevos = leerPedido(txt), d = leerDireccion(txt), resto = sobrante(txt);
     if (d) st.dir = d;
+    const noHay = resto && nuevos.length ? `\n\n⚠️ No encontré <b>${esc(resto)}</b> en la carta. Si quieres pide el <b>menú</b>.` : '';
     if (nuevos.length) {
       nuevos.forEach((x) => { const ex = st.items.find((o) => o.id === x.id); if (ex) ex.q += x.q; else st.items.push(x); });
       const gas = nuevos.some((x) => llevaGaseosa(porId[x.id])) ? '\n\n🥤 Los combos traen gaseosa Postobón 1.5 L. Si la quieres Coca-Cola son +$2.000.' : '';
-      return bot(`¡Anotado! ✍️\n\n${resumen()}${gas}\n\n¿Algo más o así está bien?`, ['Así está bien', 'Agregar papas', 'Agregar Coca-Cola']);
+      return bot(`¡Anotado! ✍️\n\n${resumen()}${gas}${noHay}\n\n¿Algo más o así está bien?`, ['Así está bien', 'Agregar papas', 'Agregar Coca-Cola']);
     }
-    if (st.items.length && /(asi esta|eso es todo|nada mas|solo eso|no gracias|^no$|listo|esta bien)/.test(n)) return siguiente();
+    if (st.items.length && (d || /(asi esta|eso es todo|nada mas|solo eso|no gracias|^no$|listo|esta bien|^ya$|^eso$|^nada$|^asi$)/.test(n))) return siguiente();
+    if (!st.items.length && d) return bot(`Perfecto, lo llevamos a 📍 <b>${esc(d)}</b>.\n\n¿Qué te anoto?`, ['Combo 1', 'Medio pollo asado', 'Ver menú']);
+    if (resto && !/^(hola|buenas|buenos|hey)/.test(n)) return bot(`Uy, <b>${esc(resto)}</b> no lo tenemos en la carta 😅\nTe paso la carta o pide uno de los favoritos.`, ['Ver menú', 'Combo 1', 'Medio pollo asado']);
     if (/hola|buenas|buenos|hey/.test(n)) return bot('¡Hola! 👋 Soy el asistente de <b>La 22</b>. Escríbeme tu pedido normal, por ejemplo:\n<i>“un combo 1 y una coca cola para la calle 90 sur 14-20”</i>', ['Ver menú', 'Combo 1', 'Medio pollo asado']);
     return bot('Mmm, no te entendí 🙈 Escríbeme el nombre del plato, por ejemplo <b>combo 3</b> o <b>medio pollo asado</b>, o pide el <b>menú</b>.', ['Ver menú']);
   }
