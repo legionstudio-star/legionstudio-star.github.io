@@ -825,12 +825,12 @@ const PRODUCTOS = [
   "nombre": "Gorra B Blanca con Cruces",
   "precio": 70000,
   "fotos": [
-   "catalogo/img/26-gorra-b-blanca-cruces/01.jpg?v=1794602018",
-   "catalogo/img/26-gorra-b-blanca-cruces/02.jpg?v=1794602019",
-   "catalogo/img/26-gorra-b-blanca-cruces/03.jpg?v=1794602020",
-   "catalogo/img/26-gorra-b-blanca-cruces/04.jpg?v=1794602021",
-   "catalogo/img/26-gorra-b-blanca-cruces/05.jpg?v=1794602022",
-   "catalogo/img/26-gorra-b-blanca-cruces/06.jpg?v=1794602023"
+   "catalogo/img/26-gorra-b-blanca-cruces/01.jpg?v=1794624062",
+   "catalogo/img/26-gorra-b-blanca-cruces/02.jpg?v=1794624062",
+   "catalogo/img/26-gorra-b-blanca-cruces/03.jpg?v=1794624063",
+   "catalogo/img/26-gorra-b-blanca-cruces/04.jpg?v=1794624063",
+   "catalogo/img/26-gorra-b-blanca-cruces/05.jpg?v=1794624063",
+   "catalogo/img/26-gorra-b-blanca-cruces/06.jpg?v=1794624063"
   ],
   "colores": [
    {
