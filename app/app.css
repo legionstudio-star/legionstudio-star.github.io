@@ -529,3 +529,64 @@ body.vial { background: #0B0D10; color: #F2F4F7; }
 .vitrina .c3d-txt h3 { font-size: 1.12rem; }
 .vitrina .c3d-txt .precio { display: none; }
 @media (prefers-reduced-motion: reduce) { .vt-foto img, .vt-luz, .vitrina .c3d-item.centro .c3d-foto img { animation: none; } }
+
+/* Ubicación con mapa (sin bloque de Google) */
+.ubic { background: var(--card); border: 1px solid var(--linea); border-radius: 22px; padding: 16px; overflow: hidden; }
+.ub-dir { font-size: .88rem; color: var(--gris); margin: -4px 0 0; }
+.ubic .gm-mapa { margin: 12px -16px -16px; height: 230px; }
+
+/* Logo del pie: entrada al panel del dueño */
+.pie-logo { display: block; margin: 30px auto 0; width: 64px; height: 64px; border-radius: 50%; border: 0; padding: 0; background: var(--card); overflow: hidden; cursor: pointer; box-shadow: 0 0 0 2px color-mix(in srgb, var(--c) 55%, transparent), 0 10px 24px rgba(0,0,0,.35); font-weight: 800; color: var(--texto); -webkit-tap-highlight-color: transparent; }
+.pie-logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pie-logo:active { transform: scale(.94); }
+.pie-logo + .pie { margin-top: 10px; }
+
+/* Panel del dueño */
+.du-fondo { position: fixed; inset: 0; z-index: 90; background: rgba(0,0,0,.72); backdrop-filter: blur(6px); display: flex; align-items: flex-end; justify-content: center; animation: du-in .25s ease; }
+.du-caja { width: 100%; max-width: 560px; max-height: 94svh; overflow-y: auto; background: var(--fondo); color: var(--texto); border-radius: 26px 26px 0 0; padding: 20px 16px 28px; box-shadow: 0 -20px 50px rgba(0,0,0,.5); }
+.du-pin { text-align: center; padding-top: 8px; }
+.du-pin .du-logo { width: 70px; height: 70px; border-radius: 50%; overflow: hidden; margin: 0 auto 10px; box-shadow: 0 0 0 2px var(--c); }
+.du-pin .du-logo img { width: 100%; height: 100%; object-fit: cover; }
+.du-pin h3 { font-size: 1.15rem; margin: 0 0 4px; }
+.du-pin p { color: var(--gris); font-size: .86rem; margin: 0 0 14px; }
+.du-puntos { display: flex; justify-content: center; gap: 12px; margin: 6px 0 14px; }
+.du-puntos i { width: 14px; height: 14px; border-radius: 50%; border: 2px solid color-mix(in srgb, var(--texto) 35%, transparent); }
+.du-puntos i.on { background: var(--c); border-color: var(--c); }
+.du-teclado { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 300px; margin: 0 auto; }
+.du-teclado button { height: 58px; border-radius: 16px; border: 1px solid var(--linea); background: var(--card); color: var(--texto); font-size: 1.35rem; font-weight: 700; }
+.du-teclado button:active { background: var(--c); color: #141414; }
+.du-teclado .du-ok { background: var(--c); color: #141414; font-size: .95rem; }
+.du-err { color: #ff6b6b; font-size: .85rem; min-height: 1.2em; margin: 10px 0 0; text-align: center; }
+.du-cab { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.du-cab img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
+.du-cab div { flex: 1; }
+.du-cab b { display: block; font-size: 1.05rem; }
+.du-cab small { color: var(--gris); font-size: .78rem; }
+.du-x { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--linea); background: var(--card); color: var(--texto); display: grid; place-items: center; }
+.du-tabs { display: flex; gap: 6px; background: var(--card); border: 1px solid var(--linea); border-radius: 999px; padding: 4px; margin-bottom: 14px; position: sticky; top: -20px; z-index: 2; }
+.du-tabs button { flex: 1; border: 0; background: none; color: var(--gris); font-weight: 700; font-size: .84rem; padding: 10px 6px; border-radius: 999px; }
+.du-tabs button.on { background: var(--c); color: #141414; }
+.du-aviso { background: color-mix(in srgb, var(--c) 16%, transparent); border: 1px solid color-mix(in srgb, var(--c) 45%, transparent); border-radius: 14px; padding: 10px 12px; font-size: .84rem; margin-bottom: 12px; }
+.du-item { background: var(--card); border: 1px solid var(--linea); border-radius: 18px; padding: 12px; margin-bottom: 10px; display: grid; gap: 8px; }
+.du-item-top { display: flex; align-items: center; gap: 8px; }
+.du-item-top b { flex: 1; font-size: .9rem; }
+.du-item label { font-size: .74rem; color: var(--gris); font-weight: 700; display: grid; gap: 4px; }
+.du-in { width: 100%; box-sizing: border-box; background: var(--fondo); color: var(--texto); border: 1px solid var(--linea); border-radius: 12px; padding: 11px 12px; font: inherit; font-size: .95rem; }
+textarea.du-in { resize: vertical; min-height: 64px; }
+.du-colores { display: flex; gap: 8px; flex-wrap: wrap; }
+.du-colores button { width: 30px; height: 30px; border-radius: 50%; border: 2px solid transparent; }
+.du-colores button.on { border-color: var(--texto); box-shadow: 0 0 0 2px var(--fondo) inset; }
+.du-mini { border: 1px solid var(--linea); background: var(--fondo); color: var(--texto); border-radius: 999px; padding: 6px 10px; font-size: .76rem; font-weight: 700; display: inline-flex; gap: 4px; align-items: center; }
+.du-mini.rojo { color: #ff6b6b; }
+.du-sw { position: relative; width: 44px; height: 26px; flex: none; }
+.du-sw input { opacity: 0; width: 0; height: 0; }
+.du-sw span { position: absolute; inset: 0; border-radius: 999px; background: color-mix(in srgb, var(--texto) 25%, transparent); transition: .2s; }
+.du-sw span::after { content: ""; position: absolute; left: 3px; top: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; transition: .2s; }
+.du-sw input:checked + span { background: var(--c); }
+.du-sw input:checked + span::after { transform: translateX(18px); }
+.du-add { width: 100%; border: 1.5px dashed color-mix(in srgb, var(--c) 60%, transparent); background: none; color: var(--c); border-radius: 16px; padding: 13px; font-weight: 800; margin-bottom: 12px; }
+.du-guardar { width: 100%; border: 0; background: var(--c); color: #141414; border-radius: 999px; padding: 16px; font-weight: 800; font-size: 1rem; position: sticky; bottom: 0; box-shadow: 0 -10px 24px var(--fondo); }
+.du-guardar:disabled { opacity: .6; }
+.du-ok-msg { text-align: center; color: #3ddc84; font-weight: 700; font-size: .88rem; min-height: 1.2em; margin: 8px 0 0; }
+@keyframes du-in { from { opacity: 0; } }
+.c-osc .du-teclado button:active, .c-osc .du-teclado .du-ok, .c-osc .du-tabs button.on, .c-osc .du-guardar { color: #fff; }

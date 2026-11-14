@@ -216,7 +216,7 @@
     const cls = `boton${ancho ? " ancho" : ""}${fuerte ? " fuerte" : ""}`;
     return b.accion
       ? `<button type="button" class="${cls}" data-accion="${b.accion}">${inner}</button>`
-      : `<a class="${cls}" href="${b.href}" target="_blank" rel="noopener">${inner}</a>`;
+      : `<a class="${cls}" href="${b.href}"${/^#/.test(b.href) ? "" : ' target="_blank" rel="noopener"'}>${inner}</a>`;
   };
 
   /* ---------- Página principal ---------- */
@@ -241,7 +241,7 @@
           ${(() => { const dx = (N.extras || []).filter((b) => b && b.destacado && b.url); window.__hvx = dx; return !tieneMenu && dx[0] ? `<a class="hv-b dest" href="${dx[0].url}">${ic(SVG[dx[0].i] ? dx[0].i : "flecha")}<span><b>${esc(dx[0].t)}</b><small>${esc(dx[0].s || "")}</small></span>${ic("flecha", "icon fl")}</a>` : ""; })()}
           ${tieneMenu ? `<button type="button" class="hv-b dest" data-accion="menu">${ic(N.menu.vista === "3d" || N.menu.vista === "vitrina" ? "cubo" : "menu")}<span><b>${N.menu.vista === "vitrina" ? "Vitrina 3D" : N.menu.vista === "3d" ? "Carta 3D" : "Ver menú"}</b><small>${N.menu.vista === "vitrina" ? "Desliza y antójate de todo" : N.menu.vista === "3d" ? "Desliza y mira cada bebida" : "Fotos, precios y pedido"}</small></span>${ic("flecha", "icon fl")}</button>` : ""}
           <a class="hv-b" href="${N.google ? "#google" : N.resenas}" ${N.google ? "" : 'target="_blank" rel="noopener"'}>${ic("estrella")}<span><b>Reseñas</b><small>${N.google ? String((+N.google.nota).toFixed(1)).replace(".", ",") + " en Google" : "Califícanos"}</small></span></a>
-          ${!tieneMenu && window.__hvx[1] ? `<a class="hv-b" href="${window.__hvx[1].url}">${ic(SVG[window.__hvx[1].i] ? window.__hvx[1].i : "flecha")}<span><b>${esc(window.__hvx[1].t)}</b><small>${esc(window.__hvx[1].s || "")}</small></span></a>` : N.premio ? `<button type="button" class="hv-b" data-accion="premio">${ic("regalo")}<span><b>Premio</b><small>Gira y gana</small></span></button>` : N.mapa ? `<a class="hv-b" href="#google">${ic("pin")}<span><b>Ubicación</b><small>Cómo llegar</small></span></a>` : ""}
+          ${(() => { const x = window.__hvx[tieneMenu ? 0 : 1]; return x ? `<a class="hv-b" href="${x.url}">${ic(SVG[x.i] ? x.i : "flecha")}<span><b>${esc(x.t)}</b><small>${esc(x.s || "")}</small></span></a>` : ""; })() || (N.premio ? `<button type="button" class="hv-b" data-accion="premio">${ic("regalo")}<span><b>Premio</b><small>Gira y gana</small></span></button>` : N.mapa ? `<a class="hv-b" href="#${N.google ? "google" : "ubicacion"}">${ic("pin")}<span><b>Ubicación</b><small>Cómo llegar</small></span></a>` : "")}
           ${N.whatsapp ? `<a class="hv-b wa" href="${wa(`Hola ${N.nombre}, vengo de su página.`)}" target="_blank" rel="noopener">${ic("wa")}<span><b>WhatsApp</b><small>Escríbenos</small></span></a>` : ""}
         </nav>
       </header>` : `
@@ -306,7 +306,7 @@
       </section>`; })() : ""}
 
       ${(N.pagos || []).length ? `
-      <section class="bloque pagos" aria-label="Medios de pago">
+      <section class="bloque pagos" id="pagos" aria-label="Medios de pago">
         <h2 class="pg-tit">${ic("recibo")} Medios de pago</h2>
         ${N.pagos.map((m) => `
         <div class="pg-item">
@@ -317,7 +317,7 @@
         <p class="pg-nota">${esc(N.pagosNota || "Envía el comprobante por WhatsApp junto con tu pedido.")}</p>
       </section>` : ""}
 
-      ${N.promo ? `<div class="bloque"><div class="promo">${ic("regalo")}<div><strong>${esc(N.promo.titulo)}</strong><span>${esc(N.promo.texto)}</span></div></div></div>` : ""}
+      ${(N.promos || (N.promo ? [N.promo] : [])).filter((p) => p && p.titulo && p.activa !== false).map((p) => `<div class="bloque"><div class="promo">${ic("regalo")}<div><strong>${esc(p.titulo)}</strong><span>${esc(p.texto || "")}</span></div></div></div>`).join("")}
 
       ${lista.length ? `<div class="bloque botones">${(() => { const anchos = lista.filter((b) => b.destacado || b.accion === "mesa").length, resto = lista.length - anchos;
         return lista.map((b, i) => boton(b, i < anchos || (resto % 2 === 1 && i === lista.length - 1), b.destacado || b.accion === "mesa")).join(""); })()}</div>` : ""}
@@ -330,6 +330,15 @@
         ${N.direccion ? `<details><summary>${ic("pin")} Dirección ${ic("abajo", "icon mas")}</summary><div class="cont">${esc(N.direccion)}</div></details>` : ""}
       </div>` : ""}
 
+      ${N.mapa && !N.google ? `
+      <section class="bloque ubic" id="ubicacion" aria-label="Ubicación">
+        <h2 class="pg-tit">${ic("pin")} Dónde estamos</h2>
+        ${N.direccion ? `<p class="ub-dir">${esc(N.direccion)}</p>` : ""}
+        <div class="gm-mapa"><iframe title="Mapa de ${esc(N.nombre)}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=${encodeURIComponent(N.mapa)}&z=16&output=embed"></iframe>
+          <a class="gm-ir" href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(N.mapa)}" target="_blank" rel="noopener">${ic("pin")} Cómo llegar</a></div>
+      </section>` : ""}
+
+      ${N.dueno ? `<button type="button" class="pie-logo" data-accion="dueno" aria-label="${esc(N.nombre)}">${N.logo ? `<img src="${N.logo}" alt="">` : esc(iniciales(N.nombre))}</button>` : ""}
       <p class="pie">Hecho por <b>LEGION Studio Digital</b></p>
     </div>
     ${N.wifi ? `
@@ -497,6 +506,11 @@
     if (a.dataset.accion === "menu") location.hash = "menu";
     if (a.dataset.accion === "mesa") $("#m-mesa").classList.add("abierta");
     if (a.dataset.accion === "premio") mPremio.classList.add("abierta");
+    if (a.dataset.accion === "dueno") {
+      const abrir = () => window.LEGION_DUENO(N, { ic, esc, SUPABASE_URL, SUPABASE_KEY });
+      if (window.LEGION_DUENO) return abrir();
+      const s = document.createElement("script"); s.src = "/app/dueno.js?v=1"; s.onload = abrir; document.head.appendChild(s);
+    }
   });
 
   function montarMenu() {
