@@ -34,6 +34,10 @@ function imagen(p, color, i = 0, grande = false) {
 }
 
 function tarjeta(p, i = 0) {
+  if (p.agotado) return tarjetaBase(p, i).replace('class="tarjeta', 'class="tarjeta agotada');
+  return tarjetaBase(p, i);
+}
+function tarjetaBase(p, i = 0) {
   const m = p.mundo;
   return `<a class="tarjeta rev" style="--i:${i}" href="#/${m}/p/${p.id}">
     <div class="tarjeta-img">${imagen(p)}${p.fotos && p.fotos[1] ? `<img class="alt" src="${esc(mini(p.fotos[1]))}" alt="" loading="lazy">` : ''}${p.etiqueta ? `<span class="etiqueta">${esc(p.etiqueta)}</span>` : ''}
@@ -151,6 +155,7 @@ function tienda(m, q) {
   let lista = cat ? prods.filter(p => p.categoria === cat) : prods.slice();
   if (orden === 'menor') lista.sort((a, b) => a.precio - b.precio);
   if (orden === 'mayor') lista.sort((a, b) => b.precio - a.precio);
+  lista.sort((a, b) => !!a.agotado - !!b.agotado);   // agotadas al final
   const url = (c, o) => `#/${m}/tienda?` + new URLSearchParams({ ...(c ? { cat: c } : {}), ...(o ? { orden: o } : {}) });
   return `<section class="seccion tienda">
     <header class="tienda-cab">
@@ -197,11 +202,11 @@ function paginaProducto(p) {
           <div class="colores">${p.colores.map((c, i) => `<button class="color ${i ? '' : 'on'}" data-color="${esc(c.n)}" style="--c:${c.h}" aria-label="${esc(c.n)}"></button>`).join('')}</div></div>
         <div class="opcion"><span class="opcion-tit">${t.talla}${p.tallas.length > 1 ? ` <button class="link-guia" type="button">Guía de tallas</button>` : ''}</span>
           <div class="tallas">${p.tallas.map(s => `<button class="talla ${sel.talla === s ? 'on' : ''}" data-talla="${s}">${s}</button>`).join('')}</div></div>
-        <div class="comprar">
+        ${p.agotado ? `<div class="comprar"><button class="btn-agregar" disabled>Agotada</button></div><p class="nota-agotada">Esta prenda ya se vendió. Mira las demás de la colección.</p>` : `<div class="comprar">
           <div class="cantidad"><button data-cant="-1" aria-label="Menos">−</button><span id="cant">1</span><button data-cant="1" aria-label="Más">+</button></div>
           <button class="btn-agregar">${t.agregar}</button>
         </div>
-        <button class="btn-directo">${t.directo}</button>
+        <button class="btn-directo">${t.directo}</button>`}
         <details open><summary>Detalles</summary><ul>${p.detalles.map(d => `<li>${esc(d)}</li>`).join('')}</ul></details>
         ${p.combina ? `<details open><summary>Cómo llevarla</summary><p class="combina">${esc(p.combina)}</p></details>` : ''}
         <details><summary>Envíos y cambios</summary><p>Hacemos envíos a todo el país.${TIENDA.envioGratisPrendas ? ` <b>Envío gratis llevando ${TIENDA.envioGratisPrendas} prendas o más.</b>` : ''} El tiempo de entrega te lo confirmamos por WhatsApp según tu ciudad. Si la talla no te queda, escríbenos y te ayudamos con el cambio.</p></details>
@@ -225,8 +230,10 @@ function activarProducto(p) {
   $$('[data-cant]').forEach(b => b.onclick = () => { sel.cant = Math.max(1, Math.min(10, sel.cant + Number(b.dataset.cant))); $('#cant').textContent = sel.cant; });
   const guia = $('.link-guia'); if (guia) guia.onclick = () => $('#guia').showModal();
   const conTalla = () => { if (sel.talla) return true; $('.tallas').classList.remove('falta'); void $('.tallas').offsetWidth; $('.tallas').classList.add('falta'); avisar('Elige tu talla'); return false; };
-  $('.btn-agregar').onclick = () => { if (!conTalla()) return; agregar(sel); abrirCarrito(); };
-  $('.btn-directo').onclick = () => { if (!conTalla()) return; pedirWhatsApp([{ ...sel }]); };
+  if (!p.agotado) {
+    $('.btn-agregar').onclick = () => { if (!conTalla()) return; agregar(sel); abrirCarrito(); };
+    $('.btn-directo').onclick = () => { if (!conTalla()) return; pedirWhatsApp([{ ...sel }]); };
+  }
   // En el celular las fotos se pasan deslizando el dedo
   if (p.fotos && p.fotos.length > 1) {
     let x0 = null, i = 0;
@@ -308,7 +315,7 @@ function agregar(s) {
 }
 
 function pintarCarrito() {
-  carrito = carrito.filter(x => producto(x.id));
+  carrito = carrito.filter(x => producto(x.id) && !producto(x.id).agotado);
   const n = carrito.reduce((s, x) => s + x.cant, 0), total = carrito.reduce((s, x) => s + producto(x.id).precio * x.cant, 0);
   $$('.cuenta').forEach(c => c.textContent = n);
   $('.total').textContent = conPrecio(carrito) ? pesos(total) : (total ? pesos(total) + ' + por confirmar' : 'Por confirmar');

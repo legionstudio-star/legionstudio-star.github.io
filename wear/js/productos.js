@@ -850,7 +850,8 @@ const PRODUCTOS = [
    "Cierre snapback"
   ],
   "combina": "Con polo negra o camisa formal negra para contrastar.",
-  "etiqueta": "Edición premium"
+  "etiqueta": "Agotada",
+  "agotado": true
  },
  {
   "id": "gorra-la-negra-cruz",

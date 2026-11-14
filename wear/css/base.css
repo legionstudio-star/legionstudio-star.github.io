@@ -268,3 +268,9 @@ details p { padding: 0; }
 .cinta-envio { display: flex; justify-content: center; align-items: center; gap: 12px; padding: 8px 16px; background: #0b0a09; color: #d9b65c; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; text-align: center; border-bottom: 1px solid rgba(217,182,92,.18); }
 .cinta-envio i { width: 4px; height: 4px; border-radius: 50%; background: currentColor; opacity: .6; flex: none; }
 @media (max-width: 560px) { .cinta-envio { font-size: 9.5px; letter-spacing: .12em; gap: 8px; padding: 7px 10px; } }
+
+/* Prendas agotadas (13-nov) */
+.tarjeta.agotada .tarjeta-img img { filter: grayscale(.6) brightness(.8); }
+.tarjeta.agotada .etiqueta { background: #0b0a09; color: #d9b65c; border: 1px solid rgba(217,182,92,.4); }
+.ficha .btn-agregar[disabled] { opacity: .55; cursor: not-allowed; width: 100%; }
+.nota-agotada { margin: 10px 0 18px; font-size: 14px; color: var(--texto-suave); }
