@@ -224,7 +224,7 @@ details p { padding: 0; }
   .acciones { display: none; }
   .marca { font-size: 19px; }
   body { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
-  .barra-movil { display: grid; grid-template-columns: repeat(4, 1fr); position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+  .barra-movil { display: grid; grid-template-columns: repeat(5, 1fr); position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
     padding: 6px 6px calc(6px + env(safe-area-inset-bottom)); background: var(--cabecera); backdrop-filter: blur(16px) saturate(1.2); border-top: 1px solid var(--linea); transition: background .6s; }
   .barra-movil a, .barra-movil button { position: relative; display: grid; justify-items: center; gap: 3px; padding: 6px 0; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--texto-suave); transition: color .3s; }
   .barra-movil svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round; stroke-linecap: round; }

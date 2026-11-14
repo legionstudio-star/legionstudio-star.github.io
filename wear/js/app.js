@@ -61,7 +61,7 @@ function inicioStreet() {
         <span class="lin rev" data-txt="LEGION">LEGION</span>
         <span class="lin hueca rev" style="--i:1" data-txt="WEAR">WEAR</span>
       </h1>
-      <p class="s-sub rev" style="--i:2">Polos de marca, camisas formales en seda, jeans y gorras. Piezas seleccionadas una a una, en unidades limitadas.</p>
+      <p class="s-sub rev" style="--i:2">Polos de marca, camisas formales en seda, jeans, gorras y relojes. Piezas seleccionadas una a una, en unidades limitadas.</p>
       <div class="s-ctas rev" style="--i:3">
         <a href="#/street/tienda" class="btn-s">Ver la colección <span>→</span></a>
         <a href="#/street/lookbook" class="btn-s fantasma">Lookbook</a>
