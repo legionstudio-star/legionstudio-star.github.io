@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#070605">
+<title>Club God’s Blessing · Tu tarjeta</title>
+<meta name="description" content="Tu tarjeta del Club God’s Blessing. Cada visita suma un sello.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="../assets/img/icono-192.png">
+<link rel="apple-touch-icon" href="../assets/img/icono-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Club GB">
+<link rel="stylesheet" href="../assets/gbl.css?v=1">
+<style>
+  body{min-height:100svh;background:radial-gradient(90% 50% at 50% -5%,#2a2010 0%,var(--bg) 60%);}
+  .app{max-width:460px;margin:0 auto;padding:22px 18px 46px;}
+  .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px;}
+  .top img{height:30px;}
+  .top a{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);}
+  .emb{display:block;width:120px;margin:4px auto 16px;filter:drop-shadow(0 0 24px rgba(227,192,104,.3));}
+  h1{font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:34px;line-height:1.02;text-align:center;}
+  h1 em{font-style:normal;background:var(--oro);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .lead{color:#d8cdb6;margin:12px 0 24px;text-align:center;}
+  .perks{display:grid;gap:10px;margin-bottom:22px;}
+  .perk{display:flex;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px;}
+  .perk b{display:block;font-weight:700;}
+  .perk span{color:var(--muted);font-size:13px;}
+  .perk .ic{flex:0 0 42px;height:42px;border:1px solid var(--gold);transform:rotate(45deg);display:grid;place-items:center;}
+  .perk .ic i{transform:rotate(-45deg);font-style:normal;font-family:var(--display);font-weight:800;color:var(--gold);font-size:15px;}
+  .box{background:var(--surface);border:1px solid rgba(217,181,90,.3);border-radius:8px;padding:22px;}
+  .check{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--muted);margin:4px 0 16px;}
+  .check input{margin-top:3px;accent-color:#d9b55a;width:18px;height:18px;}
+  .full{width:100%;padding:18px;}
+  .msg{color:var(--danger);font-size:13px;text-align:center;min-height:18px;margin-top:10px;}
+  .alt{text-align:center;margin-top:18px;font-size:14px;color:var(--muted);}
+  .alt button{background:none;border:0;color:var(--gold);font-weight:700;text-decoration:underline;}
+  .fisica{margin:0 auto 22px;width:78%;border-radius:12px;box-shadow:0 26px 50px rgba(0,0,0,.6);transform:rotate(-4deg);}
+
+  /* TARJETA DIGITAL */
+  .card{position:relative;border-radius:18px;padding:22px 20px 20px;overflow:hidden;color:var(--cream);
+    background:linear-gradient(150deg,#1b160e 0%,#0b0907 55%,#16110a 100%);border:1px solid rgba(217,181,90,.45);box-shadow:0 30px 70px rgba(0,0,0,.6);}
+  .card::before{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,236,190,.10) 50%,transparent 65%);animation:brillo 6s ease-in-out infinite;}
+  @keyframes brillo{0%{transform:translateX(-100%)}50%,100%{transform:translateX(100%)}}
+  .card-top{display:flex;justify-content:space-between;align-items:center;position:relative;}
+  .card-top img{height:46px;}
+  .card-top .lbl{text-align:right;font-size:10.5px;letter-spacing:.3em;color:var(--gold);font-weight:700;}
+  .card-top .lbl b{display:block;font-family:var(--display);font-weight:800;letter-spacing:0;font-size:22px;color:var(--cream);margin-top:4px;text-transform:uppercase;}
+  .stamps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:24px 0 18px;position:relative;}
+  .st{aspect-ratio:1;border-radius:50%;border:1.5px dashed rgba(217,181,90,.5);display:grid;place-items:center;transition:.3s;}
+  .st img{width:66%;opacity:.18;filter:grayscale(1) brightness(2);}
+  .st.f{border:0;background:var(--oro);box-shadow:0 6px 18px rgba(201,154,52,.35);}
+  .st.f img{opacity:1;filter:brightness(0) saturate(0);mix-blend-mode:multiply;}
+  .st.pop{animation:stamp .7s cubic-bezier(.34,1.56,.64,1);}
+  @keyframes stamp{0%{transform:scale(2.2) rotate(-25deg);opacity:0}60%{transform:scale(.9);opacity:1}100%{transform:scale(1)}}
+  .bar{height:6px;border-radius:6px;background:rgba(255,255,255,.08);overflow:hidden;position:relative;}
+  .bar i{display:block;height:100%;background:var(--oro);border-radius:6px;transition:width .6s;}
+  .card-foot{display:flex;justify-content:space-between;margin-top:10px;font-size:13px;color:var(--muted);position:relative;}
+  .card-foot b{color:var(--cream);}
+  .premio{margin-top:16px;border-top:1px solid rgba(217,181,90,.25);padding-top:14px;font-size:13px;color:#d8cdb6;position:relative;}
+  .premio b{display:block;font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:16px;margin-top:2px;background:var(--oro);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .full-banner{margin-top:14px;background:var(--oro);color:#120e07;border-radius:10px;padding:14px;text-align:center;font-weight:700;position:relative;}
+  .full-banner b{font-family:var(--display);font-weight:800;font-size:20px;display:block;text-transform:uppercase;}
+  .qr-box{margin-top:18px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;display:flex;gap:16px;align-items:center;}
+  .qr{flex:0 0 116px;height:116px;background:#fff;border-radius:8px;padding:6px;}
+  .qr svg{width:100%;height:100%;}
+  .qr-box p{font-size:13.5px;color:var(--muted);}
+  .qr-box .code{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:.14em;color:var(--cream);margin-top:6px;}
+  .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+  .hist{margin-top:20px;}
+  .hist h3{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+  .hist div{display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid var(--line);font-size:14px;}
+  .hist span{color:var(--muted);}
+  .install{margin-top:18px;font-size:13px;color:var(--muted);border:1px dashed var(--line);border-radius:10px;padding:14px;line-height:1.6;}
+  .install b{color:var(--cream);}
+  .confetti{position:fixed;inset:0;pointer-events:none;z-index:9000;overflow:hidden;}
+  .confetti i{position:absolute;top:-20px;width:8px;height:14px;animation:fall 2.6s linear forwards;}
+  @keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+</style>
+</head>
+<body>
+<main class="app" id="app"><div style="text-align:center;padding:80px 0"><span class="spin"></span></div></main>
+
+<script src="../assets/gbl.js?v=1"></script>
+<script src="../assets/qrcode.js"></script>
+<script>
+const { rpc, esc, dateShort, toast } = GB;
+const KEY = 'gbl_club_codigo';
+const app = document.getElementById('app');
+let INFO = null, last = null, timer = null;
+const CORONA = '../assets/img/emblema_corona.png';
+
+function qrSvg(txt) {
+  const q = qrcode(0, 'M'); q.addData(txt); q.make();
+  const n = q.getModuleCount(); let d = '';
+  for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (q.isDark(r, c)) d += `M${c},${r}h1v1h-1z`;
+  return `<svg viewBox="-1 -1 ${n + 2} ${n + 2}" shape-rendering="crispEdges" role="img" aria-label="Código QR de tu tarjeta"><path d="${d}" fill="#0a0909"/></svg>`;
+}
+const cardUrl = (c) => location.origin + location.pathname + '?c=' + encodeURIComponent(c);
+const cabecera = (link) => `<div class="top"><a href="../"><img src="../assets/img/nombre.png" alt="God’s Blessing Barbería"></a>${link || ''}</div>`;
+const meta = () => Number((INFO && INFO.config.meta_sellos) || 5);
+const premio = () => (INFO && INFO.config.premio) || 'Premio sorpresa';
+const formulario = (boton) => `
+  <div class="field"><label for="n">Tu nombre</label><input id="n" autocomplete="name" maxlength="60" placeholder="Nombre y apellido"></div>
+  <div class="field"><label for="t">Tu WhatsApp</label><input id="t" type="tel" inputmode="numeric" autocomplete="tel" maxlength="14" placeholder="300 000 0000"></div>
+  <label class="check"><input type="checkbox" id="ok" checked> Acepto que God’s Blessing guarde mi nombre y número para mi tarjeta y me escriba con novedades del Club.</label>
+  <button class="btn btn-red full" id="go">${boton}</button>
+  <div class="msg" id="m" role="alert"></div>`;
+const leer = () => ({ n: document.getElementById('n').value.trim(), t: document.getElementById('t').value.replace(/\D/g, '').slice(-10) });
+function validar(v, m, conOk) {
+  if (v.n.length < 2) { m.textContent = 'Escribe tu nombre.'; return false; }
+  if (v.t.length !== 10) { m.textContent = 'Escribe tu WhatsApp (10 dígitos).'; return false; }
+  if (conOk && !document.getElementById('ok').checked) { m.textContent = 'Necesitamos tu autorización para crear la tarjeta.'; return false; }
+  return true;
+}
+const perks = () => `<div class="perks">
+  <div class="perk"><span class="ic"><i>1</i></span><div><b>Un sello por visita</b><span>El barbero lo pone al terminar tu servicio.</span></div></div>
+  <div class="perk"><span class="ic"><i>${meta()}</i></span><div><b>${esc(premio())}</b><span>Al completar ${meta()} sellos.</span></div></div>
+  <div class="perk"><span class="ic"><i>+</i></span><div><b>Primer sello de regalo</b><span>Solo por unirte hoy.</span></div></div></div>`;
+
+/* tarjeta física nueva: activarla */
+function vistaActivar(tc) {
+  app.innerHTML = `${cabecera('<a href="../#agenda">Reservar</a>')}
+    <img class="emb" src="${CORONA}" alt="">
+    <h1>Activa tu <em>tarjeta</em></h1>
+    <p class="lead">Bienvenido al Club God’s Blessing. Esta tarjeta es única y queda a tu nombre.</p>
+    ${perks()}
+    <form class="box" id="f" novalidate>${formulario('Activar mi tarjeta')}</form>`;
+  document.getElementById('f').onsubmit = async (e) => {
+    e.preventDefault();
+    const v = leer(), m = document.getElementById('m'), go = document.getElementById('go');
+    if (!validar(v, m, true)) return;
+    go.disabled = true; go.innerHTML = '<span class="spin"></span>';
+    try {
+      const r = await rpc('gbl_tarjeta_activar', { p_t: tc, p_nombre: v.n, p_tel: v.t });
+      await cargarTarjeta(r.codigo, true); confeti();
+      toast('Tarjeta activada. Bienvenido al Club.');
+    } catch (err) { m.textContent = err.message; go.disabled = false; go.textContent = 'Activar mi tarjeta'; }
+  };
+}
+
+function vistaUnirse() {
+  app.innerHTML = `${cabecera('<a href="../#agenda">Reservar</a>')}
+    <img class="emb" src="${CORONA}" alt="">
+    <h1>Club <em>God’s Blessing</em></h1>
+    <p class="lead">Tu tarjeta de sellos en el celular. Sin apps, sin papelitos.</p>
+    ${perks()}
+    <form class="box" id="f" novalidate>${formulario('Crear mi tarjeta')}</form>
+    <p class="alt">¿Ya eres del Club? <button type="button" id="ya">Entrar con mi nombre y WhatsApp</button></p>`;
+  document.getElementById('ya').onclick = vistaEntrar;
+  document.getElementById('f').onsubmit = async (e) => {
+    e.preventDefault();
+    const v = leer(), m = document.getElementById('m'), go = document.getElementById('go');
+    if (!validar(v, m, true)) return;
+    go.disabled = true; go.innerHTML = '<span class="spin"></span>';
+    try {
+      const r = await rpc('gbl_club_unirse', { p_nombre: v.n, p_tel: v.t });
+      await cargarTarjeta(r.codigo, true); confeti();
+      toast('Bienvenido al Club. Tu primer sello ya está puesto.');
+    } catch (err) { m.textContent = err.message; go.disabled = false; go.textContent = 'Crear mi tarjeta'; }
+  };
+}
+
+function vistaEntrar() {
+  app.innerHTML = `${cabecera('<a href="./">Volver</a>')}
+    <img class="emb" src="${CORONA}" alt="">
+    <h1>Tu <em>tarjeta</em></h1>
+    <p class="lead">Escribe tu nombre y el WhatsApp con el que te uniste al Club.</p>
+    <form class="box" id="f" novalidate>
+      <div class="field"><label for="n">Tu nombre</label><input id="n" autocomplete="name" maxlength="60" placeholder="Nombre y apellido"></div>
+      <div class="field"><label for="t">Tu WhatsApp</label><input id="t" type="tel" inputmode="numeric" autocomplete="tel" maxlength="14" placeholder="300 000 0000"></div>
+      <button class="btn btn-red full" id="go">Ver mi tarjeta</button>
+      <div class="msg" id="m" role="alert"></div>
+    </form>`;
+  document.getElementById('f').onsubmit = async (e) => {
+    e.preventDefault();
+    const v = leer(), m = document.getElementById('m'), go = document.getElementById('go');
+    if (!validar(v, m, false)) return;
+    go.disabled = true; go.innerHTML = '<span class="spin"></span>';
+    try { const r = await rpc('gbl_club_entrar', { p_nombre: v.n, p_tel: v.t }); await cargarTarjeta(r.codigo, true); }
+    catch (err) { m.textContent = err.message; go.disabled = false; go.textContent = 'Ver mi tarjeta'; }
+  };
+}
+
+async function cargarTarjeta(codigo, guardar) {
+  const t = await rpc('gbl_club_tarjeta', { p_codigo: codigo });
+  if (!t) return false;
+  if (guardar) { try { localStorage.setItem(KEY, t.codigo); } catch (e) {} history.replaceState(null, '', '?c=' + t.codigo); }
+  const subio = last && t.sellos > last.sellos, canjeo = last && t.canjes > last.canjes;
+  vistaTarjeta(t, subio ? t.sellos - 1 : -1);
+  if (subio) { toast('Nuevo sello. Llevas ' + t.sellos + ' de ' + t.meta); if (t.sellos >= t.meta) confeti(); }
+  if (canjeo) toast('Premio canjeado. La tarjeta vuelve a empezar.');
+  last = t;
+  clearInterval(timer);
+  timer = setInterval(async () => { if (document.hidden) return; try { const n = await rpc('gbl_club_tarjeta', { p_codigo: t.codigo }); if (n && (n.sellos !== last.sellos || n.canjes !== last.canjes)) cargarTarjeta(t.codigo); } catch (e) {} }, 10000);
+  return true;
+}
+
+function vistaTarjeta(t, popIdx) {
+  const meta = t.meta, faltan = Math.max(0, meta - t.sellos);
+  const stamps = Array.from({ length: meta }, (_, i) => `<div class="st ${i < t.sellos ? 'f' : ''} ${i === popIdx ? 'pop' : ''}"><img src="${CORONA}" alt=""></div>`).join('');
+  const nombres = { bienvenida: 'Sello de bienvenida', sello: 'Sello por visita', canje: 'Premio canjeado' };
+  const ios = /iphone|ipad/i.test(navigator.userAgent);
+  app.innerHTML = `${cabecera('<a href="../#agenda">Reservar</a>')}
+    <div class="card">
+      <div class="card-top"><img src="${CORONA}" alt=""><div class="lbl">MIEMBRO DEL CLUB<b>${esc(t.nombre)}</b></div></div>
+      <div class="stamps">${stamps}</div>
+      <div class="bar"><i style="width:${Math.min(100, (t.sellos / meta) * 100)}%"></i></div>
+      <div class="card-foot"><span><b>${t.sellos}</b> de ${meta} sellos</span><span>${faltan ? `Te falta${faltan > 1 ? 'n' : ''} <b>${faltan}</b>` : '<b>Tarjeta llena</b>'}</span></div>
+      ${faltan ? `<div class="premio">Tu premio al completarla<b>${esc(t.premio || 'Premio sorpresa')}</b></div>` : `<div class="full-banner"><b>${esc(t.premio || 'Premio')}</b>Muéstrale esta tarjeta al barbero para canjearlo.</div>`}
+    </div>
+    <div class="qr-box">
+      <div class="qr">${qrSvg(cardUrl(t.codigo))}</div>
+      <div><p>Muéstrale tu tarjeta física o este código al barbero para que te ponga el sello.</p><div class="code">${esc(t.codigo)}</div></div>
+    </div>
+    <div class="actions">
+      <a class="btn btn-ghost btn-sm" href="../#agenda">Reservar</a>
+      <button class="btn btn-ghost btn-sm" id="share" type="button">Guardar enlace</button>
+    </div>
+    <div class="install">${ios
+      ? 'Para tenerla siempre a mano: toca <b>Compartir</b> y luego <b>Agregar a inicio</b>.'
+      : 'Para tenerla siempre a mano: abre el menú del navegador y toca <b>Agregar a la pantalla principal</b>.'}</div>
+    <div class="hist"><h3>Movimientos</h3>${(t.historial || []).map((h) => `<div><b>${nombres[h.tipo] || h.tipo}</b><span>${esc(dateShort(h.fecha))}</span></div>`).join('')}</div>
+    <p class="alt" style="margin-top:26px"><button type="button" id="otra">No es mi tarjeta</button></p>`;
+  document.getElementById('share').onclick = async () => {
+    const url = cardUrl(t.codigo);
+    try { if (navigator.share) await navigator.share({ title: 'Mi tarjeta Club God’s Blessing', url }); else { await navigator.clipboard.writeText(url); toast('Enlace copiado'); } } catch (e) {}
+  };
+  document.getElementById('otra').onclick = () => { try { localStorage.removeItem(KEY); } catch (e) {} last = null; clearInterval(timer); history.replaceState(null, '', location.pathname); vistaUnirse(); };
+}
+
+function confeti() {
+  const box = document.createElement('div'); box.className = 'confetti';
+  const cols = ['#fff1bf', '#e3c068', '#c99a34', '#8a6420'];
+  for (let i = 0; i < 70; i++) {
+    const p = document.createElement('i');
+    p.style.left = Math.random() * 100 + '%'; p.style.background = cols[i % 4];
+    p.style.animationDelay = Math.random() * .8 + 's'; p.style.animationDuration = 2 + Math.random() * 1.5 + 's';
+    box.appendChild(p);
+  }
+  document.body.appendChild(box); setTimeout(() => box.remove(), 4200);
+}
+
+(async function () {
+  try { INFO = await rpc('gbl_info'); } catch (e) {}
+  const q = new URLSearchParams(location.search);
+  const tc = q.get('t');
+  if (tc) {   // QR o NFC de una tarjeta impresa
+    try {
+      const e = await rpc('gbl_tarjeta', { p_t: tc });
+      if (e.estado === 'activa') { await cargarTarjeta(e.codigo, true); return; }
+      if (e.estado === 'libre') { vistaActivar(tc); return; }
+    } catch (err) { app.innerHTML = `<p class="msg">${esc(err.message)}</p>`; return; }
+  }
+  let c = q.get('c'); if (!c) { try { c = localStorage.getItem(KEY); } catch (e) {} }
+  if (c) {
+    try { if (await cargarTarjeta(c, true)) return; } catch (e) { app.innerHTML = `<p class="msg">${esc(e.message)}</p>`; return; }
+    try { localStorage.removeItem(KEY); } catch (e) {}
+  }
+  vistaUnirse();
+})();
+</script>
+</body>
+</html>

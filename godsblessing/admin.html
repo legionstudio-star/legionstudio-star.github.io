@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a0909">
+<meta name="robots" content="noindex, nofollow">
+<title>Panel · God’s Blessing Barbería</title>
+<link rel="icon" href="assets/img/icono-192.png">
+<link rel="apple-touch-icon" href="assets/img/icono-192.png">
+<link rel="stylesheet" href="assets/gbl.css?v=1">
+<style>
+  body{min-height:100svh;}
+  .shell{max-width:980px;margin:0 auto;padding:0 16px 100px;}
+  /* login */
+  .login{max-width:380px;margin:0 auto;padding:40px 18px;text-align:center;}
+  .login img{width:240px;margin:0 auto 10px;}
+  .login h1{font-family:var(--display);text-transform:uppercase;letter-spacing:.2em;font-size:15px;color:var(--muted);margin-bottom:26px;}
+  .who{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:22px;}
+  .who button{padding:12px 18px;border-radius:999px;border:1px solid var(--line);background:transparent;font-weight:700;}
+  .who button.on{background:var(--cream);color:#111;border-color:var(--cream);}
+  .pin-dots{display:flex;gap:14px;justify-content:center;margin:6px 0 20px;}
+  .pin-dots i{width:15px;height:15px;border-radius:50%;border:2px solid var(--muted);}
+  .pin-dots i.f{background:var(--cream);border-color:var(--cream);}
+  .pin-dots.err{animation:shake .4s;}
+  @keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+  .pad{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:290px;margin:0 auto;}
+  .pad button{height:64px;border-radius:16px;border:1px solid var(--line);background:var(--surface);font-family:var(--display);font-size:26px;}
+  .pad button:active{background:var(--surface-2);}
+  .login .msg{color:var(--danger);min-height:20px;font-size:14px;margin-top:14px;}
+
+  /* barra superior */
+  .bar{position:sticky;top:0;z-index:40;background:rgba(10,9,9,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  .bar-in{max-width:980px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .bar img{height:34px;}
+  .bar .me{font-size:13px;color:var(--muted);text-align:right;}
+  .bar .me b{display:block;color:var(--cream);font-size:15px;}
+  .bar .me button{background:none;border:0;color:var(--rose);text-decoration:underline;font-size:12px;}
+  .tabs{position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(14,12,12,.96);backdrop-filter:blur(10px);border-top:1px solid var(--line);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom);}
+  .tabs button{flex:1;max-width:160px;background:none;border:0;padding:10px 4px 12px;color:var(--muted);font-family:var(--display);text-transform:uppercase;letter-spacing:.1em;font-size:12px;display:flex;flex-direction:column;align-items:center;gap:4px;}
+  .tabs button svg{width:22px;height:22px;}
+  .tabs button.on{color:var(--cream);}
+  .tabs button.on svg{color:var(--rose);}
+
+  h2.sec{font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-size:24px;margin:22px 0 12px;}
+  .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+  .spacer{flex:1;}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:14px 0;}
+  .stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;}
+  .stat small{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:700;}
+  .stat b{font-family:var(--display);font-size:26px;}
+
+  /* agenda */
+  .datebar{display:flex;align-items:center;gap:8px;margin-top:16px;}
+  .datebar .d{flex:1;text-align:center;font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-size:18px;}
+  .icon-btn{width:42px;height:42px;border-radius:12px;border:1px solid var(--line);background:var(--surface);display:inline-flex;align-items:center;justify-content:center;font-size:18px;}
+  .days{display:flex;gap:6px;overflow-x:auto;padding:12px 0 4px;scrollbar-width:none;}
+  .days::-webkit-scrollbar{display:none;}
+  .days button{flex:0 0 auto;width:56px;padding:7px 0;border-radius:12px;border:1px solid var(--line);background:transparent;text-align:center;position:relative;}
+  .days small{display:block;font-size:10px;color:var(--muted);text-transform:uppercase;}
+  .days b{font-family:var(--display);font-size:19px;}
+  .days button.on{border-color:var(--rose);background:rgba(201,143,154,.14);}
+  .days .n{position:absolute;top:-6px;right:-4px;min-width:18px;height:18px;border-radius:9px;background:var(--red2);color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 4px;}
+  .seg{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px;}
+  .seg button{border:0;background:none;padding:8px 14px;border-radius:999px;font-size:13px;font-weight:700;color:var(--muted);}
+  .seg button.on{background:var(--cream);color:#111;}
+  .appt{display:grid;grid-template-columns:70px 1fr;gap:12px;padding:14px;border-radius:14px;background:var(--surface);border:1px solid var(--line);margin-bottom:10px;}
+  .appt.done{opacity:.6;}
+  .appt.off{opacity:.45;}
+  .appt .h{font-family:var(--display);font-size:20px;line-height:1.1;}
+  .appt .h small{display:block;font-size:12px;color:var(--muted);font-family:var(--body);}
+  .appt .c{font-weight:700;font-size:16px;}
+  .appt .s{color:var(--muted);font-size:13.5px;}
+  .pill{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:999px;margin-left:6px;vertical-align:middle;}
+  .p-pendiente{background:#3a2d12;color:#f0c35a;} .p-confirmado{background:#132a3d;color:#7cc4ff;} .p-completado{background:#123222;color:#5fdc95;}
+  .p-cancelado{background:#3a1717;color:#ff8b8b;} .p-no_vino{background:#2c2c2c;color:#bbb;} .p-club{background:#2a1218;color:var(--rose);}
+  .acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
+  .acts button,.acts a{padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:transparent;font-size:12.5px;font-weight:700;}
+  .acts .ok{background:var(--cream);color:#111;border-color:var(--cream);}
+  .acts .wa{border-color:#1d6b3e;color:#5fdc95;}
+  .blk{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-radius:12px;border:1px dashed #5a4a2a;color:var(--rose);margin-bottom:10px;font-size:14px;}
+  .empty{text-align:center;color:var(--muted);padding:36px 10px;border:1px dashed var(--line);border-radius:14px;}
+  .fab-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0;}
+
+  /* club */
+  .scan{position:relative;border-radius:16px;overflow:hidden;background:#000;aspect-ratio:1;max-width:340px;margin:0 auto;}
+  .scan video{width:100%;height:100%;object-fit:cover;}
+  .scan::after{content:"";position:absolute;inset:18%;border:3px solid var(--cream);border-radius:18px;box-shadow:0 0 0 999px rgba(0,0,0,.35);}
+  .member{display:flex;gap:12px;align-items:center;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--surface);margin-bottom:8px;width:100%;text-align:left;}
+  .member .av{flex:0 0 42px;height:42px;border-radius:50%;background:var(--surface-2);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800;font-size:18px;color:var(--rose);}
+  .member .nm{flex:1;min-width:0;}
+  .member .nm b{display:block;}
+  .member .nm span{color:var(--muted);font-size:12.5px;}
+  .mstamps{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:14px 0;}
+  .mstamps i{aspect-ratio:1;border-radius:50%;border:2px dashed #555;}
+  .mstamps i.f{background:var(--cream);border-color:var(--cream);}
+  .big{width:100%;padding:18px;font-size:17px;}
+
+  table{width:100%;border-collapse:collapse;font-size:14px;}
+  th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;}
+  th{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;}
+  td.n,th.n{text-align:right;}
+  .list-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-top:1px solid var(--line);}
+  .list-item:first-child{border-top:0;}
+  .list-item span{color:var(--muted);font-size:13px;display:block;}
+  .dow{display:flex;gap:6px;flex-wrap:wrap;}
+  .dow label{display:flex;align-items:center;gap:6px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;font-size:13px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  @media (max-width:520px){.grid2{grid-template-columns:1fr;}}
+  .note{font-size:12.5px;color:var(--muted);margin-top:6px;}
+</style>
+</head>
+<body>
+<div id="root"><div style="text-align:center;padding:90px 0"><span class="spin"></span></div></div>
+
+<script src="assets/gbl.js?v=1"></script>
+<script src="assets/jsqr.js"></script>
+<script>
+const { rpc, esc, money, toMin, fromMin, time12, addDays, parseDate, dateLong, dateShort, telFmt, waLink, modal, alertBox, confirmBox, toast } = GB;
+const TK = 'gbl_panel_token';
+const root = document.getElementById('root');
+let INFO = null, ME = null, TOKEN = localStorage.getItem(TK), TAB = 'agenda';
+let fecha = null, filtroBarbero = null, refreshTimer = null;
+
+const ICON = {
+  agenda: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
+  club: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="6" width="18" height="13" rx="2"/><circle cx="9" cy="12.5" r="2.2"/><path d="M14 11h4M14 14h3"/></svg>',
+  numeros: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
+  ajustes: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>'
+};
+const ESTADO = { pendiente: 'Por confirmar', confirmado: 'Confirmado', completado: 'Atendido', cancelado: 'Cancelado', no_vino: 'No vino' };
+
+async function call(fn, args) {
+  try { return await rpc(fn, Object.assign({ p_token: TOKEN }, args || {})); }
+  catch (e) { if (/sesión se cerró/i.test(e.message)) { logout(true); } throw e; }
+}
+function logout(expired) { localStorage.removeItem(TK); TOKEN = null; ME = null; clearInterval(refreshTimer); vistaLogin(expired ? 'Tu sesión se cerró. Entra de nuevo.' : ''); }
+
+/* ================= LOGIN ================= */
+function vistaLogin(err) {
+  let quien = INFO.barberos.length === 1 ? INFO.barberos[0].id : null, pin = '';
+  root.innerHTML = `<div class="login">
+    <a href="./"><img src="assets/img/logo_completo.png" alt="God’s Blessing Barbería"></a>
+    <h1>Panel de barberos</h1>
+    <div class="who" id="who">${INFO.barberos.map((b) => `<button type="button" data-id="${b.id}" class="${b.id === quien ? 'on' : ''}">${esc(b.nombre)}</button>`).join('')}</div>
+    <div class="pin-dots" id="dots" aria-label="PIN">${'<i></i>'.repeat(4)}</div>
+    <div class="pad" id="pad">${[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => `<button type="button" data-k="${n}">${n}</button>`).join('')}<button type="button" data-k="del" aria-label="Borrar">⌫</button><button type="button" data-k="0">0</button><button type="button" data-k="ok" aria-label="Entrar">→</button></div>
+    <div class="msg" id="m" role="alert">${esc(err || '')}</div></div>`;
+  const dots = document.getElementById('dots'), m = document.getElementById('m');
+  const paint = () => { const n = Math.max(4, pin.length); dots.innerHTML = Array.from({ length: n }, (_, i) => `<i class="${i < pin.length ? 'f' : ''}"></i>`).join(''); };
+  document.getElementById('who').onclick = (e) => { const b = e.target.closest('button'); if (!b) return; quien = b.dataset.id; document.querySelectorAll('#who button').forEach((x) => x.classList.toggle('on', x === b)); m.textContent = ''; };
+  async function go() {
+    if (!quien) { m.textContent = 'Toca tu nombre arriba.'; return; }
+    if (pin.length < 4) return;
+    try {
+      const r = await rpc('gbl_login', { p_barbero: quien, p_pin: pin });
+      TOKEN = r.token; localStorage.setItem(TK, TOKEN); ME = r; arrancar();
+    } catch (e) { m.textContent = e.message; pin = ''; paint(); dots.classList.remove('err'); void dots.offsetWidth; dots.classList.add('err'); }
+  }
+  function key(k) {
+    if (k === 'del') pin = pin.slice(0, -1);
+    else if (k === 'ok') return go();
+    else if (pin.length < 6) pin += k;
+    paint();
+    if (pin.length === 4 && /^\d+$/.test(k)) setTimeout(() => { if (pin.length === 4) go(); }, 250);
+  }
+  document.getElementById('pad').onclick = (e) => { const b = e.target.closest('button'); if (b) key(b.dataset.k); };
+  document.onkeydown = (e) => { if (!document.getElementById('pad')) return; if (/^\d$/.test(e.key)) key(e.key); else if (e.key === 'Backspace') key('del'); else if (e.key === 'Enter') key('ok'); };
+}
+
+/* ================= ESTRUCTURA ================= */
+function arrancar() {
+  fecha = fecha || INFO.hoy;
+  const tabs = ME.es_dueno ? ['agenda', 'club', 'numeros', 'ajustes'] : ['agenda', 'club'];
+  const label = { agenda: 'Agenda', club: 'Club', numeros: 'Números', ajustes: 'Ajustes' };
+  root.innerHTML = `<div class="bar"><div class="bar-in"><a href="./"><img src="assets/img/logo_completo.png" alt="God’s Blessing Barbería"></a>
+      <div class="me"><b>${esc(ME.nombre)}${ME.es_dueno ? ' · Dueño' : ''}</b><button type="button" id="out">Salir</button></div></div></div>
+    <main class="shell" id="view"></main>
+    <nav class="tabs">${tabs.map((t) => `<button type="button" data-t="${t}">${ICON[t]}${label[t]}</button>`).join('')}</nav>`;
+  document.getElementById('out').onclick = async () => { try { await rpc('gbl_logout', { p_token: TOKEN }); } catch (e) {} logout(); };
+  document.querySelector('.tabs').onclick = (e) => { const b = e.target.closest('button'); if (b) ir(b.dataset.t); };
+  ir(TAB);
+}
+function ir(t) {
+  TAB = t; stopScan(); clearInterval(refreshTimer);
+  document.querySelectorAll('.tabs button').forEach((b) => b.classList.toggle('on', b.dataset.t === t));
+  ({ agenda: vistaAgenda, club: vistaClub, numeros: vistaNumeros, ajustes: vistaAjustes })[t]();
+  scrollTo(0, 0);
+}
+const view = () => document.getElementById('view');
+
+/* ================= AGENDA ================= */
+async function vistaAgenda() {
+  const v = view();
+  const multi = ME.es_dueno && INFO.barberos.length > 1;
+  v.innerHTML = `<div class="datebar"><button class="icon-btn" id="prev" aria-label="Día anterior">‹</button><div class="d" id="dTxt"></div><button class="icon-btn" id="next" aria-label="Día siguiente">›</button></div>
+    <div class="days" id="days"></div>
+    ${multi ? `<div class="seg" id="segB" style="margin-top:8px"><button data-b="" class="on">Todos</button>${INFO.barberos.map((b) => `<button data-b="${b.id}">${esc(b.nombre)}</button>`).join('')}</div>` : ''}
+    <div class="stats" id="stats"></div>
+    <div class="fab-row"><button class="btn btn-cream btn-sm" id="nuevo">+ Turno en silla</button><button class="btn btn-ghost btn-sm" id="bloq">Bloquear horario</button></div>
+    <div id="list"><div class="empty"><span class="spin"></span></div></div>`;
+  document.getElementById('prev').onclick = () => { fecha = addDays(fecha, -1); cargarAgenda(); };
+  document.getElementById('next').onclick = () => { fecha = addDays(fecha, 1); cargarAgenda(); };
+  document.getElementById('nuevo').onclick = nuevoTurno;
+  document.getElementById('bloq').onclick = bloquear;
+  if (multi) document.getElementById('segB').onclick = (e) => { const b = e.target.closest('button'); if (!b) return; filtroBarbero = b.dataset.b || null; document.querySelectorAll('#segB button').forEach((x) => x.classList.toggle('on', x === b)); cargarAgenda(); };
+  await cargarAgenda();
+  refreshTimer = setInterval(() => { if (!document.hidden && TAB === 'agenda') cargarAgenda(true); }, 30000);
+}
+
+async function cargarAgenda(silent) {
+  let d;
+  try { d = await call('gbl_admin_agenda', { p_fecha: fecha, p_barbero: filtroBarbero }); }
+  catch (e) { if (!silent) document.getElementById('list').innerHTML = `<div class="empty">${esc(e.message)}</div>`; return; }
+  if (TAB !== 'agenda') return;
+  document.getElementById('dTxt').textContent = fecha === INFO.hoy ? 'Hoy · ' + dateShort(fecha) : dateLong(fecha);
+  const DOW = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+  const days = document.getElementById('days');
+  days.innerHTML = Array.from({ length: 15 }, (_, i) => {
+    const s = addDays(INFO.hoy, i - 1), dt = parseDate(s), n = d.pendientes_dias[s];
+    return `<button type="button" data-d="${s}" class="${s === fecha ? 'on' : ''}"><small>${s === INFO.hoy ? 'Hoy' : DOW[dt.getDay()]}</small><b>${dt.getDate()}</b>${n ? `<span class="n">${n}</span>` : ''}</button>`;
+  }).join('');
+  days.onclick = (e) => { const b = e.target.closest('button'); if (b) { fecha = b.dataset.d; cargarAgenda(); } };
+  const on = days.querySelector('.on'); if (on && !silent) on.scrollIntoView({ inline: 'center', block: 'nearest' });
+
+  const activos = d.turnos.filter((t) => t.estado !== 'cancelado' && t.estado !== 'no_vino');
+  const hechos = d.turnos.filter((t) => t.estado === 'completado');
+  document.getElementById('stats').innerHTML = `
+    <div class="stat"><small>Turnos</small><b>${activos.length}</b></div>
+    <div class="stat"><small>Por atender</small><b>${activos.length - hechos.length}</b></div>
+    <div class="stat"><small>Atendidos</small><b>${hechos.length}</b></div>
+    <div class="stat"><small>Recaudado</small><b>${money(hechos.reduce((a, t) => a + (t.valor || 0), 0))}</b></div>`;
+
+  const list = document.getElementById('list');
+  if (!d.turnos.length && !d.bloqueos.length) { list.innerHTML = '<div class="empty">No hay turnos este día.</div>'; return; }
+  const showB = ME.es_dueno && INFO.barberos.length > 1 && !filtroBarbero;
+  list.innerHTML = d.bloqueos.map((b) => `<div class="blk"><span>${b.ini ? `${time12(b.ini)} – ${time12(b.fin)}` : 'Todo el día'} · ${esc(b.motivo || 'Bloqueado')}${showB ? ' · ' + esc(b.barbero) : ''}</span>
+      <button type="button" class="linkbtn" data-unb="${b.id}" style="background:none;border:0;color:var(--rose);text-decoration:underline;font-weight:700">Quitar</button></div>`).join('')
+    + d.turnos.map((t) => {
+      const fin = fromMin(toMin(t.hora) + t.duracion);
+      const cls = t.estado === 'completado' ? 'done' : (t.estado === 'cancelado' || t.estado === 'no_vino') ? 'off' : '';
+      const recordar = `Hola ${t.cliente.split(' ')[0]}! Te recordamos tu turno en God’s Blessing ${fecha === INFO.hoy ? 'hoy' : dateLong(fecha)} a las ${time12(t.hora)} (${t.servicio}). Te esperamos.`;
+      let acts = '';
+      if (t.estado === 'pendiente') acts += `<button class="ok" data-a="confirmado">Confirmar</button>`;
+      if (t.estado === 'pendiente' || t.estado === 'confirmado') acts += `<button class="ok" data-a="completado">Atendido</button><button data-a="no_vino">No vino</button><button data-a="cancelado">Cancelar</button>`;
+      if (t.estado === 'cancelado' || t.estado === 'no_vino') acts += `<button data-a="confirmado">Reactivar</button>`;
+      acts += `<a class="wa" href="${waLink(t.tel, recordar)}" target="_blank" rel="noopener">WhatsApp</a>`;
+      return `<div class="appt ${cls}" data-id="${t.id}"><div class="h">${time12(t.hora).replace(' ', '<small>')}</small><small>hasta ${time12(fin)}</small></div>
+        <div><div class="c">${esc(t.cliente)}<span class="pill p-${t.estado}">${ESTADO[t.estado]}</span>${t.club ? `<span class="pill p-club">Club ${t.club.sellos}</span>` : ''}</div>
+        <div class="s">${esc(t.servicio)}${t.valor != null ? ' · ' + money(t.valor) : t.precio != null ? ' · ' + money(t.precio) : ''}${showB ? ' · ' + esc(t.barbero) : ''} · ${telFmt(t.tel)}${t.origen === 'web' ? ' · reservó en la página' : ''}</div>
+        <div class="acts">${acts}</div></div></div>`;
+    }).join('');
+  list.querySelectorAll('[data-unb]').forEach((b) => b.onclick = async () => {
+    try { await call('gbl_admin_desbloquear', { p_id: b.dataset.unb }); toast('Horario liberado'); cargarAgenda(); } catch (e) { alertBox(esc(e.message)); }
+  });
+  list.querySelectorAll('.appt').forEach((el) => el.querySelectorAll('[data-a]').forEach((b) => b.onclick = () => cambiarEstado(d.turnos.find((t) => t.id === el.dataset.id), b.dataset.a)));
+}
+
+async function cambiarEstado(t, estado) {
+  let valor = null;
+  if (estado === 'completado') {
+    const r = await modal(`<h3>¿Cuánto pagó?</h3><p class="muted">${esc(t.cliente)} · ${esc(t.servicio)}</p>
+      <div class="field" style="margin-top:14px"><label for="val">Valor</label><input id="val" type="number" inputmode="numeric" min="0" step="1000" value="${t.precio != null ? t.precio : ''}" placeholder="Ej: 25000"></div>`,
+      [{ label: 'Cancelar', value: false }, { label: 'Guardar', value: true, primary: true }]);
+    if (!r) return;
+    const raw = document.getElementById('val') ? document.getElementById('val').value : '';
+    valor = raw === '' ? null : Math.max(0, parseInt(raw, 10) || 0);
+  } else if (estado === 'cancelado' || estado === 'no_vino') {
+    if (!(await confirmBox(`¿Marcar el turno de <b>${esc(t.cliente)}</b> como <b>${ESTADO[estado].toLowerCase()}</b>? La hora queda libre.`, 'Sí', 'No', true))) return;
+  }
+  try {
+    const r = await call('gbl_admin_estado', { p_id: t.id, p_estado: estado, p_valor: valor });
+    if (r.club) {
+      const c = r.club;
+      toast(c.ok ? `Sello puesto: ${c.sellos} de ${c.meta}${c.lleno ? ' · ¡tarjeta llena!' : ''}` : `Club: ${c.motivo}`);
+    } else toast(ESTADO[estado]);
+    cargarAgenda();
+  } catch (e) { alertBox(esc(e.message)); }
+}
+
+
+async function nuevoTurno() {
+  const barbs = ME.es_dueno ? INFO.barberos : INFO.barberos.filter((b) => b.id === ME.id);
+  const ok = await modal(`<h3>Turno en silla</h3><p class="muted">Para clientes que llegan o llaman. Se guarda como confirmado.</p>
+    ${barbs.length > 1 ? `<div class="field" style="margin-top:14px"><label for="nb">Barbero</label><select id="nb">${barbs.map((b) => `<option value="${b.id}" ${b.id === (filtroBarbero || ME.id) ? 'selected' : ''}>${esc(b.nombre)}</option>`).join('')}</select></div>` : ''}
+    <div class="field" style="margin-top:14px"><label for="ns">Servicio</label><select id="ns">${INFO.servicios.map((s) => `<option value="${s.id}">${esc(s.nombre)} · ${s.duracion} min</option>`).join('')}</select></div>
+    <div class="grid2"><div class="field"><label for="nf">Día</label><input id="nf" type="date" value="${fecha}"></div>
+    <div class="field"><label for="nh">Hora</label><input id="nh" type="time" step="300" value="${fecha === INFO.hoy ? fromMin(Math.ceil((toMin(INFO.ahora) + Math.floor((Date.now() - loadedAt) / 60000)) / 10) * 10 % 1440) : INFO.config.hora_abre}"></div></div>
+    <div class="field"><label for="nn">Nombre del cliente</label><input id="nn" maxlength="60"></div>
+    <div class="field"><label for="nt">WhatsApp</label><input id="nt" type="tel" inputmode="numeric" maxlength="14"></div>`,
+    [{ label: 'Cancelar', value: false }, { label: 'Guardar turno', value: true, primary: true }]);
+  if (!ok) return;
+  const g = (id) => (document.getElementById(id) || {}).value;
+  try {
+    await call('gbl_admin_nuevo_turno', { p_barbero: g('nb') || barbs[0].id, p_servicio: g('ns'), p_nombre: g('nn'), p_tel: g('nt'), p_fecha: g('nf'), p_hora: g('nh') });
+    fecha = g('nf'); toast('Turno guardado'); cargarAgenda();
+  } catch (e) { alertBox(esc(e.message)); }
+}
+
+async function bloquear() {
+  const barbs = ME.es_dueno ? INFO.barberos : INFO.barberos.filter((b) => b.id === ME.id);
+  const ok = await modal(`<h3>Bloquear horario</h3><p class="muted">En ese rato no se podrá reservar desde la página.</p>
+    ${barbs.length > 1 ? `<div class="field" style="margin-top:14px"><label for="bb">Barbero</label><select id="bb">${barbs.map((b) => `<option value="${b.id}">${esc(b.nombre)}</option>`).join('')}</select></div>` : ''}
+    <div class="field" style="margin-top:14px"><label for="bf">Día</label><input id="bf" type="date" value="${fecha}"></div>
+    <label class="field" style="display:flex;gap:8px;align-items:center;font-size:14px"><input type="checkbox" id="bt" style="width:18px;height:18px"> Todo el día</label>
+    <div class="grid2" id="bh"><div class="field"><label for="bi">Desde</label><input id="bi" type="time" step="600" value="13:00"></div><div class="field"><label for="bo">Hasta</label><input id="bo" type="time" step="600" value="14:00"></div></div>
+    <div class="field"><label for="bm">Motivo (opcional)</label><input id="bm" maxlength="60" placeholder="Almuerzo, cita médica…"></div>`,
+    [{ label: 'Cancelar', value: false }, { label: 'Bloquear', value: true, primary: true }]);
+  if (!ok) return;
+  const g = (id) => (document.getElementById(id) || {}).value;
+  const todo = (document.getElementById('bt') || {}).checked;
+  try {
+    await call('gbl_admin_bloquear', { p_barbero: g('bb') || barbs[0].id, p_fecha: g('bf'), p_ini: todo ? null : g('bi'), p_fin: todo ? null : g('bo'), p_motivo: g('bm') });
+    fecha = g('bf'); toast('Horario bloqueado'); cargarAgenda();
+  } catch (e) { alertBox(esc(e.message)); }
+}
+
+/* ================= CLUB ================= */
+let scanStream = null, scanLoop = null;
+function stopScan() { if (scanLoop) cancelAnimationFrame(scanLoop); scanLoop = null; if (scanStream) scanStream.getTracks().forEach((t) => t.stop()); scanStream = null; }
+
+function vistaClub() {
+  const v = view();
+  v.innerHTML = `<h2 class="sec">Club God’s Blessing</h2>
+    <div class="card">
+      <div class="field" style="margin:0"><label for="q">Buscar cliente</label>
+      <div class="row"><input id="q" placeholder="Código, número o nombre" autocomplete="off" style="flex:1;min-width:0;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:13px 14px;font-size:16px;color-scheme:dark">
+      <button class="btn btn-cream btn-sm" id="cam" type="button">Escanear</button></div></div>
+      <div id="scanBox"></div>
+    </div>
+    <div id="res" style="margin-top:12px"></div>
+    ${ME.es_dueno ? '<h2 class="sec">Miembros</h2><div class="seg" id="segM"><button class="on" data-f="todos">Todos</button><button data-f="sin">Sin volver +30 días</button><button data-f="llenas">Tarjeta llena</button></div><div id="miembros" style="margin-top:12px"></div>' : ''}`;
+  let h;
+  document.getElementById('q').oninput = (e) => { clearTimeout(h); h = setTimeout(() => buscar(e.target.value), 300); };
+  document.getElementById('cam').onclick = escanear;
+  if (ME.es_dueno) cargarMiembros('todos');
+}
+async function buscar(q) {
+  const res = document.getElementById('res');
+  if (q.trim().length < 2) { res.innerHTML = ''; return; }
+  try {
+    const r = await call('gbl_admin_club_buscar', { p_q: q });
+    res.innerHTML = r.length ? '' : '<div class="empty">No encontramos a nadie con eso.</div>';
+    r.forEach((m) => res.appendChild(memberBtn(m)));
+    if (r.length === 1 && r[0].codigo === q.trim().toUpperCase()) abrirMiembro(r[0]);
+  } catch (e) { res.innerHTML = `<div class="empty">${esc(e.message)}</div>`; }
+}
+function memberBtn(m) {
+  const meta = Number(INFO.config.meta_sellos || 8);
+  const b = document.createElement('button'); b.type = 'button'; b.className = 'member';
+  b.innerHTML = `<span class="av">${esc(m.nombre[0])}</span><span class="nm"><b>${esc(m.nombre)}</b><span>${m.sellos}/${meta} sellos · ${telFmt(m.tel)} · ${esc(m.codigo)}</span></span>${m.sellos >= meta ? '<span class="pill p-club">LLENA</span>' : ''}`;
+  b.onclick = () => abrirMiembro(m);
+  return b;
+}
+async function abrirMiembro(m) {
+  const meta = Number(INFO.config.meta_sellos || 8), lleno = m.sellos >= meta;
+  const html = `<h3>${esc(m.nombre)}</h3><p class="muted">${telFmt(m.tel)} · Código ${esc(m.codigo)} · ${m.visitas} visitas${m.canjes ? ' · ' + m.canjes + ' premios' : ''}</p>
+    <div class="mstamps" style="grid-template-columns:repeat(${Math.min(meta, 8)},1fr)">${Array.from({ length: meta }, (_, i) => `<i class="${i < m.sellos ? 'f' : ''}"></i>`).join('')}</div>
+    <p style="font-size:15px">${lleno ? `<b>Tarjeta llena.</b> Le toca: ${esc(INFO.config.premio || 'corte gratis')}.` : `Lleva <b>${m.sellos}</b> de ${meta}.`}</p>`;
+  const r = await modal(html, [{ label: 'Cerrar', value: null }, lleno ? { label: 'Canjear premio', value: 'canje', cls: 'btn-red' } : { label: 'Poner sello', value: 'sello', primary: true }]);
+  try {
+    if (r === 'sello') {
+      const s = await call('gbl_admin_club_sello', { p_club: m.id });
+      if (!s.ok) alertBox(esc(s.motivo)); else { toast(`Sello puesto: ${s.sellos} de ${s.meta}`); if (s.lleno) alertBox(`<h3>¡Tarjeta llena!</h3>${esc(m.nombre)} completó la tarjeta. En la próxima visita canjea su premio.`); }
+    } else if (r === 'canje') {
+      await call('gbl_admin_club_canjear', { p_club: m.id }); toast('Premio canjeado. La tarjeta vuelve a cero.');
+    } else return;
+    const q = document.getElementById('q'); if (q && q.value) buscar(q.value);
+    if (ME.es_dueno) cargarMiembros(document.querySelector('#segM .on').dataset.f);
+  } catch (e) { alertBox(esc(e.message)); }
+}
+async function escanear() {
+  const box = document.getElementById('scanBox');
+  if (scanStream) { stopScan(); box.innerHTML = ''; return; }
+  try {
+    scanStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+  } catch (e) { box.innerHTML = '<p class="note" style="margin-top:12px">No se pudo abrir la cámara. Revisa el permiso del navegador o escribe el código.</p>'; return; }
+  box.innerHTML = '<div class="scan" style="margin-top:14px"><video id="sv" playsinline muted></video></div><p class="note" style="text-align:center">Apunta al QR de la tarjeta del cliente.</p>';
+  const video = document.getElementById('sv'); video.srcObject = scanStream; await video.play();
+  const det = ('BarcodeDetector' in window) ? new BarcodeDetector({ formats: ['qr_code'] }) : null;   // iPhone: jsQR
+  const cv = document.createElement('canvas'), cx = cv.getContext('2d', { willReadFrequently: true });
+  const leer = async () => {
+    if (det) { const c = await det.detect(video); return c.length ? c[0].rawValue : null; }
+    if (!video.videoWidth || typeof jsQR !== 'function') return null;
+    const w = 480, h = Math.round(480 * video.videoHeight / video.videoWidth); cv.width = w; cv.height = h;
+    cx.drawImage(video, 0, 0, w, h); const r = jsQR(cx.getImageData(0, 0, w, h).data, w, h); return r ? r.data : null;
+  };
+  const tick = async () => {
+    if (!scanStream) return;
+    try {
+      const raw = await leer();
+      if (raw) {
+        let c = raw;
+        try { const u = new URL(raw); c = u.searchParams.get('t') || u.searchParams.get('c') || raw; } catch (e) {}
+        stopScan(); box.innerHTML = '';
+        document.getElementById('q').value = c.toUpperCase(); buscar(c);
+        return;
+      }
+    } catch (e) {}
+    scanLoop = requestAnimationFrame(tick);
+  };
+  tick();
+}
+async function cargarMiembros(f) {
+  const box = document.getElementById('miembros');
+  document.getElementById('segM').onclick = (e) => { const b = e.target.closest('button'); if (!b) return; document.querySelectorAll('#segM button').forEach((x) => x.classList.toggle('on', x === b)); cargarMiembros(b.dataset.f); };
+  try {
+    let r = await call('gbl_admin_club_lista');
+    const meta = Number(INFO.config.meta_sellos || 8), lim = addDays(INFO.hoy, -30);
+    if (f === 'sin') r = r.filter((m) => m.ultima < lim);
+    if (f === 'llenas') r = r.filter((m) => m.sellos >= meta);
+    box.innerHTML = r.length ? '' : '<div class="empty">Nadie por aquí todavía.</div>';
+    r.slice().reverse().forEach((m) => {
+      const row = memberBtn(m);
+      if (f === 'sin') {
+        const a = document.createElement('a'); a.className = 'btn btn-wa btn-sm'; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'Escribirle';
+        a.href = waLink(m.tel, `Hola ${m.nombre.split(' ')[0]}! Te extrañamos en God’s Blessing. Ya llevas ${m.sellos} sellos en tu tarjeta del Club: agenda tu próximo corte aquí ${location.origin + location.pathname.replace(/admin\.html$/, '')}#agenda`);
+        a.onclick = (e) => e.stopPropagation(); row.appendChild(a);
+      }
+      box.appendChild(row);
+    });
+  } catch (e) { box.innerHTML = `<div class="empty">${esc(e.message)}</div>`; }
+}
+
+/* ================= NÚMEROS (dueño) ================= */
+function vistaNumeros() {
+  const v = view();
+  v.innerHTML = `<h2 class="sec">Números</h2><div class="seg" id="segR"><button data-r="hoy">Hoy</button><button data-r="semana" class="on">7 días</button><button data-r="mes">Este mes</button><button data-r="mes_ant">Mes pasado</button></div><div id="num" style="margin-top:14px"><div class="empty"><span class="spin"></span></div></div>`;
+  document.getElementById('segR').onclick = (e) => { const b = e.target.closest('button'); if (!b) return; document.querySelectorAll('#segR button').forEach((x) => x.classList.toggle('on', x === b)); cargarNumeros(b.dataset.r); };
+  cargarNumeros('semana');
+}
+async function cargarNumeros(r) {
+  const hoy = INFO.hoy, d = parseDate(hoy);
+  const ini = { hoy, semana: addDays(hoy, -6), mes: hoy.slice(0, 8) + '01', mes_ant: GB.dateStr(new Date(d.getFullYear(), d.getMonth() - 1, 1)) }[r];
+  const fin = r === 'mes_ant' ? GB.dateStr(new Date(d.getFullYear(), d.getMonth(), 0)) : hoy;
+  const box = document.getElementById('num');
+  try {
+    const x = await call('gbl_admin_resumen', { p_desde: ini, p_hasta: fin });
+    const tot = x.por_barbero.reduce((a, b) => ({ c: a.c + b.completados, r: a.r + b.recaudado, n: a.n + b.no_vino, w: a.w + b.web }), { c: 0, r: 0, n: 0, w: 0 });
+    box.innerHTML = `<p class="note">${esc(dateShort(ini))} – ${esc(dateShort(fin))}</p>
+      <div class="stats"><div class="stat"><small>Recaudado</small><b>${money(tot.r)}</b></div><div class="stat"><small>Atendidos</small><b>${tot.c}</b></div>
+      <div class="stat"><small>Ticket promedio</small><b>${tot.c ? money(Math.round(tot.r / tot.c / 100) * 100) : '—'}</b></div><div class="stat"><small>Reservas por la página</small><b>${tot.w}</b></div>
+      <div class="stat"><small>No vinieron</small><b>${tot.n}</b></div></div>
+      ${x.por_barbero.length > 1 ? `<div class="card" style="overflow-x:auto"><table><tr><th>Barbero</th><th class="n">Atendidos</th><th class="n">Recaudado</th><th class="n">No vino</th></tr>
+        ${x.por_barbero.map((b) => `<tr><td>${esc(b.nombre)}</td><td class="n">${b.completados}</td><td class="n">${money(b.recaudado)}</td><td class="n">${b.no_vino}</td></tr>`).join('')}</table></div>` : ''}
+      <h2 class="sec" style="font-size:18px">Lo que más se pide</h2>
+      <div class="card">${x.servicios.length ? `<table><tr><th>Servicio</th><th class="n">Veces</th><th class="n">Total</th></tr>${x.servicios.map((s) => `<tr><td>${esc(s.servicio)}</td><td class="n">${s.n}</td><td class="n">${money(s.total)}</td></tr>`).join('')}</table>` : '<p class="muted">Sin servicios atendidos en este rango.</p>'}</div>
+      <h2 class="sec" style="font-size:18px">Club God’s Blessing</h2>
+      <div class="stats"><div class="stat"><small>Miembros</small><b>${x.club.miembros}</b></div><div class="stat"><small>Nuevos</small><b>${x.club.nuevos}</b></div>
+      <div class="stat"><small>Sellos puestos</small><b>${x.club.sellos}</b></div><div class="stat"><small>Premios</small><b>${x.club.canjes}</b></div>
+      <div class="stat"><small>Sin volver +30 días</small><b>${x.club.sin_volver}</b></div></div>`;
+  } catch (e) { box.innerHTML = `<div class="empty">${esc(e.message)}</div>`; }
+}
+
+/* ================= AJUSTES (dueño) ================= */
+async function vistaAjustes() {
+  const v = view();
+  v.innerHTML = '<div class="empty" style="margin-top:20px"><span class="spin"></span></div>';
+  let d; try { d = await call('gbl_admin_datos'); } catch (e) { v.innerHTML = `<div class="empty">${esc(e.message)}</div>`; return; }
+  const c = d.config, cerr = (c.dias_cerrados || []).map(String);
+  const DOW = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+  v.innerHTML = `
+    ${d.ejemplos ? `<div class="card" style="margin-top:18px;border-color:#5a4a2a"><b>Hay ${d.ejemplos} datos de ejemplo</b> (turnos y miembros del Club para mostrar el sistema).
+      <p class="note">Cuando empiecen a usarlo de verdad, bórralos con este botón.</p><button class="btn btn-red btn-sm" id="delEj" style="margin-top:10px">Borrar datos de ejemplo</button></div>` : ''}
+    <h2 class="sec">Negocio</h2>
+    <form class="card" id="fCfg">
+      <div class="grid2"><div class="field"><label for="c_abre">Abre</label><input id="c_abre" type="time" value="${esc(c.hora_abre)}"></div><div class="field"><label for="c_cierra">Cierra</label><input id="c_cierra" type="time" value="${esc(c.hora_cierra)}"></div></div>
+      <div class="field"><label>Días que NO abren</label><div class="dow">${DOW.map((n, i) => `<label><input type="checkbox" value="${i}" ${cerr.includes(String(i)) ? 'checked' : ''}> ${n}</label>`).join('')}</div></div>
+      <div class="field"><label for="c_ht">Horario como se muestra en la página</label><input id="c_ht" value="${esc(c.horario_texto || '')}" maxlength="80"></div>
+      <div class="grid2"><div class="field"><label for="c_wa">WhatsApp del negocio</label><input id="c_wa" type="tel" inputmode="numeric" value="${esc(c.whatsapp || '')}" placeholder="3001234567"></div>
+      <div class="field"><label for="c_ig">Instagram</label><input id="c_ig" value="${esc(c.instagram || '')}" placeholder="usuario sin @"></div></div>
+      <div class="field"><label for="c_dir">Dirección</label><input id="c_dir" value="${esc(c.direccion || '')}" maxlength="120"></div>
+      <div class="field"><label for="c_map">Enlace de Google Maps (opcional)</label><input id="c_map" value="${esc(c.mapa || '')}" placeholder="https://maps.app.goo.gl/…"></div>
+      <div class="grid2"><div class="field"><label for="c_int">Turnos cada (minutos)</label><select id="c_int">${[15, 20, 30, 40, 60].map((n) => `<option ${Number(c.intervalo) === n ? 'selected' : ''}>${n}</option>`).join('')}</select></div>
+      <div class="field"><label for="c_adel">Se puede reservar con (días)</label><input id="c_adel" type="number" min="1" max="60" value="${esc(c.dias_adelante)}"></div></div>
+      <div class="grid2"><div class="field"><label for="c_meta">Sellos para el premio</label><input id="c_meta" type="number" min="3" max="12" value="${esc(c.meta_sellos)}"></div>
+      <div class="field"><label for="c_pre">Premio del Club</label><input id="c_pre" value="${esc(c.premio || '')}" maxlength="40"></div></div>
+      <div class="field"><label for="c_res">Enlace para dejar reseña en Google</label><input id="c_res" value="${esc(c.resena || '')}" placeholder="https://g.page/r/…/review"></div>
+      <div class="field"><label for="c_pag">Métodos de pago (como se muestran en la página)</label><input id="c_pag" value="${esc(c.pagos || '')}" maxlength="200" placeholder="Efectivo · Nequi 300… · Daviplata · Llave Bre-B"></div>
+      <button class="btn btn-cream btn-sm">Guardar cambios</button>
+    </form>
+    <h2 class="sec">Equipo</h2>
+    <div class="card"><div id="lBar">${d.barberos.map((b) => `<div class="list-item"><div><b>${esc(b.nombre)}${b.es_dueno ? ' · Dueño' : ''}${b.activo ? '' : ' · inactivo'}</b><span>${esc(b.especialidad)}</span></div><button class="btn btn-ghost btn-sm" data-eb="${b.id}">Editar</button></div>`).join('')}</div>
+      <button class="btn btn-cream btn-sm" id="addBar" style="margin-top:12px">+ Agregar barbero</button></div>
+    <h2 class="sec">Servicios y precios</h2>
+    <div class="card"><div id="lSvc">${d.servicios.map((s) => `<div class="list-item"><div><b>${esc(s.nombre)}${s.destacado ? ' ✦' : ''}${s.activo ? '' : ' · oculto'}</b><span>${s.precio != null ? money(s.precio) : 'Se cotiza'} · ${s.duracion} min</span></div><button class="btn btn-ghost btn-sm" data-es="${s.id}">Editar</button></div>`).join('')}</div>
+      <button class="btn btn-cream btn-sm" id="addSvc" style="margin-top:12px">+ Agregar servicio</button></div>`;
+
+  if (d.ejemplos) document.getElementById('delEj').onclick = async () => {
+    if (!(await confirmBox('Se borran los turnos y miembros de ejemplo. Lo real no se toca.', 'Borrar', 'Cancelar', true))) return;
+    try { await call('gbl_admin_borrar_ejemplos'); toast('Datos de ejemplo borrados'); vistaAjustes(); } catch (e) { alertBox(esc(e.message)); }
+  };
+  document.getElementById('fCfg').onsubmit = async (e) => {
+    e.preventDefault();
+    const g = (id) => document.getElementById(id).value.trim();
+    const cambios = {
+      hora_abre: g('c_abre'), hora_cierra: g('c_cierra'), horario_texto: g('c_ht'), whatsapp: g('c_wa').replace(/\D/g, ''),
+      instagram: g('c_ig').replace('@', ''), direccion: g('c_dir'), mapa: g('c_map'), intervalo: Number(g('c_int')),
+      dias_adelante: Math.max(1, Math.min(60, Number(g('c_adel')) || 21)), meta_sellos: Math.max(3, Math.min(12, Number(g('c_meta')) || 8)), premio: g('c_pre') || 'Corte gratis', resena: g('c_res'), pagos: g('c_pag'),
+      dias_cerrados: [...document.querySelectorAll('.dow input:checked')].map((x) => x.value)
+    };
+    if (cambios.hora_cierra <= cambios.hora_abre) { alertBox('La hora de cierre debe ser después de la de apertura.'); return; }
+    try { await call('gbl_admin_config', { p_cambios: cambios }); INFO = await rpc('gbl_info'); loadedAt = Date.now(); toast('Guardado'); } catch (err) { alertBox(esc(err.message)); }
+  };
+  const editarBarbero = async (b) => {
+    const nuevo = !b; b = b || { nombre: '', especialidad: '', activo: true, es_dueno: false, orden: d.barberos.length + 1 };
+    const ok = await modal(`<h3>${nuevo ? 'Nuevo barbero' : 'Editar barbero'}</h3>
+      <div class="field" style="margin-top:12px"><label for="eb_n">Nombre</label><input id="eb_n" value="${esc(b.nombre)}" maxlength="40"></div>
+      <div class="field"><label for="eb_e">Especialidad</label><input id="eb_e" value="${esc(b.especialidad)}" maxlength="60" placeholder="Fades, diseños…"></div>
+      <div class="field"><label for="eb_p">PIN ${nuevo ? '(4 a 6 números)' : '(déjalo vacío para no cambiarlo)'}</label><input id="eb_p" inputmode="numeric" maxlength="6" autocomplete="off"></div>
+      <div class="grid2"><label class="field" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="eb_a" ${b.activo ? 'checked' : ''}> Activo</label>
+      <label class="field" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="eb_d" ${b.es_dueno ? 'checked' : ''}> Acceso de dueño</label></div>`,
+      [{ label: 'Cancelar', value: false }, { label: 'Guardar', value: true, primary: true }]);
+    if (!ok) return;
+    const g = (id) => document.getElementById(id);
+    try {
+      await call('gbl_admin_guardar_barbero', { p_id: b.id || null, p_nombre: g('eb_n').value, p_especialidad: g('eb_e').value, p_pin: g('eb_p').value.trim() || null,
+        p_activo: g('eb_a').checked, p_es_dueno: g('eb_d').checked, p_orden: b.orden });
+      INFO = await rpc('gbl_info'); toast('Equipo actualizado'); vistaAjustes();
+    } catch (e) { alertBox(esc(e.message)); }
+  };
+  const editarServicio = async (s) => {
+    const nuevo = !s; s = s || { nombre: '', descripcion: '', precio: null, duracion: 40, destacado: false, activo: true, orden: d.servicios.length + 1 };
+    const ok = await modal(`<h3>${nuevo ? 'Nuevo servicio' : 'Editar servicio'}</h3>
+      <div class="field" style="margin-top:12px"><label for="es_n">Nombre</label><input id="es_n" value="${esc(s.nombre)}" maxlength="40"></div>
+      <div class="field"><label for="es_d">Descripción corta</label><input id="es_d" value="${esc(s.descripcion)}" maxlength="90"></div>
+      <div class="grid2"><div class="field"><label for="es_p">Precio (vacío = se cotiza)</label><input id="es_p" type="number" inputmode="numeric" min="0" step="1000" value="${s.precio != null ? s.precio : ''}"></div>
+      <div class="field"><label for="es_t">Duración (min)</label><input id="es_t" type="number" min="10" max="240" step="10" value="${s.duracion}"></div></div>
+      <div class="grid2"><label class="field" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="es_x" ${s.destacado ? 'checked' : ''}> Destacado</label>
+      <label class="field" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="es_a" ${s.activo ? 'checked' : ''}> Visible en la página</label></div>`,
+      [{ label: 'Cancelar', value: false }, { label: 'Guardar', value: true, primary: true }]);
+    if (!ok) return;
+    const g = (id) => document.getElementById(id);
+    try {
+      await call('gbl_admin_guardar_servicio', { p_id: s.id || null, p_nombre: g('es_n').value, p_descripcion: g('es_d').value,
+        p_precio: g('es_p').value === '' ? null : parseInt(g('es_p').value, 10), p_duracion: parseInt(g('es_t').value, 10),
+        p_destacado: g('es_x').checked, p_activo: g('es_a').checked, p_orden: s.orden });
+      INFO = await rpc('gbl_info'); toast('Servicios actualizados'); vistaAjustes();
+    } catch (e) { alertBox(esc(e.message)); }
+  };
+  document.getElementById('addBar').onclick = () => editarBarbero(null);
+  document.getElementById('addSvc').onclick = () => editarServicio(null);
+  v.querySelectorAll('[data-eb]').forEach((b) => b.onclick = () => editarBarbero(d.barberos.find((x) => x.id === b.dataset.eb)));
+  v.querySelectorAll('[data-es]').forEach((b) => b.onclick = () => editarServicio(d.servicios.find((x) => x.id === b.dataset.es)));
+}
+
+/* ================= ARRANQUE ================= */
+let loadedAt = Date.now();
+(async function () {
+  try { INFO = await rpc('gbl_info'); loadedAt = Date.now(); }
+  catch (e) { root.innerHTML = `<div class="login"><p class="msg">${esc(e.message)}</p></div>`; return; }
+  if (TOKEN) { try { ME = await rpc('gbl_yo', { p_token: TOKEN }); return arrancar(); } catch (e) { localStorage.removeItem(TK); TOKEN = null; } }
+  vistaLogin();
+})();
+</script>
+</body>
+</html>
