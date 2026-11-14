@@ -27,7 +27,7 @@ const TXT = {
 };
 
 // ── IMAGEN DE PRODUCTO ── foto real si existe, si no la ilustración
-const mini = f => f.replace(/\/(\d+)\.jpg$/, '/t$1.jpg');   // miniatura liviana para tarjetas y listas
+const mini = f => f.replace(/\/(\d+)\.jpg(\?[^/]*)?$/, '/t$1.jpg$2');   // miniatura liviana para tarjetas y listas
 function imagen(p, color, i = 0, grande = false) {
   if (p.fotos && p.fotos[i]) return `<img src="${esc(grande ? p.fotos[i] : mini(p.fotos[i]))}" alt="${esc(p.nombre)}" loading="lazy">`;
   return PRENDAS.svg(p.tipo, color || p.colores[0].h, { estampado: p.estampado, titulo: p.nombre, acento: p.mundo === 'maison' ? '#b08d57' : '#b3001b' });
@@ -204,7 +204,7 @@ function paginaProducto(p) {
         <button class="btn-directo">${t.directo}</button>
         <details open><summary>Detalles</summary><ul>${p.detalles.map(d => `<li>${esc(d)}</li>`).join('')}</ul></details>
         ${p.combina ? `<details open><summary>Cómo llevarla</summary><p class="combina">${esc(p.combina)}</p></details>` : ''}
-        <details><summary>Envíos y cambios</summary><p>Hacemos envíos a toda Colombia. El costo y el tiempo de entrega te los confirmamos por WhatsApp según tu ciudad. Si la talla no te queda, escríbenos y te ayudamos con el cambio.</p></details>
+        <details><summary>Envíos y cambios</summary><p>Hacemos envíos a todo el país.${TIENDA.envioGratisPrendas ? ` <b>Envío gratis llevando ${TIENDA.envioGratisPrendas} prendas o más.</b>` : ''} El tiempo de entrega te lo confirmamos por WhatsApp según tu ciudad. Si la talla no te queda, escríbenos y te ayudamos con el cambio.</p></details>
       </div>
     </div>
     ${otros.length ? `<div class="seccion-cab"><h2 class="${p.mundo === 'street' ? 's-h2' : 'm-h2'}">${t.completa}</h2></div><div class="rejilla">${otros.map(tarjeta).join('')}</div>` : ''}
@@ -322,7 +322,7 @@ function pintarCarrito() {
         <div class="item-cant"><button data-i="${i}" data-d="-1" aria-label="Menos">−</button><span>${x.cant}</span><button data-i="${i}" data-d="1" aria-label="Más">+</button>
           <button class="quitar" data-q="${i}">Quitar</button></div></div>
       <span class="item-precio">${p.precio ? pesos(p.precio * x.cant) : 'Consultar'}</span></div>`;
-  }).join('') + (!conPrecio(carrito) ? `<p class="envio-falta">El precio y el envío te los confirmamos por WhatsApp</p>` : !TIENDA.envioGratisDesde ? `<p class="envio-falta">El envío te lo confirmamos por WhatsApp</p>` : total < TIENDA.envioGratisDesde ? `<p class="envio-falta">Te faltan <b>${pesos(TIENDA.envioGratisDesde - total)}</b> para envío gratis</p>` : `<p class="envio-falta ok">Tienes envío gratis</p>`)
+  }).join('') + (TIENDA.envioGratisPrendas ? (n >= TIENDA.envioGratisPrendas ? `<p class="envio-falta ok">Tienes envío gratis a todo el país</p>` : `<p class="envio-falta">Agrega <b>${TIENDA.envioGratisPrendas - n} ${TIENDA.envioGratisPrendas - n === 1 ? 'prenda' : 'prendas'} más</b> y el envío es gratis</p>`) : !conPrecio(carrito) ? `<p class="envio-falta">El precio y el envío te los confirmamos por WhatsApp</p>` : !TIENDA.envioGratisDesde ? `<p class="envio-falta">El envío te lo confirmamos por WhatsApp</p>` : total < TIENDA.envioGratisDesde ? `<p class="envio-falta">Te faltan <b>${pesos(TIENDA.envioGratisDesde - total)}</b> para envío gratis</p>` : `<p class="envio-falta ok">Tienes envío gratis</p>`)
     : `<p class="vacio">${TXT[mundoActual()].vacio}</p>`;
   $$('[data-d]').forEach(b => b.onclick = () => { const x = carrito[b.dataset.i]; x.cant += Number(b.dataset.d); if (x.cant < 1) carrito.splice(b.dataset.i, 1); else x.cant = Math.min(10, x.cant); guardar(); });
   $$('[data-q]').forEach(b => b.onclick = () => { carrito.splice(b.dataset.q, 1); guardar(); });
@@ -341,6 +341,7 @@ $('.btn-pedir').onclick = () => pedirWhatsApp(carrito);
 function abrirWhatsApp(texto) {
   window.open(`https://wa.me/${TIENDA.whatsapp}?text=${encodeURIComponent(texto)}`, '_blank', 'noopener');
 }
+const envioGratis = (items, total) => (TIENDA.envioGratisPrendas && items.reduce((s, x) => s + x.cant, 0) >= TIENDA.envioGratisPrendas) || (TIENDA.envioGratisDesde && total >= TIENDA.envioGratisDesde);
 function pedirWhatsApp(items) {
   if (!items.length) return;
   let total = 0;
@@ -348,7 +349,7 @@ function pedirWhatsApp(items) {
     const p = producto(x.id), sub = p.precio * x.cant; total += sub;
     return `${i + 1}. ${p.nombre}\n   ${x.color} · Talla ${x.talla} · x${x.cant}${p.precio ? ' — ' + pesos(sub) : ''}`;
   });
-  abrirWhatsApp(`Hola LEGION WEAR, quiero hacer este pedido:\n\n${lineas.join('\n')}\n\n${conPrecio(items) ? `Subtotal: ${pesos(total)}${TIENDA.envioGratisDesde && total >= TIENDA.envioGratisDesde ? ' (envío gratis)' : ''}` : '¿Me confirman precio y disponibilidad?'}\n\nNombre:\nCiudad y dirección:\nForma de pago:`);
+  abrirWhatsApp(`Hola LEGION WEAR, quiero hacer este pedido:\n\n${lineas.join('\n')}\n\n${conPrecio(items) ? `Subtotal: ${pesos(total)}${envioGratis(items, total) ? ' (envío gratis)' : ''}` : '¿Me confirman precio y disponibilidad?'}\n\nNombre:\nCiudad y dirección:\nForma de pago:`);
 }
 
 // ── AVISO ──

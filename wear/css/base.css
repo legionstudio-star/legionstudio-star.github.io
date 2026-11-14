@@ -263,3 +263,8 @@ details p { padding: 0; }
   .etiqueta { top: 8px; left: 8px; padding: 4px 7px; font-size: 9px; }
   .seccion-cab { margin-bottom: 20px; }
 }
+
+/* Cinta superior de envíos (13-nov) */
+.cinta-envio { display: flex; justify-content: center; align-items: center; gap: 12px; padding: 8px 16px; background: #0b0a09; color: #d9b65c; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; text-align: center; border-bottom: 1px solid rgba(217,182,92,.18); }
+.cinta-envio i { width: 4px; height: 4px; border-radius: 50%; background: currentColor; opacity: .6; flex: none; }
+@media (max-width: 560px) { .cinta-envio { font-size: 9.5px; letter-spacing: .12em; gap: 8px; padding: 7px 10px; } }

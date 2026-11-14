@@ -9,12 +9,12 @@ const PRODUCTOS = [
   "nombre": "Polo Tommy Hilfiger Rosa",
   "precio": 45000,
   "fotos": [
-   "catalogo/img/01-polo-tommy-rosado/01.jpg",
-   "catalogo/img/01-polo-tommy-rosado/02.jpg",
-   "catalogo/img/01-polo-tommy-rosado/03.jpg",
-   "catalogo/img/01-polo-tommy-rosado/04.jpg",
-   "catalogo/img/01-polo-tommy-rosado/05.jpg",
-   "catalogo/img/01-polo-tommy-rosado/06.jpg"
+   "catalogo/img/01-polo-tommy-rosado/01.jpg?v=1794600909",
+   "catalogo/img/01-polo-tommy-rosado/02.jpg?v=1794600909",
+   "catalogo/img/01-polo-tommy-rosado/03.jpg?v=1794600911",
+   "catalogo/img/01-polo-tommy-rosado/04.jpg?v=1794600912",
+   "catalogo/img/01-polo-tommy-rosado/05.jpg?v=1794600913",
+   "catalogo/img/01-polo-tommy-rosado/06.jpg?v=1794600914"
   ],
   "colores": [
    {
@@ -46,10 +46,10 @@ const PRODUCTOS = [
   "nombre": "Polo Tommy Hilfiger Negra",
   "precio": 45000,
   "fotos": [
-   "catalogo/img/02-polo-tommy-negro/01.jpg",
-   "catalogo/img/02-polo-tommy-negro/02.jpg",
-   "catalogo/img/02-polo-tommy-negro/03.jpg",
-   "catalogo/img/02-polo-tommy-negro/04.jpg"
+   "catalogo/img/02-polo-tommy-negro/01.jpg?v=1794600916",
+   "catalogo/img/02-polo-tommy-negro/02.jpg?v=1794600917",
+   "catalogo/img/02-polo-tommy-negro/03.jpg?v=1794600918",
+   "catalogo/img/02-polo-tommy-negro/04.jpg?v=1794600919"
   ],
   "colores": [
    {
@@ -80,10 +80,10 @@ const PRODUCTOS = [
   "nombre": "Polo Tommy Hilfiger Azul Cielo",
   "precio": 45000,
   "fotos": [
-   "catalogo/img/03-polo-tommy-azul-claro/01.jpg",
-   "catalogo/img/03-polo-tommy-azul-claro/02.jpg",
-   "catalogo/img/03-polo-tommy-azul-claro/03.jpg",
-   "catalogo/img/03-polo-tommy-azul-claro/04.jpg"
+   "catalogo/img/03-polo-tommy-azul-claro/01.jpg?v=1794600921",
+   "catalogo/img/03-polo-tommy-azul-claro/02.jpg?v=1794600922",
+   "catalogo/img/03-polo-tommy-azul-claro/03.jpg?v=1794600922",
+   "catalogo/img/03-polo-tommy-azul-claro/04.jpg?v=1794600923"
   ],
   "colores": [
    {
@@ -114,9 +114,9 @@ const PRODUCTOS = [
   "nombre": "Polo Ralph Lauren Blanca",
   "precio": 45000,
   "fotos": [
-   "catalogo/img/04-polo-ralph-blanco/01.jpg",
-   "catalogo/img/04-polo-ralph-blanco/02.jpg",
-   "catalogo/img/04-polo-ralph-blanco/03.jpg"
+   "catalogo/img/04-polo-ralph-blanco/01.jpg?v=1794601623",
+   "catalogo/img/04-polo-ralph-blanco/02.jpg?v=1794601624",
+   "catalogo/img/04-polo-ralph-blanco/03.jpg?v=1794601626"
   ],
   "colores": [
    {
@@ -148,10 +148,10 @@ const PRODUCTOS = [
   "nombre": "Polo Ralph Lauren Rosa",
   "precio": 45000,
   "fotos": [
-   "catalogo/img/05-polo-ralph-rosado/01.jpg",
-   "catalogo/img/05-polo-ralph-rosado/02.jpg",
-   "catalogo/img/05-polo-ralph-rosado/03.jpg",
-   "catalogo/img/05-polo-ralph-rosado/04.jpg"
+   "catalogo/img/05-polo-ralph-rosado/01.jpg?v=1794601627",
+   "catalogo/img/05-polo-ralph-rosado/02.jpg?v=1794601628",
+   "catalogo/img/05-polo-ralph-rosado/03.jpg?v=1794601629",
+   "catalogo/img/05-polo-ralph-rosado/04.jpg?v=1794601630"
   ],
   "colores": [
    {
@@ -182,10 +182,10 @@ const PRODUCTOS = [
   "nombre": "Polo Ralph Lauren Azul Jaspe",
   "precio": 45000,
   "fotos": [
-   "catalogo/img/06-polo-ralph-azul-jaspe/01.jpg",
-   "catalogo/img/06-polo-ralph-azul-jaspe/02.jpg",
-   "catalogo/img/06-polo-ralph-azul-jaspe/03.jpg",
-   "catalogo/img/06-polo-ralph-azul-jaspe/04.jpg"
+   "catalogo/img/06-polo-ralph-azul-jaspe/01.jpg?v=1794601632",
+   "catalogo/img/06-polo-ralph-azul-jaspe/02.jpg?v=1794601633",
+   "catalogo/img/06-polo-ralph-azul-jaspe/03.jpg?v=1794601634",
+   "catalogo/img/06-polo-ralph-azul-jaspe/04.jpg?v=1794601635"
   ],
   "colores": [
    {
@@ -216,9 +216,9 @@ const PRODUCTOS = [
   "nombre": "Polo Ralph Lauren Roja",
   "precio": 45000,
   "fotos": [
-   "catalogo/img/07-polo-ralph-rojo/01.jpg",
-   "catalogo/img/07-polo-ralph-rojo/02.jpg",
-   "catalogo/img/07-polo-ralph-rojo/03.jpg"
+   "catalogo/img/07-polo-ralph-rojo/01.jpg?v=1794601637",
+   "catalogo/img/07-polo-ralph-rojo/02.jpg?v=1794601638",
+   "catalogo/img/07-polo-ralph-rojo/03.jpg?v=1794601639"
   ],
   "colores": [
    {
@@ -249,12 +249,12 @@ const PRODUCTOS = [
   "nombre": "Polo Lacoste Blanca",
   "precio": 45000,
   "fotos": [
-   "catalogo/img/08-polo-lacoste-blanco/01.jpg",
-   "catalogo/img/08-polo-lacoste-blanco/02.jpg",
-   "catalogo/img/08-polo-lacoste-blanco/03.jpg",
-   "catalogo/img/08-polo-lacoste-blanco/04.jpg",
-   "catalogo/img/08-polo-lacoste-blanco/05.jpg",
-   "catalogo/img/08-polo-lacoste-blanco/06.jpg"
+   "catalogo/img/08-polo-lacoste-blanco/01.jpg?v=1794601641",
+   "catalogo/img/08-polo-lacoste-blanco/02.jpg?v=1794601643",
+   "catalogo/img/08-polo-lacoste-blanco/03.jpg?v=1794601644",
+   "catalogo/img/08-polo-lacoste-blanco/04.jpg?v=1794601645",
+   "catalogo/img/08-polo-lacoste-blanco/05.jpg?v=1794601645",
+   "catalogo/img/08-polo-lacoste-blanco/06.jpg?v=1794601646"
   ],
   "colores": [
    {
@@ -286,7 +286,7 @@ const PRODUCTOS = [
   "nombre": "Polo Lacoste Gris Grafito",
   "precio": 45000,
   "fotos": [
-   "catalogo/img/09-polo-lacoste-gris-oscuro/01.jpg"
+   "catalogo/img/09-polo-lacoste-gris-oscuro/01.jpg?v=1794601648"
   ],
   "colores": [
    {
@@ -317,8 +317,8 @@ const PRODUCTOS = [
   "nombre": "Polo Lacoste Gris Acero",
   "precio": 45000,
   "fotos": [
-   "catalogo/img/10-polo-lacoste-gris/01.jpg",
-   "catalogo/img/10-polo-lacoste-gris/02.jpg"
+   "catalogo/img/10-polo-lacoste-gris/01.jpg?v=1794601649",
+   "catalogo/img/10-polo-lacoste-gris/02.jpg?v=1794601650"
   ],
   "colores": [
    {
@@ -349,7 +349,7 @@ const PRODUCTOS = [
   "nombre": "Camisa Formal en Seda Marfil",
   "precio": 45000,
   "fotos": [
-   "catalogo/img/12-camisa-formal-beige/01.jpg"
+   "catalogo/img/12-camisa-formal-beige/01.jpg?v=1794601651"
   ],
   "colores": [
    {
@@ -380,7 +380,7 @@ const PRODUCTOS = [
   "nombre": "Camisa Formal en Seda Verde Salvia",
   "precio": 45000,
   "fotos": [
-   "catalogo/img/13-camisa-formal-verde-salvia/01.jpg"
+   "catalogo/img/13-camisa-formal-verde-salvia/01.jpg?v=1794621383"
   ],
   "colores": [
    {
@@ -412,11 +412,11 @@ const PRODUCTOS = [
   "nombre": "Camisa Formal en Seda Blanca",
   "precio": 45000,
   "fotos": [
-   "catalogo/img/14-camisa-formal-blanca-manga-corta/01.jpg",
-   "catalogo/img/14-camisa-formal-blanca-manga-corta/02.jpg",
-   "catalogo/img/14-camisa-formal-blanca-manga-corta/03.jpg",
-   "catalogo/img/14-camisa-formal-blanca-manga-corta/04.jpg",
-   "catalogo/img/14-camisa-formal-blanca-manga-corta/05.jpg"
+   "catalogo/img/14-camisa-formal-blanca-manga-corta/01.jpg?v=1794601654",
+   "catalogo/img/14-camisa-formal-blanca-manga-corta/02.jpg?v=1794601655",
+   "catalogo/img/14-camisa-formal-blanca-manga-corta/03.jpg?v=1794601656",
+   "catalogo/img/14-camisa-formal-blanca-manga-corta/04.jpg?v=1794601657",
+   "catalogo/img/14-camisa-formal-blanca-manga-corta/05.jpg?v=1794601658"
   ],
   "colores": [
    {
@@ -448,11 +448,11 @@ const PRODUCTOS = [
   "nombre": "Camisa Formal en Seda Negra",
   "precio": 45000,
   "fotos": [
-   "catalogo/img/15-camisa-formal-negra-manga-corta/01.jpg",
-   "catalogo/img/15-camisa-formal-negra-manga-corta/02.jpg",
-   "catalogo/img/15-camisa-formal-negra-manga-corta/03.jpg",
-   "catalogo/img/15-camisa-formal-negra-manga-corta/04.jpg",
-   "catalogo/img/15-camisa-formal-negra-manga-corta/05.jpg"
+   "catalogo/img/15-camisa-formal-negra-manga-corta/01.jpg?v=1794601660",
+   "catalogo/img/15-camisa-formal-negra-manga-corta/02.jpg?v=1794601661",
+   "catalogo/img/15-camisa-formal-negra-manga-corta/03.jpg?v=1794601662",
+   "catalogo/img/15-camisa-formal-negra-manga-corta/04.jpg?v=1794601663",
+   "catalogo/img/15-camisa-formal-negra-manga-corta/05.jpg?v=1794601664"
   ],
   "colores": [
    {
@@ -484,9 +484,9 @@ const PRODUCTOS = [
   "nombre": "Jean Slim Gris Ceniza",
   "precio": 65000,
   "fotos": [
-   "catalogo/img/16-jean-gris-ceniza/01.jpg",
-   "catalogo/img/16-jean-gris-ceniza/02.jpg",
-   "catalogo/img/16-jean-gris-ceniza/03.jpg"
+   "catalogo/img/16-jean-gris-ceniza/01.jpg?v=1794622759",
+   "catalogo/img/16-jean-gris-ceniza/02.jpg?v=1794600973",
+   "catalogo/img/16-jean-gris-ceniza/03.jpg?v=1794600973"
   ],
   "colores": [
    {
@@ -518,9 +518,9 @@ const PRODUCTOS = [
   "nombre": "Jean Negro Desgastado",
   "precio": 65000,
   "fotos": [
-   "catalogo/img/17-jean-negro-desgastado/01.jpg",
-   "catalogo/img/17-jean-negro-desgastado/02.jpg",
-   "catalogo/img/17-jean-negro-desgastado/03.jpg"
+   "catalogo/img/17-jean-negro-desgastado/01.jpg?v=1794600975",
+   "catalogo/img/17-jean-negro-desgastado/02.jpg?v=1794600977",
+   "catalogo/img/17-jean-negro-desgastado/03.jpg?v=1794600978"
   ],
   "colores": [
    {
@@ -552,8 +552,8 @@ const PRODUCTOS = [
   "nombre": "Jean Azul Medio Destroyed",
   "precio": 65000,
   "fotos": [
-   "catalogo/img/18-jean-azul-medio/01.jpg",
-   "catalogo/img/18-jean-azul-medio/02.jpg"
+   "catalogo/img/18-jean-azul-medio/01.jpg?v=1794600979",
+   "catalogo/img/18-jean-azul-medio/02.jpg?v=1794600980"
   ],
   "colores": [
    {
@@ -585,9 +585,9 @@ const PRODUCTOS = [
   "nombre": "Jean Azul Oscuro Desgastado",
   "precio": 65000,
   "fotos": [
-   "catalogo/img/19-jean-azul-oscuro/01.jpg",
-   "catalogo/img/19-jean-azul-oscuro/02.jpg",
-   "catalogo/img/19-jean-azul-oscuro/03.jpg"
+   "catalogo/img/19-jean-azul-oscuro/01.jpg?v=1794600981",
+   "catalogo/img/19-jean-azul-oscuro/02.jpg?v=1794600982",
+   "catalogo/img/19-jean-azul-oscuro/03.jpg?v=1794600983"
   ],
   "colores": [
    {
@@ -619,9 +619,9 @@ const PRODUCTOS = [
   "nombre": "Jean Negro Clásico",
   "precio": 65000,
   "fotos": [
-   "catalogo/img/20-jean-negro-liso/01.jpg",
-   "catalogo/img/20-jean-negro-liso/02.jpg",
-   "catalogo/img/20-jean-negro-liso/03.jpg"
+   "catalogo/img/20-jean-negro-liso/01.jpg?v=1794600985",
+   "catalogo/img/20-jean-negro-liso/02.jpg?v=1794600986",
+   "catalogo/img/20-jean-negro-liso/03.jpg?v=1794600987"
   ],
   "colores": [
    {
@@ -653,9 +653,9 @@ const PRODUCTOS = [
   "nombre": "Jean Azul Claro Roto",
   "precio": 65000,
   "fotos": [
-   "catalogo/img/21-jean-azul-claro-roto/01.jpg",
-   "catalogo/img/21-jean-azul-claro-roto/02.jpg",
-   "catalogo/img/21-jean-azul-claro-roto/03.jpg"
+   "catalogo/img/21-jean-azul-claro-roto/01.jpg?v=1794600989",
+   "catalogo/img/21-jean-azul-claro-roto/02.jpg?v=1794600990",
+   "catalogo/img/21-jean-azul-claro-roto/03.jpg?v=1794600991"
   ],
   "colores": [
    {
@@ -687,18 +687,18 @@ const PRODUCTOS = [
   "nombre": "Gorra Clemont Negra",
   "precio": 45000,
   "fotos": [
-   "catalogo/img/22-gorra-clemont-negra/01.jpg",
-   "catalogo/img/22-gorra-clemont-negra/02.jpg",
-   "catalogo/img/22-gorra-clemont-negra/03.jpg",
-   "catalogo/img/22-gorra-clemont-negra/04.jpg",
-   "catalogo/img/22-gorra-clemont-negra/05.jpg",
-   "catalogo/img/22-gorra-clemont-negra/06.jpg",
-   "catalogo/img/22-gorra-clemont-negra/07.jpg",
-   "catalogo/img/22-gorra-clemont-negra/08.jpg",
-   "catalogo/img/22-gorra-clemont-negra/09.jpg",
-   "catalogo/img/22-gorra-clemont-negra/10.jpg",
-   "catalogo/img/22-gorra-clemont-negra/11.jpg",
-   "catalogo/img/22-gorra-clemont-negra/12.jpg"
+   "catalogo/img/22-gorra-clemont-negra/01.jpg?v=1794601986",
+   "catalogo/img/22-gorra-clemont-negra/02.jpg?v=1794601987",
+   "catalogo/img/22-gorra-clemont-negra/03.jpg?v=1794601988",
+   "catalogo/img/22-gorra-clemont-negra/04.jpg?v=1794601989",
+   "catalogo/img/22-gorra-clemont-negra/05.jpg?v=1794601990",
+   "catalogo/img/22-gorra-clemont-negra/06.jpg?v=1794601990",
+   "catalogo/img/22-gorra-clemont-negra/07.jpg?v=1794601991",
+   "catalogo/img/22-gorra-clemont-negra/08.jpg?v=1794601992",
+   "catalogo/img/22-gorra-clemont-negra/09.jpg?v=1794601993",
+   "catalogo/img/22-gorra-clemont-negra/10.jpg?v=1794601995",
+   "catalogo/img/22-gorra-clemont-negra/11.jpg?v=1794601996",
+   "catalogo/img/22-gorra-clemont-negra/12.jpg?v=1794601997"
   ],
   "colores": [
    {
@@ -726,10 +726,10 @@ const PRODUCTOS = [
   "nombre": "Gorra Gucci Trucker GG",
   "precio": 50000,
   "fotos": [
-   "catalogo/img/23-gorra-gg-trucker/01.jpg",
-   "catalogo/img/23-gorra-gg-trucker/02.jpg",
-   "catalogo/img/23-gorra-gg-trucker/03.jpg",
-   "catalogo/img/23-gorra-gg-trucker/04.jpg"
+   "catalogo/img/23-gorra-gg-trucker/01.jpg?v=1794601998",
+   "catalogo/img/23-gorra-gg-trucker/02.jpg?v=1794601999",
+   "catalogo/img/23-gorra-gg-trucker/03.jpg?v=1794602000",
+   "catalogo/img/23-gorra-gg-trucker/04.jpg?v=1794602001"
   ],
   "colores": [
    {
@@ -757,13 +757,13 @@ const PRODUCTOS = [
   "nombre": "Gorra Louis Vuitton Monogram",
   "precio": 50000,
   "fotos": [
-   "catalogo/img/24-gorra-lv-monograma/01.jpg",
-   "catalogo/img/24-gorra-lv-monograma/02.jpg",
-   "catalogo/img/24-gorra-lv-monograma/03.jpg",
-   "catalogo/img/24-gorra-lv-monograma/04.jpg",
-   "catalogo/img/24-gorra-lv-monograma/05.jpg",
-   "catalogo/img/24-gorra-lv-monograma/06.jpg",
-   "catalogo/img/24-gorra-lv-monograma/07.jpg"
+   "catalogo/img/24-gorra-lv-monograma/01.jpg?v=1794602003",
+   "catalogo/img/24-gorra-lv-monograma/02.jpg?v=1794602004",
+   "catalogo/img/24-gorra-lv-monograma/03.jpg?v=1794602005",
+   "catalogo/img/24-gorra-lv-monograma/04.jpg?v=1794602006",
+   "catalogo/img/24-gorra-lv-monograma/05.jpg?v=1794602006",
+   "catalogo/img/24-gorra-lv-monograma/06.jpg?v=1794602007",
+   "catalogo/img/24-gorra-lv-monograma/07.jpg?v=1794602008"
   ],
   "colores": [
    {
@@ -791,13 +791,13 @@ const PRODUCTOS = [
   "nombre": "Gorra BOSS Beige y Oliva",
   "precio": 45000,
   "fotos": [
-   "catalogo/img/25-gorra-boss-beige-verde/01.jpg",
-   "catalogo/img/25-gorra-boss-beige-verde/02.jpg",
-   "catalogo/img/25-gorra-boss-beige-verde/03.jpg",
-   "catalogo/img/25-gorra-boss-beige-verde/04.jpg",
-   "catalogo/img/25-gorra-boss-beige-verde/05.jpg",
-   "catalogo/img/25-gorra-boss-beige-verde/06.jpg",
-   "catalogo/img/25-gorra-boss-beige-verde/07.jpg"
+   "catalogo/img/25-gorra-boss-beige-verde/01.jpg?v=1794623206",
+   "catalogo/img/25-gorra-boss-beige-verde/02.jpg?v=1794623207",
+   "catalogo/img/25-gorra-boss-beige-verde/03.jpg?v=1794623208",
+   "catalogo/img/25-gorra-boss-beige-verde/04.jpg?v=1794623209",
+   "catalogo/img/25-gorra-boss-beige-verde/05.jpg?v=1794623210",
+   "catalogo/img/25-gorra-boss-beige-verde/06.jpg?v=1794623211",
+   "catalogo/img/25-gorra-boss-beige-verde/07.jpg?v=1794623213"
   ],
   "colores": [
    {
@@ -825,12 +825,12 @@ const PRODUCTOS = [
   "nombre": "Gorra B Blanca con Cruces",
   "precio": 70000,
   "fotos": [
-   "catalogo/img/26-gorra-b-blanca-cruces/01.jpg",
-   "catalogo/img/26-gorra-b-blanca-cruces/02.jpg",
-   "catalogo/img/26-gorra-b-blanca-cruces/03.jpg",
-   "catalogo/img/26-gorra-b-blanca-cruces/04.jpg",
-   "catalogo/img/26-gorra-b-blanca-cruces/05.jpg",
-   "catalogo/img/26-gorra-b-blanca-cruces/06.jpg"
+   "catalogo/img/26-gorra-b-blanca-cruces/01.jpg?v=1794602018",
+   "catalogo/img/26-gorra-b-blanca-cruces/02.jpg?v=1794602019",
+   "catalogo/img/26-gorra-b-blanca-cruces/03.jpg?v=1794602020",
+   "catalogo/img/26-gorra-b-blanca-cruces/04.jpg?v=1794602021",
+   "catalogo/img/26-gorra-b-blanca-cruces/05.jpg?v=1794602022",
+   "catalogo/img/26-gorra-b-blanca-cruces/06.jpg?v=1794602023"
   ],
   "colores": [
    {
@@ -860,13 +860,13 @@ const PRODUCTOS = [
   "nombre": "Gorra LA Negra Cruz Dorada",
   "precio": 70000,
   "fotos": [
-   "catalogo/img/27-gorra-la-negra-cruz/01.jpg",
-   "catalogo/img/27-gorra-la-negra-cruz/02.jpg",
-   "catalogo/img/27-gorra-la-negra-cruz/03.jpg",
-   "catalogo/img/27-gorra-la-negra-cruz/04.jpg",
-   "catalogo/img/27-gorra-la-negra-cruz/05.jpg",
-   "catalogo/img/27-gorra-la-negra-cruz/06.jpg",
-   "catalogo/img/27-gorra-la-negra-cruz/07.jpg"
+   "catalogo/img/27-gorra-la-negra-cruz/01.jpg?v=1794602024",
+   "catalogo/img/27-gorra-la-negra-cruz/02.jpg?v=1794602025",
+   "catalogo/img/27-gorra-la-negra-cruz/03.jpg?v=1794602026",
+   "catalogo/img/27-gorra-la-negra-cruz/04.jpg?v=1794602027",
+   "catalogo/img/27-gorra-la-negra-cruz/05.jpg?v=1794602028",
+   "catalogo/img/27-gorra-la-negra-cruz/06.jpg?v=1794602029",
+   "catalogo/img/27-gorra-la-negra-cruz/07.jpg?v=1794602031"
   ],
   "colores": [
    {
