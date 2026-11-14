@@ -8,7 +8,7 @@
 <title>Panel · God’s Blessing Barbería</title>
 <link rel="icon" href="assets/img/icono-192.png">
 <link rel="apple-touch-icon" href="assets/img/icono-192.png">
-<link rel="stylesheet" href="assets/gbl.css?v=1">
+<link rel="stylesheet" href="assets/gbl.css?v=2">
 <style>
   body{min-height:100svh;}
   .shell{max-width:980px;margin:0 auto;padding:0 16px 100px;}
@@ -37,8 +37,10 @@
   .bar .me b{display:block;color:var(--cream);font-size:15px;}
   .bar .me button{background:none;border:0;color:var(--rose);text-decoration:underline;font-size:12px;}
   .tabs{position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(14,12,12,.96);backdrop-filter:blur(10px);border-top:1px solid var(--line);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom);}
-  .tabs button{flex:1;max-width:160px;background:none;border:0;padding:10px 4px 12px;color:var(--muted);font-family:var(--display);text-transform:uppercase;letter-spacing:.1em;font-size:12px;display:flex;flex-direction:column;align-items:center;gap:4px;}
+  .tabs button{flex:1;max-width:150px;min-width:0;background:none;border:0;padding:10px 4px 12px;color:var(--muted);font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-size:10.5px;display:flex;flex-direction:column;align-items:center;gap:4px;}
+  .tabs button{font-family:var(--body);font-weight:700;text-transform:none;letter-spacing:.01em;font-size:11.5px;}
   .tabs button svg{width:22px;height:22px;}
+  .fab-row .btn,#nuevoM{white-space:normal;line-height:1.2;}
   .tabs button.on{color:var(--cream);}
   .tabs button.on svg{color:var(--rose);}
 
@@ -109,24 +111,111 @@
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
   @media (max-width:520px){.grid2{grid-template-columns:1fr;}}
   .note{font-size:12.5px;color:var(--muted);margin-top:6px;}
+  /* ===== perfiles estilo Netflix ===== */
+  .pick{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 18px 60px;text-align:center;
+    background:radial-gradient(700px 420px at 50% 0%,rgba(217,181,90,.12),transparent 70%);}
+  .pick .logo{width:200px;margin:0 auto 26px;opacity:.95;}
+  .pick h1{font-family:var(--display);font-weight:700;font-size:clamp(22px,5vw,38px);letter-spacing:.01em;margin-bottom:30px;}
+  .pf-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(14px,3vw,28px);max-width:820px;}
+  .pf{background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:10px;width:clamp(96px,26vw,140px);color:var(--muted);transition:color .2s;position:relative;
+    animation:pfIn .5s cubic-bezier(.2,.8,.2,1) both;}
+  .pf:hover,.pf:focus-visible{color:var(--cream);}
+  .pf:hover .pf-av,.pf:focus-visible .pf-av{box-shadow:0 0 0 3px var(--cream);transform:scale(1.04);}
+  .pf b{font-weight:600;font-size:15px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .pf small{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-top:-6px;}
+  .pf .edit{position:absolute;top:0;left:0;right:0;aspect-ratio:1;border-radius:22%;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;}
+  .pf .edit svg{width:34%;height:34%;color:#fff;}
+  @keyframes pfIn{from{opacity:0;transform:translateY(14px) scale(.96)}to{opacity:1;transform:none}}
+  .pf-av{position:relative;flex:0 0 auto;display:flex;align-items:center;justify-content:center;border-radius:22%;width:100%;aspect-ratio:1;
+    background:linear-gradient(150deg,var(--c) 0%,color-mix(in srgb,var(--c) 45%,#000) 100%);transition:transform .2s,box-shadow .2s;overflow:hidden;}
+  .pf-av::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.28),transparent 55%);}
+  .pf-av svg{width:52%;height:52%;color:#fff;stroke-width:1.6;position:relative;z-index:1;filter:drop-shadow(0 2px 6px rgba(0,0,0,.35));}
+  .pf-av.s{width:40px;height:40px;border-radius:11px;} .pf-av.s svg{stroke-width:2;}
+  .pf-add .pf-av{background:transparent;border:2px dashed #4a4334;} .pf-add .pf-av::after{display:none;} .pf-add .pf-av svg{color:var(--muted);filter:none;}
+  .pf-manage{margin-top:40px;background:transparent;border:1px solid #5d5444;color:var(--muted);padding:11px 26px;font-family:var(--display);font-size:12px;letter-spacing:.2em;text-transform:uppercase;}
+  .pf-manage:hover,.pf-manage.on{color:var(--cream);border-color:var(--cream);}
+  .pf-hint{margin-top:16px;color:var(--muted);font-size:13px;min-height:20px;}
+  .pin-screen{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 18px;text-align:center;}
+  .pin-screen .pf-av{width:96px;margin-bottom:14px;}
+  .pin-screen h2{font-family:var(--display);font-size:22px;margin-bottom:4px;}
+  .pin-screen p{color:var(--muted);font-size:14px;margin-bottom:20px;}
+  .pad button.go{background:var(--oro);color:#120e07;border-color:transparent;}
+  .back{margin-top:22px;background:none;border:0;color:var(--muted);text-decoration:underline;font-size:14px;}
+  /* selectores de color e ícono */
+  .swatches{display:flex;flex-wrap:wrap;gap:10px;}
+  .swatches label{cursor:pointer;} .swatches input{position:absolute;opacity:0;pointer-events:none;}
+  .swatches span{display:block;width:34px;height:34px;border-radius:10px;border:2px solid transparent;transition:transform .15s;}
+  .swatches input:checked+span{border-color:var(--cream);transform:scale(1.1);box-shadow:0 0 0 3px rgba(243,234,215,.15);}
+  .icons{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+  .icons label{cursor:pointer;} .icons input{position:absolute;opacity:0;pointer-events:none;}
+  .icons span{display:flex;align-items:center;justify-content:center;aspect-ratio:1;border-radius:12px;border:1px solid var(--line);background:var(--surface-2);}
+  .icons span svg{width:46%;height:46%;}
+  .icons input:checked+span{border-color:var(--gold);background:rgba(217,181,90,.14);color:var(--gold);}
+  .toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--line);font-size:14px;}
+  .toggle small{display:block;color:var(--muted);font-size:12px;}
+  .toggle input{width:20px;height:20px;accent-color:var(--gold);flex:0 0 auto;}
+  .me-card{display:flex;align-items:center;gap:14px;}
+  .me-card .pf-av{width:64px;}
+  .bar .who-me{display:flex;align-items:center;gap:10px;}
+  .bar .who-me .pf-av{width:34px;border-radius:9px;}
+  /* club */
+  .alerta{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:14px;border:1px solid rgba(217,181,90,.45);background:rgba(217,181,90,.08);margin:12px 0;font-size:14px;}
+  .alerta svg{width:22px;height:22px;color:var(--gold);flex:0 0 auto;}
+  .rank{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line);width:100%;background:none;border-left:0;border-right:0;border-bottom:0;text-align:left;}
+  .rank:first-child{border-top:0;}
+  .rank .pos{font-family:var(--display);font-size:18px;width:26px;color:var(--gold);}
+  .rank .nm{flex:1;min-width:0;} .rank .nm b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;} .rank .nm span{color:var(--muted);font-size:12.5px;}
+  .feed{list-style:none;} .feed li{display:flex;gap:10px;padding:9px 0;border-top:1px solid var(--line);font-size:13.5px;} .feed li:first-child{border-top:0;}
+  .feed .dot{width:8px;height:8px;border-radius:50%;margin-top:7px;flex:0 0 auto;}
+  .feed span{color:var(--muted);font-size:12px;display:block;}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0;}
+  .chips span{font-size:12px;padding:5px 10px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);color:var(--muted);}
+  .chips b{color:var(--cream);}
+  .hist{max-height:180px;overflow:auto;margin-top:8px;border-top:1px solid var(--line);}
+  .hist div{display:flex;justify-content:space-between;gap:10px;font-size:13px;padding:7px 0;border-bottom:1px solid var(--line);}
+  .hist div span{color:var(--muted);font-size:12px;white-space:nowrap;}
+  .tj{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line);font-size:14px;} .tj:first-child{border-top:0;}
+  .tj code{font-family:ui-monospace,Consolas,monospace;font-size:13px;color:var(--gold);}
+  .club-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;}
+  @media (max-width:640px){.club-grid{grid-template-columns:1fr;}}
+  .card h3{font-family:var(--display);font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;}
+  /* página: catálogo, promos y galería */
+  .cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;}
+  .cat{display:flex;flex-direction:column;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;padding:0;transition:border-color .2s,transform .2s;}
+  .cat:hover{border-color:var(--gold);transform:translateY(-2px);}
+  .cat-img{position:relative;display:flex;align-items:center;justify-content:center;aspect-ratio:16/10;background:var(--surface-2) center/cover no-repeat;color:var(--muted);font-size:13px;}
+  .cat-img i{position:absolute;top:8px;left:8px;font-style:normal;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;background:rgba(0,0,0,.7);padding:3px 8px;border-radius:999px;}
+  .cat-img svg{width:34px;height:34px;}
+  .cat-tx{padding:12px 14px 14px;} .cat-tx b{display:block;font-size:15px;} .cat-tx span{color:var(--muted);font-size:13px;}
+  .cat-tx s{margin-left:4px;}
+  .cat-add{border-style:dashed;background:transparent;} .cat-add .cat-img{background:transparent;}
+  .gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;}
+  .gal-it{position:relative;aspect-ratio:1;border-radius:14px;border:1px solid var(--line);background:var(--surface-2) center/cover no-repeat;display:flex;align-items:flex-end;padding:0;overflow:hidden;cursor:pointer;}
+  .gal-it span{width:100%;padding:18px 8px 7px;font-size:12px;text-align:left;background:linear-gradient(transparent,rgba(0,0,0,.8));}
+  .gal-add{flex-direction:column;align-items:center;justify-content:center;border-style:dashed;color:var(--muted);gap:6px;}
+  .gal-add svg{width:30px;height:30px;} .gal-add span{background:none;padding:0;text-align:center;}
+  .foto-edit{aspect-ratio:16/10;border-radius:12px;border:1px solid var(--line);background:var(--surface-2) center/cover no-repeat;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;}
+  .field textarea{resize:vertical;}
 </style>
 </head>
 <body>
 <div id="root"><div style="text-align:center;padding:90px 0"><span class="spin"></span></div></div>
 
-<script src="assets/gbl.js?v=1"></script>
+<script src="assets/gbl.js?v=2"></script>
 <script src="assets/jsqr.js"></script>
 <script>
 const { rpc, esc, money, toMin, fromMin, time12, addDays, parseDate, dateLong, dateShort, telFmt, waLink, modal, alertBox, confirmBox, toast } = GB;
 const TK = 'gbl_panel_token';
 const root = document.getElementById('root');
 let INFO = null, ME = null, TOKEN = localStorage.getItem(TK), TAB = 'agenda';
+if (['agenda', 'club', 'pagina', 'numeros', 'ajustes'].includes(location.hash.slice(1))) TAB = location.hash.slice(1);   // enlace directo a una pestaña
 let fecha = null, filtroBarbero = null, refreshTimer = null;
 
 const ICON = {
   agenda: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
   club: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="6" width="18" height="13" rx="2"/><circle cx="9" cy="12.5" r="2.2"/><path d="M14 11h4M14 14h3"/></svg>',
   numeros: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
+  pagina: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg>',
   ajustes: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>'
 };
 const ESTADO = { pendiente: 'Por confirmar', confirmado: 'Confirmado', completado: 'Atendido', cancelado: 'Cancelado', no_vino: 'No vino' };
@@ -137,55 +226,89 @@ async function call(fn, args) {
 }
 function logout(expired) { localStorage.removeItem(TK); TOKEN = null; ME = null; clearInterval(refreshTimer); vistaLogin(expired ? 'Tu sesión se cerró. Entra de nuevo.' : ''); }
 
-/* ================= LOGIN ================= */
+/* ================= PERFILES (estilo Netflix) ================= */
+const COLORES = ['#C9A24A', '#B3261E', '#1E5AA8', '#1F7A4D', '#6D3FA8', '#C2577E', '#D9731E', '#4B5563'];
+const S = (d) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+const ICONOS = {
+  navaja: S('<path d="M3 7h12.5a3 3 0 0 1 0 6H3z"/><path d="M6 10h7"/><path d="m15.5 13 4.5 7"/><circle cx="15.5" cy="13" r=".6"/>'),
+  tijeras: S('<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.1 8.1 12 12M20 4 8.1 15.9M14.8 14.8 20 20"/>'),
+  maquina: S('<rect x="7" y="8" width="10" height="13" rx="3"/><path d="M6 3h12v5H6zM9.5 3v5M14.5 3v5"/><circle cx="12" cy="14.5" r="1.4"/>'),
+  peine: S('<rect x="3" y="5" width="18" height="5" rx="1.5"/><path d="M5.5 10v9M9 10v9M12.5 10v9M16 10v9M19 10v6"/>'),
+  corona: S('<path d="m3 8 4.5 4L12 5l4.5 7L21 8l-2 11H5z"/><path d="M5 19h14"/>'),
+  bigote: S('<path d="M12 11.5c-1.8-2.8-5.6-3.6-9-.8 1.6.3 2.4 2.3 4.6 2.3 2.3 0 3.2-1.2 4.4-1.5 1.2.3 2.1 1.5 4.4 1.5 2.2 0 3-2 4.6-2.3-3.4-2.8-7.2-2-9 .8z"/>'),
+  estrella: S('<path d="m12 3 2.8 5.8 6.2.9-4.5 4.4 1.1 6.2L12 17.4l-5.6 2.9 1.1-6.2L3 9.7l6.2-.9z"/>'),
+  rayo: S('<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>')
+};
+const PLUS = S('<path d="M12 5v14M5 12h14"/>'), LAPIZ = S('<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/>');
+const avatar = (b, cls = '') => `<span class="pf-av ${cls}" style="--c:${esc(b.color || COLORES[0])}">${ICONOS[b.icono] || ICONOS.navaja}</span>`;
+const colorPicker = (sel) => `<div class="swatches">${COLORES.map((c) => `<label><input type="radio" name="pcol" value="${c}" ${c === sel ? 'checked' : ''}><span style="background:${c}"></span></label>`).join('')}</div>`;
+const iconPicker = (sel) => `<div class="icons">${Object.keys(ICONOS).map((k) => `<label title="${k}"><input type="radio" name="pico" value="${k}" ${k === sel ? 'checked' : ''}><span>${ICONOS[k]}</span></label>`).join('')}</div>`;
+const radio = (n) => (document.querySelector(`input[name="${n}"]:checked`) || {}).value;
+
+let gestionar = false;
 function vistaLogin(err) {
-  let quien = INFO.barberos.length === 1 ? INFO.barberos[0].id : null, pin = '';
-  root.innerHTML = `<div class="login">
-    <a href="./"><img src="assets/img/logo_completo.png" alt="God’s Blessing Barbería"></a>
-    <h1>Panel de barberos</h1>
-    <div class="who" id="who">${INFO.barberos.map((b) => `<button type="button" data-id="${b.id}" class="${b.id === quien ? 'on' : ''}">${esc(b.nombre)}</button>`).join('')}</div>
-    <div class="pin-dots" id="dots" aria-label="PIN">${'<i></i>'.repeat(4)}</div>
-    <div class="pad" id="pad">${[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => `<button type="button" data-k="${n}">${n}</button>`).join('')}<button type="button" data-k="del" aria-label="Borrar">⌫</button><button type="button" data-k="0">0</button><button type="button" data-k="ok" aria-label="Entrar">→</button></div>
-    <div class="msg" id="m" role="alert">${esc(err || '')}</div></div>`;
+  document.onkeydown = null;
+  root.innerHTML = `<div class="pick">
+    <a href="./"><img class="logo" src="assets/img/logo_completo.png" alt="God’s Blessing Barbería"></a>
+    <h1>${gestionar ? 'Administrar perfiles' : '¿Quién está trabajando?'}</h1>
+    <div class="pf-grid" id="pfs">${INFO.barberos.map((b, i) => `<button type="button" class="pf" data-id="${b.id}" style="animation-delay:${i * 60}ms">
+        ${avatar(b)}${gestionar ? `<span class="edit">${LAPIZ}</span>` : ''}<b>${esc(b.nombre)}</b></button>`).join('')}</div>
+    <button type="button" class="pf-manage ${gestionar ? 'on' : ''}" id="mng">${gestionar ? 'Listo' : 'Administrar perfiles'}</button>
+    <p class="pf-hint" role="alert">${esc(err || (gestionar ? 'Entra con un perfil administrador para agregar, editar o eliminar perfiles.' : ''))}</p></div>`;
+  document.getElementById('pfs').onclick = (e) => { const b = e.target.closest('.pf'); if (b) vistaPin(INFO.barberos.find((x) => x.id === b.dataset.id)); };
+  document.getElementById('mng').onclick = () => { gestionar = !gestionar; vistaLogin(); };
+}
+
+function vistaPin(b) {
+  let pin = '';
+  root.innerHTML = `<div class="pin-screen">${avatar(b)}<h2>${esc(b.nombre)}</h2><p>${gestionar ? 'PIN de administrador' : 'Escribe tu PIN'}</p>
+    <div class="pin-dots" id="dots" aria-label="PIN"></div>
+    <div class="pad" id="pad">${[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => `<button type="button" data-k="${n}">${n}</button>`).join('')}<button type="button" data-k="del" aria-label="Borrar">⌫</button><button type="button" data-k="0">0</button><button type="button" class="go" data-k="ok" aria-label="Entrar">→</button></div>
+    <div class="login"><div class="msg" id="m" role="alert" style="margin:0"></div></div>
+    <button type="button" class="back" id="volver">Volver a los perfiles</button></div>`;
   const dots = document.getElementById('dots'), m = document.getElementById('m');
-  const paint = () => { const n = Math.max(4, pin.length); dots.innerHTML = Array.from({ length: n }, (_, i) => `<i class="${i < pin.length ? 'f' : ''}"></i>`).join(''); };
-  document.getElementById('who').onclick = (e) => { const b = e.target.closest('button'); if (!b) return; quien = b.dataset.id; document.querySelectorAll('#who button').forEach((x) => x.classList.toggle('on', x === b)); m.textContent = ''; };
+  const paint = () => { const n = Math.max(3, pin.length); dots.innerHTML = Array.from({ length: n }, (_, i) => `<i class="${i < pin.length ? 'f' : ''}"></i>`).join(''); };
+  paint();
   async function go() {
-    if (!quien) { m.textContent = 'Toca tu nombre arriba.'; return; }
-    if (pin.length < 4) return;
+    if (pin.length < 3) { m.textContent = 'El PIN tiene mínimo 3 números.'; return; }
     try {
-      const r = await rpc('gbl_login', { p_barbero: quien, p_pin: pin });
-      TOKEN = r.token; localStorage.setItem(TK, TOKEN); ME = r; arrancar();
+      const r = await rpc('gbl_login', { p_barbero: b.id, p_pin: pin });
+      TOKEN = r.token; localStorage.setItem(TK, TOKEN); ME = r;
+      if (gestionar) { gestionar = false; if (r.es_dueno) TAB = 'ajustes'; else toast('Ese perfil no es administrador: no puede editar perfiles.'); }
+      arrancar();
     } catch (e) { m.textContent = e.message; pin = ''; paint(); dots.classList.remove('err'); void dots.offsetWidth; dots.classList.add('err'); }
   }
   function key(k) {
     if (k === 'del') pin = pin.slice(0, -1);
     else if (k === 'ok') return go();
     else if (pin.length < 6) pin += k;
-    paint();
-    if (pin.length === 4 && /^\d+$/.test(k)) setTimeout(() => { if (pin.length === 4) go(); }, 250);
+    m.textContent = ''; paint();
   }
-  document.getElementById('pad').onclick = (e) => { const b = e.target.closest('button'); if (b) key(b.dataset.k); };
-  document.onkeydown = (e) => { if (!document.getElementById('pad')) return; if (/^\d$/.test(e.key)) key(e.key); else if (e.key === 'Backspace') key('del'); else if (e.key === 'Enter') key('ok'); };
+  document.getElementById('pad').onclick = (e) => { const x = e.target.closest('button'); if (x) key(x.dataset.k); };
+  document.getElementById('volver').onclick = () => vistaLogin();
+  document.onkeydown = (e) => { if (!document.getElementById('pad')) return; if (/^\d$/.test(e.key)) key(e.key); else if (e.key === 'Backspace') key('del'); else if (e.key === 'Enter') key('ok'); else if (e.key === 'Escape') vistaLogin(); };
 }
 
 /* ================= ESTRUCTURA ================= */
 function arrancar() {
+  document.onkeydown = null;
   fecha = fecha || INFO.hoy;
-  const tabs = ME.es_dueno ? ['agenda', 'club', 'numeros', 'ajustes'] : ['agenda', 'club'];
-  const label = { agenda: 'Agenda', club: 'Club', numeros: 'Números', ajustes: 'Ajustes' };
+  const tabs = ME.es_dueno ? ['agenda', 'club', 'pagina', 'numeros', 'ajustes'] : ['agenda', 'club', 'ajustes'];
+  const label = { agenda: 'Agenda', club: 'Club', pagina: 'Página', numeros: 'Números', ajustes: ME.es_dueno ? 'Ajustes' : 'Mi perfil' };
+  if (!tabs.includes(TAB)) TAB = 'agenda';
   root.innerHTML = `<div class="bar"><div class="bar-in"><a href="./"><img src="assets/img/logo_completo.png" alt="God’s Blessing Barbería"></a>
-      <div class="me"><b>${esc(ME.nombre)}${ME.es_dueno ? ' · Dueño' : ''}</b><button type="button" id="out">Salir</button></div></div></div>
+      <div class="who-me">${avatar(ME)}<div class="me"><b>${esc(ME.nombre)}${ME.es_dueno ? ' · Admin' : ''}</b><button type="button" id="out">Cambiar de perfil</button></div></div></div></div>
     <main class="shell" id="view"></main>
     <nav class="tabs">${tabs.map((t) => `<button type="button" data-t="${t}">${ICON[t]}${label[t]}</button>`).join('')}</nav>`;
   document.getElementById('out').onclick = async () => { try { await rpc('gbl_logout', { p_token: TOKEN }); } catch (e) {} logout(); };
   document.querySelector('.tabs').onclick = (e) => { const b = e.target.closest('button'); if (b) ir(b.dataset.t); };
   ir(TAB);
 }
+
 function ir(t) {
   TAB = t; stopScan(); clearInterval(refreshTimer);
   document.querySelectorAll('.tabs button').forEach((b) => b.classList.toggle('on', b.dataset.t === t));
-  ({ agenda: vistaAgenda, club: vistaClub, numeros: vistaNumeros, ajustes: vistaAjustes })[t]();
+  ({ agenda: vistaAgenda, club: vistaClub, pagina: vistaPagina, numeros: vistaNumeros, ajustes: vistaAjustes })[t]();
   scrollTo(0, 0);
 }
 const view = () => document.getElementById('view');
@@ -317,31 +440,60 @@ async function bloquear() {
 }
 
 /* ================= CLUB ================= */
-let scanStream = null, scanLoop = null;
+let scanStream = null, scanLoop = null, filtroMiembros = 'todos';
 function stopScan() { if (scanLoop) cancelAnimationFrame(scanLoop); scanLoop = null; if (scanStream) scanStream.getTracks().forEach((t) => t.stop()); scanStream = null; }
+const MOV = { sello: ['Sello', '#d9b55a'], canje: ['Premio canjeado', '#5fdc95'], bienvenida: ['Se unió al Club (sello de bienvenida)', '#7cc4ff'],
+  ajuste_mas: ['Sello agregado a mano', '#c9a96b'], ajuste_menos: ['Sello quitado a mano', '#ff8b8b'] };
+const fechaHora = (s) => { const [d, h] = String(s).split(' '); return `${dateShort(d)} · ${time12(h)}`; };
+const urlAgenda = () => location.origin + location.pathname.replace(/admin\.html$/, '') + '#agenda';
 
-function vistaClub() {
+async function vistaClub() {
   const v = view();
   v.innerHTML = `<h2 class="sec">Club God’s Blessing</h2>
+    <div class="stats" id="cStats"><div class="stat"><small>Cargando</small><b><span class="spin"></span></b></div></div>
+    <div id="cAlert"></div>
     <div class="card">
       <div class="field" style="margin:0"><label for="q">Buscar cliente</label>
       <div class="row"><input id="q" placeholder="Código, número o nombre" autocomplete="off" style="flex:1;min-width:0;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:13px 14px;font-size:16px;color-scheme:dark">
       <button class="btn btn-cream btn-sm" id="cam" type="button">Escanear</button></div></div>
       <div id="scanBox"></div>
+      <button class="btn btn-ghost btn-sm" id="nuevoM" type="button" style="margin-top:12px;width:100%">+ Inscribir cliente en el Club</button>
     </div>
     <div id="res" style="margin-top:12px"></div>
-    ${ME.es_dueno ? '<h2 class="sec">Miembros</h2><div class="seg" id="segM"><button class="on" data-f="todos">Todos</button><button data-f="sin">Sin volver +30 días</button><button data-f="llenas">Tarjeta llena</button></div><div id="miembros" style="margin-top:12px"></div>' : ''}`;
+    <div class="club-grid"><div class="card"><h3>Clientes más fieles</h3><div id="cTop"></div></div><div class="card"><h3>Actividad reciente</h3><ul class="feed" id="cFeed"></ul></div></div>
+    ${ME.es_dueno ? `<h2 class="sec">Miembros</h2><div class="seg" id="segM" style="flex-wrap:wrap">${[['todos', 'Todos'], ['casi', 'Les falta 1'], ['llenas', 'Tarjeta llena'], ['sin', 'Sin volver +30 días']].map(([k, l]) => `<button data-f="${k}" class="${k === filtroMiembros ? 'on' : ''}">${l}</button>`).join('')}</div><div id="miembros" style="margin-top:12px"></div>
+      <h2 class="sec">Tarjetas impresas</h2><div class="card" id="cTarj"></div>` : ''}`;
   let h;
   document.getElementById('q').oninput = (e) => { clearTimeout(h); h = setTimeout(() => buscar(e.target.value), 300); };
   document.getElementById('cam').onclick = escanear;
-  if (ME.es_dueno) cargarMiembros('todos');
+  document.getElementById('nuevoM').onclick = inscribir;
+  if (ME.es_dueno) document.getElementById('segM').onclick = (e) => { const b = e.target.closest('button'); if (!b) return; filtroMiembros = b.dataset.f; document.querySelectorAll('#segM button').forEach((x) => x.classList.toggle('on', x === b)); cargarMiembros(); };
+  cargarPanelClub();
+  if (ME.es_dueno) cargarMiembros();
 }
+
+async function cargarPanelClub() {
+  let p; try { p = await call('gbl_admin_club_panel'); } catch (e) { document.getElementById('cStats').innerHTML = `<div class="empty">${esc(e.message)}</div>`; return; }
+  if (TAB !== 'club') return;
+  document.getElementById('cStats').innerHTML = [['Miembros', p.miembros], ['Nuevos este mes', p.nuevos_mes], ['Sellos hoy', p.sellos_hoy], ['Premios entregados', p.premios],
+    ['Les falta 1 sello', p.casi], ['Sin volver +30 días', p.sin_volver]].map(([k, n]) => `<div class="stat"><small>${k}</small><b>${n}</b></div>`).join('');
+  document.getElementById('cAlert').innerHTML = p.llenas ? `<div class="alerta">${ICONOS.corona}<div><b>${p.llenas} ${p.llenas === 1 ? 'tarjeta llena' : 'tarjetas llenas'}</b>: ${p.llenas === 1 ? 'le toca' : 'les toca'} ${esc(INFO.config.premio || 'el premio')} en la próxima visita.</div></div>` : '';
+  document.getElementById('cTop').innerHTML = p.top.length ? p.top.map((m, i) => `<button type="button" class="rank" data-c="${m.id}"><span class="pos">${i + 1}</span><span class="nm"><b>${esc(m.nombre)}</b><span>${m.visitas} visitas · ${m.sellos}/${p.meta} sellos${m.canjes ? ` · ${m.canjes} premios` : ''}</span></span></button>`).join('') : '<p class="muted" style="font-size:14px">Aún no hay miembros.</p>';
+  document.getElementById('cFeed').innerHTML = p.actividad.length ? p.actividad.map((a) => { const t = MOV[a.tipo] || [a.tipo, '#888']; return `<li><i class="dot" style="background:${t[1]}"></i><div><b>${esc(a.cliente)}</b> · ${t[0]}<span>${fechaHora(a.fecha)}${a.barbero ? ' · ' + esc(a.barbero) : ''}</span></div></li>`; }).join('') : '<li class="muted">Sin movimientos todavía.</li>';
+  document.getElementById('cTop').onclick = (e) => { const b = e.target.closest('[data-c]'); if (b) abrirMiembro({ id: b.dataset.c }); };
+  const tj = document.getElementById('cTarj');
+  if (tj) tj.innerHTML = p.tarjetas.length ? p.tarjetas.map((t) => `<div class="tj"><div><code>${esc(t.codigo)}</code> <span class="muted" style="font-size:12.5px">· ${esc(t.diseno || '')}</span></div>${t.club ? `<button type="button" class="btn btn-ghost btn-sm" data-c="${t.club}">${esc(t.cliente)}</button>` : '<span class="pill p-pendiente" style="margin:0">Sin activar</span>'}</div>`).join('')
+    + '<p class="note">Cada tarjeta impresa tiene su propio QR y NFC. Se activa sola cuando el cliente la escanea por primera vez y pone su nombre y WhatsApp.</p>' : '<p class="muted">No hay tarjetas impresas registradas.</p>';
+  if (tj) tj.onclick = (e) => { const b = e.target.closest('[data-c]'); if (b) abrirMiembro({ id: b.dataset.c }); };
+}
+
 async function buscar(q) {
   const res = document.getElementById('res');
   if (q.trim().length < 2) { res.innerHTML = ''; return; }
   try {
     const r = await call('gbl_admin_club_buscar', { p_q: q });
-    res.innerHTML = r.length ? '' : '<div class="empty">No encontramos a nadie con eso.</div>';
+    res.innerHTML = r.length ? '' : '<div class="empty">No encontramos a nadie con eso. <br><button class="btn btn-cream btn-sm" id="insc2" style="margin-top:12px">Inscribirlo en el Club</button></div>';
+    if (!r.length) document.getElementById('insc2').onclick = inscribir;
     r.forEach((m) => res.appendChild(memberBtn(m)));
     if (r.length === 1 && r[0].codigo === q.trim().toUpperCase()) abrirMiembro(r[0]);
   } catch (e) { res.innerHTML = `<div class="empty">${esc(e.message)}</div>`; }
@@ -349,27 +501,77 @@ async function buscar(q) {
 function memberBtn(m) {
   const meta = Number(INFO.config.meta_sellos || 8);
   const b = document.createElement('button'); b.type = 'button'; b.className = 'member';
-  b.innerHTML = `<span class="av">${esc(m.nombre[0])}</span><span class="nm"><b>${esc(m.nombre)}</b><span>${m.sellos}/${meta} sellos · ${telFmt(m.tel)} · ${esc(m.codigo)}</span></span>${m.sellos >= meta ? '<span class="pill p-club">LLENA</span>' : ''}`;
+  b.innerHTML = `<span class="av">${esc((m.nombre || '?')[0])}</span><span class="nm"><b>${esc(m.nombre)}</b><span>${m.sellos}/${meta} sellos · ${telFmt(m.tel)} · ${esc(m.codigo)}</span></span>${m.sellos >= meta ? '<span class="pill p-club">LLENA</span>' : m.sellos === meta - 1 ? '<span class="pill p-pendiente">FALTA 1</span>' : ''}`;
   b.onclick = () => abrirMiembro(m);
   return b;
 }
-async function abrirMiembro(m) {
-  const meta = Number(INFO.config.meta_sellos || 8), lleno = m.sellos >= meta;
-  const html = `<h3>${esc(m.nombre)}</h3><p class="muted">${telFmt(m.tel)} · Código ${esc(m.codigo)} · ${m.visitas} visitas${m.canjes ? ' · ' + m.canjes + ' premios' : ''}</p>
+function refrescarClub() {
+  const q = document.getElementById('q'); if (q && q.value) buscar(q.value);
+  if (TAB === 'club') { cargarPanelClub(); if (ME.es_dueno) cargarMiembros(); }
+}
+
+async function inscribir() {
+  const ok = await modal(`<h3>Inscribir en el Club</h3><p class="muted">Para el cliente que está en la silla. Queda con 1 sello de bienvenida.</p>
+    <div class="field" style="margin-top:14px"><label for="in_n">Nombre</label><input id="in_n" maxlength="60"></div>
+    <div class="field"><label for="in_t">WhatsApp</label><input id="in_t" type="tel" inputmode="numeric" maxlength="14" placeholder="3001234567"></div>`,
+    [{ label: 'Cancelar', value: false }, { label: 'Inscribir', value: true, primary: true }]);
+  if (!ok) return;
+  try {
+    const m = await call('gbl_admin_club_nuevo', { p_nombre: document.getElementById('in_n').value, p_tel: document.getElementById('in_t').value });
+    toast(`Inscrito con el código ${m.codigo}`); refrescarClub(); abrirMiembro(m);
+  } catch (e) { alertBox(esc(e.message)); }
+}
+
+async function abrirMiembro(m0) {
+  let m; try { m = await call('gbl_admin_club_detalle', { p_club: m0.id }); } catch (e) { alertBox(esc(e.message)); return; }
+  const meta = Number(INFO.config.meta_sellos || 8), lleno = m.sellos >= meta, nombre1 = m.nombre.split(' ')[0];
+  const html = `<h3>${esc(m.nombre)}</h3><p class="muted">${telFmt(m.tel)} · Código <b style="color:var(--gold)">${esc(m.codigo)}</b></p>
     <div class="mstamps" style="grid-template-columns:repeat(${Math.min(meta, 8)},1fr)">${Array.from({ length: meta }, (_, i) => `<i class="${i < m.sellos ? 'f' : ''}"></i>`).join('')}</div>
-    <p style="font-size:15px">${lleno ? `<b>Tarjeta llena.</b> Le toca: ${esc(INFO.config.premio || 'corte gratis')}.` : `Lleva <b>${m.sellos}</b> de ${meta}.`}</p>`;
-  const r = await modal(html, [{ label: 'Cerrar', value: null }, lleno ? { label: 'Canjear premio', value: 'canje', cls: 'btn-red' } : { label: 'Poner sello', value: 'sello', primary: true }]);
+    <p style="font-size:15px">${lleno ? `<b>Tarjeta llena.</b> Le toca: ${esc(INFO.config.premio || 'corte gratis')}.` : `Lleva <b>${m.sellos}</b> de ${meta}. ${meta - m.sellos === 1 ? 'Le falta solo 1.' : ''}`}</p>
+    <div class="chips"><span><b>${m.visitas}</b> visitas</span><span><b>${m.canjes}</b> premios</span>${m.gastado ? `<span><b>${money(m.gastado)}</b> en servicios</span>` : ''}<span>Desde <b>${dateShort(m.desde)}</b></span><span>Última <b>${dateShort(m.ultima)}</b></span>
+      ${m.tarjetas.map((t) => `<span>Tarjeta <b>${esc(t.codigo)}</b></span>`).join('')}</div>
+    ${m.movs.length ? `<div class="hist">${m.movs.slice(0, 12).map((x) => `<div>${(MOV[x.tipo] || [x.tipo])[0]}${x.barbero ? ' · ' + esc(x.barbero) : ''}<span>${fechaHora(x.fecha)}</span></div>`).join('')}</div>` : ''}
+    ${m.turnos.length ? `<p class="note" style="margin-top:12px">Últimos turnos</p><div class="hist">${m.turnos.slice(0, 6).map((t) => `<div>${esc(t.servicio)}${t.barbero ? ' · ' + esc(t.barbero) : ''}<span>${dateShort(t.fecha)} · ${ESTADO[t.estado] || t.estado}</span></div>`).join('')}</div>` : ''}`;
+  const msg = lleno ? `Hola ${nombre1}! Completaste tu tarjeta del Club God’s Blessing. En tu próxima visita te espera: ${INFO.config.premio || 'tu premio'}. Agenda aquí: ${urlAgenda()}`
+    : `Hola ${nombre1}! Llevas ${m.sellos} de ${meta} sellos en el Club God’s Blessing. Agenda tu próximo corte aquí: ${urlAgenda()}`;
+  const btns = [{ label: 'Cerrar', value: null }, { label: 'WhatsApp', href: waLink(m.tel, msg), cls: 'btn-wa', value: null }];
+  if (ME.es_dueno) btns.push({ label: 'Opciones', value: 'op' });
+  btns.push(lleno ? { label: 'Canjear premio', value: 'canje', cls: 'btn-red' } : { label: 'Poner sello', value: 'sello', cls: 'btn-red' });
+  const r = await modal(html, btns);
   try {
     if (r === 'sello') {
       const s = await call('gbl_admin_club_sello', { p_club: m.id });
-      if (!s.ok) alertBox(esc(s.motivo)); else { toast(`Sello puesto: ${s.sellos} de ${s.meta}`); if (s.lleno) alertBox(`<h3>¡Tarjeta llena!</h3>${esc(m.nombre)} completó la tarjeta. En la próxima visita canjea su premio.`); }
+      if (!s.ok) alertBox(esc(s.motivo)); else { toast(`Sello puesto: ${s.sellos} de ${s.meta}`); if (s.lleno) alertBox(`<h3>Tarjeta llena</h3>${esc(m.nombre)} completó la tarjeta. En la próxima visita canjea su premio.`); }
     } else if (r === 'canje') {
+      if (!(await confirmBox(`¿Entregar <b>${esc(INFO.config.premio || 'el premio')}</b> a ${esc(m.nombre)}? La tarjeta vuelve a cero.`, 'Canjear'))) return;
       await call('gbl_admin_club_canjear', { p_club: m.id }); toast('Premio canjeado. La tarjeta vuelve a cero.');
-    } else return;
-    const q = document.getElementById('q'); if (q && q.value) buscar(q.value);
-    if (ME.es_dueno) cargarMiembros(document.querySelector('#segM .on').dataset.f);
+    } else if (r === 'op') return opcionesMiembro(m);
+    else return;
+    refrescarClub();
   } catch (e) { alertBox(esc(e.message)); }
 }
+
+async function opcionesMiembro(m) {
+  const r = await modal(`<h3>Opciones</h3><p class="muted">${esc(m.nombre)} · ${m.sellos} sellos</p>`,
+    [{ label: '+1 sello', value: 'mas' }, { label: '−1 sello', value: 'menos' }, { label: 'Editar datos', value: 'edit' }, { label: 'Eliminar', value: 'del', cls: 'btn-ghost' }, { label: 'Volver', value: 'back', primary: true }]);
+  try {
+    if (r === 'mas' || r === 'menos') { const x = await call('gbl_admin_club_ajustar', { p_club: m.id, p_cambio: r === 'mas' ? 1 : -1 }); toast(`Ahora tiene ${x.sellos} de ${x.meta}`); refrescarClub(); return abrirMiembro(m); }
+    if (r === 'edit') {
+      const ok = await modal(`<h3>Editar miembro</h3><div class="field" style="margin-top:12px"><label for="em_n">Nombre</label><input id="em_n" maxlength="60" value="${esc(m.nombre)}"></div>
+        <div class="field"><label for="em_t">WhatsApp</label><input id="em_t" type="tel" inputmode="numeric" maxlength="14" value="${esc(m.tel)}"></div>`,
+        [{ label: 'Cancelar', value: false }, { label: 'Guardar', value: true, primary: true }]);
+      if (!ok) return abrirMiembro(m);
+      await call('gbl_admin_club_editar', { p_club: m.id, p_nombre: document.getElementById('em_n').value, p_tel: document.getElementById('em_t').value });
+      toast('Datos guardados'); refrescarClub(); return abrirMiembro(m);
+    }
+    if (r === 'del') {
+      if (!(await confirmBox(`¿Eliminar a <b>${esc(m.nombre)}</b> del Club? Se pierden sus sellos y su historial. Si tenía tarjeta impresa, queda libre para activarla de nuevo.`, 'Eliminar', 'Cancelar', true))) return abrirMiembro(m);
+      await call('gbl_admin_club_eliminar', { p_club: m.id }); toast('Miembro eliminado'); refrescarClub(); return;
+    }
+    if (r === 'back') return abrirMiembro(m);
+  } catch (e) { alertBox(esc(e.message)); }
+}
+
 async function escanear() {
   const box = document.getElementById('scanBox');
   if (scanStream) { stopScan(); box.innerHTML = ''; return; }
@@ -402,20 +604,21 @@ async function escanear() {
   };
   tick();
 }
-async function cargarMiembros(f) {
-  const box = document.getElementById('miembros');
-  document.getElementById('segM').onclick = (e) => { const b = e.target.closest('button'); if (!b) return; document.querySelectorAll('#segM button').forEach((x) => x.classList.toggle('on', x === b)); cargarMiembros(b.dataset.f); };
+async function cargarMiembros() {
+  const box = document.getElementById('miembros'); if (!box) return;
   try {
     let r = await call('gbl_admin_club_lista');
-    const meta = Number(INFO.config.meta_sellos || 8), lim = addDays(INFO.hoy, -30);
+    const meta = Number(INFO.config.meta_sellos || 8), lim = addDays(INFO.hoy, -30), f = filtroMiembros;
     if (f === 'sin') r = r.filter((m) => m.ultima < lim);
     if (f === 'llenas') r = r.filter((m) => m.sellos >= meta);
+    if (f === 'casi') r = r.filter((m) => m.sellos === meta - 1);
     box.innerHTML = r.length ? '' : '<div class="empty">Nadie por aquí todavía.</div>';
     r.slice().reverse().forEach((m) => {
       const row = memberBtn(m);
-      if (f === 'sin') {
+      if (f === 'sin' || f === 'casi') {
         const a = document.createElement('a'); a.className = 'btn btn-wa btn-sm'; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'Escribirle';
-        a.href = waLink(m.tel, `Hola ${m.nombre.split(' ')[0]}! Te extrañamos en God’s Blessing. Ya llevas ${m.sellos} sellos en tu tarjeta del Club: agenda tu próximo corte aquí ${location.origin + location.pathname.replace(/admin\.html$/, '')}#agenda`);
+        a.href = waLink(m.tel, f === 'sin' ? `Hola ${m.nombre.split(' ')[0]}! Te extrañamos en God’s Blessing. Ya llevas ${m.sellos} sellos en tu tarjeta del Club: agenda tu próximo corte aquí ${urlAgenda()}`
+          : `Hola ${m.nombre.split(' ')[0]}! Te falta solo 1 sello en el Club God’s Blessing para ganar ${INFO.config.premio || 'tu premio'}. Agenda aquí: ${urlAgenda()}`);
         a.onclick = (e) => e.stopPropagation(); row.appendChild(a);
       }
       box.appendChild(row);
@@ -453,16 +656,185 @@ async function cargarNumeros(r) {
   } catch (e) { box.innerHTML = `<div class="empty">${esc(e.message)}</div>`; }
 }
 
-/* ================= AJUSTES (dueño) ================= */
+/* ================= PÁGINA: catálogo, promociones, galería y textos (admin) ================= */
+// Las fotos se achican en el celular antes de subirlas (máx. 1100 px, WebP) para que la página cargue rápido.
+function leerFoto(file, max = 1100) {
+  return new Promise((ok, mal) => {
+    if (!file) return ok(null);
+    const img = new Image(), url = URL.createObjectURL(file);
+    img.onload = () => {
+      const k = Math.min(1, max / Math.max(img.width, img.height));
+      const c = document.createElement('canvas'); c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(url);
+      let q = 0.8, d = c.toDataURL('image/webp', q);
+      if (!d.startsWith('data:image/webp')) d = c.toDataURL('image/jpeg', q);
+      while (d.length > 420000 && q > 0.4) { q -= 0.1; d = c.toDataURL(d.startsWith('data:image/webp') ? 'image/webp' : 'image/jpeg', q); }
+      ok(d);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); mal(new Error('No se pudo leer esa imagen.')); };
+    img.src = url;
+  });
+}
+// Campo de foto para los diálogos: vista previa + botón para cambiarla o quitarla.
+const campoFoto = (actual, id = 'fFoto') => `<div class="field"><label>Foto</label>
+  <div class="foto-edit" id="${id}Box" style="${actual ? `background-image:url('${esc(actual)}')` : ''}">${actual ? '' : '<span>Sin foto</span>'}</div>
+  <div class="row" style="margin-top:8px"><label class="btn btn-ghost btn-sm" style="cursor:pointer">Cambiar foto<input type="file" accept="image/*" id="${id}" hidden></label>
+  ${actual ? `<button type="button" class="btn btn-ghost btn-sm" id="${id}Quitar">Quitar</button>` : ''}</div></div>`;
+function conectarFoto(id = 'fFoto') {
+  const st = { valor: null };       // null = no cambió, '' = quitar, data:… = nueva
+  const inp = document.getElementById(id), box = document.getElementById(id + 'Box'), q = document.getElementById(id + 'Quitar');
+  if (inp) inp.onchange = async () => {
+    box.innerHTML = '<span class="spin"></span>';
+    try { st.valor = await leerFoto(inp.files[0]); box.style.backgroundImage = `url('${st.valor}')`; box.innerHTML = ''; }
+    catch (e) { box.innerHTML = `<span>${esc(e.message)}</span>`; }
+  };
+  if (q) q.onclick = () => { st.valor = ''; box.style.backgroundImage = ''; box.innerHTML = '<span>Sin foto</span>'; };
+  return st;
+}
+const precioTxt = (p, a) => `${p != null ? money(p) : 'Se cotiza'}${a ? ` <s class="muted">${money(a)}</s>` : ''}`;
+const numOrNull = (v) => (String(v).trim() === '' ? null : Math.max(0, parseInt(v, 10) || 0));
+
+async function vistaPagina() {
+  const v = view();
+  v.innerHTML = '<div class="empty" style="margin-top:20px"><span class="spin"></span></div>';
+  let d; try { d = await call('gbl_admin_catalogo'); } catch (e) { v.innerHTML = `<div class="empty">${esc(e.message)}</div>`; return; }
+  const c = d.config || {};
+  const tarjeta = (x, tipo) => `<button type="button" class="cat" data-${tipo}="${x.id}">
+      <span class="cat-img" style="${x.foto ? `background-image:url('${esc(x.foto)}')` : ''}">${x.foto ? '' : 'Sin foto'}${x.activo === false ? '<i>Oculto</i>' : ''}</span>
+      <span class="cat-tx"><b>${esc(x.nombre || x.titulo)}</b><span>${precioTxt(x.precio, x.precio_antes)}${x.duracion ? ` · ${x.duracion} min` : ''}${x.etiqueta ? ` · ${esc(x.etiqueta)}` : ''}${x.vence ? ` · hasta ${dateShort(x.vence)}` : ''}</span></span></button>`;
+  v.innerHTML = `<p class="note" style="margin-top:18px">Todo lo que cambies aquí se ve de una vez en la página de la barbería. <a href="./" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:underline">Ver la página</a></p>
+    <h2 class="sec">Promociones</h2>
+    <div class="cats">${d.promos.map((p) => tarjeta(p, 'pr')).join('')}<button type="button" class="cat cat-add" id="addPr"><span class="cat-img">${PLUS}</span><span class="cat-tx"><b>Nueva promoción</b><span>Con foto, precio y fecha</span></span></button></div>
+    <h2 class="sec">Servicios y precios</h2>
+    <div class="cats">${d.servicios.map((s) => tarjeta(s, 'sv')).join('')}<button type="button" class="cat cat-add" id="addSv"><span class="cat-img">${PLUS}</span><span class="cat-tx"><b>Nuevo servicio</b><span>Aparece en la carta y en reservas</span></span></button></div>
+    <h2 class="sec">Galería de fotos</h2>
+    <div class="gal">${d.galeria.map((g) => `<button type="button" class="gal-it" data-ga="${g.id}" style="background-image:url('${esc(g.foto)}')"><span>${esc(g.titulo || '')}</span></button>`).join('')}
+      <label class="gal-it gal-add" title="Agregar fotos">${PLUS}<span>Agregar fotos</span><input type="file" accept="image/*" multiple id="addGa" hidden></label></div>
+    <h2 class="sec">Textos de la página</h2>
+    <form class="card" id="fTx">
+      <div class="field"><label for="t_tit">Frase principal (sección "La casa")</label><input id="t_tit" maxlength="80" value="${esc(c.casa_titulo || '')}"></div>
+      <div class="field"><label for="t_txt">Texto</label><textarea id="t_txt" rows="4" maxlength="400">${esc(c.casa_texto || '')}</textarea></div>
+      <div class="grid2"><div class="field"><label for="t_meta">Sellos para el premio del Club</label><input id="t_meta" type="number" min="3" max="12" value="${esc(c.meta_sellos)}"></div>
+      <div class="field"><label for="t_pre">Premio del Club</label><input id="t_pre" value="${esc(c.premio || '')}" maxlength="40"></div></div>
+      <div class="field"><label for="t_pag">Métodos de pago</label><input id="t_pag" value="${esc(c.pagos || '')}" maxlength="200"></div>
+      <button class="btn btn-cream btn-sm">Guardar textos</button>
+    </form>`;
+
+  const recargar = async (msg) => { INFO = await rpc('gbl_info'); loadedAt = Date.now(); toast(msg); vistaPagina(); };
+
+  const editarServicio = async (s) => {
+    const nuevo = !s; s = s || { nombre: '', descripcion: '', precio: null, precio_antes: null, duracion: 40, destacado: false, activo: true, foto: null };
+    const p = modal(`<h3>${nuevo ? 'Nuevo servicio' : 'Editar servicio'}</h3>
+      ${campoFoto(s.foto)}
+      <div class="field"><label for="es_n">Nombre</label><input id="es_n" value="${esc(s.nombre)}" maxlength="40"></div>
+      <div class="field"><label for="es_d">Descripción corta</label><input id="es_d" value="${esc(s.descripcion)}" maxlength="90"></div>
+      <div class="grid2"><div class="field"><label for="es_p">Precio (vacío = se cotiza)</label><input id="es_p" type="number" inputmode="numeric" min="0" step="1000" value="${s.precio ?? ''}"></div>
+      <div class="field"><label for="es_a2">Precio antes (para mostrar descuento)</label><input id="es_a2" type="number" inputmode="numeric" min="0" step="1000" value="${s.precio_antes ?? ''}" placeholder="Opcional"></div></div>
+      <div class="field"><label for="es_t">Duración (min)</label><input id="es_t" type="number" min="10" max="240" step="5" value="${s.duracion}"></div>
+      <label class="toggle"><span>Destacado<small>Sale con la etiqueta Signature</small></span><input type="checkbox" id="es_x" ${s.destacado ? 'checked' : ''}></label>
+      <label class="toggle"><span>Visible en la página<small>Si lo apagas, no se puede reservar</small></span><input type="checkbox" id="es_v" ${s.activo ? 'checked' : ''}></label>`,
+      [{ label: 'Cancelar', value: false }, ...(nuevo ? [] : [{ label: 'Eliminar', value: 'del', cls: 'btn-ghost' }]), { label: 'Guardar', value: true, primary: true }]);
+    const foto = conectarFoto();
+    const r = await p; if (!r) return;
+    try {
+      if (r === 'del') {
+        if (!(await confirmBox(`¿Eliminar <b>${esc(s.nombre)}</b>? Si ya tiene turnos, solo se oculta de la página.`, 'Eliminar', 'Cancelar', true))) return;
+        const x = await call('gbl_admin_eliminar_servicio', { p_id: s.id }); return recargar(x.oculto ? 'Tenía turnos: quedó oculto' : 'Servicio eliminado');
+      }
+      const g = (id) => document.getElementById(id);
+      await call('gbl_admin_guardar_servicio', { p_id: s.id || null, p_nombre: g('es_n').value, p_descripcion: g('es_d').value, p_precio: numOrNull(g('es_p').value),
+        p_duracion: parseInt(g('es_t').value, 10), p_destacado: g('es_x').checked, p_activo: g('es_v').checked, p_orden: s.orden ?? null,
+        p_foto: foto.valor, p_precio_antes: numOrNull(g('es_a2').value) });
+      recargar('Servicio guardado');
+    } catch (e) { alertBox(esc(e.message)); }
+  };
+
+  const editarPromo = async (pr) => {
+    const nuevo = !pr; pr = pr || { titulo: '', descripcion: '', precio: null, precio_antes: null, etiqueta: '', vence: null, foto: null, activo: true };
+    const p = modal(`<h3>${nuevo ? 'Nueva promoción' : 'Editar promoción'}</h3>
+      ${campoFoto(pr.foto)}
+      <div class="field"><label for="ep_t">Título</label><input id="ep_t" value="${esc(pr.titulo)}" maxlength="50" placeholder="Martes de barba"></div>
+      <div class="field"><label for="ep_d">Descripción</label><input id="ep_d" value="${esc(pr.descripcion)}" maxlength="160"></div>
+      <div class="grid2"><div class="field"><label for="ep_p">Precio promo</label><input id="ep_p" type="number" inputmode="numeric" min="0" step="1000" value="${pr.precio ?? ''}"></div>
+      <div class="field"><label for="ep_a">Precio normal (tachado)</label><input id="ep_a" type="number" inputmode="numeric" min="0" step="1000" value="${pr.precio_antes ?? ''}" placeholder="Opcional"></div></div>
+      <div class="grid2"><div class="field"><label for="ep_e">Etiqueta</label><input id="ep_e" value="${esc(pr.etiqueta)}" maxlength="24" placeholder="Solo martes, Combo…"></div>
+      <div class="field"><label for="ep_v">Válida hasta (opcional)</label><input id="ep_v" type="date" value="${pr.vence || ''}"></div></div>
+      <label class="toggle"><span>Activa<small>Se muestra en la página. Si tiene fecha, se oculta sola al vencer.</small></span><input type="checkbox" id="ep_on" ${pr.activo ? 'checked' : ''}></label>`,
+      [{ label: 'Cancelar', value: false }, ...(nuevo ? [] : [{ label: 'Eliminar', value: 'del', cls: 'btn-ghost' }]), { label: 'Guardar', value: true, primary: true }]);
+    const foto = conectarFoto();
+    const r = await p; if (!r) return;
+    try {
+      if (r === 'del') {
+        if (!(await confirmBox(`¿Eliminar la promoción <b>${esc(pr.titulo)}</b>?`, 'Eliminar', 'Cancelar', true))) return;
+        await call('gbl_admin_eliminar_promo', { p_id: pr.id }); return recargar('Promoción eliminada');
+      }
+      const g = (id) => document.getElementById(id);
+      await call('gbl_admin_guardar_promo', { p_id: pr.id || null, p_titulo: g('ep_t').value, p_descripcion: g('ep_d').value, p_precio: numOrNull(g('ep_p').value),
+        p_precio_antes: numOrNull(g('ep_a').value), p_etiqueta: g('ep_e').value, p_vence: g('ep_v').value || null, p_foto: foto.valor, p_activo: g('ep_on').checked, p_orden: pr.orden ?? null });
+      recargar('Promoción guardada');
+    } catch (e) { alertBox(esc(e.message)); }
+  };
+
+  const editarFoto = async (gf) => {
+    const p = modal(`<h3>Foto de la galería</h3><div class="foto-edit" style="background-image:url('${esc(gf.foto)}')"></div>
+      <div class="field" style="margin-top:12px"><label for="eg_t">Texto debajo de la foto</label><input id="eg_t" value="${esc(gf.titulo)}" maxlength="40"></div>
+      <div class="field"><label for="eg_o">Posición (1 = primera)</label><input id="eg_o" type="number" min="1" max="16" value="${d.galeria.indexOf(gf) + 1}"></div>`,
+      [{ label: 'Cancelar', value: false }, { label: 'Eliminar', value: 'del', cls: 'btn-ghost' }, { label: 'Guardar', value: true, primary: true }]);
+    const r = await p; if (!r) return;
+    try {
+      if (r === 'del') { await call('gbl_admin_eliminar_foto', { p_id: gf.id }); return recargar('Foto eliminada'); }
+      // Reordena: la foto toma la posición pedida y las demás se corren.
+      const pos = Math.max(1, Math.min(d.galeria.length, parseInt(document.getElementById('eg_o').value, 10) || 1));
+      const lista = d.galeria.filter((x) => x.id !== gf.id); lista.splice(pos - 1, 0, gf);
+      for (let i = 0; i < lista.length; i++) {
+        const x = lista[i];
+        await call('gbl_admin_guardar_foto', { p_id: x.id, p_foto: null, p_titulo: x.id === gf.id ? document.getElementById('eg_t').value : x.titulo, p_orden: i + 1 });
+      }
+      recargar('Galería actualizada');
+    } catch (e) { alertBox(esc(e.message)); }
+  };
+
+  document.getElementById('addSv').onclick = () => editarServicio(null);
+  document.getElementById('addPr').onclick = () => editarPromo(null);
+  v.querySelectorAll('[data-sv]').forEach((b) => b.onclick = () => editarServicio(d.servicios.find((x) => x.id === b.dataset.sv)));
+  v.querySelectorAll('[data-pr]').forEach((b) => b.onclick = () => editarPromo(d.promos.find((x) => x.id === b.dataset.pr)));
+  v.querySelectorAll('[data-ga]').forEach((b) => b.onclick = () => editarFoto(d.galeria.find((x) => x.id === b.dataset.ga)));
+  document.getElementById('addGa').onchange = async (e) => {
+    const files = [...e.target.files]; if (!files.length) return;
+    toast(`Subiendo ${files.length} ${files.length === 1 ? 'foto' : 'fotos'}…`);
+    try { for (const f of files) await call('gbl_admin_guardar_foto', { p_id: null, p_foto: await leerFoto(f), p_titulo: '', p_orden: null }); recargar('Fotos agregadas'); }
+    catch (err) { alertBox(esc(err.message)); vistaPagina(); }
+  };
+  document.getElementById('fTx').onsubmit = async (e) => {
+    e.preventDefault();
+    const g = (id) => document.getElementById(id).value.trim();
+    try {
+      await call('gbl_admin_config', { p_cambios: { casa_titulo: g('t_tit'), casa_texto: g('t_txt'), meta_sellos: Math.max(3, Math.min(12, Number(g('t_meta')) || 5)), premio: g('t_pre') || 'Corte gratis', pagos: g('t_pag') } });
+      recargar('Textos guardados');
+    } catch (err) { alertBox(esc(err.message)); }
+  };
+}
+
+/* ================= AJUSTES: mi perfil, perfiles (admin) y negocio ================= */
 async function vistaAjustes() {
   const v = view();
   v.innerHTML = '<div class="empty" style="margin-top:20px"><span class="spin"></span></div>';
-  let d; try { d = await call('gbl_admin_datos'); } catch (e) { v.innerHTML = `<div class="empty">${esc(e.message)}</div>`; return; }
-  const c = d.config, cerr = (c.dias_cerrados || []).map(String);
+  let d = null;
+  if (ME.es_dueno) { try { d = await call('gbl_admin_datos'); } catch (e) { v.innerHTML = `<div class="empty">${esc(e.message)}</div>`; return; } }
+  const c = d ? d.config : {}, cerr = (c.dias_cerrados || []).map(String);
   const DOW = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
   v.innerHTML = `
-    ${d.ejemplos ? `<div class="card" style="margin-top:18px;border-color:#5a4a2a"><b>Hay ${d.ejemplos} datos de ejemplo</b> (turnos y miembros del Club para mostrar el sistema).
-      <p class="note">Cuando empiecen a usarlo de verdad, bórralos con este botón.</p><button class="btn btn-red btn-sm" id="delEj" style="margin-top:10px">Borrar datos de ejemplo</button></div>` : ''}
+    <h2 class="sec">Mi perfil</h2>
+    <div class="card"><div class="me-card">${avatar(ME)}<div style="flex:1;min-width:0"><b style="font-size:17px">${esc(ME.nombre)}</b>
+      <p class="muted" style="font-size:13px">${ME.es_dueno ? 'Administrador' : 'Barbero'}${ME.especialidad ? ' · ' + esc(ME.especialidad) : ''}</p></div></div>
+      <div class="row" style="margin-top:14px"><button class="btn btn-ghost btn-sm" id="miPerfil">Editar mi perfil</button><button class="btn btn-cream btn-sm" id="miPin">Cambiar mi PIN</button></div></div>
+    ${d ? `
+    ${d.ejemplos ? `<div class="card" style="margin-top:18px;border-color:#5a4a2a"><b>Hay ${d.ejemplos} datos de ejemplo</b> (turnos y miembros del Club).
+      <button class="btn btn-red btn-sm" id="delEj" style="margin-top:10px">Borrar datos de ejemplo</button></div>` : ''}
+    <h2 class="sec">Perfiles</h2>
+    <p class="note" style="margin-top:-6px;margin-bottom:14px">Cada barbero entra con su perfil y su PIN. Los administradores pueden manejar perfiles, la página y los números.</p>
+    <div class="pf-grid" style="justify-content:flex-start">${d.barberos.map((b) => `<button type="button" class="pf" data-eb="${b.id}" style="width:110px;color:var(--cream)">${avatar(b)}<span class="edit">${LAPIZ}</span><b>${esc(b.nombre)}</b>${b.es_dueno ? '<small>Admin</small>' : ''}${b.activo ? '' : '<small style="color:var(--muted)">Pausado</small>'}</button>`).join('')}
+      ${d.barberos.length < 12 ? `<button type="button" class="pf pf-add" id="addBar" style="width:110px"><span class="pf-av">${PLUS}</span><b>Agregar perfil</b></button>` : ''}</div>
     <h2 class="sec">Negocio</h2>
     <form class="card" id="fCfg">
       <div class="grid2"><div class="field"><label for="c_abre">Abre</label><input id="c_abre" type="time" value="${esc(c.hora_abre)}"></div><div class="field"><label for="c_cierra">Cierra</label><input id="c_cierra" type="time" value="${esc(c.hora_cierra)}"></div></div>
@@ -474,18 +846,35 @@ async function vistaAjustes() {
       <div class="field"><label for="c_map">Enlace de Google Maps (opcional)</label><input id="c_map" value="${esc(c.mapa || '')}" placeholder="https://maps.app.goo.gl/…"></div>
       <div class="grid2"><div class="field"><label for="c_int">Turnos cada (minutos)</label><select id="c_int">${[15, 20, 30, 40, 60].map((n) => `<option ${Number(c.intervalo) === n ? 'selected' : ''}>${n}</option>`).join('')}</select></div>
       <div class="field"><label for="c_adel">Se puede reservar con (días)</label><input id="c_adel" type="number" min="1" max="60" value="${esc(c.dias_adelante)}"></div></div>
-      <div class="grid2"><div class="field"><label for="c_meta">Sellos para el premio</label><input id="c_meta" type="number" min="3" max="12" value="${esc(c.meta_sellos)}"></div>
-      <div class="field"><label for="c_pre">Premio del Club</label><input id="c_pre" value="${esc(c.premio || '')}" maxlength="40"></div></div>
       <div class="field"><label for="c_res">Enlace para dejar reseña en Google</label><input id="c_res" value="${esc(c.resena || '')}" placeholder="https://g.page/r/…/review"></div>
-      <div class="field"><label for="c_pag">Métodos de pago (como se muestran en la página)</label><input id="c_pag" value="${esc(c.pagos || '')}" maxlength="200" placeholder="Efectivo · Nequi 300… · Daviplata · Llave Bre-B"></div>
       <button class="btn btn-cream btn-sm">Guardar cambios</button>
-    </form>
-    <h2 class="sec">Equipo</h2>
-    <div class="card"><div id="lBar">${d.barberos.map((b) => `<div class="list-item"><div><b>${esc(b.nombre)}${b.es_dueno ? ' · Dueño' : ''}${b.activo ? '' : ' · inactivo'}</b><span>${esc(b.especialidad)}</span></div><button class="btn btn-ghost btn-sm" data-eb="${b.id}">Editar</button></div>`).join('')}</div>
-      <button class="btn btn-cream btn-sm" id="addBar" style="margin-top:12px">+ Agregar barbero</button></div>
-    <h2 class="sec">Servicios y precios</h2>
-    <div class="card"><div id="lSvc">${d.servicios.map((s) => `<div class="list-item"><div><b>${esc(s.nombre)}${s.destacado ? ' ✦' : ''}${s.activo ? '' : ' · oculto'}</b><span>${s.precio != null ? money(s.precio) : 'Se cotiza'} · ${s.duracion} min</span></div><button class="btn btn-ghost btn-sm" data-es="${s.id}">Editar</button></div>`).join('')}</div>
-      <button class="btn btn-cream btn-sm" id="addSvc" style="margin-top:12px">+ Agregar servicio</button></div>`;
+      <p class="note">Precios, promociones, fotos y textos se cambian en la pestaña Página.</p>
+    </form>` : ''}`;
+
+  document.getElementById('miPerfil').onclick = async () => {
+    const p = modal(`<h3>Mi perfil</h3>
+      <div class="field" style="margin-top:12px"><label for="mp_n">Nombre</label><input id="mp_n" value="${esc(ME.nombre)}" maxlength="30"></div>
+      <div class="field"><label for="mp_e">Especialidad</label><input id="mp_e" value="${esc(ME.especialidad || '')}" maxlength="60" placeholder="Fades, diseños…"></div>
+      <div class="field"><label>Color</label>${colorPicker(ME.color)}</div><div class="field"><label>Ícono</label>${iconPicker(ME.icono)}</div>`,
+      [{ label: 'Cancelar', value: false }, { label: 'Guardar', value: true, primary: true }]);
+    if (!(await p)) return;
+    try {
+      const r = await call('gbl_mi_perfil', { p_nombre: document.getElementById('mp_n').value, p_especialidad: document.getElementById('mp_e').value, p_color: radio('pcol') || ME.color, p_icono: radio('pico') || ME.icono });
+      ME = Object.assign(ME, r); INFO = await rpc('gbl_info'); toast('Perfil actualizado'); TAB = 'ajustes'; arrancar();
+    } catch (e) { alertBox(esc(e.message)); }
+  };
+  document.getElementById('miPin').onclick = async () => {
+    const p = modal(`<h3>Cambiar mi PIN</h3><p class="muted">De 3 a 6 números. Es solo tuyo: no lo compartas.</p>
+      <div class="field" style="margin-top:12px"><label for="pn_a">PIN actual</label><input id="pn_a" type="password" inputmode="numeric" maxlength="6" autocomplete="off"></div>
+      <div class="field"><label for="pn_n">PIN nuevo</label><input id="pn_n" type="password" inputmode="numeric" maxlength="6" autocomplete="off"></div>
+      <div class="field"><label for="pn_c">Repite el PIN nuevo</label><input id="pn_c" type="password" inputmode="numeric" maxlength="6" autocomplete="off"></div>`,
+      [{ label: 'Cancelar', value: false }, { label: 'Cambiar PIN', value: true, primary: true }]);
+    if (!(await p)) return;
+    const g = (id) => document.getElementById(id).value.trim();
+    if (g('pn_n') !== g('pn_c')) { alertBox('Los dos PIN nuevos no coinciden.'); return; }
+    try { await call('gbl_mi_pin', { p_actual: g('pn_a'), p_nuevo: g('pn_n') }); alertBox('<h3>PIN cambiado</h3>Desde ahora entras con tu PIN nuevo.'); } catch (e) { alertBox(esc(e.message)); }
+  };
+  if (!d) return;
 
   if (d.ejemplos) document.getElementById('delEj').onclick = async () => {
     if (!(await confirmBox('Se borran los turnos y miembros de ejemplo. Lo real no se toca.', 'Borrar', 'Cancelar', true))) return;
@@ -497,52 +886,41 @@ async function vistaAjustes() {
     const cambios = {
       hora_abre: g('c_abre'), hora_cierra: g('c_cierra'), horario_texto: g('c_ht'), whatsapp: g('c_wa').replace(/\D/g, ''),
       instagram: g('c_ig').replace('@', ''), direccion: g('c_dir'), mapa: g('c_map'), intervalo: Number(g('c_int')),
-      dias_adelante: Math.max(1, Math.min(60, Number(g('c_adel')) || 21)), meta_sellos: Math.max(3, Math.min(12, Number(g('c_meta')) || 8)), premio: g('c_pre') || 'Corte gratis', resena: g('c_res'), pagos: g('c_pag'),
+      dias_adelante: Math.max(1, Math.min(60, Number(g('c_adel')) || 21)), resena: g('c_res'),
       dias_cerrados: [...document.querySelectorAll('.dow input:checked')].map((x) => x.value)
     };
     if (cambios.hora_cierra <= cambios.hora_abre) { alertBox('La hora de cierre debe ser después de la de apertura.'); return; }
     try { await call('gbl_admin_config', { p_cambios: cambios }); INFO = await rpc('gbl_info'); loadedAt = Date.now(); toast('Guardado'); } catch (err) { alertBox(esc(err.message)); }
   };
+
   const editarBarbero = async (b) => {
-    const nuevo = !b; b = b || { nombre: '', especialidad: '', activo: true, es_dueno: false, orden: d.barberos.length + 1 };
-    const ok = await modal(`<h3>${nuevo ? 'Nuevo barbero' : 'Editar barbero'}</h3>
-      <div class="field" style="margin-top:12px"><label for="eb_n">Nombre</label><input id="eb_n" value="${esc(b.nombre)}" maxlength="40"></div>
+    const nuevo = !b, yo = b && b.id === ME.id;
+    b = b || { nombre: `Barbero ${d.barberos.length + 1}`, especialidad: '', activo: true, es_dueno: false, color: COLORES[d.barberos.length % COLORES.length], icono: Object.keys(ICONOS)[d.barberos.length % 8] };
+    const p = modal(`<h3>${nuevo ? 'Nuevo perfil' : 'Editar perfil'}</h3>
+      <div class="field" style="margin-top:12px"><label for="eb_n">Nombre</label><input id="eb_n" value="${esc(b.nombre)}" maxlength="30"></div>
       <div class="field"><label for="eb_e">Especialidad</label><input id="eb_e" value="${esc(b.especialidad)}" maxlength="60" placeholder="Fades, diseños…"></div>
-      <div class="field"><label for="eb_p">PIN ${nuevo ? '(4 a 6 números)' : '(déjalo vacío para no cambiarlo)'}</label><input id="eb_p" inputmode="numeric" maxlength="6" autocomplete="off"></div>
-      <div class="grid2"><label class="field" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="eb_a" ${b.activo ? 'checked' : ''}> Activo</label>
-      <label class="field" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="eb_d" ${b.es_dueno ? 'checked' : ''}> Acceso de dueño</label></div>`,
-      [{ label: 'Cancelar', value: false }, { label: 'Guardar', value: true, primary: true }]);
-    if (!ok) return;
+      <div class="field"><label>Color</label>${colorPicker(b.color)}</div>
+      <div class="field"><label>Ícono</label>${iconPicker(b.icono)}</div>
+      <div class="field"><label for="eb_p">PIN ${nuevo ? '(3 a 6 números)' : '(vacío = no cambiarlo)'}</label><input id="eb_p" inputmode="numeric" maxlength="6" autocomplete="off"></div>
+      <label class="toggle"><span>Administrador<small>Maneja perfiles, la página, los números y el Club completo</small></span><input type="checkbox" id="eb_d" ${b.es_dueno ? 'checked' : ''} ${yo ? 'disabled' : ''}></label>
+      <label class="toggle"><span>Activo<small>Si lo pausas, no puede entrar ni recibir reservas</small></span><input type="checkbox" id="eb_a" ${b.activo ? 'checked' : ''} ${yo ? 'disabled' : ''}></label>`,
+      [{ label: 'Cancelar', value: false }, ...(nuevo || yo ? [] : [{ label: 'Eliminar', value: 'del', cls: 'btn-ghost' }]), { label: 'Guardar', value: true, primary: true }]);
+    const r = await p; if (!r) return;
     const g = (id) => document.getElementById(id);
     try {
+      if (r === 'del') {
+        if (!(await confirmBox(`¿Eliminar el perfil <b>${esc(b.nombre)}</b>? Ya no podrá entrar al panel. Su historial de turnos se conserva.`, 'Eliminar', 'Cancelar', true))) return;
+        await call('gbl_admin_eliminar_barbero', { p_id: b.id }); INFO = await rpc('gbl_info'); toast('Perfil eliminado'); return vistaAjustes();
+      }
       await call('gbl_admin_guardar_barbero', { p_id: b.id || null, p_nombre: g('eb_n').value, p_especialidad: g('eb_e').value, p_pin: g('eb_p').value.trim() || null,
-        p_activo: g('eb_a').checked, p_es_dueno: g('eb_d').checked, p_orden: b.orden });
-      INFO = await rpc('gbl_info'); toast('Equipo actualizado'); vistaAjustes();
+        p_activo: g('eb_a').checked, p_es_dueno: g('eb_d').checked, p_orden: b.orden ?? null, p_color: radio('pcol') || b.color, p_icono: radio('pico') || b.icono });
+      INFO = await rpc('gbl_info');
+      if (yo) { ME = await rpc('gbl_yo', { p_token: TOKEN }); TAB = 'ajustes'; arrancar(); }
+      toast(nuevo ? 'Perfil creado' : 'Perfil actualizado'); if (!yo) vistaAjustes();
     } catch (e) { alertBox(esc(e.message)); }
   };
-  const editarServicio = async (s) => {
-    const nuevo = !s; s = s || { nombre: '', descripcion: '', precio: null, duracion: 40, destacado: false, activo: true, orden: d.servicios.length + 1 };
-    const ok = await modal(`<h3>${nuevo ? 'Nuevo servicio' : 'Editar servicio'}</h3>
-      <div class="field" style="margin-top:12px"><label for="es_n">Nombre</label><input id="es_n" value="${esc(s.nombre)}" maxlength="40"></div>
-      <div class="field"><label for="es_d">Descripción corta</label><input id="es_d" value="${esc(s.descripcion)}" maxlength="90"></div>
-      <div class="grid2"><div class="field"><label for="es_p">Precio (vacío = se cotiza)</label><input id="es_p" type="number" inputmode="numeric" min="0" step="1000" value="${s.precio != null ? s.precio : ''}"></div>
-      <div class="field"><label for="es_t">Duración (min)</label><input id="es_t" type="number" min="10" max="240" step="10" value="${s.duracion}"></div></div>
-      <div class="grid2"><label class="field" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="es_x" ${s.destacado ? 'checked' : ''}> Destacado</label>
-      <label class="field" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="es_a" ${s.activo ? 'checked' : ''}> Visible en la página</label></div>`,
-      [{ label: 'Cancelar', value: false }, { label: 'Guardar', value: true, primary: true }]);
-    if (!ok) return;
-    const g = (id) => document.getElementById(id);
-    try {
-      await call('gbl_admin_guardar_servicio', { p_id: s.id || null, p_nombre: g('es_n').value, p_descripcion: g('es_d').value,
-        p_precio: g('es_p').value === '' ? null : parseInt(g('es_p').value, 10), p_duracion: parseInt(g('es_t').value, 10),
-        p_destacado: g('es_x').checked, p_activo: g('es_a').checked, p_orden: s.orden });
-      INFO = await rpc('gbl_info'); toast('Servicios actualizados'); vistaAjustes();
-    } catch (e) { alertBox(esc(e.message)); }
-  };
-  document.getElementById('addBar').onclick = () => editarBarbero(null);
-  document.getElementById('addSvc').onclick = () => editarServicio(null);
-  v.querySelectorAll('[data-eb]').forEach((b) => b.onclick = () => editarBarbero(d.barberos.find((x) => x.id === b.dataset.eb)));
-  v.querySelectorAll('[data-es]').forEach((b) => b.onclick = () => editarServicio(d.servicios.find((x) => x.id === b.dataset.es)));
+  document.getElementById('addBar') && (document.getElementById('addBar').onclick = () => editarBarbero(null));
+  v.querySelectorAll('[data-eb]').forEach((x) => x.onclick = () => editarBarbero(d.barberos.find((y) => y.id === x.dataset.eb)));
 }
 
 /* ================= ARRANQUE ================= */

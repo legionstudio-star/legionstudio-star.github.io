@@ -96,17 +96,34 @@
   .plato .pr{font-family:var(--display);font-weight:800;font-size:20px;background:var(--oro);-webkit-background-clip:text;background-clip:text;color:transparent;}
   .plato p{color:var(--muted);font-size:14.5px;margin-top:8px;max-width:440px;}
   .plato .meta{display:flex;gap:10px;margin-top:10px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#7d7462;}
+  .plato.cf{display:grid;grid-template-columns:104px 1fr;gap:18px;align-items:start;}
+  .plato .ph{width:104px;aspect-ratio:1;border-radius:4px;background:#151310 center/cover no-repeat;border:1px solid rgba(217,181,90,.25);}
+  .plato .antes{font-size:13px;color:#7d7462;text-decoration:line-through;margin-left:6px;font-family:var(--body);font-weight:500;}
+  @media (max-width:520px){.plato.cf{grid-template-columns:76px 1fr;gap:14px;} .plato .ph{width:76px;}}
+  .promos{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;}
+  .promo{position:relative;border-radius:6px;overflow:hidden;border:1px solid rgba(217,181,90,.35);background:#0e0c09;text-align:left;padding:0;display:flex;flex-direction:column;transition:transform .3s,box-shadow .3s;}
+  .promo:hover{transform:translateY(-4px);box-shadow:0 18px 40px -18px rgba(217,181,90,.4);}
+  .promo .pimg{aspect-ratio:16/10;background:#151310 center/cover no-repeat;position:relative;}
+  .promo .pimg::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 40%,rgba(7,6,5,.9));}
+  .promo .tag2{position:absolute;top:12px;left:12px;z-index:1;background:var(--oro);color:#120e07;font-size:10.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;padding:5px 10px;}
+  .promo .pbody{padding:16px 18px 20px;}
+  .promo h3{font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:19px;}
+  .promo p{color:var(--muted);font-size:14px;margin-top:6px;}
+  .promo .pp{display:flex;align-items:baseline;gap:10px;margin-top:12px;}
+  .promo .pp b{font-family:var(--display);font-size:24px;background:var(--oro);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .promo .pp s{color:#7d7462;font-size:14px;}
+  .promo .pp small{margin-left:auto;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#7d7462;}
   .plato .sig{color:#120e07;background:var(--oro);padding:3px 8px;font-weight:700;letter-spacing:.16em;}
   @media (max-width:860px){.carta{grid-template-columns:1fr;} .plato h3,.plato .pr{font-size:17px;}}
 
   /* ambiente */
-  .galeria{display:grid;grid-template-columns:1.3fr 1fr 1fr;grid-template-rows:280px 280px;gap:14px;}
+  .galeria{display:grid;grid-template-columns:1.3fr 1fr 1fr;grid-auto-rows:280px;gap:14px;}
   .galeria figure{position:relative;overflow:hidden;border-radius:4px;}
   .galeria figure:first-child{grid-row:span 2;}
   .galeria img{width:100%;height:100%;object-fit:cover;transition:transform 1.4s cubic-bezier(.2,.8,.2,1);}
   .galeria figure:hover img{transform:scale(1.07);}
   .galeria figcaption{position:absolute;left:18px;bottom:16px;font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--cream);text-shadow:0 2px 12px #000;}
-  @media (max-width:760px){.galeria{grid-template-columns:1fr 1fr;grid-template-rows:300px 200px 200px;} .galeria figure:first-child{grid-column:span 2;grid-row:auto;}}
+  @media (max-width:760px){.galeria{grid-template-columns:1fr 1fr;grid-auto-rows:200px;} .galeria figure:first-child{grid-column:span 2;grid-row:auto;}}
 
   /* equipo */
   .equipo{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px;}
@@ -242,10 +259,17 @@
     <div class="foto reveal"><img id="parallax" src="assets/img/navaja_v.webp" alt="Navaja de barbero" loading="lazy"></div>
     <div class="reveal">
       <span class="tag">La casa</span>
-      <p class="grande" style="margin-top:20px">No es un corte.<br>Es un <em>ritual.</em></p>
-      <p class="txt">Toalla caliente, navaja, asesoría de estilo y el tiempo que tu corte merece. Aquí no hay afán: cada detalle se hace a mano y se termina perfecto.</p>
+      <p class="grande" id="casaTit" style="margin-top:20px">No es un corte.<br>Es un <em>ritual.</em></p>
+      <p class="txt" id="casaTxt">Toalla caliente, navaja, asesoría de estilo y el tiempo que tu corte merece. Aquí no hay afán: cada detalle se hace a mano y se termina perfecto.</p>
       <div class="cifras"><div><b id="nSvc">5</b><small>Servicios</small></div><div><b>100%</b><small>A mano</small></div><div><b>24/7</b><small>Reservas</small></div></div>
     </div>
+  </div>
+</section>
+
+<section id="promos" style="padding-top:0" hidden>
+  <div class="wrap">
+    <div class="head reveal"><div><span class="tag">Solo por tiempo limitado</span><h2 class="titulo">Promociones <em>de la casa</em></h2></div></div>
+    <div class="promos" id="promosBox"></div>
   </div>
 </section>
 
@@ -260,7 +284,7 @@
   <div class="wrap">
     <div class="head reveal"><div><span class="tag">Ambiente</span><h2 class="titulo">Bienvenido <em>a la casa</em></h2></div>
       <a class="btn btn-ghost btn-sm" id="igLink" href="#" target="_blank" rel="noopener" hidden>Ver en Instagram</a></div>
-    <div class="galeria reveal">
+    <div class="galeria reveal" id="galBox">
       <figure><img src="assets/img/trono_v.webp" alt="La silla" loading="lazy"><figcaption>La silla</figcaption></figure>
       <figure><img src="assets/img/fade_h.webp" alt="Fade perfecto" loading="lazy"><figcaption>El fade</figcaption></figure>
       <figure><img src="assets/img/navaja_h.webp" alt="Navaja" loading="lazy"><figcaption>La navaja</figcaption></figure>
@@ -415,7 +439,7 @@ const nowMinBogota = () => toMin(INFO.ahora) + Math.floor((Date.now() - loadedAt
 async function init() {
   try { INFO = await rpc('gbl_info'); loadedAt = Date.now(); CFG = INFO.config || {}; }
   catch (e) { document.getElementById('services').innerHTML = `<div class="hint">${esc(e.message)}</div>`; return; }
-  paintInfo(); paintServices(); paintBarbers(); paintDays(); paintSummary(); paintMine();
+  paintInfo(); paintPromos(); paintGaleria(); paintServices(); paintBarbers(); paintDays(); paintSummary(); paintMine();
   if (location.hash === '#agenda' || location.hash === '#pagos' || location.hash === '#resena') setTimeout(() => document.querySelector(location.hash).scrollIntoView(), 300);
 }
 
@@ -431,6 +455,11 @@ function paintInfo() {
   if (CFG.direccion) document.getElementById('dirTxt').textContent = CFG.direccion;
   document.getElementById('vDir').href = CFG.mapa || `https://www.google.com/maps/search/${encodeURIComponent('God\'s Blessing Barbería ' + (CFG.direccion || ''))}`;
   document.getElementById('nSvc').textContent = INFO.servicios.length;
+  if (CFG.casa_titulo) {   // la última palabra va en dorado, como en el diseño
+    const t = String(CFG.casa_titulo).trim(), k = t.lastIndexOf(' ');
+    document.getElementById('casaTit').innerHTML = k > 0 ? `${esc(t.slice(0, k))} <em>${esc(t.slice(k + 1))}</em>` : esc(t);
+  }
+  if (CFG.casa_texto) document.getElementById('casaTxt').textContent = CFG.casa_texto;
   const met = String(CFG.pagos || 'Efectivo').split(/·|,|\n/).map((s) => s.trim()).filter(Boolean);
   document.getElementById('metodos').innerHTML = met.map((m) => `<span>${esc(m)}</span>`).join('');
   const rs = document.getElementById('btnResena');
@@ -444,15 +473,30 @@ function paintInfo() {
   }
 }
 
+// Promociones y galería: las edita el barbero administrador desde su panel (pestaña Página).
+function paintPromos() {
+  const ps = INFO.promos || [], sec = document.getElementById('promos');
+  sec.hidden = !ps.length; if (!ps.length) return;
+  document.getElementById('promosBox').innerHTML = ps.map((p) => `<a class="promo reveal in" href="#agenda">
+      <div class="pimg" style="${p.foto ? `background-image:url('${esc(p.foto)}')` : ''}">${p.etiqueta ? `<span class="tag2">${esc(p.etiqueta)}</span>` : ''}</div>
+      <div class="pbody"><h3>${esc(p.titulo)}</h3>${p.descripcion ? `<p>${esc(p.descripcion)}</p>` : ''}
+      <div class="pp">${p.precio != null ? `<b>${money(p.precio)}</b>` : ''}${p.precio_antes ? `<s>${money(p.precio_antes)}</s>` : ''}${p.vence ? `<small>Hasta ${esc(dateShort(p.vence))}</small>` : ''}</div></div></a>`).join('');
+}
+function paintGaleria() {
+  const g = INFO.galeria || [];
+  if (!g.length) return;   // sin fotos cargadas se quedan las de la casa
+  document.getElementById('galBox').innerHTML = g.map((f) => `<figure><img src="${esc(f.foto)}" alt="${esc(f.titulo || 'God’s Blessing')}" loading="lazy">${f.titulo ? `<figcaption>${esc(f.titulo)}</figcaption>` : ''}</figure>`).join('');
+}
+
 function paintServices() {
   const box = document.getElementById('services'), chips = document.getElementById('svcChips');
   box.innerHTML = ''; chips.innerHTML = '';
   INFO.servicios.forEach((s) => {
     const precio = s.precio != null ? money(s.precio) : 'Se cotiza';
     const b = document.createElement('button');
-    b.type = 'button'; b.className = 'plato reveal in';
-    b.innerHTML = `<div class="l1"><h3>${esc(s.nombre)}</h3><span class="pts"></span><span class="pr">${precio}</span></div><p>${esc(s.descripcion)}</p>
-      <div class="meta">${s.destacado ? '<span class="sig">Signature</span>' : ''}<span>${s.duracion} min</span></div>`;
+    b.type = 'button'; b.className = 'plato reveal in' + (s.foto ? ' cf' : '');
+    b.innerHTML = `${s.foto ? `<span class="ph" style="background-image:url('${esc(s.foto)}')"></span>` : ''}<div><div class="l1"><h3>${esc(s.nombre)}</h3><span class="pts"></span><span class="pr">${precio}${s.precio_antes ? `<span class="antes">${money(s.precio_antes)}</span>` : ''}</span></div><p>${esc(s.descripcion)}</p>
+      <div class="meta">${s.destacado ? '<span class="sig">Signature</span>' : ''}<span>${s.duracion} min</span></div></div>`;
     b.onclick = () => { pickSvc(s.id); agendaEl.scrollIntoView({ behavior: 'smooth' }); };
     box.appendChild(b);
     const c = document.createElement('button');
@@ -471,7 +515,7 @@ function pickSvc(id) {
 function paintBarbers() {
   const box = document.getElementById('barbers'), chips = document.getElementById('barChips');
   box.innerHTML = ''; chips.innerHTML = '';
-  const reales = INFO.barberos.filter((b) => !/^administrador$/i.test(b.nombre));
+  const reales = INFO.barberos.filter((b) => !/^(administrador|barbero \d+)$/i.test(b.nombre));
   document.getElementById('equipo').hidden = !reales.length;
   reales.forEach((b) => {
     const card = document.createElement('div');
