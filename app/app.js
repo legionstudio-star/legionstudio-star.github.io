@@ -69,10 +69,21 @@
         .sel-op small{display:block;color:rgba(255,255,255,.78);font-size:.86rem;margin-top:3px}
         .sel-op i{flex:none;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:var(--k);color:#111}
         .sel-pie{text-align:center;color:rgba(255,255,255,.4);font-size:.75rem;padding-top:6px}
+        .sel.muchos{display:grid;grid-template-columns:1fr 1fr;align-content:start}
+        .sel.muchos .sel-top,.sel.muchos .sel-pie{grid-column:1/-1}
+        .sel.muchos .sel-op{min-height:168px;padding:13px;border-radius:20px;flex-direction:column;align-items:stretch;justify-content:flex-end}
+        .sel.muchos .sel-op span{flex:none}
+        .sel.muchos .sel-op:first-of-type{grid-column:1/-1;min-height:190px}
+        .sel.muchos .sel-op:nth-of-type(even):last-of-type{grid-column:1/-1;min-height:170px}
+        .sel.muchos .sel-op b{font-size:1.12rem}
+        .sel.muchos .sel-op small{font-size:.76rem;line-height:1.25}
+        .sel.muchos .sel-op em{font-size:.6rem;letter-spacing:.12em;padding:3px 8px;margin-bottom:5px}
+        .sel.muchos .sel-op i{position:absolute;top:10px;right:10px;width:32px;height:32px}
+        .sel.muchos .sel-op i svg{width:16px;height:16px}
         @keyframes sel-in{to{opacity:1;transform:none}}
         @keyframes sel-zoom{from{transform:scale(1)}to{transform:scale(1.1)}}
       </style>
-      <main class="sel">
+      <main class="sel${(N.opciones || []).length > 4 ? " muchos" : ""}">
         <div class="sel-top"><img src="${e(N.logo || "/marca/logo-legion.png")}" alt=""><div><b>${e(N.titulo || "¿Qué negocio quieres ver?")}</b><small>${e(N.subtitulo || "Toca una opción")}</small></div></div>
         ${(N.opciones || []).map((o, i) => `
           <a class="sel-op" href="/${encodeURIComponent(o.slug)}/" style="--k:${e(o.color || "#F5B942")};animation-delay:${i * 0.12}s">
@@ -193,7 +204,7 @@
   /* ---------- Botones ---------- */
   const tieneMenu = N.menu && N.menu.categorias && N.menu.categorias.length;
   const BOTONES = {
-    menu: () => tieneMenu && { i: "menu", t: "Ver menú", s: "Platos y precios", accion: "menu" },
+    menu: () => tieneMenu && { i: "menu", t: (N.menu.boton && N.menu.boton.t) || "Ver menú", s: (N.menu.boton && N.menu.boton.s) || "Platos y precios", accion: "menu" },
     domicilio: () => ({ i: "moto", t: "Domicilios", s: N.menu && N.menu.carrito ? "Arma tu pedido" : "Pide por WhatsApp",
       accion: N.menu && N.menu.carrito ? "menu" : null, href: wa(`Hola ${N.nombre}, quiero hacer un pedido a domicilio.`) }),
     reservar: () => ({ i: "calendario", t: "Reservar", s: "Aparta tu mesa", href: wa(`Hola ${N.nombre}, quiero reservar una mesa. Día: __ · Hora: __ · Personas: __`) }),
@@ -239,7 +250,7 @@
         </div>
         <nav class="hv-acc">
           ${(() => { const dx = (N.extras || []).filter((b) => b && b.destacado && b.url); window.__hvx = dx; return !tieneMenu && dx[0] ? `<a class="hv-b dest" href="${dx[0].url}">${ic(SVG[dx[0].i] ? dx[0].i : "flecha")}<span><b>${esc(dx[0].t)}</b><small>${esc(dx[0].s || "")}</small></span>${ic("flecha", "icon fl")}</a>` : ""; })()}
-          ${tieneMenu ? `<button type="button" class="hv-b dest" data-accion="menu">${ic(N.menu.vista === "3d" || N.menu.vista === "vitrina" ? "cubo" : "menu")}<span><b>${N.menu.vista === "vitrina" ? "Vitrina 3D" : N.menu.vista === "3d" ? "Carta 3D" : "Ver menú"}</b><small>${N.menu.vista === "vitrina" ? "Desliza y antójate de todo" : N.menu.vista === "3d" ? "Desliza y mira cada bebida" : "Fotos, precios y pedido"}</small></span>${ic("flecha", "icon fl")}</button>` : ""}
+          ${tieneMenu ? `<button type="button" class="hv-b dest" data-accion="menu">${ic(N.menu.vista === "3d" || N.menu.vista === "vitrina" ? "cubo" : "menu")}<span><b>${N.menu.boton ? esc(N.menu.boton.t) : N.menu.vista === "vitrina" ? "Vitrina 3D" : N.menu.vista === "3d" ? "Carta 3D" : "Ver menú"}</b><small>${N.menu.boton ? esc(N.menu.boton.s || "") : N.menu.vista === "vitrina" ? "Desliza y antójate de todo" : N.menu.vista === "3d" ? "Desliza y mira cada producto" : "Fotos, precios y pedido"}</small></span>${ic("flecha", "icon fl")}</button>` : ""}
           <a class="hv-b" href="${N.google ? "#google" : N.resenas}" ${N.google ? "" : 'target="_blank" rel="noopener"'}>${ic("estrella")}<span><b>Reseñas</b><small>${N.google ? String((+N.google.nota).toFixed(1)).replace(".", ",") + " en Google" : "Califícanos"}</small></span></a>
           ${(() => { const x = window.__hvx[tieneMenu ? 0 : 1]; return x ? `<a class="hv-b" href="${x.url}">${ic(SVG[x.i] ? x.i : "flecha")}<span><b>${esc(x.t)}</b><small>${esc(x.s || "")}</small></span></a>` : ""; })() || (N.premio ? `<button type="button" class="hv-b" data-accion="premio">${ic("regalo")}<span><b>Premio</b><small>Gira y gana</small></span></button>` : N.mapa ? `<a class="hv-b" href="#${N.google ? "google" : "ubicacion"}">${ic("pin")}<span><b>Ubicación</b><small>Cómo llegar</small></span></a>` : "")}
           ${N.whatsapp ? `<a class="hv-b wa" href="${wa(`Hola ${N.nombre}, vengo de su página.`)}" target="_blank" rel="noopener">${ic("wa")}<span><b>WhatsApp</b><small>Escríbenos</small></span></a>` : ""}
@@ -532,7 +543,7 @@
 
     document.body.insertAdjacentHTML("beforeend", `
       <div class="hoja${vitrina ? " vitrina" : ""}" id="h-menu" role="dialog" aria-modal="true" aria-label="Menú">
-        <div class="hoja-top"><button class="btn-icono" type="button" data-volver aria-label="Volver">${ic("atras")}</button><h2>Menú · ${esc(N.nombre)}</h2></div>
+        <div class="hoja-top"><button class="btn-icono" type="button" data-volver aria-label="Volver">${ic("atras")}</button><h2>${esc(N.menu.titulo || "Menú")} · ${esc(N.nombre)}</h2></div>
         <div class="hoja-cuerpo" id="menu-cuerpo">
           ${vitrina ? `<section class="vt" id="vt" aria-label="Los favoritos">
             <div class="vt-pista" id="vt-pista">${DEST.map((k) => { const it = ITEMS[k], f = fotosDe(it)[0]; return `
