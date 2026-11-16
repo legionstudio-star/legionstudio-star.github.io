@@ -12,6 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/gb.css">
+<link rel="stylesheet" href="assets/profile.css">
 <style>
   body{min-height:100svh;}
   .shell{max-width:980px;margin:0 auto;padding:0 16px 100px;}
@@ -118,6 +119,8 @@
 <div id="root"><div style="text-align:center;padding:90px 0"><span class="spin"></span></div></div>
 
 <script src="assets/gb.js"></script>
+<script src="assets/booking-model.js"></script>
+<script src="assets/profile-panel.js"></script>
 <script>
 const { rpc, esc, money, toMin, fromMin, time12, addDays, parseDate, dateLong, dateShort, telFmt, waLink, modal, alertBox, confirmBox, toast } = GB;
 const TK = 'ghetto_panel_token';
@@ -141,11 +144,13 @@ function logout(expired) { localStorage.removeItem(TK); TOKEN = null; ME = null;
 
 /* ================= LOGIN ================= */
 function vistaLogin(err) {
-  let quien = INFO.barberos.length === 1 ? INFO.barberos[0].id : null, pin = '';
+  const accesos = INFO.accesos || INFO.barberos;
+  let quien = accesos.length === 1 ? accesos[0].id : null, pin = '', entering = false;
   root.innerHTML = `<div class="login">
     <a href="./"><img src="assets/img/logo-ghetto-oscuro.png" alt="Ghetto Barbershop SM"></a>
-    <h1>Panel de barberos</h1>
-    <div class="who" id="who">${INFO.barberos.map((b) => `<button type="button" data-id="${b.id}" class="${b.id === quien ? 'on' : ''}">${esc(b.nombre)}</button>`).join('')}</div>
+    <h1>¿Quién va a trabajar?</h1>
+    <div class="who" id="who">${accesos.map((b) => `<button type="button" data-id="${b.id}" class="${b.id === quien ? 'on' : ''}">${GhettoBooking.safeImage(b.foto) ? `<img src="${esc(b.foto)}" alt="">` : `<span class="profile-initial">${esc(b.nombre[0])}</span>`}<span>${esc(b.nombre)}</span></button>`).join('')}</div>
+    <p class="note">Elige tu perfil, escribe tu PIN y toca la flecha.</p>
     <div class="pin-dots" id="dots" aria-label="PIN">${'<i></i>'.repeat(4)}</div>
     <div class="pad" id="pad">${[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => `<button type="button" data-k="${n}">${n}</button>`).join('')}<button type="button" data-k="del" aria-label="Borrar">⌫</button><button type="button" data-k="0">0</button><button type="button" data-k="ok" aria-label="Entrar">→</button></div>
     <div class="msg" id="m" role="alert">${esc(err || '')}</div></div>`;
@@ -153,19 +158,22 @@ function vistaLogin(err) {
   const paint = () => { const n = Math.max(4, pin.length); dots.innerHTML = Array.from({ length: n }, (_, i) => `<i class="${i < pin.length ? 'f' : ''}"></i>`).join(''); };
   document.getElementById('who').onclick = (e) => { const b = e.target.closest('button'); if (!b) return; quien = b.dataset.id; document.querySelectorAll('#who button').forEach((x) => x.classList.toggle('on', x === b)); m.textContent = ''; };
   async function go() {
+    if (entering) return;
     if (!quien) { m.textContent = 'Toca tu nombre arriba.'; return; }
-    if (pin.length < 4) return;
+    if (pin.length < 3) { m.textContent = 'Escribe tu PIN y toca la flecha para entrar.'; return; }
+    entering = true;
     try {
       const r = await rpc('gb_login', { p_barbero: quien, p_pin: pin });
+      if (!r || !r.token) throw new Error('No se pudo iniciar la sesión. Intenta de nuevo.');
       TOKEN = r.token; localStorage.setItem(TK, TOKEN); ME = r; arrancar();
-    } catch (e) { m.textContent = e.message; pin = ''; paint(); dots.classList.remove('err'); void dots.offsetWidth; dots.classList.add('err'); }
+    } catch (e) { m.textContent = e.message; pin = ''; paint(); dots.classList.remove('err'); void dots.offsetWidth; dots.classList.add('err'); } finally { entering = false; }
   }
   function key(k) {
     if (k === 'del') pin = pin.slice(0, -1);
     else if (k === 'ok') return go();
     else if (pin.length < 6) pin += k;
     paint();
-    if (pin.length === 4 && /^\d+$/.test(k)) setTimeout(() => { if (pin.length === 4) go(); }, 250);
+
   }
   document.getElementById('pad').onclick = (e) => { const b = e.target.closest('button'); if (b) key(b.dataset.k); };
   document.onkeydown = (e) => { if (!document.getElementById('pad')) return; if (/^\d$/.test(e.key)) key(e.key); else if (e.key === 'Backspace') key('del'); else if (e.key === 'Enter') key('ok'); };
@@ -174,23 +182,31 @@ function vistaLogin(err) {
 /* ================= ESTRUCTURA ================= */
 function arrancar() {
   fecha = fecha || INFO.hoy;
-  const tabs = ME.es_dueno ? ['agenda', 'club', 'numeros', 'ajustes'] : ['agenda', 'club'];
-  const label = { agenda: 'Agenda', club: 'Club', numeros: 'Números', ajustes: 'Ajustes' };
+  const tabs = ME.es_dueno ? ['agenda', 'club', 'numeros', 'perfil', 'ajustes'] : ['agenda', 'club', 'perfil'];
+  const label = { agenda: 'Agenda', club: 'Club', numeros: 'Números', ajustes: 'Ajustes', perfil: 'Mi perfil' };
   root.innerHTML = `<div class="bar"><div class="bar-in"><a href="./"><img src="assets/img/logo-ghetto-oscuro.png" alt="Ghetto Barbershop SM"></a>
       <div class="me"><b>${esc(ME.nombre)}${ME.es_dueno ? ' · Dueño' : ''}</b><button type="button" id="out">Salir</button></div></div></div>
     <main class="shell" id="view"></main>
-    <nav class="tabs">${tabs.map((t) => `<button type="button" data-t="${t}">${ICON[t]}${label[t]}</button>`).join('')}</nav>`;
+    <nav class="tabs">${tabs.map((t) => `<button type="button" data-t="${t}">${ICON[t] || ICON.ajustes}${label[t]}</button>`).join('')}</nav>`;
   document.getElementById('out').onclick = async () => { try { await rpc('gb_logout', { p_token: TOKEN }); } catch (e) {} logout(); };
   document.querySelector('.tabs').onclick = (e) => { const b = e.target.closest('button'); if (b) ir(b.dataset.t); };
-  ir(TAB);
+  if (ME.requiere_configuracion) { TAB = 'perfil'; vistaPerfil(true); } else ir(TAB);
 }
 function ir(t) {
+  if (ME.requiere_configuracion) { TAB = 'perfil'; return vistaPerfil(true); }
+  if (['numeros', 'ajustes'].includes(t) && !ME.es_dueno) return;
   TAB = t; stopScan(); clearInterval(refreshTimer);
   document.querySelectorAll('.tabs button').forEach((b) => b.classList.toggle('on', b.dataset.t === t));
-  ({ agenda: vistaAgenda, club: vistaClub, numeros: vistaNumeros, ajustes: vistaAjustes })[t]();
+  ({ agenda: vistaAgenda, club: vistaClub, numeros: vistaNumeros, ajustes: vistaAjustes, perfil: vistaPerfil })[t]();
   scrollTo(0, 0);
 }
 const view = () => document.getElementById('view');
+function vistaPerfil(onboarding = false, barberId = null) {
+  return GhettoProfile.render({ view, call, esc, toast, refresh: async () => {
+    ME = await rpc('gb_yo', { p_token: TOKEN }); INFO = await rpc('gb_info');
+    loadedAt = Date.now(); TAB = 'agenda'; arrancar();
+  } }, { onboarding: onboarding === true, barberId });
+}
 
 /* ================= AGENDA ================= */
 async function vistaAgenda() {
@@ -244,13 +260,13 @@ async function cargarAgenda(silent) {
       const cls = t.estado === 'completado' ? 'done' : (t.estado === 'cancelado' || t.estado === 'no_vino') ? 'off' : '';
       const recordar = `Hola ${t.cliente.split(' ')[0]}! Te recordamos tu turno en Ghetto Barbershop ${fecha === INFO.hoy ? 'hoy' : dateLong(fecha)} a las ${time12(t.hora)} (${t.servicio}). Te esperamos.`;
       let acts = '';
-      if (t.estado === 'pendiente') acts += `<button class="ok" data-a="confirmado">Confirmar</button>`;
+      if (t.estado === 'pendiente' && t.requiere_confirmacion === true) acts += `<button class="ok" data-a="confirmado">Confirmar</button>`;
       if (t.estado === 'pendiente' || t.estado === 'confirmado') acts += `<button class="ok" data-a="completado">Atendido</button><button data-a="no_vino">No vino</button><button data-a="cancelado">Cancelar</button>`;
       if (t.estado === 'cancelado' || t.estado === 'no_vino') acts += `<button data-a="confirmado">Reactivar</button>`;
-      acts += `<a class="wa" href="${waLink(t.tel, recordar)}" target="_blank" rel="noopener">WhatsApp</a>`;
+      if (ME.es_dueno && t.tel) acts += `<a class="wa" href="${waLink(t.tel, recordar)}" target="_blank" rel="noopener">WhatsApp</a>`;
       return `<div class="appt ${cls}" data-id="${t.id}"><div class="h">${time12(t.hora).replace(' ', '<small>')}</small><small>hasta ${time12(fin)}</small></div>
         <div><div class="c">${esc(t.cliente)}<span class="pill p-${t.estado}">${ESTADO[t.estado]}</span>${t.club ? `<span class="pill p-club">Club ${t.club.sellos}</span>` : ''}</div>
-        <div class="s">${esc(t.servicio)}${t.valor != null ? ' · ' + money(t.valor) : t.precio != null ? ' · ' + money(t.precio) : ''}${showB ? ' · ' + esc(t.barbero) : ''} · ${telFmt(t.tel)}${t.origen === 'web' ? ' · reservó en la página' : ''}</div>
+        <div class="s">${esc(t.servicio)}${t.valor != null ? ' · ' + money(t.valor) : t.precio != null ? ' · ' + money(t.precio) : ''}${showB ? ' · ' + esc(t.barbero) : ''}${ME.es_dueno && t.tel ? ' · ' + esc(telFmt(t.tel)) : ''}${t.origen === 'web' ? ' · reservó en la página' : ''}</div>
         <div class="acts">${acts}</div></div></div>`;
     }).join('');
   list.querySelectorAll('[data-unb]').forEach((b) => b.onclick = async () => {
@@ -284,14 +300,18 @@ async function cambiarEstado(t, estado) {
 
 async function nuevoTurno() {
   const barbs = ME.es_dueno ? INFO.barberos : INFO.barberos.filter((b) => b.id === ME.id);
-  const ok = await modal(`<h3>Turno en silla</h3><p class="muted">Para clientes que llegan o llaman. Se guarda como confirmado.</p>
+  const selectedBarber = () => barbs.find((b) => b.id === document.getElementById('nb')?.value) || barbs.find((b) => b.id === (filtroBarbero || ME.id)) || barbs[0];
+  const result = modal(`<h3>Turno en silla</h3><p class="muted">Para clientes que llegan o llaman. Se guarda como confirmado.</p>
     ${barbs.length > 1 ? `<div class="field" style="margin-top:14px"><label for="nb">Barbero</label><select id="nb">${barbs.map((b) => `<option value="${b.id}" ${b.id === (filtroBarbero || ME.id) ? 'selected' : ''}>${esc(b.nombre)}</option>`).join('')}</select></div>` : ''}
-    <div class="field" style="margin-top:14px"><label for="ns">Servicio</label><select id="ns">${INFO.servicios.map((s) => `<option value="${s.id}">${esc(s.nombre)} · ${s.duracion} min</option>`).join('')}</select></div>
+    <div class="field" style="margin-top:14px"><label for="ns">Servicio</label><select id="ns">${GhettoBooking.catalog(selectedBarber(), INFO.servicios).map((s) => `<option value="${s.id}">${esc(s.nombre)} · ${s.duracion} min · ${s.precio == null ? 'Se cotiza' : money(s.precio)}</option>`).join('')}</select></div>
     <div class="grid2"><div class="field"><label for="nf">Día</label><input id="nf" type="date" value="${fecha}"></div>
     <div class="field"><label for="nh">Hora</label><input id="nh" type="time" step="300" value="${fecha === INFO.hoy ? fromMin(Math.ceil((toMin(INFO.ahora) + Math.floor((Date.now() - loadedAt) / 60000)) / 10) * 10 % 1440) : INFO.config.hora_abre}"></div></div>
     <div class="field"><label for="nn">Nombre del cliente</label><input id="nn" maxlength="60"></div>
     <div class="field"><label for="nt">WhatsApp</label><input id="nt" type="tel" inputmode="numeric" maxlength="14"></div>`,
     [{ label: 'Cancelar', value: false }, { label: 'Guardar turno', value: true, primary: true }]);
+  const barberSelect = document.getElementById('nb');
+  if (barberSelect) barberSelect.onchange = () => { document.getElementById('ns').innerHTML = GhettoBooking.catalog(selectedBarber(), INFO.servicios).map((s) => `<option value="${esc(s.id)}">${esc(s.nombre)} · ${s.duracion} min · ${s.precio == null ? 'Se cotiza' : money(s.precio)}</option>`).join(''); };
+  const ok = await result;
   if (!ok) return;
   const g = (id) => (document.getElementById(id) || {}).value;
   try {
@@ -327,7 +347,7 @@ function vistaClub() {
   v.innerHTML = `<h2 class="sec">Club Ghetto</h2>
     <div class="card">
       <div class="field" style="margin:0"><label for="q">Buscar cliente</label>
-      <div class="row"><input id="q" placeholder="Código, número o nombre" autocomplete="off" style="flex:1;min-width:0;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:13px 14px;font-size:16px;color-scheme:dark">
+      <div class="row"><input id="q" placeholder="${ME.es_dueno ? 'Código, número o nombre' : 'Código o nombre'}" autocomplete="off" style="flex:1;min-width:0;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:13px 14px;font-size:16px;color-scheme:dark">
       <button class="btn btn-cream btn-sm" id="cam" type="button">Escanear</button></div></div>
       <div id="scanBox"></div>
     </div>
@@ -351,13 +371,13 @@ async function buscar(q) {
 function memberBtn(m) {
   const meta = Number(INFO.config.meta_sellos || 8);
   const b = document.createElement('button'); b.type = 'button'; b.className = 'member';
-  b.innerHTML = `<span class="av">${esc(m.nombre[0])}</span><span class="nm"><b>${esc(m.nombre)}</b><span>${m.sellos}/${meta} sellos · ${telFmt(m.tel)} · ${esc(m.codigo)}</span></span>${m.sellos >= meta ? '<span class="pill p-club">LLENA</span>' : ''}`;
+  b.innerHTML = `<span class="av">${esc(m.nombre[0])}</span><span class="nm"><b>${esc(m.nombre)}</b><span>${m.sellos}/${meta} sellos${ME.es_dueno && m.tel ? ' · ' + esc(telFmt(m.tel)) : ''} · ${esc(m.codigo)}</span></span>${m.sellos >= meta ? '<span class="pill p-club">LLENA</span>' : ''}`;
   b.onclick = () => abrirMiembro(m);
   return b;
 }
 async function abrirMiembro(m) {
   const meta = Number(INFO.config.meta_sellos || 8), lleno = m.sellos >= meta;
-  const html = `<h3>${esc(m.nombre)}</h3><p class="muted">${telFmt(m.tel)} · Código ${esc(m.codigo)} · ${m.visitas} visitas${m.canjes ? ' · ' + m.canjes + ' premios' : ''}</p>
+  const html = `<h3>${esc(m.nombre)}</h3><p class="muted">${ME.es_dueno && m.tel ? esc(telFmt(m.tel)) + ' · ' : ''}Código ${esc(m.codigo)} · ${m.visitas} visitas${m.canjes ? ' · ' + m.canjes + ' premios' : ''}</p>
     <div class="mstamps" style="grid-template-columns:repeat(${Math.min(meta, 8)},1fr)">${Array.from({ length: meta }, (_, i) => `<i class="${i < m.sellos ? 'f' : ''}"></i>`).join('')}</div>
     <p style="font-size:15px">${lleno ? `<b>Tarjeta llena.</b> Le toca: ${esc(INFO.config.premio || 'corte gratis')}.` : `Lleva <b>${m.sellos}</b> de ${meta}.`}</p>`;
   const r = await modal(html, [{ label: 'Cerrar', value: null }, lleno ? { label: 'Canjear premio', value: 'canje', cls: 'btn-red' } : { label: 'Poner sello', value: 'sello', primary: true }]);
@@ -424,20 +444,25 @@ async function cargarMiembros(f) {
 
 /* ================= NÚMEROS (dueño) ================= */
 function vistaNumeros() {
-  const v = view();
-  v.innerHTML = `<h2 class="sec">Números</h2><div class="seg" id="segR"><button data-r="hoy">Hoy</button><button data-r="semana" class="on">7 días</button><button data-r="mes">Este mes</button><button data-r="mes_ant">Mes pasado</button></div><div id="num" style="margin-top:14px"><div class="empty"><span class="spin"></span></div></div>`;
-  document.getElementById('segR').onclick = (e) => { const b = e.target.closest('button'); if (!b) return; document.querySelectorAll('#segR button').forEach((x) => x.classList.toggle('on', x === b)); cargarNumeros(b.dataset.r); };
-  cargarNumeros('semana');
+  const year = Number(INFO.hoy.slice(0, 4));
+  view().innerHTML = `<h2 class="sec">Números del año</h2><div class="field"><label for="numYear">Año</label><input id="numYear" type="number" min="2000" max="${year}" value="${year}" step="1"></div><div id="num" style="margin-top:14px"></div>`;
+  document.getElementById('numYear').onchange = (e) => {
+    const selected = Number(e.target.value);
+    if (!Number.isInteger(selected) || selected < 2000 || selected > year) { e.target.value = year; cargarNumeros(year); return; }
+    cargarNumeros(selected);
+  };
+  cargarNumeros(year);
 }
-async function cargarNumeros(r) {
-  const hoy = INFO.hoy, d = parseDate(hoy);
-  const ini = { hoy, semana: addDays(hoy, -6), mes: hoy.slice(0, 8) + '01', mes_ant: GB.dateStr(new Date(d.getFullYear(), d.getMonth() - 1, 1)) }[r];
-  const fin = r === 'mes_ant' ? GB.dateStr(new Date(d.getFullYear(), d.getMonth(), 0)) : hoy;
+let numberRequest = 0;
+async function cargarNumeros(year) {
+  const request = ++numberRequest;
+  const ini = `${year}-01-01`, fin = `${year}-12-31`;
   const box = document.getElementById('num');
   try {
     const x = await call('gb_admin_resumen', { p_desde: ini, p_hasta: fin });
+    if (request !== numberRequest || TAB !== 'numeros') return;
     const tot = x.por_barbero.reduce((a, b) => ({ c: a.c + b.completados, r: a.r + b.recaudado, n: a.n + b.no_vino, w: a.w + b.web }), { c: 0, r: 0, n: 0, w: 0 });
-    box.innerHTML = `<p class="note">${esc(dateShort(ini))} – ${esc(dateShort(fin))}</p>
+    box.innerHTML = `<p class="note">Año ${year} · 1 de enero a 31 de diciembre</p>
       <div class="stats"><div class="stat"><small>Recaudado</small><b>${money(tot.r)}</b></div><div class="stat"><small>Atendidos</small><b>${tot.c}</b></div>
       <div class="stat"><small>Ticket promedio</small><b>${tot.c ? money(Math.round(tot.r / tot.c / 100) * 100) : '—'}</b></div><div class="stat"><small>Reservas por la página</small><b>${tot.w}</b></div>
       <div class="stat"><small>No vinieron</small><b>${tot.n}</b></div></div>
@@ -478,7 +503,7 @@ async function vistaAjustes() {
       <button class="btn btn-cream btn-sm">Guardar cambios</button>
     </form>
     <h2 class="sec">Equipo</h2>
-    <div class="card"><div id="lBar">${d.barberos.map((b) => `<div class="list-item"><div><b>${esc(b.nombre)}${b.es_dueno ? ' · Dueño' : ''}${b.activo ? '' : ' · inactivo'}</b><span>${esc(b.especialidad)}</span></div><button class="btn btn-ghost btn-sm" data-eb="${b.id}">Editar</button></div>`).join('')}</div>
+    <div class="card"><div id="lBar">${d.barberos.map((b) => `<div class="list-item"><div><b>${esc(b.nombre)}${b.es_dueno ? ' · Dueño' : ''}${b.activo ? '' : ' · inactivo'}</b><span>${esc(b.especialidad)}</span></div><div class="row"><button class="btn btn-ghost btn-sm" data-eb="${b.id}">Acceso</button><button class="btn btn-ghost btn-sm" data-pb="${b.id}">Perfil y cortes</button></div></div>`).join('')}</div>
       <button class="btn btn-cream btn-sm" id="addBar" style="margin-top:12px">+ Agregar barbero</button></div>
     <h2 class="sec">Servicios y precios</h2>
     <div class="card"><div id="lSvc">${d.servicios.map((s) => `<div class="list-item"><div><b>${esc(s.nombre)}${s.destacado ? ' ✦' : ''}${s.activo ? '' : ' · oculto'}</b><span>${s.precio != null ? money(s.precio) : 'Se cotiza'} · ${s.duracion} min</span></div><button class="btn btn-ghost btn-sm" data-es="${s.id}">Editar</button></div>`).join('')}</div>
@@ -505,15 +530,15 @@ async function vistaAjustes() {
     const ok = await modal(`<h3>${nuevo ? 'Nuevo barbero' : 'Editar barbero'}</h3>
       <div class="field" style="margin-top:12px"><label for="eb_n">Nombre</label><input id="eb_n" value="${esc(b.nombre)}" maxlength="40"></div>
       <div class="field"><label for="eb_e">Especialidad</label><input id="eb_e" value="${esc(b.especialidad)}" maxlength="60" placeholder="Fades, diseños…"></div>
-      <div class="field"><label for="eb_p">PIN ${nuevo ? '(4 a 6 números)' : '(déjalo vacío para no cambiarlo)'}</label><input id="eb_p" inputmode="numeric" maxlength="6" autocomplete="off"></div>
+      ${nuevo ? '<div class="field"><label for="eb_p">PIN temporal (4 a 6 números)</label><input id="eb_p" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password"></div>' : '<input id="eb_p" type="hidden" value=""><p class="note">Cada barbero cambia su PIN desde Mi perfil.</p>'}
       <div class="grid2"><label class="field" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="eb_a" ${b.activo ? 'checked' : ''}> Activo</label>
-      <label class="field" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="eb_d" ${b.es_dueno ? 'checked' : ''}> Acceso de dueño</label></div>`,
+      <label class="field" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="eb_d" disabled ${b.es_dueno ? 'checked' : ''}> Administrador: solo Santi</label></div>`,
       [{ label: 'Cancelar', value: false }, { label: 'Guardar', value: true, primary: true }]);
     if (!ok) return;
     const g = (id) => document.getElementById(id);
     try {
       await call('gb_admin_guardar_barbero', { p_id: b.id || null, p_nombre: g('eb_n').value, p_especialidad: g('eb_e').value, p_pin: g('eb_p').value.trim() || null,
-        p_activo: g('eb_a').checked, p_es_dueno: g('eb_d').checked, p_orden: b.orden });
+        p_activo: g('eb_a').checked, p_es_dueno: b.es_dueno === true, p_orden: b.orden });
       INFO = await rpc('gb_info'); toast('Equipo actualizado'); vistaAjustes();
     } catch (e) { alertBox(esc(e.message)); }
   };
@@ -538,6 +563,7 @@ async function vistaAjustes() {
   };
   document.getElementById('addBar').onclick = () => editarBarbero(null);
   document.getElementById('addSvc').onclick = () => editarServicio(null);
+  v.querySelectorAll('[data-pb]').forEach((b) => b.onclick = () => { TAB = 'perfil'; clearInterval(refreshTimer); vistaPerfil(false, b.dataset.pb); });
   v.querySelectorAll('[data-eb]').forEach((b) => b.onclick = () => editarBarbero(d.barberos.find((x) => x.id === b.dataset.eb)));
   v.querySelectorAll('[data-es]').forEach((b) => b.onclick = () => editarServicio(d.servicios.find((x) => x.id === b.dataset.es)));
 }

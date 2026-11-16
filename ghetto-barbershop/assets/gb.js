@@ -7,7 +7,7 @@
   async function rpc(fn, args) {
     let r;
     try {
-      r = await fetch(`${URL}/rest/v1/rpc/${fn}`, {
+      r = await fetch(fn === 'gb_perfil_subir_foto' ? `${URL}/functions/v1/gb-perfil-foto` : `${URL}/rest/v1/rpc/${fn}`, {
         method: 'POST',
         headers: { apikey: KEY, 'Content-Type': 'application/json' },
         body: JSON.stringify(args || {})
@@ -17,7 +17,7 @@
     }
     const txt = await r.text();
     const data = txt ? JSON.parse(txt) : null;
-    if (!r.ok) throw new Error((data && data.message) || 'Algo salió mal. Intenta de nuevo.');
+    if (!r.ok || (data && data.error)) throw new Error((data && (data.error || data.message)) || 'Algo salió mal. Intenta de nuevo.');
     return data;
   }
 

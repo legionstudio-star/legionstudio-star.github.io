@@ -15,6 +15,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/gb.css">
+<link rel="stylesheet" href="assets/profile.css">
 <style>
   /* PRELOADER: navaja que revela el logo */
   #preloader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;transition:opacity .5s,visibility .5s;}
@@ -258,10 +259,10 @@
     <div class="reveal">
       <span class="tag">Reserva en línea</span>
       <h2 class="title">Agenda tu turno</h2>
-      <p class="muted" style="margin-top:14px;max-width:420px">Escoge el servicio, el día y la hora que te sirva. El turno queda apartado de una vez y le aparece al barbero.</p>
+      <p class="muted" style="margin-top:14px;max-width:420px">Elige tu barbero, conoce sus trabajos y escoge el servicio, el día y la hora que te sirva. El turno queda apartado de una vez y le aparece al barbero.</p>
       <ol class="steps">
-        <li><b>1</b><span>Elige el servicio y tu barbero.</span></li>
-        <li><b>2</b><span>Escoge el día y una hora libre.</span></li>
+        <li><b>1</b><span>Elige tu barbero y conoce sus cortes.</span></li>
+        <li><b>2</b><span>Escoge tu servicio, el día y una hora libre.</span></li>
         <li><b>3</b><span>Pon tu nombre y WhatsApp, y listo.</span></li>
       </ol>
       <div class="mine" id="mine" hidden><h4>Tus próximos turnos</h4><div id="mineList"></div></div>
@@ -270,10 +271,11 @@
     <form class="ticket reveal" id="form" novalidate>
       <div class="ticket-head"><span>GHETTO · TICKET</span><span>✦ ✦ ✦</span></div>
       <div class="ticket-body">
-        <div class="field"><label id="lblSvc">Servicio</label><div class="chips" id="svcChips" role="radiogroup" aria-labelledby="lblSvc"></div></div>
         <div class="field" id="barberField"><label id="lblBar">Barbero</label><div class="chips" id="barChips" role="radiogroup" aria-labelledby="lblBar"></div></div>
+        <div id="barberPortfolio" class="barber-portfolio" hidden></div>
+        <div id="bookingService" class="booking-stage" hidden><div class="field"><label id="lblSvc">Servicio</label><div class="chips" id="svcChips" role="radiogroup" aria-labelledby="lblSvc"></div></div></div>
         <div class="field"><label id="lblDay">Día</label><div class="days" id="days" role="radiogroup" aria-labelledby="lblDay"></div></div>
-        <div class="field"><label id="lblSlot">Hora</label><div class="slots" id="slots" role="radiogroup" aria-labelledby="lblSlot"><div class="hint">Elige el servicio y el día para ver las horas libres.</div></div></div>
+        <div class="field"><label id="lblSlot">Hora</label><div class="slots" id="slots" role="radiogroup" aria-labelledby="lblSlot"><div class="hint">Elige tu barbero, el servicio y el día para ver las horas libres.</div></div></div>
         <div class="two">
           <div class="field"><label for="name">Tu nombre</label><input id="name" autocomplete="name" placeholder="¿Cómo te llamas?" maxlength="60"></div>
           <div class="field"><label for="tel">Tu WhatsApp</label><input id="tel" type="tel" inputmode="numeric" autocomplete="tel" placeholder="300 000 0000" maxlength="14"></div>
@@ -310,7 +312,7 @@
   <div class="wrap">
     <div class="head reveal"><div><span class="tag">Visítanos</span><h2 class="title">Te esperamos</h2></div></div>
     <div class="visit reveal">
-      <a id="vDir" href="#" target="_blank" rel="noopener"><small>Dónde</small><b id="dirTxt">Bogotá D.C.</b></a>
+      <a id="vDir" href="#" target="_blank" rel="noopener"><small>Dónde</small><b id="dirTxt">Calle 86 #95d-06</b></a>
       <div><small>Horario</small><b id="horTxt">Lunes a domingo</b></div>
       <a id="vIg" href="https://www.instagram.com/santiiighetto/" target="_blank" rel="noopener"><small>Instagram</small><b id="igTxt">@santiiighetto</b></a>
     </div>
@@ -329,6 +331,7 @@
 </a>
 
 <script src="assets/gb.js"></script>
+<script src="assets/booking-model.js"></script>
 <script>
 const { rpc, esc, money, toMin, fromMin, time12, addDays, parseDate, dateLong, dateShort, telFmt, waLink, alertBox, confirmBox, toast } = GB;
 document.getElementById('year').textContent = new Date().getFullYear();
@@ -386,9 +389,9 @@ function paintInfo() {
   document.getElementById('metaTxt').textContent = CFG.meta_sellos || 8;
   document.getElementById('premioTxt').textContent = (CFG.premio || 'Corte gratis').toLowerCase();
   document.getElementById('horTxt').textContent = CFG.horario_texto || `${time12(CFG.hora_abre)} – ${time12(CFG.hora_cierra)}`;
-  document.getElementById('dirTxt').textContent = CFG.direccion || 'Bogotá D.C.';
+  document.getElementById('dirTxt').textContent = CFG.direccion || 'Calle 86 #95d-06';
   const vDir = document.getElementById('vDir');
-  vDir.href = CFG.mapa || `https://www.google.com/maps/search/${encodeURIComponent((CFG.nombre || 'Ghetto Barbershop') + ' ' + (CFG.direccion || 'Bogotá'))}`;
+  vDir.href = CFG.mapa || `https://www.google.com/maps/search/${encodeURIComponent((CFG.nombre || 'Ghetto Barbershop') + ' ' + (CFG.direccion || 'Calle 86 #95d-06, Bogotá'))}`;
   if (CFG.instagram) {
     const ig = `https://www.instagram.com/${CFG.instagram.replace('@', '')}/`;
     document.getElementById('vIg').href = ig; document.getElementById('igLink').href = ig;
@@ -406,48 +409,55 @@ function paintInfo() {
 function paintServices() {
   const box = document.getElementById('services'), chips = document.getElementById('svcChips');
   box.innerHTML = ''; chips.innerHTML = '';
-  INFO.servicios.forEach((s) => {
-    const b = document.createElement('button');
-    b.type = 'button'; b.className = 'svc' + (s.destacado ? ' feat' : '');
-    b.innerHTML = `${s.destacado ? '<span class="badge">EL MÁS PEDIDO</span>' : ''}<h3>${esc(s.nombre)}</h3><p>${esc(s.descripcion)}</p>
-      <div class="foot"><span class="price">${s.precio != null ? money(s.precio) : 'Se cotiza'}</span><span class="dur">${s.duracion} min</span></div>`;
-    b.onclick = () => { pickSvc(s.id); document.getElementById('agenda').scrollIntoView({ behavior: 'smooth' }); };
-    box.appendChild(b);
-    const c = document.createElement('button');
-    c.type = 'button'; c.className = 'chip'; c.dataset.id = s.id; c.setAttribute('role', 'radio'); c.setAttribute('aria-checked', 'false');
-    c.innerHTML = `${esc(s.nombre)}<small>${s.precio != null ? money(s.precio) : 'Se cotiza'} · ${s.duracion} min</small>`;
-    c.onclick = () => pickSvc(s.id);
-    chips.appendChild(c);
+  const catalog = bar ? GhettoBooking.catalog(bar, INFO.servicios) : INFO.servicios;
+  document.getElementById('bookingService').hidden = !bar;
+  catalog.forEach((s) => {
+    const button = document.createElement('button');
+    button.type = 'button'; button.className = 'svc' + (s.destacado ? ' feat' : '');
+    button.innerHTML = `<h3>${esc(s.nombre)}</h3><p>${esc(s.descripcion || '')}</p><div class="foot"><span class="price">${bar ? (s.precio != null ? money(s.precio) : 'Se cotiza') : 'Elige tu barbero'}</span>${bar ? `<span class="dur">${s.duracion} min</span>` : ''}</div>`;
+    button.onclick = () => { if (bar) pickSvc(s.id); else toast('Primero elige tu barbero para ver sus servicios.'); document.getElementById('agenda').scrollIntoView({ behavior: 'smooth' }); };
+    box.appendChild(button);
+    if (!bar) return;
+    const chip = document.createElement('button'); chip.type = 'button'; chip.className = 'chip'; chip.dataset.id = s.id;
+    chip.setAttribute('role', 'radio'); chip.setAttribute('aria-checked', 'false');
+    chip.innerHTML = `${esc(s.nombre)}<small>${s.precio != null ? money(s.precio) : 'Se cotiza'} · ${s.duracion} min</small>`;
+    chip.onclick = () => pickSvc(s.id); chips.appendChild(chip);
   });
+  if (bar && !catalog.length) chips.innerHTML = '<p class="hint">Este barbero no tiene servicios disponibles por ahora.</p>';
 }
 function pickSvc(id) {
-  svc = INFO.servicios.find((s) => s.id === id);
+  if (!bar) return;
+  svc = GhettoBooking.catalog(bar, INFO.servicios).find((s) => s.id === id) || null;
   document.querySelectorAll('#svcChips .chip').forEach((c) => { const on = c.dataset.id === id; c.classList.toggle('on', on); c.setAttribute('aria-checked', on); });
   refreshSlots();
 }
-
 function paintBarbers() {
   const box = document.getElementById('barbers'), chips = document.getElementById('barChips');
   box.innerHTML = ''; chips.innerHTML = '';
+  if (!INFO.barberos.length) {
+    box.innerHTML = '<p class="hint">Estamos preparando los perfiles del equipo. Pronto podrás elegir tu barbero aquí.</p>';
+    chips.innerHTML = '<p class="hint">La agenda abrirá cuando el equipo termine de configurar sus perfiles.</p>';
+  }
   INFO.barberos.forEach((b) => {
-    const photo = /^santi/i.test(b.nombre) ? '<img src="assets/img/corte-con-santi.webp" alt="">' : esc(b.nombre[0]);
-    const card = document.createElement('div');
-    card.className = 'barber reveal in';
-    card.innerHTML = `<div class="ph">${photo}</div><div><h3>${esc(b.nombre)}</h3><p>${esc(b.especialidad)}</p>
-      <button type="button" class="btn btn-ghost btn-sm">Agendar con ${esc(b.nombre)}</button></div>`;
-    card.querySelector('button').onclick = () => { pickBar(b.id); document.getElementById('agenda').scrollIntoView({ behavior: 'smooth' }); };
-    box.appendChild(card);
-    const c = document.createElement('button');
-    c.type = 'button'; c.className = 'chip'; c.dataset.id = b.id; c.textContent = b.nombre; c.setAttribute('role', 'radio');
-    c.onclick = () => pickBar(b.id);
-    chips.appendChild(c);
+    const url = GhettoBooking.safeImage(b.foto), card = document.createElement('div'); card.className = 'barber reveal in';
+    card.innerHTML = `<div class="ph">${url ? `<img src="${esc(url)}" alt="${esc(b.nombre)}">` : esc(b.nombre[0])}</div><div><h3>${esc(b.nombre)}</h3><p>${esc(b.especialidad || b.biografia || '')}</p><button type="button" class="btn btn-ghost btn-sm">Ver cortes y agendar</button></div>`;
+    card.querySelector('button').onclick = () => { pickBar(b.id); document.getElementById('agenda').scrollIntoView({ behavior: 'smooth' }); }; box.appendChild(card);
+    const chip = document.createElement('button'); chip.type = 'button'; chip.className = 'chip'; chip.dataset.id = b.id;
+    chip.textContent = b.nombre; chip.setAttribute('role', 'radio'); chip.setAttribute('aria-checked', 'false'); chip.onclick = () => pickBar(b.id); chips.appendChild(chip);
   });
-  if (INFO.barberos.length === 1) { pickBar(INFO.barberos[0].id); document.getElementById('barberField').hidden = true; }
 }
 function pickBar(id) {
-  bar = INFO.barberos.find((b) => b.id === id);
+  bar = INFO.barberos.find((b) => b.id === id); svc = null; day = ''; slot = '';
   document.querySelectorAll('#barChips .chip').forEach((c) => { const on = c.dataset.id === id; c.classList.toggle('on', on); c.setAttribute('aria-checked', on); });
-  refreshSlots();
+  const host = document.getElementById('barberPortfolio');
+  let photos = GhettoBooking.portfolio(bar);
+  if (!photos.length && /^santi$/i.test(bar.nombre)) photos = [
+    { url: 'assets/img/corte-platino-diseno.webp', titulo: 'Platino' }, { url: 'assets/img/corte-mecha-azul.webp', titulo: 'Color' },
+    { url: 'assets/img/corte-freestyle.webp', titulo: 'Freestyle' }, { url: 'assets/img/corte-mullet.webp', titulo: 'Mullet' }
+  ];
+  host.hidden = false;
+  host.innerHTML = `<h3>Los cortes de ${esc(bar.nombre)}</h3><p>${esc(bar.biografia || bar.especialidad || '')}</p>${photos.length ? `<div class="shots">${photos.map((p) => `<figure><img src="${esc(p.url)}" alt="${esc(p.titulo || 'Trabajo de ' + bar.nombre)}" loading="lazy"><figcaption>${esc(p.titulo || '')}</figcaption></figure>`).join('')}</div>` : '<p>Este barbero está preparando su portafolio.</p>'}`;
+  paintServices(); paintDays(); refreshSlots();
 }
 
 function paintDays() {
@@ -457,7 +467,7 @@ function paintDays() {
   const DOW = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
   for (let i = 0, n = 0; i <= max && n < 14; i++) {
     const d = addDays(INFO.hoy, i), dt = parseDate(d);
-    if (closed.includes(String(dt.getDay()))) continue;
+    if (bar && !GhettoBooking.workRanges(bar, d, CFG).length || !bar && closed.includes(String(dt.getDay()))) continue;
     if (i === 0 && nowMinBogota() >= toMin(CFG.hora_cierra || '20:00') - 20) continue; // hoy ya cerró
     const b = document.createElement('button');
     b.type = 'button'; b.className = 'day'; b.dataset.d = d; b.setAttribute('role', 'radio');
@@ -470,32 +480,25 @@ function paintDays() {
 
 let slotReq = 0;
 async function refreshSlots() {
+  const my = ++slotReq;
   slot = ''; paintSummary();
   const box = document.getElementById('slots');
-  if (!svc || !bar || !day) { box.innerHTML = '<div class="hint">Elige el servicio y el día para ver las horas libres.</div>'; return; }
+  if (!svc || !bar || !day) { box.innerHTML = '<div class="hint">Elige tu barbero, el servicio y el día para ver las horas libres.</div>'; return; }
   box.innerHTML = '<div class="hint"><span class="spin"></span></div>';
-  const my = ++slotReq;
   let occ;
   try { occ = await rpc('gb_ocupado', { p_barbero: bar.id, p_fecha: day }); }
-  catch (e) { box.innerHTML = `<div class="hint">${esc(e.message)}</div>`; return; }
+  catch (e) { if (my === slotReq) box.innerHTML = `<div class="hint">${esc(e.message)}</div>`; return; }
   if (my !== slotReq) return;
   if (occ.todo_dia) { box.innerHTML = `<div class="hint">${esc(bar.nombre)} no atiende este día. Prueba otro.</div>`; return; }
-  const step = Number(CFG.intervalo || 20), abre = toMin(CFG.hora_abre || '09:00'), cierra = toMin(CFG.hora_cierra || '20:00');
-  const now = day === INFO.hoy ? nowMinBogota() : -1;
-  box.innerHTML = ''; let free = 0;
-  for (let m = abre; m + svc.duracion <= cierra; m += step) {
-    const end = m + svc.duracion;
-    const busy = occ.rangos.some(([a, b]) => a < end && b > m);
-    const b = document.createElement('button');
-    b.type = 'button'; b.className = 'slot'; b.textContent = time12(fromMin(m)); b.setAttribute('role', 'radio');
-    if (busy || m <= now) { b.disabled = true; b.title = busy ? 'Ocupado' : 'Ya pasó'; }
-    else {
-      free++;
-      b.onclick = () => { slot = fromMin(m); box.querySelectorAll('.slot').forEach((x) => { x.classList.toggle('on', x === b); x.setAttribute('aria-checked', x === b); }); paintSummary(); };
-    }
-    box.appendChild(b);
+  const options = GhettoBooking.freeSlots({ barber: bar, service: svc, date: day, config: CFG, occupied: occ, now: day === INFO.hoy ? nowMinBogota() : -1 });
+  box.innerHTML = '';
+  for (const time of options) {
+    const button = document.createElement('button'); button.type = 'button'; button.className = 'slot'; button.textContent = time12(time);
+    button.setAttribute('role', 'radio'); button.setAttribute('aria-checked', 'false');
+    button.onclick = () => { slot = time; box.querySelectorAll('.slot').forEach((x) => { x.classList.toggle('on', x === button); x.setAttribute('aria-checked', x === button); }); paintSummary(); };
+    box.appendChild(button);
   }
-  if (!free) box.innerHTML = '<div class="hint">No quedan horas libres ese día. Prueba otro día.</div>';
+  if (!options.length) box.innerHTML = '<div class="hint">No quedan horas libres ese día. Prueba otro día.</div>';
 }
 
 function paintSummary() {
@@ -505,6 +508,8 @@ function paintSummary() {
     ${INFO && INFO.barberos.length > 1 ? `<div><span>BARBERO</span><b>${bar ? esc(bar.nombre) : '—'}</b></div>` : ''}
     <div><span>DÍA</span><b>${day ? dateShort(day) : '—'}</b></div>
     <div><span>HORA</span><b>${slot ? time12(slot) : '—'}</b></div>
+    ${svc ? `<div><span>DURACIÓN</span><b>${svc.duracion} minutos</b></div>` : ''}
+    ${bar && day && GhettoBooking.needsConfirmation(bar, day) ? '<p class="setup-notice">En esta fecha de alta demanda, el barbero debe confirmar tu reserva.</p>' : ''}
     <div><span>CLIENTE</span><b>${esc(name) || '—'}</b></div>
     <div class="total"><span>VALOR</span><b>${svc ? (svc.precio != null ? money(svc.precio) : 'Se cotiza') : '—'}</b></div>`;
 }
@@ -531,10 +536,10 @@ form.addEventListener('submit', async (e) => {
     const mine = JSON.parse(localStorage.getItem(MINE_KEY) || '[]');
     mine.push({ id: r.id, tel }); localStorage.setItem(MINE_KEY, JSON.stringify(mine.slice(-10)));
     const resumen = `${dateLong(day)} · ${time12(slot)}`;
-    const btns = [{ label: 'Listo', value: true, primary: !CFG.whatsapp }];
+    const btns = [{ label: 'Listo', value: true, primary: true }];
     if (CFG.whatsapp) btns.push({ label: 'Avisar por WhatsApp', value: true, cls: 'btn-wa',
       href: waLink(CFG.whatsapp, `Hola ${bar.nombre}! Soy ${name}. Aparté turno en Ghetto Barbershop:\n${resumen}\n${svc.nombre}`) });
-    await GB.modal(`<h3>Turno apartado ✦</h3><p><b>${esc(svc.nombre)}</b> con <b>${esc(bar.nombre)}</b></p>
+    await GB.modal(`<h3>${r.estado === 'confirmado' ? 'Cita confirmada' : r.estado === 'pendiente' ? 'Solicitud recibida' : 'Reserva registrada'} ✦</h3><p><b>${esc(svc.nombre)}</b> con <b>${esc(bar.nombre)}</b></p>
       <p style="font-size:18px;margin:8px 0">${esc(resumen)}</p>
       <p class="muted">Llega 5 minutos antes. Si no puedes venir, cancélalo aquí mismo en "Tus próximos turnos".</p>`, btns);
     document.getElementById('name').value = '';
