@@ -1,0 +1,568 @@
+{
+  "nombre": "Santorini Gastrobar",
+  "categoria": "Restaurante · Gastrobar",
+  "eslogan": "El arte de comer bien",
+  "plan": "plus",
+  "tema": "oscuro",
+  "color": "#D5B87A",
+  "instagram": "santorini.restaurantem",
+  "botones": [
+    "menu",
+    "instagram"
+  ],
+  "extras": [
+    {
+      "i": "ig",
+      "t": "Síguenos en redes",
+      "s": "@santorini.restaurantem",
+      "url": "https://www.instagram.com/santorini.restaurantem/"
+    }
+  ],
+  "portada": "/santorini/assets/ref-brasa.jpg",
+  "menu": {
+    "vista": "catalogo",
+    "carrito": false,
+    "categorias": [
+      {
+        "nombre": "Tapitas · Entradas",
+        "key": "entradas",
+        "items": [
+          {
+            "n": "Chicharrón",
+            "p": 19000,
+            "d": "Acompañado de papa criolla y guacamole."
+          },
+          {
+            "n": "Canastas de plátano verde",
+            "p": 17000,
+            "d": "Rellenas de chicharrón y guacamole."
+          },
+          {
+            "n": "Chinchulines",
+            "p": 15000,
+            "d": "Acompañados de papa criolla y guacamole."
+          },
+          {
+            "n": "Empanaditas",
+            "p": 14000,
+            "d": "Porción de 5 unidades."
+          }
+        ]
+      },
+      {
+        "nombre": "Res & brasa",
+        "key": "brasa",
+        "items": [
+          {
+            "n": "Tomahawk",
+            "p": 78000,
+            "d": "Acompañado de piña y papa francesa.",
+            "foto": "/santorini/assets/ref-brasa.jpg"
+          },
+          {
+            "n": "Filet mignon",
+            "p": 49900,
+            "d": "400 g con salsa de champiñones y vino tinto. Acompañado de puré de papa.",
+            "foto": "/santorini/assets/ref-brasa.jpg"
+          },
+          {
+            "n": "T-bone",
+            "p": 48000,
+            "d": "400 g acompañado de pasta carbonara.",
+            "foto": "/santorini/assets/ref-brasa.jpg"
+          },
+          {
+            "n": "New York steak",
+            "p": 40000,
+            "d": "400 g acompañado de zucchini salteado o papa francesa.",
+            "foto": "/santorini/assets/ref-brasa.jpg"
+          },
+          {
+            "n": "Churrasco argentino",
+            "p": 35900,
+            "d": "400 g con chimichurri al carbón, papa francesa y vegetales salteados.",
+            "foto": "/santorini/assets/ref-brasa.jpg"
+          }
+        ]
+      },
+      {
+        "nombre": "Sabores del campo",
+        "key": "campo",
+        "items": [
+          {
+            "n": "Costillas de cerdo",
+            "p": 37900,
+            "d": "400 g en una cama de piña, con papa a la francesa o vegetales salteados.",
+            "foto": "/santorini/assets/ref-brasa.jpg"
+          },
+          {
+            "n": "Panceta",
+            "p": 35000,
+            "d": "400 g acompañada de guacamole, papa criolla y patacones."
+          },
+          {
+            "n": "Lomo al trapo",
+            "p": 37000,
+            "d": "Acompañado de papa a la francesa y vegetales salteados.",
+            "foto": "/santorini/assets/ref-brasa.jpg"
+          }
+        ]
+      },
+      {
+        "nombre": "Sabores del corral",
+        "key": "corral",
+        "items": [
+          {
+            "n": "Pechuga en salsa de champiñones",
+            "p": 32900,
+            "d": "400 g acompañados de papa a la francesa."
+          },
+          {
+            "n": "Pechuga con camarones al ajillo",
+            "p": 32900,
+            "d": "400 g acompañados de papa a la francesa."
+          },
+          {
+            "n": "Alitas BBQ",
+            "p": 22000,
+            "d": "8 unidades bañadas en salsa BBQ, con papa francesa, apio y zanahoria.",
+            "foto": "/santorini/assets/ref-alitas.jpg"
+          }
+        ]
+      },
+      {
+        "nombre": "Tesoros del mar",
+        "key": "mar",
+        "items": [
+          {
+            "n": "Trucha al ajillo con camarones",
+            "p": 37000,
+            "d": "Acompañada de papa a la francesa.",
+            "foto": "/santorini/assets/ref-mar.jpg"
+          },
+          {
+            "n": "Filete de tilapia asado",
+            "p": 35000,
+            "d": "Con guarnición de arroz y papa a la francesa.",
+            "foto": "/santorini/assets/ref-mar.jpg"
+          }
+        ]
+      },
+      {
+        "nombre": "Burgers de autor",
+        "key": "burgers",
+        "items": [
+          {
+            "n": "Hamburguesa Santorini",
+            "p": 22000,
+            "d": "140 g de res 100 % artesanal, pan brioche, tocineta, queso cheddar o mozzarella, vegetales, salsa de la casa y huevo opcional. Con papa a la francesa.",
+            "foto": "/santorini/assets/ref-burger.jpg"
+          },
+          {
+            "n": "Hamburguesa Santorini jalapeño",
+            "p": 22000,
+            "d": "140 g de res 100 % artesanal, pan brioche, tocineta, queso cheddar o mozzarella, vegetales, guacamole, jalapeño y salsa de la casa. Con papa a la francesa.",
+            "foto": "/santorini/assets/ref-burger.jpg"
+          }
+        ]
+      },
+      {
+        "nombre": "Pastas de la casa",
+        "key": "pastas",
+        "items": [
+          {
+            "n": "Pasta a la carbonara",
+            "p": 25000,
+            "d": "Acompañada de tostadas con ajo y parmesano.",
+            "foto": "/santorini/assets/ref-pasta.jpg"
+          },
+          {
+            "n": "Raviolis con chorizo y champiñones",
+            "p": 25000,
+            "foto": "/santorini/assets/ref-pasta.jpg"
+          }
+        ]
+      },
+      {
+        "nombre": "Salchipapas individuales",
+        "key": "salchipapas",
+        "items": [
+          {
+            "n": "Salchipapa Salónica",
+            "p": 19900,
+            "d": "250 g de papa a la francesa con salchicha americana, queso, huevos de codorniz, tocineta, carne y salsas.",
+            "foto": "/santorini/assets/ref-papas.jpg"
+          },
+          {
+            "n": "Salchipapa Delphi",
+            "p": 10000,
+            "d": "250 g de papa a la francesa con salchicha americana, huevos de codorniz, queso y salsas.",
+            "foto": "/santorini/assets/ref-papas.jpg"
+          }
+        ]
+      },
+      {
+        "nombre": "Mazorcadas",
+        "key": "mazorcadas",
+        "items": [
+          {
+            "n": "Mazorcada de pollo",
+            "p": 19000,
+            "d": "Maíz tierno, pollo, queso, chorizo, papa chip, huevo de codorniz y salsas."
+          },
+          {
+            "n": "Mazorcada de carne",
+            "p": 19000,
+            "d": "Maíz tierno, carne, queso, chorizo, papa chip, huevo de codorniz y salsas."
+          },
+          {
+            "n": "Mazorcada mixta",
+            "p": 22000,
+            "d": "Maíz tierno, carne, pollo, queso, chorizo, papa chip, huevo de codorniz y salsas."
+          },
+          {
+            "n": "Mazorcada especial",
+            "p": 22000,
+            "d": "Maíz tierno, queso, carne o pollo, chorizo, papa chip, champiñones, huevo y salsas."
+          }
+        ]
+      },
+      {
+        "nombre": "Para compartir",
+        "key": "compartir",
+        "items": [
+          {
+            "n": "Santorini Súper",
+            "p": 76000,
+            "d": "8 alitas, 400 g de costillas de cerdo, 8 mini hamburguesas, papa a la francesa, zanahoria y apio.",
+            "foto": "/santorini/assets/ref-alitas.jpg"
+          },
+          {
+            "n": "Salchipapa Atenas",
+            "p": 69000,
+            "d": "500 g de papa a la francesa con salchicha americana, costilla ahumada, queso, huevos de codorniz, tocineta, carne, pollo, chorizo, guacamole, pico de gallo y salsas.",
+            "foto": "/santorini/assets/ref-papas.jpg"
+          },
+          {
+            "n": "Santorini Medium",
+            "p": 45000,
+            "d": "4 alitas, 200 g de costilla de cerdo, 4 mini hamburguesas, papa a la francesa, zanahoria y apio.",
+            "foto": "/santorini/assets/ref-alitas.jpg"
+          },
+          {
+            "n": "10 mini hamburguesas",
+            "p": 39900,
+            "d": "Acompañadas de papa a la francesa.",
+            "foto": "/santorini/assets/ref-burger.jpg"
+          },
+          {
+            "n": "Salchipapa Paros",
+            "p": 39900,
+            "d": "500 g de papa a la francesa con salchicha americana, costilla, queso, huevos de codorniz, tocineta, carne, pico de gallo y salsas.",
+            "foto": "/santorini/assets/ref-papas.jpg"
+          }
+        ]
+      },
+      {
+        "nombre": "Menú infantil",
+        "key": "infantil",
+        "items": [
+          {
+            "n": "Caja Mágica",
+            "p": 18000,
+            "d": "Mini hamburguesa, nuggets, papa francesa, sorpresa y jugo en caja."
+          }
+        ]
+      },
+      {
+        "nombre": "Bebidas sin alcohol",
+        "key": "sin-alcohol",
+        "items": [
+          {
+            "n": "Soda de frutos amarillos",
+            "p": 11000,
+            "foto": "/santorini/assets/ref-jugos.jpg"
+          },
+          {
+            "n": "Soda de frutos rojos",
+            "p": 11000,
+            "foto": "/santorini/assets/ref-jugos.jpg"
+          },
+          {
+            "n": "Limonada de coco",
+            "p": 10000,
+            "foto": "/santorini/assets/ref-jugos.jpg"
+          },
+          {
+            "n": "Limonada de cereza o hierbabuena",
+            "p": 8000,
+            "foto": "/santorini/assets/ref-jugos.jpg"
+          },
+          {
+            "n": "Jugo de fresa en agua",
+            "p": 6500,
+            "foto": "/santorini/assets/ref-jugos.jpg"
+          },
+          {
+            "n": "Jugo de fresa en leche",
+            "p": 7500,
+            "foto": "/santorini/assets/ref-jugos.jpg"
+          },
+          {
+            "n": "Jugo de mora en agua",
+            "p": 6500,
+            "foto": "/santorini/assets/ref-jugos.jpg"
+          },
+          {
+            "n": "Jugo de mora en leche",
+            "p": 7500,
+            "foto": "/santorini/assets/ref-jugos.jpg"
+          },
+          {
+            "n": "Jugo de mango en agua",
+            "p": 6500,
+            "foto": "/santorini/assets/ref-jugos.jpg"
+          },
+          {
+            "n": "Jugo de mango en leche",
+            "p": 7500,
+            "foto": "/santorini/assets/ref-jugos.jpg"
+          },
+          {
+            "n": "Jugo de maracuyá en agua",
+            "p": 6500,
+            "foto": "/santorini/assets/ref-jugos.jpg"
+          },
+          {
+            "n": "Jugo de maracuyá en leche",
+            "p": 7500,
+            "foto": "/santorini/assets/ref-jugos.jpg"
+          },
+          {
+            "n": "Jugo de guanábana en agua",
+            "p": 6500,
+            "foto": "/santorini/assets/ref-jugos.jpg"
+          },
+          {
+            "n": "Jugo de guanábana en leche",
+            "p": 7500,
+            "foto": "/santorini/assets/ref-jugos.jpg"
+          },
+          {
+            "n": "Jugo de lulo en agua",
+            "p": 6500,
+            "foto": "/santorini/assets/ref-jugos.jpg"
+          },
+          {
+            "n": "Jugo de lulo en leche",
+            "p": 7500,
+            "foto": "/santorini/assets/ref-jugos.jpg"
+          }
+        ]
+      },
+      {
+        "nombre": "Infusiones & cócteles",
+        "key": "cocteles",
+        "items": [
+          {
+            "n": "Pantera Rosa",
+            "p": 17900,
+            "foto": "/santorini/assets/ref-cocteles.jpg"
+          },
+          {
+            "n": "Jalisco",
+            "p": 17900,
+            "foto": "/santorini/assets/ref-cocteles.jpg"
+          },
+          {
+            "n": "Daiquiri (maracuyá o fresa)",
+            "p": 17900,
+            "foto": "/santorini/assets/ref-cocteles.jpg"
+          },
+          {
+            "n": "Margarita",
+            "p": 17900,
+            "foto": "/santorini/assets/ref-cocteles.jpg"
+          },
+          {
+            "n": "Bulldog (para dos)",
+            "p": 17900,
+            "foto": "/santorini/assets/ref-cocteles.jpg"
+          },
+          {
+            "n": "Mojito cubano",
+            "p": 35800,
+            "foto": "/santorini/assets/ref-cocteles.jpg"
+          },
+          {
+            "n": "Piña colada",
+            "p": 17900,
+            "foto": "/santorini/assets/ref-cocteles.jpg"
+          },
+          {
+            "n": "Ave María",
+            "p": 17900,
+            "foto": "/santorini/assets/ref-cocteles.jpg"
+          },
+          {
+            "n": "O’Chimba",
+            "p": 17900,
+            "foto": "/santorini/assets/ref-cocteles.jpg"
+          },
+          {
+            "n": "Gin tonic",
+            "p": 17900,
+            "foto": "/santorini/assets/ref-cocteles.jpg"
+          },
+          {
+            "n": "Red Evil",
+            "p": 17900,
+            "foto": "/santorini/assets/ref-cocteles.jpg"
+          }
+        ]
+      },
+      {
+        "nombre": "La barra fuerte",
+        "key": "licores",
+        "items": [
+          {
+            "n": "Aguardiente Amarillo · botella",
+            "p": 90000
+          },
+          {
+            "n": "Aguardiente Amarillo · media botella",
+            "p": 55000
+          },
+          {
+            "n": "Buchanan’s · botella",
+            "p": 190000
+          },
+          {
+            "n": "Buchanan’s · media botella",
+            "p": 110000
+          },
+          {
+            "n": "Sello Rojo · botella",
+            "p": 90000
+          },
+          {
+            "n": "Sello Rojo · media botella",
+            "p": 60000
+          },
+          {
+            "n": "Jack Daniel’s · botella",
+            "p": 180000
+          },
+          {
+            "n": "Jack Honey · botella",
+            "p": 180000
+          },
+          {
+            "n": "Jäger · botella",
+            "p": 160000
+          },
+          {
+            "n": "Ron Medellín · botella",
+            "p": 80000
+          },
+          {
+            "n": "Ron Medellín · media botella",
+            "p": 50000
+          },
+          {
+            "n": "Ron Caldas · botella",
+            "p": 80000
+          },
+          {
+            "n": "Ron Caldas · media botella",
+            "p": 50000
+          },
+          {
+            "n": "Baileys · botella",
+            "p": 100000
+          },
+          {
+            "n": "Tequila Olmeca · botella",
+            "p": 100000
+          }
+        ]
+      },
+      {
+        "nombre": "Carta de vinos",
+        "key": "vinos",
+        "items": [
+          {
+            "n": "Copa de vino semiseco",
+            "p": 12000,
+            "foto": "/santorini/assets/ref-vino.jpg"
+          },
+          {
+            "n": "Copa de vino blanco",
+            "p": 12000,
+            "foto": "/santorini/assets/ref-vino.jpg"
+          },
+          {
+            "n": "Botella de vino blanco",
+            "p": 55000,
+            "foto": "/santorini/assets/ref-vino.jpg"
+          },
+          {
+            "n": "Botella de vino semiseco",
+            "p": 55000,
+            "foto": "/santorini/assets/ref-vino.jpg"
+          }
+        ]
+      },
+      {
+        "nombre": "Cervezas",
+        "key": "cervezas",
+        "items": [
+          {
+            "n": "Corona",
+            "p": 12000,
+            "foto": "/santorini/assets/ref-cerveza.jpg"
+          },
+          {
+            "n": "Stella Artois",
+            "p": 14000,
+            "foto": "/santorini/assets/ref-cerveza.jpg"
+          },
+          {
+            "n": "Águila",
+            "p": 4500,
+            "foto": "/santorini/assets/ref-cerveza.jpg"
+          },
+          {
+            "n": "Poker",
+            "p": 4500,
+            "foto": "/santorini/assets/ref-cerveza.jpg"
+          },
+          {
+            "n": "Club Colombia",
+            "p": 6000,
+            "foto": "/santorini/assets/ref-cerveza.jpg"
+          }
+        ]
+      },
+      {
+        "nombre": "Gaseosas",
+        "key": "gaseosas",
+        "items": [
+          {
+            "n": "Coca-Cola",
+            "p": 5000
+          },
+          {
+            "n": "Quatro",
+            "p": 5000
+          },
+          {
+            "n": "Bretaña",
+            "p": 5000
+          }
+        ]
+      }
+    ]
+  },
+  "imagenesReferencia": true
+}
