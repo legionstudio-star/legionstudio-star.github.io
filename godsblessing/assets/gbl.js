@@ -21,6 +21,13 @@
     return data;
   }
 
+
+  function hoursFor(config, date) {
+    const sunday = parseDate(date).getDay() === 0;
+    const match = String(config.horario_texto || '').match(/Dom(?:ingo)?[^0-9]*(\d{2}:\d{2})\s*[–—-]\s*(\d{2}:\d{2})/i);
+    return { open: sunday && match ? match[1] : config.hora_abre || '10:00', close: sunday && match ? match[2] : config.hora_cierra || '20:30', closed: (config.dias_cerrados || []).map(String).includes(String(parseDate(date).getDay())) };
+  }
+
   const pad = (n) => String(n).padStart(2, '0');
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const money = (n) => (n == null ? '' : '$' + Number(n).toLocaleString('es-CO'));
@@ -83,5 +90,5 @@
     clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 2800);
   }
 
-  window.GB = { rpc, pad, esc, money, toMin, fromMin, time12, parseDate, dateStr, addDays, dateLong, dateShort, telFmt, waLink, modal, alertBox, confirmBox, toast };
+  window.GB = { hoursFor, rpc, pad, esc, money, toMin, fromMin, time12, parseDate, dateStr, addDays, dateLong, dateShort, telFmt, waLink, modal, alertBox, confirmBox, toast };
 })();

@@ -6,12 +6,11 @@
 @font-face{font-family:Satoshi;src:url(fonts/satoshi-500.woff2) format('woff2');font-weight:500;font-display:swap}
 @font-face{font-family:Satoshi;src:url(fonts/satoshi-700.woff2) format('woff2');font-weight:600 900;font-display:swap}
 :root{
-  --bg:#070605; --surface:#11100d; --surface-2:#1a1814; --line:#2b261d;
-  --cream:#f3ead7; --muted:#a39985; --rose:#d9b55a; --red:#a07a2c; --red2:#e3c068;
-  --blue:#c9a96b; --gold:#d9b55a; --green:#25d366; --danger:#e5484d;
-  --oro:linear-gradient(115deg,#8a6420 0%,#e3c068 22%,#fff1bf 36%,#c99a34 52%,#8f6a22 68%,#e8c46a 86%,#a07a2c 100%);
-  --radius:14px;
-  --gothic:'Panchang',sans-serif; --display:'Panchang',sans-serif; --body:'Satoshi',system-ui,sans-serif;
+  --bg:#101112; --surface:#191c1e; --surface-2:#24282b; --line:#363c40;
+  --cream:#f4f4f0; --muted:#a7b0b5; --rose:#c3d0c6; --red:#c3d0c6; --red2:#e1e7e2;
+  --blue:#c3d0c6; --gold:#d1dad4; --green:#78bd91; --danger:#ef777b;
+  --oro:linear-gradient(115deg,#d8e0da,#f4f4f0); --radius:8px;
+  --gothic:'Satoshi',sans-serif; --display:'Satoshi',sans-serif; --body:'Satoshi',system-ui,sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
@@ -63,3 +62,6 @@ button{cursor:pointer;}
 .spin{width:18px;height:18px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:spin .7s linear infinite;display:inline-block;vertical-align:middle;}
 @keyframes spin{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;transition-duration:.01ms !important;scroll-behavior:auto !important;}}
+
+/* Quiet, neutral visual language shared by the Club and barber panel. */
+.btn{border-radius:6px;text-transform:none;letter-spacing:0}.btn-red:hover,.btn-cream:hover{box-shadow:none}.gothic,.display{text-transform:none;letter-spacing:-.03em}img[src*="emblema_corona"],img[src*="logo_completo"],img[src*="nombre.png"]{filter:grayscale(1)}

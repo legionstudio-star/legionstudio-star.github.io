@@ -81,7 +81,7 @@
   .acts button,.acts a{padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:transparent;font-size:12.5px;font-weight:700;}
   .acts .ok{background:var(--cream);color:#111;border-color:var(--cream);}
   .acts .wa{border-color:#1d6b3e;color:#5fdc95;}
-  .blk{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-radius:12px;border:1px dashed #5a4a2a;color:var(--rose);margin-bottom:10px;font-size:14px;}
+  .blk{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-radius:12px;border:1px dashed #45534b;color:var(--rose);margin-bottom:10px;font-size:14px;}
   .empty{text-align:center;color:var(--muted);padding:36px 10px;border:1px dashed var(--line);border-radius:14px;}
   .fab-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0;}
 
@@ -113,7 +113,7 @@
   .note{font-size:12.5px;color:var(--muted);margin-top:6px;}
   /* ===== perfiles estilo Netflix ===== */
   .pick{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 18px 60px;text-align:center;
-    background:radial-gradient(700px 420px at 50% 0%,rgba(217,181,90,.12),transparent 70%);}
+    background:radial-gradient(700px 420px at 50% 0%,rgba(188,204,194,.12),transparent 70%);}
   .pick .logo{width:200px;margin:0 auto 26px;opacity:.95;}
   .pick h1{font-family:var(--display);font-weight:700;font-size:clamp(22px,5vw,38px);letter-spacing:.01em;margin-bottom:30px;}
   .pf-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(14px,3vw,28px);max-width:820px;}
@@ -150,7 +150,7 @@
   .icons label{cursor:pointer;} .icons input{position:absolute;opacity:0;pointer-events:none;}
   .icons span{display:flex;align-items:center;justify-content:center;aspect-ratio:1;border-radius:12px;border:1px solid var(--line);background:var(--surface-2);}
   .icons span svg{width:46%;height:46%;}
-  .icons input:checked+span{border-color:var(--gold);background:rgba(217,181,90,.14);color:var(--gold);}
+  .icons input:checked+span{border-color:var(--gold);background:rgba(188,204,194,.14);color:var(--gold);}
   .toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--line);font-size:14px;}
   .toggle small{display:block;color:var(--muted);font-size:12px;}
   .toggle input{width:20px;height:20px;accent-color:var(--gold);flex:0 0 auto;}
@@ -159,7 +159,7 @@
   .bar .who-me{display:flex;align-items:center;gap:10px;}
   .bar .who-me .pf-av{width:34px;border-radius:9px;}
   /* club */
-  .alerta{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:14px;border:1px solid rgba(217,181,90,.45);background:rgba(217,181,90,.08);margin:12px 0;font-size:14px;}
+  .alerta{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:14px;border:1px solid rgba(188,204,194,.45);background:rgba(188,204,194,.08);margin:12px 0;font-size:14px;}
   .alerta svg{width:22px;height:22px;color:var(--gold);flex:0 0 auto;}
   .rank{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line);width:100%;background:none;border-left:0;border-right:0;border-bottom:0;text-align:left;}
   .rank:first-child{border-top:0;}
@@ -227,7 +227,7 @@ async function call(fn, args) {
 function logout(expired) { localStorage.removeItem(TK); TOKEN = null; ME = null; clearInterval(refreshTimer); vistaLogin(expired ? 'Tu sesión se cerró. Entra de nuevo.' : ''); }
 
 /* ================= PERFILES (estilo Netflix) ================= */
-const COLORES = ['#C9A24A', '#B3261E', '#1E5AA8', '#1F7A4D', '#6D3FA8', '#C2577E', '#D9731E', '#4B5563'];
+const COLORES = ['#6F8276', '#B3261E', '#1E5AA8', '#1F7A4D', '#6D3FA8', '#C2577E', '#D9731E', '#4B5563'];
 const S = (d) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
 const ICONOS = {
   navaja: S('<path d="M3 7h12.5a3 3 0 0 1 0 6H3z"/><path d="M6 10h7"/><path d="m15.5 13 4.5 7"/><circle cx="15.5" cy="13" r=".6"/>'),
@@ -409,13 +409,15 @@ async function nuevoTurno() {
     ${barbs.length > 1 ? `<div class="field" style="margin-top:14px"><label for="nb">Barbero</label><select id="nb">${barbs.map((b) => `<option value="${b.id}" ${b.id === (filtroBarbero || ME.id) ? 'selected' : ''}>${esc(b.nombre)}</option>`).join('')}</select></div>` : ''}
     <div class="field" style="margin-top:14px"><label for="ns">Servicio</label><select id="ns">${INFO.servicios.map((s) => `<option value="${s.id}">${esc(s.nombre)} · ${s.duracion} min</option>`).join('')}</select></div>
     <div class="grid2"><div class="field"><label for="nf">Día</label><input id="nf" type="date" value="${fecha}"></div>
-    <div class="field"><label for="nh">Hora</label><input id="nh" type="time" step="300" value="${fecha === INFO.hoy ? fromMin(Math.ceil((toMin(INFO.ahora) + Math.floor((Date.now() - loadedAt) / 60000)) / 10) * 10 % 1440) : INFO.config.hora_abre}"></div></div>
+    <div class="field"><label for="nh">Hora</label><input id="nh" type="time" step="300" value="${fecha === INFO.hoy ? fromMin(Math.ceil((toMin(INFO.ahora) + Math.floor((Date.now() - loadedAt) / 60000)) / 10) * 10 % 1440) : GB.hoursFor(INFO.config, fecha).open}"></div></div>
     <div class="field"><label for="nn">Nombre del cliente</label><input id="nn" maxlength="60"></div>
     <div class="field"><label for="nt">WhatsApp</label><input id="nt" type="tel" inputmode="numeric" maxlength="14"></div>`,
     [{ label: 'Cancelar', value: false }, { label: 'Guardar turno', value: true, primary: true }]);
   if (!ok) return;
   const g = (id) => (document.getElementById(id) || {}).value;
   try {
+    const hours = GB.hoursFor(INFO.config, g('nf')), duration = INFO.servicios.find(s => s.id === g('ns'))?.duracion || 0;
+    if (hours.closed || toMin(g('nh')) < toMin(hours.open) || toMin(g('nh')) + duration > toMin(hours.close)) throw new Error('El turno debe quedar dentro del horario de atención de ese día.');
     await call('gbl_admin_nuevo_turno', { p_barbero: g('nb') || barbs[0].id, p_servicio: g('ns'), p_nombre: g('nn'), p_tel: g('nt'), p_fecha: g('nf'), p_hora: g('nh') });
     fecha = g('nf'); toast('Turno guardado'); cargarAgenda();
   } catch (e) { alertBox(esc(e.message)); }
@@ -442,7 +444,7 @@ async function bloquear() {
 /* ================= CLUB ================= */
 let scanStream = null, scanLoop = null, filtroMiembros = 'todos';
 function stopScan() { if (scanLoop) cancelAnimationFrame(scanLoop); scanLoop = null; if (scanStream) scanStream.getTracks().forEach((t) => t.stop()); scanStream = null; }
-const MOV = { sello: ['Sello', '#d9b55a'], canje: ['Premio canjeado', '#5fdc95'], bienvenida: ['Se unió al Club (sello de bienvenida)', '#7cc4ff'],
+const MOV = { sello: ['Sello', '#c3d0c6'], canje: ['Premio canjeado', '#5fdc95'], bienvenida: ['Se unió al Club (sello de bienvenida)', '#7cc4ff'],
   ajuste_mas: ['Sello agregado a mano', '#c9a96b'], ajuste_menos: ['Sello quitado a mano', '#ff8b8b'] };
 const fechaHora = (s) => { const [d, h] = String(s).split(' '); return `${dateShort(d)} · ${time12(h)}`; };
 const urlAgenda = () => location.origin + location.pathname.replace(/admin\.html$/, '') + '#agenda';
@@ -499,7 +501,7 @@ async function buscar(q) {
   } catch (e) { res.innerHTML = `<div class="empty">${esc(e.message)}</div>`; }
 }
 function memberBtn(m) {
-  const meta = Number(INFO.config.meta_sellos || 8);
+  const meta = Number(INFO.config.meta_sellos || 10);
   const b = document.createElement('button'); b.type = 'button'; b.className = 'member';
   b.innerHTML = `<span class="av">${esc((m.nombre || '?')[0])}</span><span class="nm"><b>${esc(m.nombre)}</b><span>${m.sellos}/${meta} sellos · ${telFmt(m.tel)} · ${esc(m.codigo)}</span></span>${m.sellos >= meta ? '<span class="pill p-club">LLENA</span>' : m.sellos === meta - 1 ? '<span class="pill p-pendiente">FALTA 1</span>' : ''}`;
   b.onclick = () => abrirMiembro(m);
@@ -524,7 +526,7 @@ async function inscribir() {
 
 async function abrirMiembro(m0) {
   let m; try { m = await call('gbl_admin_club_detalle', { p_club: m0.id }); } catch (e) { alertBox(esc(e.message)); return; }
-  const meta = Number(INFO.config.meta_sellos || 8), lleno = m.sellos >= meta, nombre1 = m.nombre.split(' ')[0];
+  const meta = Number(INFO.config.meta_sellos || 10), lleno = m.sellos >= meta, nombre1 = m.nombre.split(' ')[0];
   const html = `<h3>${esc(m.nombre)}</h3><p class="muted">${telFmt(m.tel)} · Código <b style="color:var(--gold)">${esc(m.codigo)}</b></p>
     <div class="mstamps" style="grid-template-columns:repeat(${Math.min(meta, 8)},1fr)">${Array.from({ length: meta }, (_, i) => `<i class="${i < m.sellos ? 'f' : ''}"></i>`).join('')}</div>
     <p style="font-size:15px">${lleno ? `<b>Tarjeta llena.</b> Le toca: ${esc(INFO.config.premio || 'corte gratis')}.` : `Lleva <b>${m.sellos}</b> de ${meta}. ${meta - m.sellos === 1 ? 'Le falta solo 1.' : ''}`}</p>
@@ -608,7 +610,7 @@ async function cargarMiembros() {
   const box = document.getElementById('miembros'); if (!box) return;
   try {
     let r = await call('gbl_admin_club_lista');
-    const meta = Number(INFO.config.meta_sellos || 8), lim = addDays(INFO.hoy, -30), f = filtroMiembros;
+    const meta = Number(INFO.config.meta_sellos || 10), lim = addDays(INFO.hoy, -30), f = filtroMiembros;
     if (f === 'sin') r = r.filter((m) => m.ultima < lim);
     if (f === 'llenas') r = r.filter((m) => m.sellos >= meta);
     if (f === 'casi') r = r.filter((m) => m.sellos === meta - 1);
@@ -822,6 +824,7 @@ async function vistaAjustes() {
   let d = null;
   if (ME.es_dueno) { try { d = await call('gbl_admin_datos'); } catch (e) { v.innerHTML = `<div class="empty">${esc(e.message)}</div>`; return; } }
   const c = d ? d.config : {}, cerr = (c.dias_cerrados || []).map(String);
+  const sundayHours = GB.hoursFor(c, '2026-11-15');
   const DOW = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
   v.innerHTML = `
     <h2 class="sec">Mi perfil</h2>
@@ -829,7 +832,7 @@ async function vistaAjustes() {
       <p class="muted" style="font-size:13px">${ME.es_dueno ? 'Administrador' : 'Barbero'}${ME.especialidad ? ' · ' + esc(ME.especialidad) : ''}</p></div></div>
       <div class="row" style="margin-top:14px"><button class="btn btn-ghost btn-sm" id="miPerfil">Editar mi perfil</button><button class="btn btn-cream btn-sm" id="miPin">Cambiar mi PIN</button></div></div>
     ${d ? `
-    ${d.ejemplos ? `<div class="card" style="margin-top:18px;border-color:#5a4a2a"><b>Hay ${d.ejemplos} datos de ejemplo</b> (turnos y miembros del Club).
+    ${d.ejemplos ? `<div class="card" style="margin-top:18px;border-color:#45534b"><b>Hay ${d.ejemplos} datos de ejemplo</b> (turnos y miembros del Club).
       <button class="btn btn-red btn-sm" id="delEj" style="margin-top:10px">Borrar datos de ejemplo</button></div>` : ''}
     <h2 class="sec">Perfiles</h2>
     <p class="note" style="margin-top:-6px;margin-bottom:14px">Cada barbero entra con su perfil y su PIN. Los administradores pueden manejar perfiles, la página y los números.</p>
@@ -838,8 +841,9 @@ async function vistaAjustes() {
     <h2 class="sec">Negocio</h2>
     <form class="card" id="fCfg">
       <div class="grid2"><div class="field"><label for="c_abre">Abre</label><input id="c_abre" type="time" value="${esc(c.hora_abre)}"></div><div class="field"><label for="c_cierra">Cierra</label><input id="c_cierra" type="time" value="${esc(c.hora_cierra)}"></div></div>
+      <div class="grid2"><div class="field"><label for="c_dom_abre">Domingo: abre</label><input id="c_dom_abre" type="time" value="${esc(sundayHours.open)}"></div><div class="field"><label for="c_dom_cierra">Domingo: cierra</label><input id="c_dom_cierra" type="time" value="${esc(sundayHours.close)}"></div></div>
       <div class="field"><label>Días que NO abren</label><div class="dow">${DOW.map((n, i) => `<label><input type="checkbox" value="${i}" ${cerr.includes(String(i)) ? 'checked' : ''}> ${n}</label>`).join('')}</div></div>
-      <div class="field"><label for="c_ht">Horario como se muestra en la página</label><input id="c_ht" value="${esc(c.horario_texto || '')}" maxlength="80"></div>
+      <div class="field"><label for="c_ht">Horario como se muestra en la página</label><input id="c_ht" readonly value="${esc(c.horario_texto || '')}" maxlength="80"></div>
       <div class="grid2"><div class="field"><label for="c_wa">WhatsApp del negocio</label><input id="c_wa" type="tel" inputmode="numeric" value="${esc(c.whatsapp || '')}" placeholder="3001234567"></div>
       <div class="field"><label for="c_ig">Instagram</label><input id="c_ig" value="${esc(c.instagram || '')}" placeholder="usuario sin @"></div></div>
       <div class="field"><label for="c_dir">Dirección</label><input id="c_dir" value="${esc(c.direccion || '')}" maxlength="120"></div>
@@ -884,13 +888,14 @@ async function vistaAjustes() {
     e.preventDefault();
     const g = (id) => document.getElementById(id).value.trim();
     const cambios = {
-      hora_abre: g('c_abre'), hora_cierra: g('c_cierra'), horario_texto: g('c_ht'), whatsapp: g('c_wa').replace(/\D/g, ''),
+      hora_abre: g('c_abre'), hora_cierra: g('c_cierra'), horario_texto: `Lun–sáb ${g('c_abre')}–${g('c_cierra')} · Dom ${g('c_dom_abre')}–${g('c_dom_cierra')}`, whatsapp: g('c_wa').replace(/\D/g, ''),
       instagram: g('c_ig').replace('@', ''), direccion: g('c_dir'), mapa: g('c_map'), intervalo: Number(g('c_int')),
       dias_adelante: Math.max(1, Math.min(60, Number(g('c_adel')) || 21)), resena: g('c_res'),
       dias_cerrados: [...document.querySelectorAll('.dow input:checked')].map((x) => x.value)
     };
+    if (g('c_dom_cierra') <= g('c_dom_abre')) { alertBox('Revisa las horas del domingo.'); return; }
     if (cambios.hora_cierra <= cambios.hora_abre) { alertBox('La hora de cierre debe ser después de la de apertura.'); return; }
-    try { await call('gbl_admin_config', { p_cambios: cambios }); INFO = await rpc('gbl_info'); loadedAt = Date.now(); toast('Guardado'); } catch (err) { alertBox(esc(err.message)); }
+    try { await call('gbl_admin_config', { p_cambios: cambios }); INFO = await rpc('gbl_info'); loadedAt = Date.now(); document.getElementById('c_ht').value = cambios.horario_texto; toast('Guardado'); } catch (err) { alertBox(esc(err.message)); }
   };
 
   const editarBarbero = async (b) => {

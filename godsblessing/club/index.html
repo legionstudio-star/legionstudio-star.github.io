@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#070605">
+<meta name="theme-color" content="#101112">
 <title>Club God’s Blessing · Tu tarjeta</title>
 <meta name="description" content="Tu tarjeta del Club God’s Blessing. Cada visita suma un sello.">
 <link rel="manifest" href="manifest.webmanifest">
@@ -11,26 +11,26 @@
 <link rel="apple-touch-icon" href="../assets/img/icono-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Club GB">
-<link rel="stylesheet" href="../assets/gbl.css?v=1">
+<link rel="stylesheet" href="../assets/gbl.css?v=2">
 <style>
-  body{min-height:100svh;background:radial-gradient(90% 50% at 50% -5%,#2a2010 0%,var(--bg) 60%);}
+  body{min-height:100svh;background:radial-gradient(90% 50% at 50% -5%,#252c28 0%,var(--bg) 60%);}
   .app{max-width:460px;margin:0 auto;padding:22px 18px 46px;}
   .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px;}
   .top img{height:30px;}
   .top a{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);}
-  .emb{display:block;width:120px;margin:4px auto 16px;filter:drop-shadow(0 0 24px rgba(227,192,104,.3));}
+  .emb{display:block;width:120px;margin:4px auto 16px;filter:drop-shadow(0 0 24px rgba(188,204,194,.3));}
   h1{font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:34px;line-height:1.02;text-align:center;}
   h1 em{font-style:normal;background:var(--oro);-webkit-background-clip:text;background-clip:text;color:transparent;}
-  .lead{color:#d8cdb6;margin:12px 0 24px;text-align:center;}
+  .lead{color:#c6ceca;margin:12px 0 24px;text-align:center;}
   .perks{display:grid;gap:10px;margin-bottom:22px;}
   .perk{display:flex;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px;}
   .perk b{display:block;font-weight:700;}
   .perk span{color:var(--muted);font-size:13px;}
   .perk .ic{flex:0 0 42px;height:42px;border:1px solid var(--gold);transform:rotate(45deg);display:grid;place-items:center;}
   .perk .ic i{transform:rotate(-45deg);font-style:normal;font-family:var(--display);font-weight:800;color:var(--gold);font-size:15px;}
-  .box{background:var(--surface);border:1px solid rgba(217,181,90,.3);border-radius:8px;padding:22px;}
+  .box{background:var(--surface);border:1px solid rgba(188,204,194,.3);border-radius:8px;padding:22px;}
   .check{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--muted);margin:4px 0 16px;}
-  .check input{margin-top:3px;accent-color:#d9b55a;width:18px;height:18px;}
+  .check input{margin-top:3px;accent-color:#c3d0c6;width:18px;height:18px;}
   .full{width:100%;padding:18px;}
   .msg{color:var(--danger);font-size:13px;text-align:center;min-height:18px;margin-top:10px;}
   .alt{text-align:center;margin-top:18px;font-size:14px;color:var(--muted);}
@@ -39,7 +39,7 @@
 
   /* TARJETA DIGITAL */
   .card{position:relative;border-radius:18px;padding:22px 20px 20px;overflow:hidden;color:var(--cream);
-    background:linear-gradient(150deg,#1b160e 0%,#0b0907 55%,#16110a 100%);border:1px solid rgba(217,181,90,.45);box-shadow:0 30px 70px rgba(0,0,0,.6);}
+    background:linear-gradient(150deg,#242c27 0%,#151a17 55%,#202923 100%);border:1px solid rgba(188,204,194,.45);box-shadow:0 30px 70px rgba(0,0,0,.6);}
   .card::before{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,236,190,.10) 50%,transparent 65%);animation:brillo 6s ease-in-out infinite;}
   @keyframes brillo{0%{transform:translateX(-100%)}50%,100%{transform:translateX(100%)}}
   .card-top{display:flex;justify-content:space-between;align-items:center;position:relative;}
@@ -47,7 +47,7 @@
   .card-top .lbl{text-align:right;font-size:10.5px;letter-spacing:.3em;color:var(--gold);font-weight:700;}
   .card-top .lbl b{display:block;font-family:var(--display);font-weight:800;letter-spacing:0;font-size:22px;color:var(--cream);margin-top:4px;text-transform:uppercase;}
   .stamps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:24px 0 18px;position:relative;}
-  .st{aspect-ratio:1;border-radius:50%;border:1.5px dashed rgba(217,181,90,.5);display:grid;place-items:center;transition:.3s;}
+  .st{aspect-ratio:1;border-radius:50%;border:1.5px dashed rgba(188,204,194,.5);display:grid;place-items:center;transition:.3s;}
   .st img{width:66%;opacity:.18;filter:grayscale(1) brightness(2);}
   .st.f{border:0;background:var(--oro);box-shadow:0 6px 18px rgba(201,154,52,.35);}
   .st.f img{opacity:1;filter:brightness(0) saturate(0);mix-blend-mode:multiply;}
@@ -57,7 +57,7 @@
   .bar i{display:block;height:100%;background:var(--oro);border-radius:6px;transition:width .6s;}
   .card-foot{display:flex;justify-content:space-between;margin-top:10px;font-size:13px;color:var(--muted);position:relative;}
   .card-foot b{color:var(--cream);}
-  .premio{margin-top:16px;border-top:1px solid rgba(217,181,90,.25);padding-top:14px;font-size:13px;color:#d8cdb6;position:relative;}
+  .premio{margin-top:16px;border-top:1px solid rgba(188,204,194,.25);padding-top:14px;font-size:13px;color:#c6ceca;position:relative;}
   .premio b{display:block;font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:16px;margin-top:2px;background:var(--oro);-webkit-background-clip:text;background-clip:text;color:transparent;}
   .full-banner{margin-top:14px;background:var(--oro);color:#120e07;border-radius:10px;padding:14px;text-align:center;font-weight:700;position:relative;}
   .full-banner b{font-family:var(--display);font-weight:800;font-size:20px;display:block;text-transform:uppercase;}
@@ -81,7 +81,7 @@
 <body>
 <main class="app" id="app"><div style="text-align:center;padding:80px 0"><span class="spin"></span></div></main>
 
-<script src="../assets/gbl.js?v=1"></script>
+<script src="../assets/gbl.js?v=2"></script>
 <script src="../assets/qrcode.js"></script>
 <script>
 const { rpc, esc, dateShort, toast } = GB;
@@ -98,7 +98,7 @@ function qrSvg(txt) {
 }
 const cardUrl = (c) => location.origin + location.pathname + '?c=' + encodeURIComponent(c);
 const cabecera = (link) => `<div class="top"><a href="../"><img src="../assets/img/nombre.png" alt="God’s Blessing Barbería"></a>${link || ''}</div>`;
-const meta = () => Number((INFO && INFO.config.meta_sellos) || 5);
+const meta = () => Number((INFO && INFO.config.meta_sellos) || 10);
 const premio = () => (INFO && INFO.config.premio) || 'Premio sorpresa';
 const formulario = (boton) => `
   <div class="field"><label for="n">Tu nombre</label><input id="n" autocomplete="name" maxlength="60" placeholder="Nombre y apellido"></div>
@@ -231,7 +231,7 @@ function vistaTarjeta(t, popIdx) {
 
 function confeti() {
   const box = document.createElement('div'); box.className = 'confetti';
-  const cols = ['#fff1bf', '#e3c068', '#c99a34', '#8a6420'];
+  const cols = ['#e3ebe6', '#c3d0c6', '#a6b5ab', '#6f8276'];
   for (let i = 0; i < 70; i++) {
     const p = document.createElement('i');
     p.style.left = Math.random() * 100 + '%'; p.style.background = cols[i % 4];
