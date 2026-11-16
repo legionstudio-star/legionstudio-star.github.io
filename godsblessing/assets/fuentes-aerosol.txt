@@ -1,0 +1,8 @@
+Fotografía de aerosol Tre Color (boquilla expuesta).
+Fuente consultada: https://www.pngaaa.com/detail/1317504
+Archivo de origen: https://image.pngaaa.com/504/1317504-middle.png
+
+Tratamiento: eliminación determinista del fondo cuadriculado conectado al borde,
+suavizado del contorno y conversión a WebP. No se generó ni redibujó el envase.
+La animación y las partículas de pintura se implementaron en CSS y Canvas 2D.
+No existe relación ni patrocinio entre la marca del envase y la barbería.

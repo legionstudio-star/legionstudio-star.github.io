@@ -12,8 +12,9 @@
     document.body.classList.add('entered');
   }
   let seen = false;
-  try { seen = sessionStorage.getItem('gbl_intro_v3') === '1'; sessionStorage.setItem('gbl_intro_v3', '1'); } catch {}
-  if (seen || reduced || location.hash === '#agenda') finishIntro(true);
+  try { seen = sessionStorage.getItem('gbl_intro_v4') === '1'; sessionStorage.setItem('gbl_intro_v4', '1'); } catch {}
+  const replayIntro = new URLSearchParams(location.search).get('intro') === '1';
+  if ((seen && !replayIntro) || reduced || location.hash === '#agenda') finishIntro(true);
   else setTimeout(() => finishIntro(), 2450);
   skipIntro.onclick = () => finishIntro();
   // Never leave the page hidden when JS is interrupted or the tab returns from cache.

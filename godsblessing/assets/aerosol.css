@@ -1,0 +1,14 @@
+/* Real photographic can. Its nozzle is the anchor for the paint particles. */
+.intro-stage{isolation:isolate}
+.intro-logo{animation:none;will-change:clip-path}
+.intro-logo img{height:auto}
+.spray-rig{position:absolute;left:0;top:0;width:1px;height:1px;z-index:5;pointer-events:none;opacity:0;will-change:transform}
+.spray-can{position:absolute;width:78px;left:-27px;top:-15px;transform-origin:35% 9%;transform:rotate(20deg);filter:drop-shadow(7px 10px 6px #0008);will-change:transform}
+.spray-can img{display:block;width:100%;height:auto;max-width:none;transform:scaleX(-1);filter:contrast(1.03) saturate(.75)}
+.spray-can-light{position:absolute;left:23%;top:22%;width:8%;height:65%;background:linear-gradient(transparent,#fff1,transparent);filter:blur(1px);pointer-events:none}
+.spray-mist{position:absolute;left:-140px;top:-140px;z-index:4;width:calc(100% + 280px);height:calc(100% + 280px);pointer-events:none;mix-blend-mode:screen}
+.spray-jet{position:absolute;right:-2px;top:-6px;width:53px;height:12px;transform-origin:right center;background:linear-gradient(270deg,#f3f2e894,#f3f2e81a 36%,transparent);clip-path:polygon(100% 39%,100% 61%,0 100%,0 0);filter:blur(1.1px);opacity:0}
+.spraying .spray-jet{opacity:.8;animation:jet-pulse .11s steps(2,end) infinite}
+@keyframes jet-pulse{0%{transform:scaleX(.9);opacity:.55}100%{transform:scaleX(1.07);opacity:.9}}
+@media(max-width:600px){.spray-can{width:64px;left:-22px;top:-12px}.spray-jet{width:43px}}
+@media(prefers-reduced-motion:reduce){.spray-rig,.spray-mist{display:none}.intro-logo{clip-path:inset(0)}}
