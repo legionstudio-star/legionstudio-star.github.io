@@ -182,7 +182,7 @@ function vistaLogin(err) {
 /* ================= ESTRUCTURA ================= */
 function arrancar() {
   fecha = fecha || INFO.hoy;
-  const tabs = ME.es_dueno ? ['agenda', 'club', 'numeros', 'perfil', 'ajustes'] : ['agenda', 'club', 'perfil'];
+  const tabs = ME.es_dueno ? ['agenda', 'numeros', 'perfil', 'ajustes'] : ['agenda', 'perfil']; /* Club no contratado (18-nov) */
   const label = { agenda: 'Agenda', club: 'Club', numeros: 'Números', ajustes: 'Ajustes', perfil: 'Mi perfil' };
   root.innerHTML = `<div class="bar"><div class="bar-in"><a href="./"><img src="assets/img/logo-ghetto-oscuro.png" alt="Ghetto Barbershop SM"></a>
       <div class="me"><b>${esc(ME.nombre)}${ME.es_dueno ? ' · Dueño' : ''}</b><button type="button" id="out">Salir</button></div></div></div>
@@ -265,7 +265,7 @@ async function cargarAgenda(silent) {
       if (t.estado === 'cancelado' || t.estado === 'no_vino') acts += `<button data-a="confirmado">Reactivar</button>`;
       if (ME.es_dueno && t.tel) acts += `<a class="wa" href="${waLink(t.tel, recordar)}" target="_blank" rel="noopener">WhatsApp</a>`;
       return `<div class="appt ${cls}" data-id="${t.id}"><div class="h">${time12(t.hora).replace(' ', '<small>')}</small><small>hasta ${time12(fin)}</small></div>
-        <div><div class="c">${esc(t.cliente)}<span class="pill p-${t.estado}">${ESTADO[t.estado]}</span>${t.club ? `<span class="pill p-club">Club ${t.club.sellos}</span>` : ''}</div>
+        <div><div class="c">${esc(t.cliente)}<span class="pill p-${t.estado}">${ESTADO[t.estado]}</span></div>
         <div class="s">${esc(t.servicio)}${t.valor != null ? ' · ' + money(t.valor) : t.precio != null ? ' · ' + money(t.precio) : ''}${showB ? ' · ' + esc(t.barbero) : ''}${ME.es_dueno && t.tel ? ' · ' + esc(telFmt(t.tel)) : ''}${t.origen === 'web' ? ' · reservó en la página' : ''}</div>
         <div class="acts">${acts}</div></div></div>`;
     }).join('');
@@ -289,7 +289,7 @@ async function cambiarEstado(t, estado) {
   }
   try {
     const r = await call('gb_admin_estado', { p_id: t.id, p_estado: estado, p_valor: valor });
-    if (r.club) {
+    if (false && r.club) {
       const c = r.club;
       toast(c.ok ? `Sello puesto: ${c.sellos} de ${c.meta}${c.lleno ? ' · ¡tarjeta llena!' : ''}` : `Club: ${c.motivo}`);
     } else toast(ESTADO[estado]);
@@ -470,10 +470,7 @@ async function cargarNumeros(year) {
         ${x.por_barbero.map((b) => `<tr><td>${esc(b.nombre)}</td><td class="n">${b.completados}</td><td class="n">${money(b.recaudado)}</td><td class="n">${b.no_vino}</td></tr>`).join('')}</table></div>` : ''}
       <h2 class="sec" style="font-size:18px">Lo que más se pide</h2>
       <div class="card">${x.servicios.length ? `<table><tr><th>Servicio</th><th class="n">Veces</th><th class="n">Total</th></tr>${x.servicios.map((s) => `<tr><td>${esc(s.servicio)}</td><td class="n">${s.n}</td><td class="n">${money(s.total)}</td></tr>`).join('')}</table>` : '<p class="muted">Sin servicios atendidos en este rango.</p>'}</div>
-      <h2 class="sec" style="font-size:18px">Club Ghetto</h2>
-      <div class="stats"><div class="stat"><small>Miembros</small><b>${x.club.miembros}</b></div><div class="stat"><small>Nuevos</small><b>${x.club.nuevos}</b></div>
-      <div class="stat"><small>Sellos puestos</small><b>${x.club.sellos}</b></div><div class="stat"><small>Premios</small><b>${x.club.canjes}</b></div>
-      <div class="stat"><small>Sin volver +30 días</small><b>${x.club.sin_volver}</b></div></div>`;
+`;
   } catch (e) { box.innerHTML = `<div class="empty">${esc(e.message)}</div>`; }
 }
 
