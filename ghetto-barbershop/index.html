@@ -44,6 +44,12 @@
   .hero::after{content:"";position:absolute;inset:0;background:
     linear-gradient(180deg,rgba(10,9,9,.55) 0%,rgba(10,9,9,.05) 28%,rgba(10,9,9,.25) 55%,rgba(10,9,9,.96) 100%),
     radial-gradient(ellipse at 20% 80%,rgba(168,50,70,.25),transparent 60%);}
+  .santi{position:absolute;z-index:1;right:max(2vw,8px);bottom:0;height:min(84vh,860px);aspect-ratio:9/16;pointer-events:none;opacity:0;transform:translateY(40px);transition:opacity .9s ease,transform 1.1s cubic-bezier(.2,.8,.2,1);}
+  .santi.on{opacity:1;transform:none;}
+  .santi canvas{width:100%;height:100%;display:block;filter:drop-shadow(0 18px 30px rgba(0,0,0,.55));}
+  .santi::after{content:"";position:absolute;left:18%;right:18%;bottom:3%;height:4%;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.6),transparent);z-index:-1;}
+  @media (min-aspect-ratio:1/1){.hero h1{max-width:min(60vw,900px);} .santi{right:max(5vw,40px);}}
+  @media (max-aspect-ratio:1/1){.santi{top:clamp(62px,8svh,80px);bottom:auto;right:-2vw;height:min(32svh,110vw);}}
   .hero-content{position:relative;z-index:2;width:100%;max-width:1240px;margin:0 auto;padding:0 22px 9vh;}
   .live{display:inline-flex;align-items:center;gap:9px;font-size:13px;font-weight:600;padding:7px 14px;border-radius:999px;background:rgba(10,9,9,.5);border:1px solid rgba(245,238,225,.2);backdrop-filter:blur(6px);margin-bottom:18px;}
   .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:blink 1.6s infinite;}
@@ -206,6 +212,7 @@
 <section class="hero" style="padding:0">
   <img class="poster" id="heroPoster" src="assets/img/poster-v.jpg" alt="">
   <video id="heroVideo" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+  <div class="santi" id="santi" aria-hidden="true"><canvas width="432" height="768"></canvas></div>
   <div class="hero-content">
     <span class="live"><span class="dot" id="liveDot"></span><span id="liveTxt">Bogotá · Agenda en línea</span></span>
     <h1>Ghetto Barbershop<small>Since the streets · SM</small></h1>
@@ -230,11 +237,11 @@
       <a class="btn btn-ghost btn-sm" id="igLink" href="https://www.instagram.com/santiiighetto/" target="_blank" rel="noopener">Ver más en Instagram</a>
     </div>
     <div class="gallery">
-      <figure class="reveal"><img src="assets/img/corte-platino-diseno.webp" alt="Corte platinado con diseño de líneas" loading="lazy"><figcaption>Platino</figcaption></figure>
-      <figure class="reveal"><img src="assets/img/corte-mecha-azul.webp" alt="Corte con mecha de color azul" loading="lazy"><figcaption>Color</figcaption></figure>
-      <figure class="reveal"><img src="assets/img/corte-freestyle.webp" alt="Diseño freestyle a mano alzada" loading="lazy"><figcaption>Freestyle</figcaption></figure>
-      <figure class="reveal"><img src="assets/img/corte-mullet.webp" alt="Corte mullet con degradado" loading="lazy"><figcaption>Mullet</figcaption></figure>
-      <figure class="reveal"><img src="assets/img/corte-con-santi.webp" alt="Santi terminando un diseño a un niño" loading="lazy"><figcaption>Detalle</figcaption></figure>
+      <figure class="reveal"><img src="assets/img/santi-corte-07.webp" alt="Diseño freestyle a mano alzada, por Santi" loading="lazy"><figcaption>Freestyle · Santi</figcaption></figure>
+      <figure class="reveal"><img src="assets/img/santi-corte-08.webp" alt="Color de fantasía azul y lila, por Santi" loading="lazy"><figcaption>Color · Santi</figcaption></figure>
+      <figure class="reveal"><img src="assets/img/abraham-corte-1.webp" alt="Fade con diseño de líneas, por Abraham" loading="lazy"><figcaption>Diseño · Abraham</figcaption></figure>
+      <figure class="reveal"><img src="assets/img/santi-corte-04.webp" alt="Mullet con diseño, por Santi" loading="lazy"><figcaption>Mullet · Santi</figcaption></figure>
+      <figure class="reveal"><img src="assets/img/abraham-corte-6.webp" alt="Burst fade, por Abraham" loading="lazy"><figcaption>Burst fade · Abraham</figcaption></figure>
     </div>
   </div>
 </section>
@@ -352,6 +359,37 @@ document.getElementById('year').textContent = new Date().getFullYear();
   v.src = wide ? 'assets/banner-h.mp4' : 'assets/banner-v.mp4';
   v.addEventListener('playing', () => { poster.style.opacity = 0; });
   v.play().catch(() => {});
+})();
+
+/* ---------- Santi 3D saludando (variante aleatoria). Video con la máscara abajo: funciona en todos los navegadores ---------- */
+(function () {
+  const VARIANTES = ['chaqueta', 'gorra'];
+  const box = document.getElementById('santi'), cv = box.querySelector('canvas');
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const gl = cv.getContext('webgl', { premultipliedAlpha: false, alpha: true });
+  if (!gl) return;
+  const v = document.createElement('video');
+  v.muted = true; v.loop = true; v.playsInline = true; v.setAttribute('playsinline', ''); v.crossOrigin = 'anonymous';
+  const pedida = new URLSearchParams(location.search).get('santi');
+  v.src = 'assets/santi-' + (VARIANTES.includes(pedida) ? pedida : VARIANTES[Math.floor(Math.random() * VARIANTES.length)]) + '.mp4';
+  const sh = (t, src) => { const o = gl.createShader(t); gl.shaderSource(o, src); gl.compileShader(o); return o; };
+  const pr = gl.createProgram();
+  gl.attachShader(pr, sh(gl.VERTEX_SHADER, 'attribute vec2 p;varying vec2 u;void main(){u=vec2(p.x*.5+.5,.5-p.y*.5);gl_Position=vec4(p,0.,1.);}'));
+  gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, 'precision mediump float;uniform sampler2D t;varying vec2 u;void main(){vec3 c=texture2D(t,vec2(u.x,u.y*.5)).rgb;float a=clamp((texture2D(t,vec2(u.x,.5+u.y*.5)).g-.03)/.94,0.,1.);gl_FragColor=vec4(min(c/max(a,.004),1.),a);}'));
+  gl.linkProgram(pr); gl.useProgram(pr);
+  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(pr, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  gl.bindTexture(gl.TEXTURE_2D, gl.createTexture());
+  [gl.TEXTURE_WRAP_S, gl.TEXTURE_WRAP_T].forEach((k) => gl.texParameteri(gl.TEXTURE_2D, k, gl.CLAMP_TO_EDGE));
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+  const draw = () => {
+    if (v.readyState >= 2) { gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, v); gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4); }
+    (v.requestVideoFrameCallback ? v.requestVideoFrameCallback.bind(v) : requestAnimationFrame)(draw);
+  };
+  v.addEventListener('playing', () => setTimeout(() => box.classList.add('on'), 900), { once: true });
+  v.play().then(draw).catch(() => {});
 })();
 
 /* ---------- header sólido al bajar + animaciones de entrada ---------- */
