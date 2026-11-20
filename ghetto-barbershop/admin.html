@@ -201,6 +201,7 @@ function ir(t) {
   scrollTo(0, 0);
 }
 const view = () => document.getElementById('view');
+const P = () => (ME && ME.es_dueno) ? { turnos_silla: true, bloquear: true, cancelar: true, ver_valores: true } : Object.assign({ turnos_silla: true, bloquear: true, cancelar: true, ver_valores: true }, (ME && ME.permisos) || {});
 function vistaPerfil(onboarding = false, barberId = null) {
   return GhettoProfile.render({ view, call, esc, toast, refresh: async () => {
     ME = await rpc('gb_yo', { p_token: TOKEN }); INFO = await rpc('gb_info');
@@ -216,12 +217,12 @@ async function vistaAgenda() {
     <div class="days" id="days"></div>
     ${multi ? `<div class="seg" id="segB" style="margin-top:8px"><button data-b="" class="on">Todos</button>${INFO.barberos.map((b) => `<button data-b="${b.id}">${esc(b.nombre)}</button>`).join('')}</div>` : ''}
     <div class="stats" id="stats"></div>
-    <div class="fab-row"><button class="btn btn-cream btn-sm" id="nuevo">+ Turno en silla</button><button class="btn btn-ghost btn-sm" id="bloq">Bloquear horario</button></div>
+    ${P().turnos_silla || P().bloquear ? `<div class="fab-row">${P().turnos_silla ? '<button class="btn btn-cream btn-sm" id="nuevo">+ Turno en silla</button>' : ''}${P().bloquear ? '<button class="btn btn-ghost btn-sm" id="bloq">Bloquear horario</button>' : ''}</div>` : ''}
     <div id="list"><div class="empty"><span class="spin"></span></div></div>`;
   document.getElementById('prev').onclick = () => { fecha = addDays(fecha, -1); cargarAgenda(); };
   document.getElementById('next').onclick = () => { fecha = addDays(fecha, 1); cargarAgenda(); };
-  document.getElementById('nuevo').onclick = nuevoTurno;
-  document.getElementById('bloq').onclick = bloquear;
+  if (document.getElementById('nuevo')) document.getElementById('nuevo').onclick = nuevoTurno;
+  if (document.getElementById('bloq')) document.getElementById('bloq').onclick = bloquear;
   if (multi) document.getElementById('segB').onclick = (e) => { const b = e.target.closest('button'); if (!b) return; filtroBarbero = b.dataset.b || null; document.querySelectorAll('#segB button').forEach((x) => x.classList.toggle('on', x === b)); cargarAgenda(); };
   await cargarAgenda();
   refreshTimer = setInterval(() => { if (!document.hidden && TAB === 'agenda') cargarAgenda(true); }, 30000);
@@ -248,22 +249,21 @@ async function cargarAgenda(silent) {
     <div class="stat"><small>Turnos</small><b>${activos.length}</b></div>
     <div class="stat"><small>Por atender</small><b>${activos.length - hechos.length}</b></div>
     <div class="stat"><small>Atendidos</small><b>${hechos.length}</b></div>
-    <div class="stat"><small>Recaudado</small><b>${money(hechos.reduce((a, t) => a + (t.valor || 0), 0))}</b></div>`;
+    ${P().ver_valores ? `<div class="stat"><small>Recaudado</small><b>${money(hechos.reduce((a, t) => a + (t.valor || 0), 0))}</b></div>` : ''}`;
 
   const list = document.getElementById('list');
   if (!d.turnos.length && !d.bloqueos.length) { list.innerHTML = '<div class="empty">No hay turnos este día.</div>'; return; }
   const showB = ME.es_dueno && INFO.barberos.length > 1 && !filtroBarbero;
   list.innerHTML = d.bloqueos.map((b) => `<div class="blk"><span>${b.ini ? `${time12(b.ini)} – ${time12(b.fin)}` : 'Todo el día'} · ${esc(b.motivo || 'Bloqueado')}${showB ? ' · ' + esc(b.barbero) : ''}</span>
-      <button type="button" class="linkbtn" data-unb="${b.id}" style="background:none;border:0;color:var(--rose);text-decoration:underline;font-weight:700">Quitar</button></div>`).join('')
+      ${P().bloquear ? `<button type="button" class="linkbtn" data-unb="${b.id}" style="background:none;border:0;color:var(--rose);text-decoration:underline;font-weight:700">Quitar</button>` : ''}</div>`).join('')
     + d.turnos.map((t) => {
       const fin = fromMin(toMin(t.hora) + t.duracion);
       const cls = t.estado === 'completado' ? 'done' : (t.estado === 'cancelado' || t.estado === 'no_vino') ? 'off' : '';
-      const recordar = `Hola ${t.cliente.split(' ')[0]}! Te recordamos tu turno en Ghetto Barbershop ${fecha === INFO.hoy ? 'hoy' : dateLong(fecha)} a las ${time12(t.hora)} (${t.servicio}). Te esperamos.`;
       let acts = '';
       if (t.estado === 'pendiente' && t.requiere_confirmacion === true) acts += `<button class="ok" data-a="confirmado">Confirmar</button>`;
-      if (t.estado === 'pendiente' || t.estado === 'confirmado') acts += `<button class="ok" data-a="completado">Atendido</button><button data-a="no_vino">No vino</button><button data-a="cancelado">Cancelar</button>`;
-      if (t.estado === 'cancelado' || t.estado === 'no_vino') acts += `<button data-a="confirmado">Reactivar</button>`;
-      if (ME.es_dueno && t.tel) acts += `<a class="wa" href="${waLink(t.tel, recordar)}" target="_blank" rel="noopener">WhatsApp</a>`;
+      if (t.estado === 'pendiente' || t.estado === 'confirmado') acts += `<button class="ok" data-a="completado">Atendido</button>${P().cancelar ? '<button data-a="no_vino">No vino</button><button data-a="cancelado">Cancelar</button>' : ''}`;
+      if ((t.estado === 'cancelado' || t.estado === 'no_vino') && P().cancelar) acts += `<button data-a="confirmado">Reactivar</button>`;
+      if (ME.es_dueno && t.tel && t.estado !== 'completado') acts += `<button class="wa" data-wa="${t.id}">${WA_ICON} Avisar por WhatsApp</button>`;
       return `<div class="appt ${cls}" data-id="${t.id}"><div class="h">${time12(t.hora).replace(' ', '<small>')}</small><small>hasta ${time12(fin)}</small></div>
         <div><div class="c">${esc(t.cliente)}<span class="pill p-${t.estado}">${ESTADO[t.estado]}</span></div>
         <div class="s">${esc(t.servicio)}${t.valor != null ? ' · ' + money(t.valor) : t.precio != null ? ' · ' + money(t.precio) : ''}${showB ? ' · ' + esc(t.barbero) : ''}${ME.es_dueno && t.tel ? ' · ' + esc(telFmt(t.tel)) : ''}${t.origen === 'web' ? ' · reservó en la página' : ''}</div>
@@ -273,11 +273,36 @@ async function cargarAgenda(silent) {
     try { await call('gb_admin_desbloquear', { p_id: b.dataset.unb }); toast('Horario liberado'); cargarAgenda(); } catch (e) { alertBox(esc(e.message)); }
   });
   list.querySelectorAll('.appt').forEach((el) => el.querySelectorAll('[data-a]').forEach((b) => b.onclick = () => cambiarEstado(d.turnos.find((t) => t.id === el.dataset.id), b.dataset.a)));
+  list.querySelectorAll('[data-wa]').forEach((b) => b.onclick = () => avisarWhatsApp(d.turnos.find((t) => t.id === b.dataset.wa)));
+}
+
+/* Avisos rapidos por WhatsApp (solo el dueno: es quien ve los numeros). Abre WhatsApp con el mensaje listo; solo se le da enviar. */
+const WA_ICON = '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="vertical-align:-2px"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.5 12.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1l-.9 1.1c-.2.2-.3.2-.6.1a8 8 0 0 1-3.9-3.4c-.2-.3 0-.5.1-.6l.4-.5.3-.5v-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5 1.9.8 2.6.9 3.6.7.6-.1 1.7-.7 2-1.4.2-.7.2-1.3.2-1.4l-.6-.3z"/></svg>';
+async function avisarWhatsApp(t) {
+  const nombre = t.cliente.split(' ')[0], cuando = fecha === INFO.hoy ? 'hoy' : dateLong(fecha), hora = time12(t.hora);
+  const barbero = t.barbero || ME.nombre, pagina = location.origin + location.pathname.replace(/admin\.html$/, '');
+  const M = {
+    r10: `Hola ${nombre}! Te escribe ${barbero} de Ghetto Barbershop. Voy con unos 10 minutos de retraso para tu turno de las ${hora}. Mil disculpas, ya te atiendo.`,
+    r20: `Hola ${nombre}! Te escribe ${barbero} de Ghetto Barbershop. Voy con unos 20 minutos de retraso para tu turno de las ${hora}. Mil disculpas; si prefieres te muevo la hora.`,
+    rec: `Hola ${nombre}! Te recordamos tu turno en Ghetto Barbershop ${cuando} a las ${hora} (${t.servicio}). Te esperamos.`,
+    lis: `Hola ${nombre}! Ya estamos listos para tu turno de las ${hora} en Ghetto Barbershop. Te esperamos.`,
+    mov: `Hola ${nombre}! Te escribe ${barbero} de Ghetto Barbershop. Tuve un inconveniente con tu turno de ${cuando} a las ${hora}. Te sirve moverlo a otra hora? Dime y te lo aparto.`,
+    can: `Hola ${nombre}! Te escribe ${barbero} de Ghetto Barbershop. Lamentablemente no puedo atenderte ${cuando} a las ${hora}. Agenda de nuevo cuando quieras aqui: ${pagina}`
+  };
+  await modal(`<h3>Avisar a ${esc(t.cliente)}</h3><p class="muted">${esc(t.servicio)} · ${esc(hora)}. Toca un mensaje: se abre WhatsApp con el texto listo y solo le das enviar.</p>`, [
+    { label: 'Voy 10 min tarde', value: 1, cls: 'btn-wa', href: waLink(t.tel, M.r10) },
+    { label: 'Voy 20 min tarde', value: 1, cls: 'btn-wa', href: waLink(t.tel, M.r20) },
+    { label: 'Recordarle el turno', value: 1, cls: 'btn-wa', href: waLink(t.tel, M.rec) },
+    { label: 'Ya estamos listos', value: 1, cls: 'btn-wa', href: waLink(t.tel, M.lis) },
+    { label: 'Pedirle cambiar la hora', value: 1, cls: 'btn-wa', href: waLink(t.tel, M.mov) },
+    { label: 'No puedo atenderlo', value: 1, cls: 'btn-wa', href: waLink(t.tel, M.can) },
+    { label: 'Cerrar', value: null }
+  ]);
 }
 
 async function cambiarEstado(t, estado) {
   let valor = null;
-  if (estado === 'completado') {
+  if (estado === 'completado' && P().ver_valores) {
     const r = await modal(`<h3>¿Cuánto pagó?</h3><p class="muted">${esc(t.cliente)} · ${esc(t.servicio)}</p>
       <div class="field" style="margin-top:14px"><label for="val">Valor</label><input id="val" type="number" inputmode="numeric" min="0" step="1000" value="${t.precio != null ? t.precio : ''}" placeholder="Ej: 25000"></div>`,
       [{ label: 'Cancelar', value: false }, { label: 'Guardar', value: true, primary: true }]);
@@ -500,7 +525,7 @@ async function vistaAjustes() {
       <button class="btn btn-cream btn-sm">Guardar cambios</button>
     </form>
     <h2 class="sec">Equipo</h2>
-    <div class="card"><div id="lBar">${d.barberos.map((b) => `<div class="list-item"><div><b>${esc(b.nombre)}${b.es_dueno ? ' · Dueño' : ''}${b.activo ? '' : ' · inactivo'}</b><span>${esc(b.especialidad)}</span></div><div class="row"><button class="btn btn-ghost btn-sm" data-eb="${b.id}">Acceso</button><button class="btn btn-ghost btn-sm" data-pb="${b.id}">Perfil y cortes</button></div></div>`).join('')}</div>
+    <div class="card"><div id="lBar">${d.barberos.map((b) => `<div class="list-item"><div><b>${esc(b.nombre)}${b.es_dueno ? ' · Dueño' : ''}${b.activo ? '' : ' · inactivo'}</b><span>${esc(b.especialidad)}</span></div><div class="row"><button class="btn btn-ghost btn-sm" data-eb="${b.id}">Acceso</button>${b.es_dueno ? '' : `<button class="btn btn-ghost btn-sm" data-perm="${b.id}">Permisos</button>`}<button class="btn btn-ghost btn-sm" data-pb="${b.id}">Perfil y cortes</button></div></div>`).join('')}</div>
       <button class="btn btn-cream btn-sm" id="addBar" style="margin-top:12px">+ Agregar barbero</button></div>
     <h2 class="sec">Servicios y precios</h2>
     <div class="card"><div id="lSvc">${d.servicios.map((s) => `<div class="list-item"><div><b>${esc(s.nombre)}${s.destacado ? ' ✦' : ''}${s.activo ? '' : ' · oculto'}</b><span>${s.precio != null ? money(s.precio) : 'Se cotiza'} · ${s.duracion} min</span></div><button class="btn btn-ghost btn-sm" data-es="${s.id}">Editar</button></div>`).join('')}</div>
@@ -562,7 +587,25 @@ async function vistaAjustes() {
   document.getElementById('addSvc').onclick = () => editarServicio(null);
   v.querySelectorAll('[data-pb]').forEach((b) => b.onclick = () => { TAB = 'perfil'; clearInterval(refreshTimer); vistaPerfil(false, b.dataset.pb); });
   v.querySelectorAll('[data-eb]').forEach((b) => b.onclick = () => editarBarbero(d.barberos.find((x) => x.id === b.dataset.eb)));
+  v.querySelectorAll('[data-perm]').forEach((b) => b.onclick = () => editarPermisos(b.dataset.perm));
   v.querySelectorAll('[data-es]').forEach((b) => b.onclick = () => editarServicio(d.servicios.find((x) => x.id === b.dataset.es)));
+}
+
+/* ================= PERMISOS (el dueno decide que puede hacer cada barbero) ================= */
+async function editarPermisos(id) {
+  let lista; try { lista = await call('gb_admin_permisos'); } catch (e) { return alertBox(esc(e.message)); }
+  const b = lista.find((x) => x.id === id); if (!b) return alertBox('No encontramos ese barbero.');
+  const OP = [['turnos_silla', 'Crear turnos en silla', 'Agendar clientes que llegan o llaman.'],
+    ['bloquear', 'Bloquear horarios', 'Cerrar ratos de su agenda (almuerzo, permisos).'],
+    ['cancelar', 'Cancelar turnos', 'Marcar Cancelado o No vino, y reactivar.'],
+    ['ver_valores', 'Ver precios y lo recaudado', 'Ver cuánto se cobra y cuánto lleva en el día.']];
+  const ok = await modal(`<h3>Permisos de ${esc(b.nombre)}</h3><p class="muted">Tú decides qué puede hacer en su panel. Su perfil, horario y cortes los configura él siempre.</p>
+    <div style="display:grid;gap:10px;margin-top:14px">${OP.map(([k, t, d]) => `<label style="display:flex;gap:12px;align-items:flex-start;padding:12px;border:1px solid var(--line);border-radius:12px;text-align:left"><input type="checkbox" data-k="${k}" ${b.permisos[k] ? 'checked' : ''} style="width:20px;height:20px;margin-top:2px;flex:0 0 auto;accent-color:#c8435b"><span><b>${t}</b><br><span class="note" style="margin:0">${d}</span></span></label>`).join('')}
+    <div style="display:flex;gap:12px;align-items:flex-start;padding:12px;border:1px dashed var(--line);border-radius:12px;text-align:left;opacity:.75"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex:0 0 auto"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span><b>Ver los WhatsApp de los clientes</b><br><span class="note" style="margin:0">Bloqueado: solo el dueño ve los números.</span></span></div></div>`,
+    [{ label: 'Cancelar', value: false }, { label: 'Guardar permisos', value: true, primary: true }]);
+  if (!ok) return;
+  const permisos = {}; document.querySelectorAll('#gb-modal [data-k]').forEach((x) => { permisos[x.dataset.k] = x.checked; });
+  try { await call('gb_admin_guardar_permisos', { p_barbero: id, p_permisos: permisos }); toast('Permisos guardados'); } catch (e) { alertBox(esc(e.message)); }
 }
 
 /* ================= ARRANQUE ================= */
