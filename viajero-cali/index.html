@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#16130f">
+<title>Viajero Cali · Guía del huésped (demo)</title>
+<meta name="description" content="Demo de guía digital del huésped: un solo QR para wifi, agenda, bar, tours y reseñas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/estudio/v2/fonts/fuentes.css">
+<link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M2 8.5a15 15 0 0 1 20 0M5 12a10 10 0 0 1 14 0M8.5 15.5a5 5 0 0 1 7 0"/><circle cx="12" cy="19" r="1"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+    <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></symbol>
+    <symbol id="i-glass" viewBox="0 0 24 24"><path d="M5 3h14l-1.5 7a5.5 5.5 0 0 1-11 0L5 3ZM12 15.5V21M8 21h8"/></symbol>
+    <symbol id="i-cup" viewBox="0 0 24 24"><path d="M4 9h13v5a6 6 0 0 1-6 6h-1a6 6 0 0 1-6-6V9ZM17 11h1.5a2.5 2.5 0 0 1 0 5H17M8 3c0 1.5 1 1.5 1 3M12 3c0 1.5 1 1.5 1 3"/></symbol>
+    <symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2ZM9 4v14M15 6v14"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 3Z"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4V5Z"/><path d="M8 10h8M8 13h5"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4.5 4.5L19 7"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6L5 8ZM9 8V6a3 3 0 0 1 6 0v2"/></symbol>
+    <symbol id="i-wave" viewBox="0 0 24 24"><path d="M2 14c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2M2 19c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2M8 10V5a2 2 0 0 1 4 0M12 10V5"/></symbol>
+    <symbol id="i-shirt" viewBox="0 0 24 24"><path d="M8 3 3 6l2 5 2-1v11h10V10l2 1 2-5-5-3a4 4 0 0 1-8 0Z"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="m11 12 9-9M17 6l3 3M15 8l2 2"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12Z"/><circle cx="12" cy="9" r="2.5"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6l-8-3Z"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.5 5.7 3.5 9s-1 6.3-3.5 9c-2.5-2.7-3.5-5.7-3.5-9s1-6.3 3.5-9Z"/></symbol>
+    <symbol id="i-nfc" viewBox="0 0 24 24"><path d="M6 8.5a5 5 0 0 1 0 7M9.5 6a9 9 0 0 1 0 12M13 3.5a13 13 0 0 1 0 17"/></symbol>
+  </defs>
+</svg>
+
+<div class="demo-ribbon"><span data-t="ribbon">Demo de guía digital · hecho por LEGION Studio</span><a href="propuesta.html" data-t="ribbonCta">Ver propuesta</a></div>
+
+<header class="hero">
+  <video class="hero-img" id="heroVideo" muted loop playsinline autoplay preload="metadata" poster="img/banner-v.jpg" aria-hidden="true"
+    data-h="img/banner-h.mp4" data-v="img/banner-v.mp4" data-ph="img/banner-h.jpg" data-pv="img/banner-v.jpg"></video>
+  <div class="hero-shade"></div>
+  <div class="topbar">
+    <div class="logo"><span class="logo-mark" aria-hidden="true"><i></i><i></i><i></i></span><span class="logo-txt">VIAJERO<small>CALI · HOSTEL &amp; SALSA SCHOOL</small></span></div>
+    <label class="lang"><svg><use href="#i-globe"/></svg><span class="sr">Idioma / Language</span>
+      <select id="lang" aria-label="Idioma / Language">
+        <option value="es">Español</option>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+        <option value="de">Deutsch</option>
+        <option value="pt">Português</option>
+        <option value="it">Italiano</option>
+        <option value="nl">Nederlands</option>
+      </select>
+    </label>
+  </div>
+  <div class="hero-copy">
+    <p class="kicker" data-t="kicker">San Antonio · Cali</p>
+    <h1 data-t="h1">Bienvenido a la capital de la salsa.</h1>
+    <p class="hero-sub" data-t="heroSub">Todo lo que necesitas durante tu estadía, en un solo lugar.</p>
+    <div class="hero-chips">
+      <span><svg><use href="#i-nfc"/></svg><b data-t="chipNfc">Acerca tu celular o escanea</b></span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- Accesos rápidos -->
+  <nav class="quick" aria-label="Accesos rápidos">
+    <a href="#wifi"><span class="qi c1"><svg><use href="#i-wifi"/></svg></span><b>Wifi</b></a>
+    <a href="#hoy"><span class="qi c2"><svg><use href="#i-cal"/></svg></span><b data-t="qToday">Hoy</b></a>
+    <a href="#bar"><span class="qi c3"><svg><use href="#i-glass"/></svg></span><b data-t="qBar">Bar y piscina</b></a>
+    <a href="#tours"><span class="qi c4"><svg><use href="#i-map"/></svg></span><b>Tours</b></a>
+    <a href="#desayuno"><span class="qi c5"><svg><use href="#i-cup"/></svg></span><b data-t="qBreak">Desayuno</b></a>
+    <a href="#salsa"><span class="qi c6"><svg><use href="#i-music"/></svg></span><b>Salsa</b></a>
+    <a href="#info"><span class="qi c7"><svg><use href="#i-info"/></svg></span><b data-t="qInfo">Info útil</b></a>
+    <a href="#resena"><span class="qi c8"><svg><use href="#i-star"/></svg></span><b data-t="qRev">Califícanos</b></a>
+  </nav>
+
+  <!-- Wifi -->
+  <section id="wifi" class="card wifi">
+    <div class="wifi-ico"><svg><use href="#i-wifi"/></svg></div>
+    <div class="wifi-data">
+      <span class="label" data-t="wifiNet">Red</span><b>Viajero_Guests</b>
+      <span class="label" data-t="wifiPass">Clave</span><b class="mono" id="wifiPass">salsa2026</b>
+    </div>
+    <button type="button" class="btn-copy" id="copyWifi"><svg><use href="#i-copy"/></svg><span data-t="copy">Copiar clave</span></button>
+  </section>
+
+  <!-- Hoy -->
+  <section id="hoy" class="block">
+    <div class="block-head">
+      <p class="kicker dark" data-t="todayKicker">Agenda de la semana</p>
+      <h2 data-t="todayTitle">¿Qué pasa hoy en Viajero?</h2>
+    </div>
+    <div class="days" role="tablist" id="days"></div>
+    <ol class="agenda" id="agenda"></ol>
+    <p class="note" data-t="todayNote">Horarios de ejemplo para el demo. La recepción los actualiza desde su panel, sin reimprimir nada.</p>
+  </section>
+
+  <!-- Salsa -->
+  <section id="salsa" class="feature">
+    <img src="img/salsa.jpg" alt="" loading="lazy">
+    <div class="feature-copy">
+      <p class="kicker" data-t="salsaKicker">Salsa School</p>
+      <h2 data-t="salsaTitle">Clase grupal gratis todos los días.</h2>
+      <p data-t="salsaText">¿Quieres llegar a Juanchito bailando de verdad? Reserva una clase privada con nuestros profes.</p>
+      <div class="feature-actions">
+        <button type="button" class="btn light" data-book="privada" data-t="salsaCta">Reservar clase privada</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bar -->
+  <section id="bar" class="block">
+    <div class="block-head">
+      <p class="kicker dark" data-t="barKicker">Bar y piscina · 7:00 a 22:00</p>
+      <h2 data-t="barTitle">Pide desde la piscina o tu mesa.</h2>
+      <p class="lead" data-t="barLead">Tu pedido le llega directo a la recepción de Cali. Sin hacer fila.</p>
+    </div>
+    <div class="bar-photo"><img src="img/bar.jpg" alt="" loading="lazy"></div>
+    <div class="menu-tabs" id="menuTabs" role="tablist"></div>
+    <ul class="menu" id="menu"></ul>
+    <p class="note" data-t="priceNote">Precios de ejemplo para el demo.</p>
+  </section>
+
+  <!-- Desayuno -->
+  <section id="desayuno" class="feature reverse">
+    <img src="img/desayuno.jpg" alt="" loading="lazy">
+    <div class="feature-copy">
+      <p class="kicker" data-t="breakKicker">Desayuno</p>
+      <h2 data-t="breakTitle">Arepa, huevos, fruta y café del Valle.</h2>
+      <p data-t="breakText">Resérvalo hoy para mañana y paga la tarifa especial.</p>
+      <div class="feature-actions">
+        <button type="button" class="btn light" data-add="desayuno" data-t="breakCta">Agregar a mi pedido</button>
+        <span class="price-tag">$ 18.000</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tours -->
+  <section id="tours" class="block">
+    <div class="block-head">
+      <p class="kicker dark" data-t="toursKicker">Tours y planes</p>
+      <h2 data-t="toursTitle">Vive Cali con el grupo.</h2>
+    </div>
+    <div class="tours" id="toursList"></div>
+  </section>
+
+  <!-- Info -->
+  <section id="info" class="block">
+    <div class="block-head">
+      <p class="kicker dark" data-t="infoKicker">Info útil</p>
+      <h2 data-t="infoTitle">Lo que siempre preguntan.</h2>
+    </div>
+    <div class="faq" id="faq"></div>
+  </section>
+
+  <!-- Reseña -->
+  <section id="resena" class="review card">
+    <p class="kicker dark" data-t="revKicker">Tu opinión</p>
+    <h2 data-t="revTitle">¿Cómo va tu estadía?</h2>
+    <div class="stars" id="stars" role="radiogroup" aria-label="Calificación"></div>
+    <div class="rev-step" id="revGood" hidden>
+      <p data-t="revGood">Nos alegra mucho. ¿Nos ayudas con una reseña? Toma 30 segundos.</p>
+      <div class="rev-links">
+        <a class="btn dark" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Viajero+Cali+Hostel+%26+Salsa+School"><svg><use href="#i-star"/></svg>Google</a>
+        <a class="btn ghost" target="_blank" rel="noopener" href="https://www.hostelworld.com/hostels/p/73676/viajero-cali-hostel-and-salsa-school/"><svg><use href="#i-star"/></svg>Hostelworld</a>
+      </div>
+    </div>
+    <form class="rev-step" id="revBad" hidden>
+      <p data-t="revBad">Lo sentimos. Cuéntanos qué pasó y la recepción lo resuelve hoy mismo.</p>
+      <textarea id="revText" rows="3" data-tp="revPh" placeholder="Ej.: el aire de mi cuarto no enfría"></textarea>
+      <button type="submit" class="btn dark" data-t="revSend">Enviar a recepción</button>
+    </form>
+    <p class="rev-done" id="revDone" hidden><svg><use href="#i-check"/></svg><span data-t="revDone">Recibido. Alguien de recepción te busca en unos minutos.</span></p>
+  </section>
+
+  <!-- Otras sedes -->
+  <section class="block">
+    <div class="block-head">
+      <p class="kicker dark" data-t="nextKicker">Tu próximo Viajero</p>
+      <h2 data-t="nextTitle">Sigue la ruta con nosotros.</h2>
+      <p class="lead" data-t="nextLead">Reserva tu siguiente destino desde aquí con beneficio del programa de lealtad.</p>
+    </div>
+    <div class="dest" id="dest"></div>
+  </section>
+
+  <section class="help card">
+    <div>
+      <h2 data-t="helpTitle">¿Necesitas algo?</h2>
+      <p data-t="helpText">Escríbele a la recepción de Cali. Respondemos 24 horas.</p>
+    </div>
+    <button type="button" class="btn dark" id="helpBtn"><svg><use href="#i-chat"/></svg><span data-t="helpCta">Escribir a recepción</span></button>
+  </section>
+
+  <footer class="foot">
+    <p>Viajero Cali Hostel &amp; Salsa School · Calle 1 Oeste # 4-93, San Antonio · RNT 28443</p>
+    <p class="by" data-t="by">Demo creado por LEGION Studio · legionestudio.com</p>
+  </footer>
+</main>
+
+<!-- Barra inferior -->
+<nav class="dock" aria-label="Navegación">
+  <a href="#hoy"><svg><use href="#i-cal"/></svg><span data-t="qToday">Hoy</span></a>
+  <a href="#bar"><svg><use href="#i-glass"/></svg><span>Bar</span></a>
+  <a href="#tours"><svg><use href="#i-map"/></svg><span>Tours</span></a>
+  <button type="button" id="cartBtn" class="dock-cart"><svg><use href="#i-bag"/></svg><span data-t="order">Pedido</span><i id="cartCount">0</i></button>
+</nav>
+
+<!-- Hoja de pedido / reserva -->
+<div class="sheet-back" id="sheetBack" hidden></div>
+<section class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" hidden>
+  <div class="sheet-grip"></div>
+  <div class="sheet-head"><h3 id="sheetTitle"></h3><button type="button" class="x" id="sheetClose" aria-label="Cerrar"><svg><use href="#i-close"/></svg></button></div>
+  <div id="sheetBody"></div>
+</section>
+
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script src="app.js?v=1"></script>
+</body>
+</html>

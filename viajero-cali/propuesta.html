@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#16130f">
+<title>Propuesta · Un solo QR para Viajero Cali</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/estudio/v2/fonts/fuentes.css">
+<link rel="stylesheet" href="style.css?v=1">
+<style>
+body{padding-bottom:30px}
+.p-hero{position:relative;color:#fff;min-height:62vh;display:flex;align-items:flex-end;overflow:hidden;background:#1c1610}
+.p-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.p-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,8,5,.35),rgba(10,8,5,.9))}
+.p-hero div{position:relative;z-index:1;padding:24px 18px 30px;max-width:680px}
+.p-hero h1{font-family:var(--disp);font-weight:800;font-size:clamp(34px,9vw,58px);line-height:1;letter-spacing:-.02em;text-wrap:balance}
+.p-hero p{margin-top:12px;font-size:17px;opacity:.92;max-width:36ch}
+.sec{margin-top:40px}
+.sec h2{font-family:var(--disp);font-weight:800;font-size:clamp(26px,7vw,36px);line-height:1.04;letter-spacing:-.015em;text-wrap:balance}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px}
+.stat{background:var(--paper);border-radius:18px;padding:16px;box-shadow:0 4px 14px -10px rgba(40,25,5,.3)}
+.stat b{display:block;font-family:var(--disp);font-weight:800;font-size:32px;line-height:1}
+.stat span{font-size:13px;color:var(--ink2)}
+.stat.alert b{color:var(--red)}
+.vs{display:grid;gap:12px;margin-top:16px}
+.vs>div{border-radius:22px;padding:18px}
+.before{background:#efe4d3}
+.after{background:var(--green);color:#fff}
+.vs h3{font-size:13px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px}
+.qrs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.qrs span{aspect-ratio:1;border-radius:10px;background:#fff;display:grid;place-items:center;font-size:10.5px;font-weight:700;color:var(--ink2);text-align:center;padding:4px;position:relative;overflow:hidden}
+.qrs span::before{content:"";position:absolute;inset:14%;background:repeating-conic-gradient(#17140f 0 25%,transparent 0 50%) 0 0/22% 22%;opacity:.13}
+.one{display:flex;gap:14px;align-items:center}
+.acr{width:110px;flex:none;aspect-ratio:3/4;border-radius:14px;background:linear-gradient(160deg,rgba(255,255,255,.95),rgba(255,255,255,.75));color:var(--ink);padding:10px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;box-shadow:0 18px 30px -16px rgba(0,0,0,.6)}
+.acr .logo-mark{width:28px;height:28px}
+.acr .q{width:62px;height:62px;border-radius:8px;background:repeating-conic-gradient(#17140f 0 25%,#fff 0 50%) 0 0/20% 20%}
+.acr small{font-size:8.5px;font-weight:700;text-align:center;line-height:1.2}
+.list{display:grid;gap:10px;margin-top:16px;counter-reset:n}
+.li{display:grid;grid-template-columns:38px 1fr;gap:12px;background:var(--paper);border-radius:18px;padding:14px;box-shadow:0 4px 14px -10px rgba(40,25,5,.3)}
+.li::before{counter-increment:n;content:counter(n);width:38px;height:38px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:800}
+.li h3{font-size:16px}
+.li p{font-size:14px;color:var(--ink2);margin-top:3px}
+.li.fix::before{background:var(--orange);color:#1b1206}
+.chain{margin-top:16px;background:var(--ink);color:#f3ead9;border-radius:22px;padding:20px}
+.chain b{font-family:var(--disp);font-size:44px;color:var(--yellow);line-height:1}
+.chain p{margin-top:8px;opacity:.9}
+.cta{margin-top:40px;text-align:center;display:grid;gap:12px;justify-items:center}
+.cta .btn{min-width:240px}
+.src{font-size:11.5px;color:var(--mute);margin-top:24px;text-align:center}
+</style>
+</head>
+<body>
+<div class="demo-ribbon"><span>Propuesta preparada por LEGION Studio</span><a href="./">Ver la guía del huésped</a></div>
+<header class="p-hero">
+  <img src="img/terraza.jpg" alt="">
+  <div>
+    <p class="kicker">Viajero Cali · Hostel &amp; Salsa School</p>
+    <h1>Muchos QR en recepción. Un solo lugar para todo.</h1>
+    <p>Una guía digital en 7 idiomas que le vende más al huésped y le da más reseñas al hostal.</p>
+  </div>
+</header>
+<main>
+  <section class="sec">
+    <p class="kicker dark">Lo que vimos</p>
+    <h2>Un hostal muy querido, con dinero que se queda sobre la mesa.</h2>
+    <div class="stats">
+      <div class="stat"><b>9,4</b><span>en Hostelworld (3.278 reseñas)</span></div>
+      <div class="stat alert"><b>4,5</b><span>en Google: 59 reseñas de 1 estrella</span></div>
+      <div class="stat"><b>404</b><span>la ficha de Cali en inglés no existe en la web</span></div>
+      <div class="stat"><b>+1</b><span>el WhatsApp es central de EE. UU., no de la recepción de Cali</span></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <p class="kicker dark">Antes y después</p>
+    <h2>De muchos códigos sueltos a uno con su marca.</h2>
+    <div class="vs">
+      <div class="before"><h3>Hoy en recepción</h3>
+        <div class="qrs"><span>Wifi</span><span>Menú</span><span>Tours</span><span>Reseñas</span><span>Instagram</span><span>Pagos</span></div>
+      </div>
+      <div class="after"><h3>Con LEGION</h3>
+        <div class="one"><div class="acr"><span class="logo-mark" aria-hidden="true"><i></i><i></i><i></i></span><span class="q"></span><small>Escanea o acerca tu celular</small></div>
+          <p>Un acrílico con QR y NFC en recepción, en el bar y en cada habitación. Todo en un solo lugar y en el idioma del huésped. Si cambia algo, se actualiza desde un panel sin volver a imprimir.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <p class="kicker dark">Lo que les falta</p>
+    <h2>Y cómo lo resolvemos.</h2>
+    <div class="list">
+      <div class="li fix"><div><h3>Más reseñas de 5 estrellas en Google</h3><p>Pedimos la reseña en el mejor momento. Si alguien califica bajo, la queja llega primero a recepción y no a Google.</p></div></div>
+      <div class="li fix"><div><h3>Vender desayunos, tours y clases privadas</h3><p>Hoy son ventas extra que dependen de que el huésped pregunte. Aquí se reservan en dos toques.</p></div></div>
+      <div class="li fix"><div><h3>Pedidos del bar y la piscina sin filas</h3><p>El pedido llega a recepción en español, aunque el huésped lo escriba en alemán.</p></div></div>
+      <div class="li fix"><div><h3>Agenda de la semana siempre al día</h3><p>Salsa, Olimpiadas de bebidas, Chiva y fiestas, con horario. Menos preguntas repetidas en recepción.</p></div></div>
+      <div class="li fix"><div><h3>Un canal directo con la sede de Cali</h3><p>Mensajes de ayuda y quejas van a la recepción de Cali, no a una línea central.</p></div></div>
+      <div class="li fix"><div><h3>Venta cruzada a las otras sedes</h3><p>El huésped reserva su próximo Viajero desde la guía, con el programa de lealtad.</p></div></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <p class="kicker dark">Pensado para crecer</p>
+    <h2>Se prueba en Cali y se replica en toda la cadena.</h2>
+    <div class="chain"><b>35 sedes</b><p>La misma guía, con el contenido de cada ciudad. Se arranca con Cali como piloto y se mide: reseñas, pedidos y reservas de tours.</p></div>
+  </section>
+
+  <section class="cta">
+    <h2>¿Lo probamos en Cali?</h2>
+    <a class="btn dark" href="./">Ver la guía del huésped</a>
+    <a class="btn ghost" href="https://legionestudio.com" target="_blank" rel="noopener">Conoce LEGION Studio</a>
+  </section>
+  <p class="src">Datos públicos consultados el 22-nov-2026 en viajerohostels.com, Hostelworld y Google.</p>
+</main>
+</body>
+</html>
