@@ -23,9 +23,9 @@ window.GhettoProfile = {
         <div class="field"><label for="pfAvatar">Foto de perfil</label><input id="pfAvatar" type="file" accept="image/jpeg,image/png,image/webp"><div id="avatarPreview"></div></div>
       </fieldset>
       <fieldset class="card"><legend>Catálogo de servicios</legend>
-        <p class="note">El precio y la duración que indiques aquí se usan al reservar contigo.</p>
+        <p class="note">El nombre, el precio y la duración que indiques aquí son los que ven tus clientes al reservar contigo.</p>
         <div id="pfServices">${services.map((s, i) => `<div class="profile-service" data-service="${esc(s.id)}">
-          <b>${esc(s.nombre)}</b><label class="profile-inline"><input type="checkbox" data-enabled ${s.activo !== false ? 'checked' : ''}> Ofrecer este servicio</label>
+          <div class="field"><label for="pfSvcName${i}">Nombre del servicio</label><input id="pfSvcName${i}" data-svcname data-base="${esc(s.nombre_base || s.nombre)}" maxlength="40" value="${esc(s.nombre_propio != null ? (s.nombre_propio || s.nombre_base || s.nombre) : s.nombre)}" placeholder="${esc(s.nombre_base || s.nombre)}"></div><label class="profile-inline"><input type="checkbox" data-enabled ${s.activo !== false ? 'checked' : ''}> Ofrecer este servicio</label>
           <div class="grid2"><div class="field"><label for="pfPrice${i}">Precio (COP)</label><input id="pfPrice${i}" data-price type="number" min="0" max="10000000" step="1000" value="${s.precio == null ? '' : Number(s.precio)}" placeholder="Vacío: se cotiza"></div>
           <div class="field"><label for="pfDuration${i}">Duración (minutos)</label><input id="pfDuration${i}" data-duration type="number" min="10" max="240" step="5" required value="${Number(s.duracion || 40)}"></div></div></div>`).join('')}</div>
         ${services.length ? '' : '<p class="note">Santi debe crear los servicios del negocio en Ajustes para poder configurar tu catálogo.</p>'}
@@ -136,7 +136,7 @@ window.GhettoProfile = {
       });
       if (invalid) return error(invalid);
       if (onboarding && !Object.values(weekly).some((v) => v.length)) return error('Agrega al menos un horario de atención.');
-      const ownServices = [...host.querySelectorAll('[data-service]')].map((r) => ({ id: r.dataset.service, activo: r.querySelector('[data-enabled]').checked, precio: r.querySelector('[data-price]').value === '' ? null : Number(r.querySelector('[data-price]').value), duracion: Number(r.querySelector('[data-duration]').value) }));
+      const ownServices = [...host.querySelectorAll('[data-service]')].map((r) => ({ id: r.dataset.service, activo: r.querySelector('[data-enabled]').checked, nombre: ((el) => { const v = el.value.trim(); return v === el.dataset.base ? '' : v; })(r.querySelector('[data-svcname]')), precio: r.querySelector('[data-price]').value === '' ? null : Number(r.querySelector('[data-price]').value), duracion: Number(r.querySelector('[data-duration]').value) }));
       if (onboarding && !ownServices.some((s) => s.activo)) return error('Activa al menos un servicio.');
       if (onboarding && (!photos.length || !GhettoBooking.safeImage(avatar))) return error('Agrega tu foto de perfil y al menos un corte para mostrar.');
       const payload = { nombre: get('pfName').value.trim(), biografia: get('pfBio').value.trim(), instagram: get('pfInstagram').value.trim().replace(/^@/, ''), foto: avatar, portafolio: photos, servicios: ownServices, horario_semanal: weekly, descansos: rests, vacaciones: holidays, fechas_confirmacion: dates };
