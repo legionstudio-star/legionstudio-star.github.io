@@ -280,7 +280,7 @@
         <p class="ms-estado" id="ms-estado" hidden></p>
       </section>` : ""}
 
-      <div class="bloque">
+      ${N.resenas ? `<div class="bloque">
         <a class="resena" href="${N.resenas}" target="_blank" rel="noopener">
           <div>
             <div class="estrellas">${ic("estrella").repeat(5)}</div>
@@ -289,7 +289,7 @@
           </div>
           <span class="flecha">${ic("flecha")}</span>
         </a>
-      </div>
+      </div>` : ""}
 
       ${N.premio ? `
       <div class="bloque"><button type="button" class="premio-b" data-accion="premio">
@@ -586,7 +586,7 @@
         </div>
         ${carritoOn
           ? `<button type="button" class="barra" id="barra" hidden><span><span class="cnt" id="cnt">0</span>Ver mi pedido</span><span id="sub">$ 0</span></button>`
-          : `<a class="barra wa" href="${wa(`Hola ${N.nombre}, quiero hacer un pedido.`)}" target="_blank" rel="noopener">${ic("wa")} Pedir por WhatsApp</a>`}
+          : N.whatsapp ? `<a class="barra wa" href="${wa(`Hola ${N.nombre}, quiero hacer un pedido.`)}" target="_blank" rel="noopener">${ic("wa")} Pedir por WhatsApp</a>` : ""}
       </div>
       <div class="modal detalle" id="m-detalle" role="dialog" aria-modal="true" aria-label="Producto"><div class="modal-caja" id="det-caja"></div></div>
       ${carritoOn ? `
