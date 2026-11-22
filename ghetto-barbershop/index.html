@@ -360,9 +360,9 @@ document.getElementById('year').textContent = new Date().getFullYear();
 (function () {
   const v = document.getElementById('heroVideo'), poster = document.getElementById('heroPoster');
   const wide = matchMedia('(min-aspect-ratio: 1/1)').matches;
-  poster.src = wide ? 'assets/img/poster-pixar-h.jpg' : 'assets/img/poster-pixar-v.jpg';
+  poster.src = wide ? 'assets/img/poster-pixar-h.jpg?v=20261121b' : 'assets/img/poster-pixar-v.jpg';
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  v.src = wide ? 'assets/banner-pixar-h.mp4?v=20261120' : 'assets/banner-pixar-v.mp4?v=20261120';
+  v.src = wide ? 'assets/banner-pixar-h.mp4?v=20261121b' : 'assets/banner-pixar-v.mp4?v=20261120';
   v.addEventListener('playing', () => { poster.style.opacity = 0; });
   v.play().catch(() => {});
 })();
