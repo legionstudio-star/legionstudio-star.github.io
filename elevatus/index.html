@@ -377,7 +377,13 @@ svg{display:block}
 /* ---------- Config ----------
    webhookUrl: GoHighLevel "Inbound Webhook" URL (workflow trigger) so the lead lands in their CRM and triggers notifications.
    pixelId: Meta Pixel ID for the ad campaigns (fires PageView + Lead). */
-window.ELEVATUS = { webhookUrl: "", pixelId: "" };
+window.ELEVATUS = {
+  webhookUrl: "",
+  pixelId: "",
+  // Leads are stored in Supabase (QHC project) and shown in the Elevatus leads panel.
+  supabaseUrl: "https://dtaoatlzxqepgisuajbq.supabase.co",
+  supabaseKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR0YW9hdGx6eHFlcGdpc3VhamJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3MTkzMjEsImV4cCI6MjEwNDI5NTMyMX0.q_TkJggVORa4LsfhuHDIRdU8bjJ58Nh3VA47-VmQmaQ"
+};
 </script>
 
 
@@ -569,14 +575,25 @@ window.ELEVATUS = { webhookUrl: "", pixelId: "" };
       sms_consent: $('consent').checked ? 'yes' : 'no',
       source: 'Elevatus roof landing', page_url: location.href, submitted_at: new Date().toISOString(), ...tracking,
     };
+    const live = !!(cfg.supabaseUrl || cfg.webhookUrl);
     try {
+      if (cfg.supabaseUrl) {
+        const row = { county: payload.county, home_type: payload.home_type, timeline: payload.timeline,
+          street_address: payload.street_address, city: payload.city, state: payload.state, postal_code: payload.postal_code,
+          full_name: payload.full_name, phone: payload.phone, email: payload.email, sms_consent: payload.sms_consent === 'yes',
+          source: payload.source, page_url: payload.page_url, tracking };
+        const res = await fetch(cfg.supabaseUrl + '/rest/v1/ev_leads', { method: 'POST',
+          headers: { apikey: cfg.supabaseKey, Authorization: 'Bearer ' + cfg.supabaseKey, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+          body: JSON.stringify(row) });
+        if (!res.ok) throw new Error('save failed ' + res.status);
+      }
       if (cfg.webhookUrl) {
         // form-encoded "simple" request: no CORS preflight, accepted by GoHighLevel inbound webhooks
         await fetch(cfg.webhookUrl, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(payload) });
-      } else {
+      } else if (!live) {
         await new Promise(r => setTimeout(r, 700));
       }
-      if (cfg.webhookUrl && window.fbq) {
+      if (live && window.fbq) {
         try { fbq('track','Lead',{content_name:'Roof estimate',content_category:data.home_type}); }
         catch { /* Una falla de medición no requiere reenviar la solicitud. */ }
       }
@@ -591,7 +608,7 @@ window.ELEVATUS = { webhookUrl: "", pixelId: "" };
   function done(first, p) {
     step = TOTAL + 1;
     $('doneTitle').textContent = `You're all set, ${first}.`;
-    if(!cfg.webhookUrl) document.querySelector('.done .hint').textContent =
+    if(!(cfg.supabaseUrl||cfg.webhookUrl)) document.querySelector('.done .hint').textContent =
       'Preview complete. To request your estimate, call (270) 570-9170.';
     const rows = [["Property", p.street_address + (p.city ? ', ' + p.city : '')], ["Home", p.home_type], ["County", p.county.replace(', KY','')], ["Timing", p.timeline]];
     $('summary').innerHTML = rows.map(([k, v]) => `<div><small>${k}</small><b></b></div>`).join('');

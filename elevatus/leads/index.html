@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0e141c">
+<title>Leads · Elevatus Construction</title>
+<link rel="icon" href="data:,">
+<style>
+:root{--bg:#eef1f3;--paper:#fff;--ink:#14212b;--ink2:#3e5260;--mute:#6a7b87;--line:#d9e1e5;--blue:#215a83;--navy:#0e141c;--gold:#e7b46a;
+  --new:#1d4fd7;--contacted:#8a5a00;--inspection:#6b3fc4;--won:#147a45;--lost:#7a8794;--r:16px;
+  --font:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,sans-serif}
+*{box-sizing:border-box;margin:0}
+body{font-family:var(--font);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+svg{display:block}
+.top{background:var(--navy);color:#f3f5f7;padding:14px 18px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:5}
+.top img{height:26px;width:auto}
+.top .sp{flex:1}
+.live{display:flex;align-items:center;gap:7px;font-size:12.5px;color:#b9c6cf}
+.live i{width:8px;height:8px;border-radius:50%;background:#3ccf7d;box-shadow:0 0 0 0 rgba(60,207,125,.6);animation:pulse 2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 8px rgba(60,207,125,0)}100%{box-shadow:0 0 0 0 rgba(60,207,125,0)}}
+.icon-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.18);font-size:13px;font-weight:600;color:#f3f5f7}
+.icon-btn svg{width:15px;height:15px}
+.wrap{max-width:1180px;margin:0 auto;padding:20px 16px 60px}
+.stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.stat{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;text-align:left;transition:.2s}
+.stat b{display:block;font-size:28px;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat span{font-size:13px;color:var(--mute);display:flex;align-items:center;gap:6px}
+.stat span i{width:8px;height:8px;border-radius:50%}
+.stat.on{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+.tools{display:flex;gap:10px;margin:16px 0 14px;flex-wrap:wrap}
+.search{flex:1;min-width:220px;display:flex;align-items:center;gap:8px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:0 12px}
+.search svg{width:16px;height:16px;color:var(--mute)}
+.search input{border:0;outline:0;background:none;padding:11px 0;width:100%;font-size:15px}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:10px 14px;border-radius:12px;background:var(--paper);border:1px solid var(--line);font-weight:600;font-size:14px}
+.btn svg{width:16px;height:16px}
+.list{display:grid;gap:12px}
+.lead{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) 230px;gap:18px;align-items:start;position:relative;overflow:hidden}
+.lead::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c,var(--new))}
+.lead.fresh{animation:flash 2.4s ease}
+@keyframes flash{0%{background:#fff4dc}100%{background:var(--paper)}}
+.who h3{font-size:18px;line-height:1.2}
+.when{font-size:12.5px;color:var(--mute);margin-top:3px}
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.bdg{font-size:12px;font-weight:600;padding:4px 9px;border-radius:999px;background:#eef3f6;color:var(--ink2)}
+.bdg.hot{background:#fff1dc;color:#8a4b00}
+.contact{display:grid;gap:7px;font-size:14px}
+.contact a{color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:8px;min-width:0}
+.contact a span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.contact svg{width:16px;height:16px;flex:none;color:var(--blue)}
+.acts{display:flex;gap:6px;margin-top:4px}
+.act{display:inline-flex;align-items:center;gap:6px;padding:8px 11px;border-radius:10px;font-size:13px;font-weight:600;background:var(--navy);color:#fff;text-decoration:none}
+.act.ghost{background:#eef3f6;color:var(--ink)}
+.contact a.act{color:#fff}.contact a.act.ghost{color:var(--ink)}
+.act svg{width:15px;height:15px}
+.side{display:grid;gap:8px}
+.side select{width:100%;padding:9px 10px;border-radius:10px;border:1px solid var(--line);background:#fff;font-weight:600}
+.side textarea{width:100%;min-height:64px;resize:vertical;padding:9px 10px;border-radius:10px;border:1px solid var(--line);font-size:14px}
+.saved{font-size:12px;color:var(--won);height:14px}
+.empty{text-align:center;padding:60px 20px;color:var(--mute);background:var(--paper);border:1px dashed var(--line);border-radius:var(--r)}
+.empty svg{width:40px;height:40px;margin:0 auto 12px;color:#9fb0bb}
+/* login */
+.gate{min-height:100svh;display:grid;place-items:center;background:var(--navy);padding:20px}
+.gate-card{width:100%;max-width:360px;text-align:center;color:#eef2f5}
+.gate-card img{height:34px;margin:0 auto 26px}
+.gate-card h1{font-size:22px;font-weight:650}
+.gate-card p{color:#9fb0bb;font-size:14px;margin-top:6px}
+.pin{display:flex;gap:8px;justify-content:center;margin:24px 0 10px}
+.pin input{width:44px;height:54px;text-align:center;font-size:22px;font-weight:700;border-radius:12px;border:1px solid #2c3a47;background:#16202a;color:#fff;outline:0}
+.pin input:focus{border-color:var(--gold)}
+.err{color:#ff9b8f;font-size:13px;height:18px}
+.hidden{display:none!important}
+@media (max-width:860px){
+  .stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .stat:nth-child(n+4){grid-column:auto}
+  .lead{grid-template-columns:1fr;gap:12px}
+  .top .live span{display:none}
+}
+@media (max-width:420px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.stat b{font-size:24px}}
+</style>
+</head>
+<body>
+<section class="gate" id="gate">
+  <form class="gate-card" id="gateForm" autocomplete="off">
+    <img src="../logo.png" alt="Elevatus Construction">
+    <h1>Leads dashboard</h1>
+    <p>Enter your 6-digit access code.</p>
+    <div class="pin" id="pin"></div>
+    <p class="err" id="gateErr"></p>
+  </form>
+</section>
+
+<div id="app" class="hidden">
+  <header class="top">
+    <img src="../logo.png" alt="Elevatus Construction">
+    <div class="sp"></div>
+    <div class="live"><i></i><span id="liveTxt">Live</span></div>
+    <button class="icon-btn" id="notify" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span>Alerts</span></button>
+  </header>
+  <main class="wrap">
+    <div class="stats" id="stats"></div>
+    <div class="tools">
+      <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" placeholder="Search name, phone, city or ZIP" type="search"></label>
+      <button class="btn" id="csv" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>Export CSV</button>
+    </div>
+    <div class="list" id="list"></div>
+  </main>
+</div>
+
+<script>
+(function(){
+  const API='https://dtaoatlzxqepgisuajbq.supabase.co/rest/v1/rpc/';
+  const KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR0YW9hdGx6eHFlcGdpc3VhamJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3MTkzMjEsImV4cCI6MjEwNDI5NTMyMX0.q_TkJggVORa4LsfhuHDIRdU8bjJ58Nh3VA47-VmQmaQ';
+  const ST=[['new','New','--new'],['contacted','Contacted','--contacted'],['inspection','Inspection','--inspection'],['won','Won','--won'],['lost','Lost','--lost']];
+  const $=id=>document.getElementById(id);
+  let pin='', leads=[], filter='', seen=new Set(), first=true;
+  const ico={
+    phone:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>',
+    mail:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>',
+    pin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
+    text:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>',
+    inbox:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13h5l1.5 3h5L16 13h5"/><path d="M5 5h14l2 8v6H3v-6z"/></svg>'
+  };
+  async function rpc(fn,body){
+    const r=await fetch(API+fn,{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+KEY,'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(!r.ok) throw new Error(r.status);
+    const t=await r.text(); return t?JSON.parse(t):null;
+  }
+  /* ---- PIN gate ---- */
+  const boxes=[];
+  for(let i=0;i<6;i++){const b=document.createElement('input');b.inputMode='numeric';b.maxLength=1;b.setAttribute('aria-label','Digit '+(i+1));$('pin').appendChild(b);boxes.push(b);
+    b.addEventListener('input',()=>{b.value=b.value.replace(/\D/g,'');if(b.value&&i<5)boxes[i+1].focus();tryPin();});
+    b.addEventListener('keydown',e=>{if(e.key==='Backspace'&&!b.value&&i>0)boxes[i-1].focus();});
+    b.addEventListener('paste',e=>{const v=(e.clipboardData.getData('text')||'').replace(/\D/g,'').slice(0,6);if(v.length){e.preventDefault();v.split('').forEach((d,k)=>boxes[k].value=d);tryPin();}});
+  }
+  async function tryPin(p){
+    const v=p||boxes.map(b=>b.value).join('');
+    if(v.length<6) return;
+    try{ leads=await rpc('ev_leads_list',{p_pin:v}); pin=v; try{sessionStorage.setItem('ev_pin',v);}catch{}
+      leads.forEach(l=>seen.add(l.id)); $('gate').classList.add('hidden'); $('app').classList.remove('hidden'); render(); setInterval(poll,20000);
+    }catch{ $('gateErr').textContent='That code is not valid.'; boxes.forEach(b=>b.value=''); boxes[0].focus(); }
+  }
+  try{const s=sessionStorage.getItem('ev_pin'); if(s) tryPin(s); else boxes[0].focus();}catch{boxes[0].focus();}
+  $('gateForm').addEventListener('submit',e=>e.preventDefault());
+
+  /* ---- render ---- */
+  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function ago(d){const s=(Date.now()-new Date(d))/1000;if(s<60)return'just now';if(s<3600)return Math.floor(s/60)+' min ago';if(s<86400)return Math.floor(s/3600)+' h ago';
+    return new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});}
+  function fmtPhone(p){const d=String(p||'').replace(/\D/g,'').replace(/^1/,'');return d.length===10?`(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}`:p;}
+  function render(fresh=new Set()){
+    const counts=Object.fromEntries(ST.map(s=>[s[0],0])); leads.forEach(l=>counts[l.status]=(counts[l.status]||0)+1);
+    $('stats').innerHTML=ST.map(([k,lab,c])=>`<button class="stat${filter===k?' on':''}" data-k="${k}" type="button"><b>${counts[k]||0}</b><span><i style="background:var(${c})"></i>${lab}</span></button>`).join('');
+    $('stats').querySelectorAll('.stat').forEach(b=>b.onclick=()=>{filter=filter===b.dataset.k?'':b.dataset.k;render();});
+    const q=$('q').value.trim().toLowerCase();
+    const rows=leads.filter(l=>(!filter||l.status===filter)&&(!q||[l.full_name,l.phone,l.city,l.postal_code,l.email,l.street_address].join(' ').toLowerCase().includes(q)));
+    if(!rows.length){$('list').innerHTML=`<div class="empty">${ico.inbox}<b>${leads.length?'No leads match this view.':'No leads yet.'}</b><p>${leads.length?'Clear the search or the filter.':'New requests from the estimate page will appear here in real time.'}</p></div>`;return;}
+    $('list').innerHTML=rows.map(l=>{
+      const c=(ST.find(s=>s[0]===l.status)||ST[0])[2];
+      const addr=[l.street_address,l.city,l.state,l.postal_code].filter(Boolean).join(', ');
+      const tel=String(l.phone||'').replace(/[^\d+]/g,'');
+      return `<article class="lead${fresh.has(l.id)?' fresh':''}" style="--c:var(${c})" data-id="${l.id}">
+        <div class="who"><h3>${esc(l.full_name)}</h3><p class="when">${ago(l.created_at)} · ${esc((l.county||'').replace(', KY',''))}</p>
+          <div class="badges">${l.timeline?`<span class="bdg${/asap|soon/i.test(l.timeline)?' hot':''}">${esc(l.timeline)}</span>`:''}${l.home_type?`<span class="bdg">${esc(l.home_type)}</span>`:''}${l.sms_consent?'<span class="bdg">OK to text</span>':''}${l.tracking&&l.tracking.utm_campaign?`<span class="bdg">${esc(l.tracking.utm_campaign)}</span>`:''}</div></div>
+        <div class="contact">
+          <a href="tel:${esc(tel)}">${ico.phone}<span>${esc(fmtPhone(l.phone))}</span></a>
+          ${l.email?`<a href="mailto:${esc(l.email)}">${ico.mail}<span>${esc(l.email)}</span></a>`:''}
+          ${addr?`<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addr)}" target="_blank" rel="noopener">${ico.pin}<span>${esc(addr)}</span></a>`:''}
+          <div class="acts"><a class="act" href="tel:${esc(tel)}">${ico.phone}Call</a><a class="act ghost" href="sms:${esc(tel)}">${ico.text}Text</a></div>
+        </div>
+        <div class="side">
+          <select aria-label="Status">${ST.map(([k,lab])=>`<option value="${k}"${l.status===k?' selected':''}>${lab}</option>`).join('')}</select>
+          <textarea placeholder="Notes for the team" aria-label="Notes">${esc(l.notes)}</textarea>
+          <p class="saved"></p>
+        </div></article>`;}).join('');
+    $('list').querySelectorAll('.lead').forEach(card=>{
+      const l=leads.find(x=>x.id===card.dataset.id), sel=card.querySelector('select'), ta=card.querySelector('textarea'), ok=card.querySelector('.saved');
+      const save=async()=>{try{await rpc('ev_lead_update',{p_pin:pin,p_id:l.id,p_status:sel.value,p_notes:ta.value});l.status=sel.value;l.notes=ta.value;ok.textContent='Saved';setTimeout(()=>ok.textContent='',1600);if(sel===document.activeElement)render();}catch{ok.textContent='Could not save. Try again.';}};
+      sel.onchange=()=>{save().then(()=>render());}; ta.onblur=()=>{if(ta.value!==(l.notes||''))save();};
+    });
+  }
+  $('q').addEventListener('input',()=>render());
+
+  /* ---- live updates ---- */
+  async function poll(){
+    try{const next=await rpc('ev_leads_list',{p_pin:pin});
+      const fresh=new Set(next.filter(l=>!seen.has(l.id)).map(l=>l.id));
+      next.forEach(l=>seen.add(l.id));
+      const editing=document.activeElement&&document.activeElement.closest&&document.activeElement.closest('.lead');
+      leads=next; if(!editing) render(fresh);
+      if(fresh.size) alertNew(next.find(l=>fresh.has(l.id)),fresh.size);
+      $('liveTxt').textContent='Live';
+    }catch{$('liveTxt').textContent='Reconnecting';}
+  }
+  function alertNew(l,n){
+    document.title=`(${n}) New lead · Elevatus`;
+    try{const a=new AudioContext(),o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=880;g.gain.setValueAtTime(.0001,a.currentTime);g.gain.exponentialRampToValueAtTime(.25,a.currentTime+.02);g.gain.exponentialRampToValueAtTime(.0001,a.currentTime+.5);o.connect(g).connect(a.destination);o.start();o.stop(a.currentTime+.5);}catch{}
+    try{if('Notification' in window&&Notification.permission==='granted') new Notification('New roof lead',{body:`${l.full_name} · ${l.timeline||''} · ${(l.county||'').replace(', KY','')}`});}catch{}
+  }
+  addEventListener('focus',()=>{document.title='Leads · Elevatus Construction';});
+  $('notify').onclick=async()=>{try{const p=await Notification.requestPermission();$('notify').querySelector('span').textContent=p==='granted'?'Alerts on':'Alerts blocked';}catch{}};
+
+  /* ---- CSV ---- */
+  $('csv').onclick=()=>{
+    const cols=['created_at','status','full_name','phone','email','street_address','city','state','postal_code','county','home_type','timeline','sms_consent','notes'];
+    const q=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
+    const csv=[cols.join(',')].concat(leads.map(l=>cols.map(c=>q(l[c])).join(','))).join('\n');
+    const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='elevatus-leads.csv';a.click();
+  };
+})();
+</script>
+</body>
+</html>
