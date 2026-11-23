@@ -2,86 +2,75 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Free Roof Estimate · Elevatus Construction</title>
 <meta name="description" content="Full roof replacement starting at $1 down. Answer 5 quick questions and get your free estimate from a GAF Certified Contractor in Kentucky.">
-<meta name="robots" content="noindex,nofollow">
-<meta name="theme-color" content="#0b1022">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#203944">
 <style>
 :root{
-  --blue:#2f6bff; --blue2:#5b8cff; --navy:#0b1022; --navy2:#121a36; --ink:#0f1428;
-  --paper:#ffffff; --mist:#f3f5fb; --line:#e3e7f2; --mute:#66708a; --ink2:#3a4360;
+  --blue:#215a83; --blue2:#5385a6; --navy:#182d37; --navy2:#263e49; --ink:#182f3b;
+  --paper:#ffffff; --mist:#edf1f1; --line:#d5dfe1; --mute:#536673; --ink2:#354c58;
   --amber:#ffb547; --green:#1fbf75; --red:#e5484d;
-  --r:22px; --disp:"Space Grotesk",system-ui,sans-serif; --body:"DM Sans",system-ui,sans-serif;
+  --r:22px; --disp:"Segoe UI Variable Display","Segoe UI",system-ui,sans-serif; --body:"Segoe UI",system-ui,sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--navy);color:var(--ink)}
-body{font-family:var(--body);-webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:hidden}
+body{font-family:var(--body);-webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:visible}
 button,input{font:inherit;color:inherit}
 button{cursor:pointer;border:0;background:none}
 svg{display:block}
 
 /* ---------- Layout ---------- */
 .app{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);min-height:100vh}
-.stage{position:sticky;top:0;height:100vh;overflow:hidden;
-  background:radial-gradient(120% 80% at 30% 0%,#3b3f7a 0%,#1b2147 38%,#0b1022 72%),var(--navy)}
-.stage::before{content:"";position:absolute;inset:auto -10% 18% -10%;height:46%;
-  background:radial-gradient(60% 70% at 50% 100%,rgba(255,170,90,.42),rgba(255,120,80,.12) 45%,transparent 70%);pointer-events:none}
-.stars{position:absolute;inset:0;background-image:
-  radial-gradient(1px 1px at 12% 18%,#fff8 50%,transparent 51%),radial-gradient(1px 1px at 32% 8%,#fff6 50%,transparent 51%),
-  radial-gradient(1.4px 1.4px at 58% 14%,#fffa 50%,transparent 51%),radial-gradient(1px 1px at 76% 24%,#fff7 50%,transparent 51%),
-  radial-gradient(1px 1px at 88% 9%,#fff8 50%,transparent 51%),radial-gradient(1.2px 1.2px at 44% 28%,#fff5 50%,transparent 51%),
-  radial-gradient(1px 1px at 6% 34%,#fff6 50%,transparent 51%),radial-gradient(1px 1px at 66% 4%,#fff6 50%,transparent 51%);
-  animation:twinkle 6s ease-in-out infinite alternate;pointer-events:none}
-@keyframes twinkle{to{opacity:.45}}
-#scene{position:absolute;inset:0;width:100%;height:100%;display:block}
-.stage::after{content:"";position:absolute;inset:auto 0 0 0;height:48%;background:linear-gradient(180deg,transparent,rgba(8,12,28,.55) 45%,rgba(8,12,28,.88));pointer-events:none;z-index:2}
-.stage-top{position:absolute;left:0;right:0;top:0;display:flex;align-items:center;justify-content:space-between;padding:22px 28px;z-index:3;color:#fff}
-.logo{display:flex;align-items:baseline;gap:8px;font-family:var(--disp);letter-spacing:.02em}
-.logo b{font-weight:700;font-size:20px}
-.logo i{font-style:normal;opacity:.55;font-size:18px}
-.logo span{font-size:11px;letter-spacing:.28em;opacity:.8}
+.stage{position:sticky;top:0;height:100vh;height:100svh;min-height:540px;display:flex;flex-direction:column;
+  background:#203944;color:#f7f8f6;isolation:isolate}
+.stage-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:24px clamp(20px,3.3vw,54px)}
+.model-view{position:relative;flex:1;min-height:0;isolation:isolate;overflow:hidden;
+  background:radial-gradient(ellipse at 23% 65%,#ffcf91 0%,transparent 49%),linear-gradient(175deg,#839da7,#d7bd9d 68%,#a2a58c)}
+.model-view::before,.model-view::after{content:"";position:absolute;inset:48% -2% 0;background:#6e847a;
+  clip-path:polygon(0 29%,10% 33%,26% 12%,40% 24%,59% 6%,75% 25%,90% 17%,100% 27%,100% 100%,0 100%);opacity:.55}
+.model-view::after{inset:58% -3% 0;background:#536e61;transform:scaleX(-1)}
+#scene,.elevation{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1}
+#scene{opacity:0}
+.model-view.ready #scene{opacity:1}
+.model-view.ready .elevation{visibility:hidden}
+.logo{display:block;width:clamp(134px,15vw,195px);height:auto}
 .call{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;background:rgba(255,255,255,.1);
   border:1px solid rgba(255,255,255,.18);color:#fff;text-decoration:none;font-weight:600;font-size:14px;backdrop-filter:blur(10px);transition:.25s}
 .call:hover{background:rgba(255,255,255,.2)}
 .call svg{width:16px;height:16px}
 
-.stage-copy{position:absolute;left:28px;right:28px;bottom:30px;z-index:3;color:#fff;max-width:560px}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#bcd0ff;font-weight:600}
-.eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 4px rgba(255,181,71,.2)}
-.stage-copy h1{font-family:var(--disp);font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:1.02;letter-spacing:-.025em;margin-top:12px;text-wrap:balance}
-.stage-copy h1 em{font-style:normal;background:linear-gradient(90deg,#ffd27a,#ffb547 40%,#ff8a5b);-webkit-background-clip:text;background-clip:text;color:transparent}
-.stage-copy p{margin-top:12px;font-size:17px;opacity:.85;max-width:44ch}
-.roofmeter{position:absolute;right:28px;top:84px;z-index:3;color:#fff;text-align:right}
-.roofmeter small{display:block;font-size:11px;letter-spacing:.18em;text-transform:uppercase;opacity:.7}
-.roofmeter b{font-family:var(--disp);font-size:44px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
-.roofmeter b sup{font-size:20px;opacity:.7;margin-left:2px}
-.roofmeter span{display:block;font-size:13px;opacity:.75;margin-top:4px}
-
+.stage-copy{padding:clamp(12px,3vh,34px) clamp(20px,3.3vw,54px) clamp(20px,3.3vh,40px)}
+.eyebrow{display:flex;align-items:center;gap:9px;color:#f1cd94;font-size:13px;font-weight:600}
+.eyebrow::before{content:"";width:23px;height:2px;background:currentColor}
+.stage-copy h1{font-family:var(--disp);font-weight:650;font-size:clamp(38px,4vw,65px);line-height:1.04;letter-spacing:-.045em;margin-top:9px;max-width:16ch;text-wrap:balance}
+.stage-copy h1 em{font-style:normal;white-space:nowrap}
+.stage-copy p{margin-top:12px;font-size:16px;line-height:1.45;color:#d7e3e4;max-width:42ch}
+.roofmeter{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px clamp(20px,3.3vw,54px);background:#182f39}
+.roofmeter small{font-weight:600;font-size:14px}
+.roofmeter b{font-size:21px;color:#ffcf90;font-variant-numeric:tabular-nums}
+.roofmeter sup{font-size:.65em;vertical-align:baseline}
+.roofmeter span{margin-left:auto;font-size:13px;color:#ccd7db}
 /* ---------- Panel ---------- */
 .panel{background:var(--mist);position:relative;display:flex;flex-direction:column;min-height:100vh}
 .panel-in{flex:1;display:flex;flex-direction:column;justify-content:center;padding:48px clamp(20px,4vw,56px) 28px;max-width:620px;width:100%;margin:0 auto}
-.trust{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.trust{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:20px}
 .chip{display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:12.5px;font-weight:600;color:var(--ink2)}
 .chip svg{width:15px;height:15px;color:var(--blue)}
 
 .card{background:var(--paper);border-radius:28px;box-shadow:0 30px 60px -30px rgba(15,20,40,.35),0 2px 0 rgba(15,20,40,.03);padding:28px;position:relative;overflow:hidden}
 .prog{display:flex;align-items:center;gap:14px;margin-bottom:22px}
 .bar{flex:1;height:8px;border-radius:99px;background:#eceff7;overflow:hidden;position:relative}
-.bar i{position:absolute;inset:0 auto 0 0;width:15%;border-radius:99px;background:linear-gradient(90deg,var(--blue),#7aa2ff);transition:width .8s cubic-bezier(.2,.9,.2,1)}
-.bar i::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent);transform:translateX(-100%);animation:shine 2.2s ease-in-out infinite}
-@keyframes shine{to{transform:translateX(100%)}}
+.bar i{position:absolute;inset:0 auto 0 0;width:15%;border-radius:99px;background:var(--blue);transition:width .8s cubic-bezier(.2,.9,.2,1)}
 .prog span{font-size:13px;font-weight:600;color:var(--mute);white-space:nowrap;font-variant-numeric:tabular-nums}
 
 .steps{position:relative}
 .step{display:none}
-.step.on{display:block;animation:stepIn .55s cubic-bezier(.2,.9,.2,1) both}
-.step.back{animation-name:stepInBack}
-@keyframes stepIn{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
-@keyframes stepInBack{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:none}}
+.step.on{display:block;animation:stepIn .28s cubic-bezier(.2,.9,.2,1) both}
+.step.reverse{animation-name:stepInBack}
+@keyframes stepIn{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:none}}
+@keyframes stepInBack{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:none}}
 .q{font-family:var(--disp);font-weight:700;font-size:clamp(23px,2.4vw,29px);line-height:1.12;letter-spacing:-.015em;text-wrap:balance}
 .hint{color:var(--mute);margin-top:6px;font-size:15px}
 
@@ -122,7 +111,7 @@ svg{display:block}
 .fields{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
 .f{position:relative}
 .f.full{grid-column:1/-1}
-.f input{width:100%;height:58px;border-radius:14px;border:1.5px solid var(--line);background:#fafbfe;padding:22px 14px 6px;font-size:16px;outline:none;transition:.2s}
+.f input{width:100%;height:58px;border-radius:14px;border:1.5px solid var(--line);background:#fafbfe;padding:22px 42px 6px 14px;font-size:16px;outline:none;transition:.2s}
 .f label{position:absolute;left:15px;top:19px;font-size:15px;color:var(--mute);pointer-events:none;transition:.18s}
 .f input:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 4px rgba(47,107,255,.12)}
 .f input:focus+label,.f input:not(:placeholder-shown)+label{top:8px;font-size:11.5px;font-weight:600;letter-spacing:.04em;color:var(--blue)}
@@ -146,8 +135,8 @@ svg{display:block}
 .go:disabled{opacity:.35;transform:none;background:var(--ink);cursor:not-allowed}
 .go svg{width:18px;height:18px;transition:transform .2s}
 .go:hover svg{transform:translateX(3px)}
-.go.big{flex:1;background:linear-gradient(90deg,var(--blue),#4f7dff);box-shadow:0 18px 30px -16px rgba(47,107,255,.9)}
-.go.big:hover{filter:brightness(1.08)}
+.go.big{flex:1;background:var(--blue);box-shadow:0 18px 30px -16px rgba(47,107,255,.9)}
+.go.big:disabled{box-shadow:none}.go.big:hover{filter:brightness(1.08)}
 .go.loading span{opacity:0}
 .go.loading::after{content:"";position:absolute;width:22px;height:22px;border-radius:50%;border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -175,64 +164,100 @@ svg{display:block}
 .foot{padding:16px clamp(20px,4vw,56px) 24px;font-size:11.5px;color:var(--mute);line-height:1.5;max-width:620px;margin:0 auto;width:100%}
 .foot a{color:inherit}
 
-/* confetti canvas */
-#fx{position:fixed;inset:0;pointer-events:none;z-index:50}
-
-/* ---------- Mobile ---------- */
+#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:50}
+.card{border:1px solid var(--line);border-radius:20px;box-shadow:0 12px 42px -28px #2c4856}
+.panel,.panel-in,.fields>*,.summary>*{min-width:0}
+.county,.nav button{min-height:44px}
+.county.none.sel{color:white}
+.opt.row .tick{top:6px;right:6px;width:18px;height:18px}
+.opt:active,.county:active,.go:active:enabled{transform:scale(.98)}
+:focus-visible{outline:3px solid #397ea7;outline-offset:3px}
+.q:focus{outline:none}
+.err:empty{display:none}
+.field-help{display:block;margin:5px 3px 0;font-size:12px;line-height:1.4;color:#943332}
+.field-help[hidden]{display:none}
+.f.bad input+label{color:#943332}
+.summary b{overflow-wrap:anywhere}
 @media (max-width:900px){
-  .app{grid-template-columns:1fr}
-  .stage{position:relative;height:56vh;min-height:400px}
-  .stage-top{padding:16px}
-  .logo b{font-size:17px}.logo span{display:none}
-  .call span{display:none}.call{padding:10px}
-  .stage-copy{left:16px;right:16px;bottom:44px}
-  .stage-copy h1{font-size:clamp(30px,8.4vw,40px)}
-  .stage-copy p{font-size:15px}
-  .roofmeter{right:16px;top:66px}
-  .roofmeter b{font-size:32px}
-  .roofmeter span{display:none}
-  .panel{min-height:auto;background:transparent}
-  .panel-in{padding:0 16px 10px;margin-top:-26px;position:relative;z-index:4}
-  .trust{order:2;margin:16px 0 0;justify-content:center}
-  .card{padding:22px 18px;border-radius:24px}
-  .foot{padding:8px 16px 28px;color:#8f99b8}
-  .panel{background:linear-gradient(180deg,transparent 0,var(--mist) 140px)}
-  .foot{color:var(--mute)}
+  .app{grid-template-columns:minmax(0,1fr)}
+  .stage{position:relative;height:auto;min-height:0}
+  .stage-top{padding:8px 18px}
+  .logo{width:134px}
+  .call{min-height:44px;padding:0 9px;font-size:12px;border:none;background:none;backdrop-filter:none}
+  .stage-copy{padding:1px 18px 14px}
+  .eyebrow{font-size:12px}.stage-copy h1{font-size:clamp(26px,5vw,36px);max-width:none;margin-top:4px}
+  .stage-copy p{font-size:13px;margin-top:5px;max-width:none}
+  .model-view{flex:none;height:clamp(144px,23svh,236px)}
+  .roofmeter{padding:6px 18px;gap:8px}.roofmeter b{font-size:17px}.roofmeter span{font-size:12px}
+  .app.started .stage-copy{display:none}
+  .panel{min-height:auto}
+  .panel-in{padding:12px 12px 6px}
+  .card{padding:19px 16px;border-radius:16px}
+  .prog{margin-bottom:14px}
+  .opts,.fields{gap:9px;margin-top:14px}
+  .opt{padding:10px}.opt .art{height:47px;margin-bottom:7px}.opt .art svg{height:44px}
+  .opt b{font-size:15px}.opt.row{padding:10px;gap:10px}
+  .opt.row .ico{width:36px;height:36px}
+  .q{font-size:23px}.hint{font-size:14px;line-height:1.4}
+  .counties{max-height:clamp(124px,19svh,190px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+  .county{font-size:13px;padding:6px}
+  .fields{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .nav{margin-top:16px}.go{padding:0 14px;font-size:15px}
+  .trust{gap:5px;margin:13px 2px 0}.chip{padding:5px 8px;font-size:11px}
+  .foot{padding:12px 18px 22px}
 }
-@media (max-width:420px){
-  .opts{gap:10px}
-  .opt{padding:10px 10px 12px}
-  .opt .art{height:70px}.opt .art svg{height:62px}
-  .opt b{font-size:15px}
-  .fields{grid-template-columns:1fr}
-  .summary{grid-template-columns:1fr}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .next li{opacity:1}
 }
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ---------- Real footage stage ---------- */
+.stage{background:#0e141c}
+.media{position:absolute;inset:0;z-index:-1;overflow:hidden;background:#0e141c}
+.media>video,.media>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);
+  transition:opacity 1.1s ease,transform 9s cubic-bezier(.2,.6,.2,1)}
+.media>.on{opacity:1;transform:scale(1)}
+.media::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(9,14,21,.9) 0%,rgba(9,14,21,.62) 34%,rgba(9,14,21,.12) 58%,rgba(9,14,21,.1) 78%,rgba(9,14,21,.78) 100%)}
+.model-view{background:none}
+.model-view::before,.model-view::after{display:none}
+.caption{position:absolute;left:clamp(20px,3.3vw,54px);bottom:16px;display:inline-flex;align-items:center;gap:9px;
+  padding:8px 14px;border-radius:999px;background:rgba(9,14,21,.55);border:1px solid rgba(255,255,255,.16);
+  backdrop-filter:blur(8px);font-size:13px;font-weight:600;color:#f4f6f8;transition:opacity .4s}
+.caption i{width:8px;height:8px;border-radius:50%;background:#ffcf90;box-shadow:0 0 0 4px rgba(255,207,144,.2)}
+.caption.swap{opacity:0}
+.roofmeter{background:rgba(9,14,21,.82);backdrop-filter:blur(8px)}
+@media (max-width:900px){.model-view{height:clamp(150px,26svh,250px)}.caption{bottom:10px;left:14px;font-size:12px;padding:6px 11px}}
+@media (prefers-reduced-motion:reduce){.media>video,.media>img{transform:none}}
 </style>
 </head>
 <body>
 <div class="app">
   <!-- 3D stage -->
-  <section class="stage" aria-label="Your home">
-    <div class="stars"></div>
-    <canvas id="scene" aria-hidden="true"></canvas>
-    <div class="stage-top">
-      <div class="logo"><b>ELEVATUS</b><i>/</i><span>CONSTRUCTION</span></div>
-      <a class="call" href="tel:+12705709170"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg><span>(270) 570-9170</span></a>
+  <section class="stage" aria-label="A real Elevatus project">
+    <div class="media" aria-hidden="true">
+      <video class="on" src="media/obra-final.mp4" poster="media/obra-final.jpg" autoplay muted loop playsinline preload="auto"></video>
+      <img src="media/obra-techo.jpg" alt="" loading="lazy" decoding="async">
+      <img src="media/obra-equipo.jpg" alt="" loading="lazy" decoding="async">
     </div>
-    <div class="roofmeter" aria-live="polite"><small>New roof</small><b id="pct">15<sup>%</sup></b><span id="pctTxt">Already started for you</span></div>
+    <div class="stage-top">
+      <img class="logo" alt="Elevatus Construction" width="518" height="97" src="data:image/png;base64,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">
+      <a class="call" aria-label="Call Elevatus at (270) 570-9170" href="tel:+12705709170"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg><span>(270) 570-9170</span></a>
+    </div>
     <div class="stage-copy">
       <div class="eyebrow">Free estimate · Kentucky</div>
       <h1>Your new roof starts at <em>$1 down.</em></h1>
-      <p>Answer 5 quick questions and watch your home's new roof come together.</p>
+      <p>Answer 5 quick questions. Our own crew handles the rest, like on this Kentucky home.</p>
     </div>
+    <div class="model-view"><p class="caption" id="cap"><i></i><span id="capTxt">Real Elevatus job · Kentucky</span></p></div>
+    <div class="roofmeter"><small>Your estimate</small><b id="pct">15<sup>%</sup></b><span id="pctTxt">Already started for you</span></div>
   </section>
 
   <!-- Form panel -->
   <section class="panel">
     <div class="panel-in">
       <div class="card">
-        <div class="prog"><div class="bar"><i id="bar"></i></div><span id="stepTxt">Step 1 of 5</span></div>
+        <div class="prog"><div class="bar"><i id="bar"></i></div><span aria-live="polite" id="stepTxt">Step 1 of 5</span></div>
         <form class="steps" id="form" novalidate>
 
           <!-- 1 county -->
@@ -243,14 +268,14 @@ svg{display:block}
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
               <input id="countySearch" type="text" placeholder="Search your county" autocomplete="off" aria-label="Search your county">
             </div>
-            <div class="counties" id="counties" role="listbox" aria-label="County"></div>
+            <div class="counties" id="counties" role="group" aria-label="County"></div>
             <div class="empty" id="countyEmpty">No match. Choose "None of the above" and we'll still check for you.</div>
           </div>
 
           <!-- 2 home type -->
           <div class="step" data-step="2">
             <h2 class="q">What best describes your home?</h2>
-            <p class="hint">Look up. That's your home taking shape.</p>
+            <p class="hint">So we bring the right crew and materials.</p>
             <div class="opts" id="homeOpts">
               <button type="button" class="opt" data-val="Single Family Home" data-type="single">
                 <span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span>
@@ -298,7 +323,7 @@ svg{display:block}
               <div class="f full"><input id="zip" name="zip" placeholder=" " inputmode="numeric" maxlength="10" autocomplete="postal-code"><label for="zip">ZIP code</label><span class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span></div>
             </div>
             <div class="reassure"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>Free estimate. No obligation.</div>
-            <div class="err" id="err4"></div>
+            <div class="err" role="alert" id="err4"></div>
           </div>
 
           <!-- 5 contact -->
@@ -311,7 +336,7 @@ svg{display:block}
               <div class="f full"><input id="email" name="email" type="email" placeholder=" " autocomplete="email" required><label for="email">Email *</label><span class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span></div>
             </div>
             <label class="consent"><input type="checkbox" id="consent" checked><span>By submitting, I agree that Elevatus Construction may contact me by call, text or email at the number and address provided, including messages sent with automated technology. Consent is not a condition of purchase. Message and data rates may apply. Reply STOP to opt out.</span></label>
-            <div class="err" id="err5"></div>
+            <div class="err" role="alert" id="err5"></div>
           </div>
 
           <!-- done -->
@@ -340,7 +365,7 @@ svg{display:block}
         <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="m8.5 14-1.5 8 5-3 5 3-1.5-8"/></svg>GAF Certified Contractor</span>
         <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>BBB Accredited</span>
         <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M7 10h6M7 14h10"/></svg>Licensed &amp; Insured</span>
-        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H8l-4 4z"/></svg>English &amp; Español</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H8l-4 4z"/></svg>English &amp; Spanish</span>
       </div>
     </div>
     <p class="foot">$1 down financing is subject to credit approval; terms vary. Elevatus Construction · GAF Certified Contractor ID 1164438 · <a href="tel:+12705709170">(270) 570-9170</a></p>
@@ -355,338 +380,33 @@ svg{display:block}
 window.ELEVATUS = { webhookUrl: "", pixelId: "" };
 </script>
 
-<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
-<script type="module">
-async function startModel() {
-const THREE = await import('three');
 
-const canvas = document.getElementById('scene');
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-renderer.setPixelRatio(Math.min(devicePixelRatio, matchMedia('(max-width:900px)').matches ? 1.4 : 1.8));
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-renderer.outputColorSpace = THREE.SRGBColorSpace;
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.05;
 
-const scene = new THREE.Scene();
-scene.fog = new THREE.Fog(0xc4bba2, 30, 65);
-const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 120);
-
-scene.add(new THREE.HemisphereLight(0xd6dcf0, 0x3a2a1e, 0.65));
-const sun = new THREE.DirectionalLight(0xffc896, 2.6);
-sun.position.set(-8, 9, 7);
-sun.castShadow = true;
-sun.shadow.mapSize.set(1024, 1024);
-Object.assign(sun.shadow.camera, { left: -12, right: 12, top: 12, bottom: -12, near: 1, far: 40 });
-sun.shadow.bias = -.00018;
-sun.shadow.normalBias = .018;
-sun.shadow.camera.updateProjectionMatrix();
-scene.add(sun);
-const rim = new THREE.DirectionalLight(0x9aa8d6, 0.35);
-rim.position.set(8, 5, -9);
-scene.add(rim);
-
-/* Maqueta del terreno y caminos sobre el c?sped. */
-const ground = new THREE.Mesh(new THREE.CylinderGeometry(1, .96, .38, 64),
-  new THREE.MeshStandardMaterial({color:0x737e51, roughness:1}));
-ground.scale.set(8.25,1,6.15); ground.position.y=-.19; ground.receiveShadow=true; scene.add(ground);
-const paving = new THREE.MeshStandardMaterial({color:0xb8afa0,roughness:.98});
-for (let i=0;i<5;i++) {
-  const slab = new THREE.Mesh(new THREE.BoxGeometry(1.12,.045,.53), paving);
-  slab.position.set(0,.025,2.93+i*.62); slab.receiveShadow=true; scene.add(slab);
-}
-function tree(x, z, s) {
-  const g = new THREE.Group();
-  const trunk = new THREE.Mesh(new THREE.CylinderGeometry(.12 * s, .16 * s, 1.1 * s, 8), new THREE.MeshStandardMaterial({ color: 0x5a3c26, roughness: 1 }));
-  trunk.position.y = .55 * s; trunk.castShadow = true; g.add(trunk);
-  const leafMat = new THREE.MeshStandardMaterial({ color: 0x2f6b45, roughness: .9, flatShading: true });
-  [[1.5, .93, 1.28], [1.23, .74, 1.91], [.98, .51, 2.51]].forEach(([h, r, y]) => {
-    const c = new THREE.Mesh(new THREE.ConeGeometry(r * s, h * s, 8), leafMat); c.position.y = y * s; c.castShadow = true; g.add(c);
-  });
-  g.position.set(x, 0, z); scene.add(g); return g;
-}
-tree(-5.8,-2.2,1.25); tree(-6.6,-.6,.85); tree(4.8,-3.4,1.05); tree(3.6,-4.1,.8);
-function bush(x, z, s) {
-  const m = new THREE.Mesh(new THREE.IcosahedronGeometry(.45 * s, 0), new THREE.MeshStandardMaterial({ color: 0x3d7a4f, roughness: .9, flatShading: true }));
-  m.position.set(x, .3 * s, z); m.castShadow = true; scene.add(m);
-}
-[[-2.4, 3.2], [-3.2, 3.1], [2.1, 3.2], [-1.2, 3.3]].forEach(([x, z]) => bush(x, z, 1));
-
-/* materials */
-const M = (color, o = {}) => new THREE.MeshStandardMaterial({ color, roughness: .85, ...o });
-const windowMat = new THREE.MeshStandardMaterial({ color: 0x1c2240, emissive: 0xffb45e, emissiveIntensity: .25, roughness: .3, metalness: .1 });
-const trimMat = M(0xf4f1ea);
-const oldRoofMat = M(0x3a3632, { roughness: 1 });
-// Grano mineral repetible, generado en memoria para las cuatro cubiertas.
-const grain = document.createElement('canvas'); grain.width=grain.height=64;
-const ctx = grain.getContext('2d');
-const pixels = ctx.createImageData(64,64);
-let seed = 71;
-for(let i=0;i<pixels.data.length;i+=4){
-  seed = (Math.imul(seed,1664525)+1013904223)>>>0;
-  const shade=205+(seed>>>27);
-  pixels.data.set([shade,shade,shade,255],i);
-}
-ctx.putImageData(pixels,0,0);
-const granules = new THREE.CanvasTexture(grain);
-granules.colorSpace = THREE.SRGBColorSpace;
-const shingleMat = M(0xffffff,{map:granules,roughness:.97});
-const timber = M(0x536b69);
-const masonry = M(0xab9885);
-
-function box(w, h, d, mat, x, y, z, parent) {
-  const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
-  m.position.set(x, y, z); m.castShadow = true; m.receiveShadow = true; parent.add(m); return m;
-}
-function gablePrism(width, depth, rise, mat, y, parent) {
-  const s = new THREE.Shape();
-  s.moveTo(-depth / 2, 0); s.lineTo(depth / 2, 0); s.lineTo(0, rise); s.closePath();
-  const g = new THREE.ExtrudeGeometry(s, { depth: width, bevelEnabled: false });
-  const m = new THREE.Mesh(g, mat); m.rotation.y = Math.PI / 2; m.position.set(-width / 2, y, 0);
-  m.castShadow = true; m.receiveShadow = true; parent.add(m); return m;
-}
-function windowAt(x, y, z, w, h, parent, side = 1) {
-  box(w + .14, h + .14, .06, trimMat, x, y, z + .02 * side, parent);
-  box(w, h, .08, windowMat, x, y, z + .05 * side, parent);
-  box(.045, h, .075, trimMat, x, y, z + .075 * side, parent);
-  box(w + .22, .075, .18, trimMat, x, y-h/2-.055, z+.085*side, parent);
-}
-
-/* roof planes -> shingles */
-function slopePlanes(W, D, H, R, o) {
-  const e = D/2 + o, drop = R*o/(D/2), rise = R+drop, L=Math.hypot(e,rise);
-  return [1,-1].map(side => ({
-    origin:new THREE.Vector3(0,H-drop,side*e),
-    u:new THREE.Vector3(-side,0,0), v:new THREE.Vector3(0,rise/L,-side*e/L),
-    n:new THREE.Vector3(0,e/L,side*rise/L), U:W+2*o, V:L
-  }));
-}
-function flatPlanes(W, D, H) {
-  return [{ origin: new THREE.Vector3(0, H, D / 2), u: new THREE.Vector3(-1, 0, 0), v: new THREE.Vector3(0, 0, -1), n: new THREE.Vector3(0, 1, 0), U: W, V: D }];
-}
-const palette = [0x384954,0x475963,0x404f5c,0x526068,0x394650];
-function buildRoof(planes, parent, sw=.46, sl=.34, th=.04) {
-  const items=[];
-  planes.forEach((p,side) => {
-    const basis=new THREE.Matrix4().makeBasis(p.u,p.n,p.v);
-    const q=new THREE.Quaternion().setFromRotationMatrix(basis);
-    const deck=new THREE.Mesh(new THREE.BoxGeometry(p.U,.085,p.V),oldRoofMat);
-    deck.quaternion.copy(q);
-    deck.position.copy(p.origin).addScaledVector(p.v,p.V/2).addScaledVector(p.n,-.015);
-    deck.castShadow=deck.receiveShadow=true; parent.add(deck);
-    const rows=Math.ceil(p.V/(sl*.83)), cols=Math.ceil(p.U/sw);
-    const pitch=p.V/rows, width=p.U/cols;
-    for(let row=0;row<rows;row++){
-      const start=row*pitch, end=Math.min(p.V,start+pitch*1.13);
-      const offset=(row%2)*width/2;
-      for(let col=0;col<cols+(row%2);col++){
-        const left=Math.max(0,col*width-offset), right=Math.min(p.U,(col+1)*width-offset);
-        const pos=p.origin.clone().addScaledVector(p.u,(left+right-p.U)/2)
-          .addScaledVector(p.v,(start+end)/2).addScaledVector(p.n,.03+th/2+row*.004);
-        items.push({pos,q,n:p.n,width:right-left-.008,length:end-start,
-          order:row*10000+col*2+side});
-      }
-    }
-  });
-  items.sort((a,b)=>a.order-b.order);
-  const mesh=new THREE.InstancedMesh(new THREE.BoxGeometry(1,th,1),shingleMat,items.length);
-  mesh.count=0; mesh.castShadow=mesh.receiveShadow=true;
-  mesh.frustumCulled=false; mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
-  const color=new THREE.Color();
-  items.forEach((it,i)=>mesh.setColorAt(i,color.setHex(palette[(i*7+(i>>3))%palette.length])));
-  parent.add(mesh);
-  return {mesh,items,amount:new Float32Array(items.length),changes:[],target:-1};
-}
-
-/* house types */
-const builders = {
-  single() {
-    const g = new THREE.Group(), W = 6.4, D = 4.6, H = 3.4, R = 2.0, o = .35;
-    box(W, H, D, M(0xe9e4da), 0, H / 2, 0, g);
-    box(W + .1, .25, D + .1, M(0xb9b1a3), 0, .12, 0, g);
-    gablePrism(W, D, R, M(0xe9e4da), H, g);
-    box(.7, 1.6, .7, M(0x8a5a44), 1.6, H + R * .7, -.6, g);
-    box(1.0, 2.0, .12, M(0x1f3a66), 0, 1.0, D / 2 + .06, g);
-    box(2.05,.14,1.0,timber,0,2.22,D/2+.43,g);
-    for (const x of [-.88,.88]) box(.11,2.13,.11,trimMat,x,1.065,D/2+.79,g);
-    box(2.15,.16,1.08,masonry,0,.08,D/2+.45,g);
-    box(.82,.12,.83,masonry,1.6,H+R*.7+.84,-.6,g);
-    const sideWindows=new THREE.Group();
-    sideWindows.rotation.y=Math.PI/2; sideWindows.position.x=W/2; g.add(sideWindows);
-    for(const z of [-1.1,1.1]) windowAt(z,1.85,0,.78,1.12,sideWindows);
-    [[-2.1, 1.3], [2.1, 1.3], [-2.1, 2.7], [2.1, 2.7], [0, 2.75]].forEach(([x, y]) => windowAt(x, y, D / 2, .8, .7, g));
-    [[-1.6, 1.6], [1.6, 1.6]].forEach(([x, y]) => windowAt(x, y, -D / 2, .9, .8, g, -1));
-    const roof = buildRoof(slopePlanes(W, D, H, R, o), g);
-    return { g, roof, fit: 15.5, look: 2.6 };
-  },
-  town() {
-    const g = new THREE.Group(), W = 9.6, D = 4.2, H = 3.6, R = 1.7, o = .3;
-    const cols = [0xd9c7b0, 0xc9d3dc, 0xe7ddc8];
-    [-3.2, 0, 3.2].forEach((x, i) => {
-      box(3.2, H, D, M(cols[i]), x, H / 2, 0, g);
-      box(.85, 1.9, .12, M([0x6b2f2a, 0x1f3a66, 0x2f4a33][i]), x - .6, .95, D / 2 + .06, g);
-      windowAt(x + .7, 1.3, D / 2, .8, .75, g); windowAt(x - .1, 2.75, D / 2, 1.3, .7, g);
-      box(.1,H,D+.03,trimMat,x+1.6,H/2,0,g);
-      box(1.25,.12,.62,timber,x-.6,1.99,D/2+.25,g);
-      box(1.3,.15,.76,masonry,x-.6,.075,D/2+.29,g);
-    });
-    gablePrism(W, D, R, M(0xe2dbcd), H, g);
-    const roof = buildRoof(slopePlanes(W, D, H, R, o), g);
-    return { g, roof, fit: 19, look: 2.4 };
-  },
-  mobile() {
-    const g = new THREE.Group(), W = 8.4, D = 3.0, base = .55, H = 1.9, R = .5, o = .2;
-    box(W, base, D - .2, M(0x8f8a80), 0, base / 2, 0, g);
-    box(W, H - base, D, M(0xdfe6e8), 0, base + (H - base) / 2, 0, g);
-    box(W + .02, .1, D + .02, M(0x9fb2bd), 0, base + .7, 0, g);
-    gablePrism(W, D, R, M(0xdfe6e8), H, g);
-    box(.85, 1.15, .1, M(0x1f3a66), -.6, base + .6, D / 2 + .05, g);
-    [[-2.8], [1.2], [2.9]].forEach(([x]) => windowAt(x, base + .75, D / 2, .9, .55, g));
-    box(1.3, .35, .9, M(0x9a9286), -.6, .17, D / 2 + .5, g);
-    const roof = buildRoof(slopePlanes(W, D, H, R, o), g, .5, .32);
-    return { g, roof, fit: 15, look: 1.2 };
-  },
-  commercial() {
-    const g = new THREE.Group(), W = 8.6, D = 6, H = 3.6;
-    box(W, H, D, M(0xc9ccd3), 0, H / 2, 0, g);
-    box(W - .6, 1.8, .1, windowMat, 0, 1.1, D / 2 + .03, g);
-    for (let i = -3; i <= 3; i++) box(.08, 1.8, .14, M(0x2a2f3a), i * 1.2, 1.1, D / 2 + .06, g);
-    box(W + .1, .5, .3, M(0x2f6bff, { roughness: .5 }), 0, 2.4, D / 2 + .12, g);
-    [[-3, 3.05], [-1, 3.05], [1, 3.05], [3, 3.05]].forEach(([x, y]) => windowAt(x, y, D / 2, .9, .45, g));
-    const P = .4;
-    box(W + .2, P, .2, M(0xb4b8c1), 0, H + P / 2, D / 2, g); box(W + .2, P, .2, M(0xb4b8c1), 0, H + P / 2, -D / 2, g);
-    box(.2, P, D-.2, M(0xb4b8c1), W / 2, H + P / 2, 0, g); box(.2, P, D-.2, M(0xb4b8c1), -W / 2, H + P / 2, 0, g);
-    box(1.4, .6, 1, M(0x8b919c), 2, H + .3, -1, g);
-    const roof = buildRoof(flatPlanes(W - .4, D - .4, H + .01), g, .95, .95, .04);
-    return { g, roof, fit: 17.5, look: 2.2 };
-  },
-};
-
-const models=new Map();
-const motion=matchMedia('(prefers-reduced-motion:reduce)');
-const dummy=new THREE.Object3D();
-let current, targetP=.15, celebrating=0;
-function setType(type) {
-  if(current?.type===type || !Object.hasOwn(builders,type)) return;
-  if(current) current.g.visible=false;
-  if(!models.has(type)) models.set(type,{...builders[type](),type});
-  current=models.get(type); current.g.visible=true;
-  if(!current.g.parent) scene.add(current.g);
-  current.entered=performance.now();
-  requestFrame();
-}
-function updateRoof(roof,now){
-  const target=Math.round(targetP*roof.items.length);
-  if(target!==roof.target){
-    roof.changes=[];
-    roof.amount.forEach((amount,i)=>{
-      const end=i<target?1:0;
-      if(amount!==end) roof.changes.push({i,from:amount,to:end});
-    });
-    if(target<roof.target) roof.changes.reverse();
-    roof.target=target; roof.start=now;
-    roof.mesh.count=Math.max(roof.mesh.count,target);
+<script>
+(function(){
+  const layers=[...document.querySelectorAll('.media>video,.media>img')];
+  const caps=['Real Elevatus job · Kentucky','Our crew on the roof','Finishing touches by our team'];
+  let cur=0;
+  function show(i,text){
+    const cap=document.getElementById('cap'), t=document.getElementById('capTxt');
+    const label=text||caps[i];
+    if(i!==cur){layers[cur].classList.remove('on');layers[i].classList.add('on');cur=i;}
+    if(t.textContent!==label){cap.classList.add('swap');setTimeout(()=>{t.textContent=label;cap.classList.remove('swap');},380);}
   }
-  if(!roof.changes.length) return false;
-  const elapsed=now-roof.start;
-  roof.changes.forEach(({i,from,to},j)=>{
-    const wait=390*j/Math.max(1,roof.changes.length-1);
-    const t=motion.matches?1:THREE.MathUtils.clamp((elapsed-wait)/240,0,1);
-    const k=from+(to-from)*(1-(1-t)**3), it=roof.items[i];
-    roof.amount[i]=k;
-    dummy.position.copy(it.pos).addScaledVector(it.n,(1-k)*.65);
-    dummy.quaternion.copy(it.q);
-    dummy.scale.set(it.width*k,k,it.length*k);
-    dummy.updateMatrix(); roof.mesh.setMatrixAt(i,dummy.matrix);
-  });
-  roof.mesh.instanceMatrix.needsUpdate=true;
-  if(elapsed>=630 || motion.matches){roof.changes=[];roof.mesh.count=target;}
-  return roof.changes.length>0;
-}
-
-/* sparkles for celebration */
-const SP = 160;
-const spGeo = new THREE.BufferGeometry();
-const spPos = new Float32Array(SP * 3), spVel = new Float32Array(SP * 3);
-spGeo.setAttribute('position', new THREE.BufferAttribute(spPos, 3));
-const spMat = new THREE.PointsMaterial({ color: 0xffd27a, size: .12, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false });
-const sparkles = new THREE.Points(spGeo, spMat); scene.add(sparkles);
-function burst() {
-  for (let i = 0; i < SP; i++) {
-    spPos[i * 3] = (Math.random() - .5) * 6; spPos[i * 3 + 1] = 3 + Math.random() * 2; spPos[i * 3 + 2] = (Math.random() - .5) * 4;
-    spVel[i * 3] = (Math.random() - .5) * .08; spVel[i * 3 + 1] = .05 + Math.random() * .09; spVel[i * 3 + 2] = (Math.random() - .5) * .08;
-  }
-  spMat.opacity = 1; celebrating = performance.now();
-}
-
-let frame=0, inView=true, last=0, mx=0;
-function requestFrame(){
-  if(!frame && !document.hidden && inView) frame=requestAnimationFrame(draw);
-}
-const view=canvas.parentElement;
-function resize(){
-  const w=view.clientWidth,h=view.clientHeight;
-  if(!w || !h) return;
-  renderer.setSize(w,h,false);
-  camera.aspect=w/h; camera.updateProjectionMatrix(); requestFrame();
-}
-new ResizeObserver(resize).observe(view);
-new IntersectionObserver(([entry])=>{inView=entry.isIntersecting;requestFrame();}).observe(view);
-document.addEventListener('visibilitychange',requestFrame);
-motion.addEventListener('change',requestFrame);
-view.addEventListener('pointermove',e=>{
-  if(e.pointerType!=='mouse' || motion.matches) return;
-  mx=(e.clientX-view.getBoundingClientRect().left)/view.clientWidth-.5; requestFrame();
-});
-view.addEventListener('pointerleave',()=>{mx=0;requestFrame();});
-function draw(now){
-  frame=0;
-  if(document.hidden || !inView || renderer.getContext().isContextLost()) return;
-  const dt=Math.min(2,(now-last)/16.67);last=now;
-  const growing=updateRoof(current.roof,now);
-  const enter=motion.matches?1:Math.min(1,(now-current.entered)/340);
-  current.g.scale.setScalar(.96+.04*enter);
-  windowMat.emissiveIntensity=.18+targetP*.24;
-  if(celebrating){
-    spMat.opacity=motion.matches?0:Math.max(0,1-(now-celebrating)/1700);
-    if(spMat.opacity>0){
-      for(let i=0;i<SP;i++){
-        const j=i*3;
-        spPos[j]+=spVel[j]*dt;spPos[j+1]+=spVel[j+1]*dt;spPos[j+2]+=spVel[j+2]*dt;
-        spVel[j+1]-=.0012*dt;
-      }
-      spGeo.attributes.position.needsUpdate=true;
-    }else{celebrating=0;sparkles.visible=false;}
-  }
-  const d=Math.max(current.fit*.89,21/camera.aspect);
-  const angle=.55+(motion.matches?0:mx*.12);
-  camera.position.set(Math.sin(angle)*d,current.look+d*.43,Math.cos(angle)*d);
-  camera.lookAt(0,current.look,0);
-  renderer.render(scene,camera);
-  view.classList.add('ready');
-  if(growing || enter<1 || celebrating) requestFrame();
-}
-sparkles.visible=false; sparkles.frustumCulled=false;
-setType('single'); resize();
-window.house={
-  setProgress(p){targetP=THREE.MathUtils.clamp(p,0,1); requestFrame();},
-  setType,
-  celebrate(){targetP=1;if(!motion.matches){sparkles.visible=true;burst();}requestFrame();}
-};
-canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();view.classList.remove('ready');});
-canvas.addEventListener('webglcontextrestored',requestFrame);
-window.dispatchEvent(new Event('house-ready'));
-}
-startModel().catch(()=>document.querySelector('.model-view').classList.remove('ready'));
+  window.house={
+    setProgress(p){show(p<.5?0:p<.82?1:2);},
+    setType(){},
+    celebrate(){show(2,'Your roof is next');}
+  };
+  const v=layers[0]; if(v&&v.play) v.play().catch(()=>{});
+})();
 </script>
-
 <script>
 (function(){
   const COUNTIES = ["Anderson County, KY","Bath County, KY","Bourbon County, KY","Boyle County, KY","Clark County, KY","Estill County, KY","Fayette County, KY","Fleming County, KY","Franklin County, KY","Jessamine County, KY","Madison County, KY","Menifee County, KY","Mercer County, KY","Montgomery County, KY","Nicholas County, KY","Powell County, KY","Rowan County, KY","Scott County, KY","Woodford County, KY"];
   const TOTAL = 5;
   const data = { county:"", home_type:"", timeline:"" };
-  let step = 1;
+  let step=1, autoTimer, sending=false, modelType='single';
   const $ = id => document.getElementById(id);
   const house = () => window.house;
   const progressFor = s => .15 + (s - 1) * .17; // endowed progress: starts at 15%
@@ -703,13 +423,25 @@ startModel().catch(()=>document.querySelector('.model-view').classList.remove('r
     fbq('init', cfg.pixelId); fbq('track', 'PageView');
   }
 
-  /* counties */
+  function choose(button,container,key){
+    for(const option of container.querySelectorAll('button')){
+      const selected=option===button;
+      option.classList.toggle('sel',selected);
+      option.setAttribute('aria-pressed',String(selected));
+    }
+    data[key]=button.dataset.val;
+    validate();
+    clearTimeout(autoTimer);
+    const origin=step;
+    autoTimer=setTimeout(()=>{if(step===origin) go(1);},220);
+  }
+  /* Condados */
   const wrap = $('counties');
   [...COUNTIES, "None of the above"].forEach(c => {
     const b = document.createElement('button');
     b.type = 'button'; b.className = 'county' + (c === "None of the above" ? ' none' : '');
-    b.textContent = c.replace(', KY', ''); b.dataset.val = c; b.setAttribute('role','option');
-    b.onclick = () => { wrap.querySelectorAll('.county').forEach(x => x.classList.remove('sel')); b.classList.add('sel'); data.county = c; validate(); setTimeout(() => go(1), 260); };
+    b.textContent=c.replace(', KY',''); b.dataset.val=c; b.setAttribute('aria-pressed','false');
+    b.onclick=()=>choose(b,wrap,'county');
     wrap.appendChild(b);
   });
   $('countySearch').addEventListener('input', e => {
@@ -720,15 +452,20 @@ startModel().catch(()=>document.querySelector('.model-view').classList.remove('r
 
   /* option groups */
   function group(id, key, after) {
-    $(id).querySelectorAll('.opt').forEach(b => b.addEventListener('click', () => {
-      $(id).querySelectorAll('.opt').forEach(x => x.classList.remove('sel')); b.classList.add('sel');
-      data[key] = b.dataset.val; if (after) after(b); validate(); setTimeout(() => go(1), 420);
-    }));
+    $(id).querySelectorAll('.opt').forEach(b=>{
+      b.setAttribute('aria-pressed','false');
+      b.addEventListener('click',()=>{
+        if(after) after(b);
+        choose(b,$(id),key);
+      });
+    });
   }
-  group('homeOpts', 'home_type', b => house() && house().setType(b.dataset.type));
+  group('homeOpts','home_type',b=>{
+    modelType=b.dataset.type;
+    house()?.setType(modelType);
+    drawElevation(modelType,progressFor(step));
+  });
   group('timeOpts', 'timeline');
-  // preview the house type on hover (desktop)
-  $('homeOpts').querySelectorAll('.opt').forEach(b => b.addEventListener('mouseenter', () => { if (!data.home_type && house()) house().setType(b.dataset.type); }));
 
   /* fields */
   const phone = $('phone');
@@ -741,16 +478,38 @@ startModel().catch(()=>document.querySelector('.model-view').classList.remove('r
     zip: v => /^\d{5}(-?\d{4})?$/.test(v.trim()), name: v => v.trim().split(/\s+/).length >= 2 && v.trim().length >= 4,
     phone: v => v.replace(/\D/g, '').length === 10, email: v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()),
   };
+  const help={
+    street:'Enter the street number and street name.', city:'Enter the city name.',
+    state:'Enter the state name or its two-letter abbreviation.', zip:'Use a 5-digit ZIP code or ZIP+4.',
+    name:'Enter your first and last name.', phone:'Enter a 10-digit phone number.',
+    email:'Enter an email address, such as name@example.com.'
+  };
   Object.keys(checks).forEach(k => {
     const el = $(k);
-    el.addEventListener('input', () => { el.parentElement.classList.toggle('good', checks[k](el.value)); el.parentElement.classList.remove('bad'); validate(); bump(); });
-    el.addEventListener('blur', () => { if (el.value && !checks[k](el.value)) el.parentElement.classList.add('bad'); });
+    const message=document.createElement('small');
+    message.id=k+'Help'; message.className='field-help'; message.textContent=help[k];
+    message.hidden=true; el.parentElement.appendChild(message); el.setAttribute('aria-describedby',message.id);
+    function mark(invalid){
+      el.parentElement.classList.toggle('bad',invalid);
+      el.setAttribute('aria-invalid',String(invalid)); message.hidden=!invalid;
+    }
+    el.addEventListener('input', () => {
+      el.parentElement.classList.toggle('good',checks[k](el.value));
+      mark(false); validate(); bump();
+    });
+    el.addEventListener('blur', () => mark(Boolean(el.value || el.required) && !checks[k](el.value)));
     el.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); if (!$('next').disabled) $('next').click(); } });
   });
   // each valid field nudges the roof forward a little: instant reward
   function bump() {
-    if (step === 4) { const n = ['street','city','state','zip'].filter(k => checks[k]($(k).value)).length; house() && house().setProgress(progressFor(4) + n * .04); }
-    if (step === 5) { const n = ['name','phone','email'].filter(k => checks[k]($(k).value)).length; house() && house().setProgress(progressFor(5) + n * .05); }
+    let progress=step>TOTAL?1:progressFor(step);
+    const fields=step===4?['street','city','state','zip']:step===5?['name','phone','email']:[];
+    for(const key of fields) if(checks[key]($(key).value)) progress+=step===4 ? .04 : .05;
+    const pct=Math.round(progress*100);
+    $('bar').style.width=pct+'%';
+    $('pct').innerHTML=pct+'<sup>%</sup>';
+    house()?.setProgress(progress);
+    drawElevation(modelType,progress);
   }
   $('state').parentElement.classList.add('good');
 
@@ -758,42 +517,37 @@ startModel().catch(()=>document.querySelector('.model-view').classList.remove('r
     if (s === 1) return !!data.county;
     if (s === 2) return !!data.home_type;
     if (s === 3) return !!data.timeline;
-    if (s === 4) return checks.street($('street').value);
+    if (s === 4) return checks.street($('street').value) &&
+      ['city','state','zip'].every(k=>!$(k).value.trim() || checks[k]($(k).value));
     if (s === 5) return checks.name($('name').value) && checks.phone(phone.value) && checks.email($('email').value) && $('consent').checked;
     return true;
   }
-  function validate() { $('next').disabled = !stepValid(step); }
+  function validate() { $('next').disabled = sending || !stepValid(step); }
   $('consent').addEventListener('change', validate);
 
   function render(dir) {
     document.querySelectorAll('.step').forEach(el => {
       const on = +el.dataset.step === step;
-      el.classList.toggle('on', on); el.classList.toggle('back', on && dir < 0);
+      el.classList.toggle('on', on); el.classList.toggle('reverse', on && dir < 0);
     });
-    const pct = step > TOTAL ? 100 : Math.round(progressFor(step) * 100);
-    $('bar').style.width = pct + '%';
+    document.querySelector('.app').classList.toggle('started',step>1);
     $('stepTxt').textContent = step > TOTAL ? 'Complete' : `Step ${step} of ${TOTAL}`;
-    countTo(pct);
-    $('pctTxt').textContent = step > TOTAL ? 'Your new roof is ready' : step === 1 ? 'Already started for you' : step === TOTAL ? 'One step to finish' : 'Keep going';
+    $('pctTxt').textContent = step > TOTAL ? 'Request received' : step === 1 ? 'Already started for you' : step === TOTAL ? 'One step to finish' : 'Keep going';
     $('back').classList.toggle('on', step > 1 && step <= TOTAL);
     $('nav').style.display = step > TOTAL ? 'none' : '';
     const nx = $('next');
     nx.classList.toggle('big', step === TOTAL);
     nx.querySelector('span').textContent = step === TOTAL ? 'Get my free estimate' : 'Continue';
-    if (house()) house().setProgress(step > TOTAL ? 1 : progressFor(step));
-    validate();
-    const f = document.querySelector('.step.on input:not([type=checkbox])');
-    if (f && step >= 4 && matchMedia('(min-width:901px)').matches) setTimeout(() => f.focus(), 350);
-    if (innerWidth < 900 && dir) document.querySelector('.card').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-  let shown = 15, raf;
-  function countTo(v) {
-    cancelAnimationFrame(raf);
-    const from = shown, t0 = performance.now();
-    const loop = now => { const k = Math.min(1, (now - t0) / 700); shown = Math.round(from + (v - from) * (1 - Math.pow(1 - k, 3))); $('pct').innerHTML = shown + '<sup>%</sup>'; if (k < 1) raf = requestAnimationFrame(loop); };
-    raf = requestAnimationFrame(loop);
+    bump(); validate();
+    if(dir){
+      const heading=document.querySelector('.step.on .q');
+      heading.tabIndex=-1; heading.focus({preventScroll:true});
+      if(innerWidth<=900) window.scrollTo({top:0,behavior:'instant'});
+    }
   }
   function go(d) {
+    clearTimeout(autoTimer);
+    if(sending || step>TOTAL) return;
     if (d > 0 && !stepValid(step)) return;
     if (d > 0 && step === TOTAL) return submit();
     step = Math.max(1, Math.min(TOTAL + 1, step + d)); render(d);
@@ -803,6 +557,7 @@ startModel().catch(()=>document.querySelector('.model-view').classList.remove('r
   $('form').addEventListener('submit', e => e.preventDefault());
 
   async function submit() {
+    sending=true; $('back').disabled=true; $('form').setAttribute('aria-busy','true');
     const btn = $('next'); btn.classList.add('loading'); btn.disabled = true; $('err5').textContent = '';
     const full = $('name').value.trim().replace(/\s+/g, ' ');
     const [first, ...rest] = full.split(' ');
@@ -819,22 +574,29 @@ startModel().catch(()=>document.querySelector('.model-view').classList.remove('r
         // form-encoded "simple" request: no CORS preflight, accepted by GoHighLevel inbound webhooks
         await fetch(cfg.webhookUrl, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(payload) });
       } else {
-        console.info('[Elevatus] demo mode, lead not sent:', payload);
         await new Promise(r => setTimeout(r, 700));
       }
-      if (window.fbq) fbq('track', 'Lead', { content_name: 'Roof estimate', content_category: data.home_type });
+      if (cfg.webhookUrl && window.fbq) {
+        try { fbq('track','Lead',{content_name:'Roof estimate',content_category:data.home_type}); }
+        catch { /* Una falla de medición no requiere reenviar la solicitud. */ }
+      }
       done(first, payload);
     } catch (e) {
       $('err5').textContent = 'Something went wrong. Please try again or call (270) 570-9170.';
-      btn.classList.remove('loading'); btn.disabled = false;
+    } finally {
+      sending=false; btn.classList.remove('loading'); $('back').disabled=false;
+      $('form').removeAttribute('aria-busy'); validate();
     }
   }
   function done(first, p) {
-    step = TOTAL + 1; render(1);
+    step = TOTAL + 1;
     $('doneTitle').textContent = `You're all set, ${first}.`;
+    if(!cfg.webhookUrl) document.querySelector('.done .hint').textContent =
+      'Preview complete. To request your estimate, call (270) 570-9170.';
     const rows = [["Property", p.street_address + (p.city ? ', ' + p.city : '')], ["Home", p.home_type], ["County", p.county.replace(', KY','')], ["Timing", p.timeline]];
     $('summary').innerHTML = rows.map(([k, v]) => `<div><small>${k}</small><b></b></div>`).join('');
     $('summary').querySelectorAll('b').forEach((b, i) => b.textContent = rows[i][1]);
+    render(1);
     if (house()) house().celebrate();
     confetti();
   }
@@ -842,9 +604,11 @@ startModel().catch(()=>document.querySelector('.model-view').classList.remove('r
   /* confetti (2D overlay) */
   function confetti() {
     if (matchMedia('(prefers-reduced-motion:reduce)').matches) return;
-    const c = $('fx'), x = c.getContext('2d'); c.width = innerWidth * devicePixelRatio; c.height = innerHeight * devicePixelRatio; x.scale(devicePixelRatio, devicePixelRatio);
+    const c=$('fx'),x=c.getContext('2d'),ratio=Math.min(devicePixelRatio,1.5);
+    if(!x) return;
+    c.width=innerWidth*ratio; c.height=innerHeight*ratio; x.scale(ratio,ratio);
     const cols = ['#2f6bff','#ffb547','#1fbf75','#ffffff','#7aa2ff'];
-    const P = Array.from({ length: 140 }, () => ({ x: innerWidth * (.3 + Math.random() * .4), y: innerHeight * .55, vx: (Math.random() - .5) * 14, vy: -8 - Math.random() * 12, r: 4 + Math.random() * 6, a: Math.random() * 6, va: (Math.random() - .5) * .3, c: cols[Math.random() * cols.length | 0] }));
+    const P = Array.from({ length:innerWidth<=900?55:100 }, () => ({ x: innerWidth * (.3 + Math.random() * .4), y: innerHeight * .55, vx: (Math.random() - .5) * 14, vy: -8 - Math.random() * 12, r: 4 + Math.random() * 6, a: Math.random() * 6, va: (Math.random() - .5) * .3, c: cols[Math.random() * cols.length | 0] }));
     const t0 = performance.now();
     (function f(now) {
       x.clearRect(0, 0, innerWidth, innerHeight);
@@ -853,9 +617,57 @@ startModel().catch(()=>document.querySelector('.model-view').classList.remove('r
     })(t0);
   }
 
-  const start = () => render(0);
-  if (window.house) start(); else addEventListener('house-ready', start, { once: true });
-  setTimeout(() => { if (!window.house) start(); }, 2500);
+  // Dibujo inline para conexiones lentas o dispositivos sin WebGL.
+  let lastDrawing='';
+  function drawElevation(type,progress){
+    return;
+    const dims={single:[105,48,47,27],town:[148,45,44,21],mobile:[130,35,25,10],commercial:[128,56,44,0]};
+    const [w,d,h,r]=dims[type], rows=r?7:6, cols=14;
+    const tiles=Math.round(progress*rows*cols);
+    const key=type+tiles;
+    if(lastDrawing===key) return;
+    lastDrawing=key;
+    const shapes=[];
+    const point=(x,y,z)=>[160+x*.99-z*.72,118+x*.17+z*.36-y];
+    function face(vertices,fill,edge='none'){
+      const pts=vertices.map(v=>point(...v).join(',')).join(' ');
+      shapes.push(`<polygon points="${pts}" fill="${fill}" stroke="${edge}" stroke-width=".5" stroke-linejoin="round"/>`);
+    }
+    const a=w/2,b=d/2;
+    function front(x1,x2,y1,y2,fill){
+      face([[x1,y1,b],[x2,y1,b],[x2,y2,b],[x1,y2,b]],fill);
+    }
+    face([[-a-10,0,-b-9],[a+12,0,-b-9],[a+12,0,b+15],[-a-10,0,b+15]],'#718062');
+    front(-a,a,0,h,'#e5d7bd');
+    for(let y=4;y<h;y+=4) front(-a,a,y,y+.55,'#bcb09a');
+    face([[a,0,b],[a,0,-b],[a,h,-b],[a,h+r,0],[a,h,b]],'#afa58d');
+    const doors=type==='town'?[-42,0,42]:[0];
+    doors.forEach(x=>front(x-4.5,x+4.5,0,h*.55,'#344e55'));
+    const wins=type==='town'?[-56,-26,16,57]:[-w*.33,w*.32];
+    wins.forEach(x=>{
+      front(x-7,x+7,h*.26,h*.7,'#faf0df');
+      front(x-5.6,x+5.6,h*.29,h*.66,'#6c8587');
+      front(x-.5,x+.5,h*.29,h*.66,'#efdfc6');
+    });
+    const e=b+3, ridge=h+r+1, eave=h+1;
+    function roof(x,t){return [x,eave+(ridge-eave)*t,e*(1-t)];}
+    const end=r?1:2;
+    if(r) face([roof(-a-3,1),roof(a+3,1),[a+3,eave,-e],[-a-3,eave,-e]],'#625d54');
+    face([roof(-a-3,0),roof(a+3,0),roof(a+3,end),roof(-a-3,end)],'#796f61','#5e594f');
+    const colors=['#394c56','#495961','#40545c','#526168'];
+    for(let i=0;i<tiles;i++){
+      const row=Math.floor(i/cols),col=i%cols;
+      const left=-a-3+col*(w+6)/cols, right=left+(w+6)/cols;
+      const lo=row*end/rows, hi=(row+1)*end/rows;
+      face([roof(left,lo),roof(right,lo),roof(right,hi),roof(left,hi)],colors[(col+row*3)%4],'#344952');
+    }
+    $('roofDrawing').innerHTML=shapes.join('');
+  }
+  render(0);
+  addEventListener('house-ready',()=>{
+    house().setType(modelType); bump();
+    if(step>TOTAL) house().celebrate();
+  },{once:true});
 })();
 </script>
 </body>
