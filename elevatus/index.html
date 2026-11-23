@@ -1,0 +1,813 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Free Roof Estimate · Elevatus Construction</title>
+<meta name="description" content="Full roof replacement starting at $1 down. Answer 5 quick questions and get your free estimate from a GAF Certified Contractor in Kentucky.">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0b1022">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#2f6bff; --blue2:#5b8cff; --navy:#0b1022; --navy2:#121a36; --ink:#0f1428;
+  --paper:#ffffff; --mist:#f3f5fb; --line:#e3e7f2; --mute:#66708a; --ink2:#3a4360;
+  --amber:#ffb547; --green:#1fbf75; --red:#e5484d;
+  --r:22px; --disp:"Space Grotesk",system-ui,sans-serif; --body:"DM Sans",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--navy);color:var(--ink)}
+body{font-family:var(--body);-webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:hidden}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+svg{display:block}
+
+/* ---------- Layout ---------- */
+.app{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);min-height:100vh}
+.stage{position:sticky;top:0;height:100vh;overflow:hidden;
+  background:radial-gradient(120% 80% at 30% 0%,#3b3f7a 0%,#1b2147 38%,#0b1022 72%),var(--navy)}
+.stage::before{content:"";position:absolute;inset:auto -10% 18% -10%;height:46%;
+  background:radial-gradient(60% 70% at 50% 100%,rgba(255,170,90,.42),rgba(255,120,80,.12) 45%,transparent 70%);pointer-events:none}
+.stars{position:absolute;inset:0;background-image:
+  radial-gradient(1px 1px at 12% 18%,#fff8 50%,transparent 51%),radial-gradient(1px 1px at 32% 8%,#fff6 50%,transparent 51%),
+  radial-gradient(1.4px 1.4px at 58% 14%,#fffa 50%,transparent 51%),radial-gradient(1px 1px at 76% 24%,#fff7 50%,transparent 51%),
+  radial-gradient(1px 1px at 88% 9%,#fff8 50%,transparent 51%),radial-gradient(1.2px 1.2px at 44% 28%,#fff5 50%,transparent 51%),
+  radial-gradient(1px 1px at 6% 34%,#fff6 50%,transparent 51%),radial-gradient(1px 1px at 66% 4%,#fff6 50%,transparent 51%);
+  animation:twinkle 6s ease-in-out infinite alternate;pointer-events:none}
+@keyframes twinkle{to{opacity:.45}}
+#scene{position:absolute;inset:0;width:100%;height:100%;display:block}
+.stage-top{position:absolute;left:0;right:0;top:0;display:flex;align-items:center;justify-content:space-between;padding:22px 28px;z-index:3;color:#fff}
+.logo{display:flex;align-items:baseline;gap:8px;font-family:var(--disp);letter-spacing:.02em}
+.logo b{font-weight:700;font-size:20px}
+.logo i{font-style:normal;opacity:.55;font-size:18px}
+.logo span{font-size:11px;letter-spacing:.28em;opacity:.8}
+.call{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.18);color:#fff;text-decoration:none;font-weight:600;font-size:14px;backdrop-filter:blur(10px);transition:.25s}
+.call:hover{background:rgba(255,255,255,.2)}
+.call svg{width:16px;height:16px}
+
+.stage-copy{position:absolute;left:28px;right:28px;bottom:30px;z-index:3;color:#fff;max-width:560px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#bcd0ff;font-weight:600}
+.eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 4px rgba(255,181,71,.2)}
+.stage-copy h1{font-family:var(--disp);font-weight:700;font-size:clamp(34px,4.4vw,60px);line-height:1.02;letter-spacing:-.025em;margin-top:12px;text-wrap:balance}
+.stage-copy h1 em{font-style:normal;background:linear-gradient(90deg,#ffd27a,#ffb547 40%,#ff8a5b);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stage-copy p{margin-top:12px;font-size:17px;opacity:.85;max-width:44ch}
+.roofmeter{position:absolute;right:28px;top:84px;z-index:3;color:#fff;text-align:right}
+.roofmeter small{display:block;font-size:11px;letter-spacing:.18em;text-transform:uppercase;opacity:.7}
+.roofmeter b{font-family:var(--disp);font-size:44px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.roofmeter b sup{font-size:20px;opacity:.7;margin-left:2px}
+.roofmeter span{display:block;font-size:13px;opacity:.75;margin-top:4px}
+
+/* ---------- Panel ---------- */
+.panel{background:var(--mist);position:relative;display:flex;flex-direction:column;min-height:100vh}
+.panel-in{flex:1;display:flex;flex-direction:column;justify-content:center;padding:48px clamp(20px,4vw,56px) 28px;max-width:620px;width:100%;margin:0 auto}
+.trust{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.chip{display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:12.5px;font-weight:600;color:var(--ink2)}
+.chip svg{width:15px;height:15px;color:var(--blue)}
+
+.card{background:var(--paper);border-radius:28px;box-shadow:0 30px 60px -30px rgba(15,20,40,.35),0 2px 0 rgba(15,20,40,.03);padding:28px;position:relative;overflow:hidden}
+.prog{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+.bar{flex:1;height:8px;border-radius:99px;background:#eceff7;overflow:hidden;position:relative}
+.bar i{position:absolute;inset:0 auto 0 0;width:15%;border-radius:99px;background:linear-gradient(90deg,var(--blue),#7aa2ff);transition:width .8s cubic-bezier(.2,.9,.2,1)}
+.bar i::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent);transform:translateX(-100%);animation:shine 2.2s ease-in-out infinite}
+@keyframes shine{to{transform:translateX(100%)}}
+.prog span{font-size:13px;font-weight:600;color:var(--mute);white-space:nowrap;font-variant-numeric:tabular-nums}
+
+.steps{position:relative}
+.step{display:none}
+.step.on{display:block;animation:stepIn .55s cubic-bezier(.2,.9,.2,1) both}
+.step.back{animation-name:stepInBack}
+@keyframes stepIn{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
+@keyframes stepInBack{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:none}}
+.q{font-family:var(--disp);font-weight:700;font-size:clamp(23px,2.4vw,29px);line-height:1.12;letter-spacing:-.015em;text-wrap:balance}
+.hint{color:var(--mute);margin-top:6px;font-size:15px}
+
+/* county */
+.search{margin-top:18px;position:relative}
+.search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--mute)}
+.search input{width:100%;height:50px;border-radius:14px;border:1.5px solid var(--line);background:#fafbfe;padding:0 14px 0 42px;font-size:16px;outline:none;transition:.2s}
+.search input:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 4px rgba(47,107,255,.12)}
+.counties{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;max-height:236px;overflow:auto;padding:2px 2px 6px;scrollbar-width:thin}
+.county{padding:10px 14px;border-radius:12px;border:1.5px solid var(--line);background:#fff;font-weight:600;font-size:14.5px;transition:.18s;color:var(--ink2)}
+.county:hover{border-color:var(--blue2);color:var(--blue);transform:translateY(-1px)}
+.county.sel{background:var(--blue);border-color:var(--blue);color:#fff}
+.county.none{border-style:dashed;color:var(--mute)}
+.empty{display:none;color:var(--mute);font-size:14px;padding:8px 2px}
+
+/* option cards */
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
+.opt{position:relative;text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:18px;padding:14px 14px 16px;transition:transform .25s cubic-bezier(.2,.9,.2,1),border-color .2s,box-shadow .25s;overflow:hidden}
+.opt:hover{transform:translateY(-3px);border-color:var(--blue2);box-shadow:0 18px 30px -20px rgba(47,107,255,.6)}
+.opt.sel{border-color:var(--blue);box-shadow:0 0 0 4px rgba(47,107,255,.14)}
+.opt .art{height:86px;border-radius:12px;background:linear-gradient(180deg,#eef3ff,#f8faff);display:grid;place-items:center;margin-bottom:12px;color:var(--blue)}
+.opt .art svg{width:100%;height:76px}
+.opt .art svg .draw{stroke-dasharray:420;stroke-dashoffset:0;transition:stroke-dashoffset 1s}
+.opt:hover .art svg .draw{animation:draw 1.1s ease forwards}
+@keyframes draw{from{stroke-dashoffset:420}to{stroke-dashoffset:0}}
+.opt b{display:block;font-family:var(--disp);font-size:16.5px;font-weight:600;letter-spacing:-.01em}
+.opt small{display:block;color:var(--mute);font-size:13px;margin-top:3px;line-height:1.35}
+.opt .tick{position:absolute;top:12px;right:12px;width:24px;height:24px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;transform:scale(0);transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
+.opt.sel .tick{transform:scale(1)}
+.opt .tick svg{width:14px;height:14px}
+.opt.row{display:flex;align-items:center;gap:14px;padding:14px}
+.opt.row .ico{width:46px;height:46px;flex:none;border-radius:14px;background:#eef3ff;color:var(--blue);display:grid;place-items:center;transition:.25s}
+.opt.row .ico svg{width:22px;height:22px}
+.opt.row:hover .ico,.opt.row.sel .ico{background:var(--blue);color:#fff}
+.tag{display:inline-block;margin-left:6px;padding:2px 8px;border-radius:99px;background:#fff4df;color:#a76200;font-size:11px;font-weight:700;letter-spacing:.04em;vertical-align:2px}
+
+/* fields */
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
+.f{position:relative}
+.f.full{grid-column:1/-1}
+.f input{width:100%;height:58px;border-radius:14px;border:1.5px solid var(--line);background:#fafbfe;padding:22px 14px 6px;font-size:16px;outline:none;transition:.2s}
+.f label{position:absolute;left:15px;top:19px;font-size:15px;color:var(--mute);pointer-events:none;transition:.18s}
+.f input:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 4px rgba(47,107,255,.12)}
+.f input:focus+label,.f input:not(:placeholder-shown)+label{top:8px;font-size:11.5px;font-weight:600;letter-spacing:.04em;color:var(--blue)}
+.f.bad input{border-color:var(--red);box-shadow:0 0 0 4px rgba(229,72,77,.1)}
+.f .ok{position:absolute;right:14px;top:50%;transform:translateY(-50%) scale(0);width:22px;height:22px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
+.f.good .ok{transform:translateY(-50%) scale(1)}
+.f .ok svg{width:13px;height:13px}
+.err{color:var(--red);font-size:13px;margin-top:10px;min-height:18px;font-weight:500}
+.consent{display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-size:12px;line-height:1.45;color:var(--mute)}
+.consent input{margin-top:2px;width:18px;height:18px;flex:none;accent-color:var(--blue)}
+.reassure{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:13px;color:var(--ink2)}
+.reassure svg{width:16px;height:16px;color:var(--green);flex:none}
+
+/* nav */
+.nav{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:22px}
+.back{display:inline-flex;align-items:center;gap:6px;color:var(--mute);font-weight:600;font-size:14.5px;padding:10px 4px;visibility:hidden}
+.back.on{visibility:visible}
+.back svg{width:16px;height:16px}
+.go{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;height:54px;padding:0 26px;border-radius:16px;background:var(--ink);color:#fff;font-weight:600;font-size:16px;transition:transform .2s,background .2s,opacity .2s;overflow:hidden}
+.go:hover{transform:translateY(-2px);background:var(--blue)}
+.go:disabled{opacity:.35;transform:none;background:var(--ink);cursor:not-allowed}
+.go svg{width:18px;height:18px;transition:transform .2s}
+.go:hover svg{transform:translateX(3px)}
+.go.big{flex:1;background:linear-gradient(90deg,var(--blue),#4f7dff);box-shadow:0 18px 30px -16px rgba(47,107,255,.9)}
+.go.big:hover{filter:brightness(1.08)}
+.go.loading span{opacity:0}
+.go.loading::after{content:"";position:absolute;width:22px;height:22px;border-radius:50%;border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* success */
+.done{text-align:left}
+.badge{width:64px;height:64px;border-radius:20px;background:linear-gradient(135deg,var(--green),#4be29d);display:grid;place-items:center;color:#fff;box-shadow:0 18px 30px -14px rgba(31,191,117,.8);animation:pop .7s cubic-bezier(.3,1.6,.5,1) both}
+.badge svg{width:32px;height:32px}
+@keyframes pop{from{transform:scale(.3) rotate(-20deg);opacity:0}}
+.done .q{margin-top:18px}
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:18px}
+.summary div{background:var(--mist);border-radius:14px;padding:10px 12px}
+.summary small{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);font-weight:600}
+.summary b{font-size:14.5px;font-weight:600}
+.next{margin-top:20px;display:grid;gap:0;position:relative}
+.next li{list-style:none;display:grid;grid-template-columns:30px 1fr;gap:12px;padding:0 0 16px;position:relative;opacity:0;animation:fadeUp .5s ease forwards}
+.next li::before{content:"";position:absolute;left:14px;top:30px;bottom:0;width:2px;background:var(--line)}
+.next li:last-child::before{display:none}
+.next li i{width:30px;height:30px;border-radius:50%;background:#eef3ff;color:var(--blue);display:grid;place-items:center;font-style:normal;font-weight:700;font-size:13px;font-family:var(--disp)}
+.next li:first-child i{background:var(--blue);color:#fff}
+.next li b{display:block;font-size:15px}
+.next li span{font-size:13.5px;color:var(--mute)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.foot{padding:16px clamp(20px,4vw,56px) 24px;font-size:11.5px;color:var(--mute);line-height:1.5;max-width:620px;margin:0 auto;width:100%}
+.foot a{color:inherit}
+
+/* confetti canvas */
+#fx{position:fixed;inset:0;pointer-events:none;z-index:50}
+
+/* ---------- Mobile ---------- */
+@media (max-width:900px){
+  .app{grid-template-columns:1fr}
+  .stage{position:relative;height:56vh;min-height:400px}
+  .stage-top{padding:16px}
+  .logo b{font-size:17px}.logo span{display:none}
+  .call span{display:none}.call{padding:10px}
+  .stage-copy{left:16px;right:16px;bottom:44px}
+  .stage-copy h1{font-size:clamp(30px,8.4vw,40px)}
+  .stage-copy p{font-size:15px}
+  .roofmeter{right:16px;top:66px}
+  .roofmeter b{font-size:32px}
+  .roofmeter span{display:none}
+  .panel{min-height:auto;background:transparent}
+  .panel-in{padding:0 16px 10px;margin-top:-26px;position:relative;z-index:4}
+  .trust{order:2;margin:16px 0 0;justify-content:center}
+  .card{padding:22px 18px;border-radius:24px}
+  .foot{padding:8px 16px 28px;color:#8f99b8}
+  .panel{background:linear-gradient(180deg,transparent 0,var(--mist) 140px)}
+  .foot{color:var(--mute)}
+}
+@media (max-width:420px){
+  .opts{gap:10px}
+  .opt{padding:10px 10px 12px}
+  .opt .art{height:70px}.opt .art svg{height:62px}
+  .opt b{font-size:15px}
+  .fields{grid-template-columns:1fr}
+  .summary{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- 3D stage -->
+  <section class="stage" aria-label="Your home">
+    <div class="stars"></div>
+    <canvas id="scene" aria-hidden="true"></canvas>
+    <div class="stage-top">
+      <div class="logo"><b>ELEVATUS</b><i>/</i><span>CONSTRUCTION</span></div>
+      <a class="call" href="tel:+12705709170"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg><span>(270) 570-9170</span></a>
+    </div>
+    <div class="roofmeter" aria-live="polite"><small>New roof</small><b id="pct">15<sup>%</sup></b><span id="pctTxt">Already started for you</span></div>
+    <div class="stage-copy">
+      <div class="eyebrow">Free estimate · Kentucky</div>
+      <h1>Your new roof starts at <em>$1 down.</em></h1>
+      <p>Answer 5 quick questions and watch your home's new roof come together.</p>
+    </div>
+  </section>
+
+  <!-- Form panel -->
+  <section class="panel">
+    <div class="panel-in">
+      <div class="card">
+        <div class="prog"><div class="bar"><i id="bar"></i></div><span id="stepTxt">Step 1 of 5</span></div>
+        <form class="steps" id="form" novalidate>
+
+          <!-- 1 county -->
+          <div class="step on" data-step="1">
+            <h2 class="q">Where is your property?</h2>
+            <p class="hint">Pick your county. We serve homeowners across Central Kentucky.</p>
+            <div class="search">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+              <input id="countySearch" type="text" placeholder="Search your county" autocomplete="off" aria-label="Search your county">
+            </div>
+            <div class="counties" id="counties" role="listbox" aria-label="County"></div>
+            <div class="empty" id="countyEmpty">No match. Choose "None of the above" and we'll still check for you.</div>
+          </div>
+
+          <!-- 2 home type -->
+          <div class="step" data-step="2">
+            <h2 class="q">What best describes your home?</h2>
+            <p class="hint">Look up. That's your home taking shape.</p>
+            <div class="opts" id="homeOpts">
+              <button type="button" class="opt" data-val="Single Family Home" data-type="single">
+                <span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span>
+                <div class="art"><svg viewBox="0 0 160 80" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path class="draw" d="M28 74V38L80 10l52 28v36z"/><path class="draw" d="M18 44 80 10l62 34"/><path d="M104 22V12h10v16"/><rect x="70" y="50" width="20" height="24" rx="2"/><rect x="40" y="46" width="16" height="13" rx="2"/><rect x="104" y="46" width="16" height="13" rx="2"/><path d="M8 74h144"/></svg></div>
+                <b>Single Family Home</b><small>Detached house</small>
+              </button>
+              <button type="button" class="opt" data-val="Townhouse / Duplex" data-type="town">
+                <span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span>
+                <div class="art"><svg viewBox="0 0 160 80" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path class="draw" d="M14 74V34l22-16 22 16 22-16 22 16 22-16 22 16v40z"/><path d="M58 34v40M102 34v40"/><rect x="28" y="54" width="14" height="20" rx="2"/><rect x="72" y="54" width="14" height="20" rx="2"/><rect x="116" y="54" width="14" height="20" rx="2"/><rect x="28" y="38" width="14" height="9" rx="2"/><rect x="72" y="38" width="14" height="9" rx="2"/><rect x="116" y="38" width="14" height="9" rx="2"/><path d="M6 74h148"/></svg></div>
+                <b>Townhouse / Duplex</b><small>Shared walls</small>
+              </button>
+              <button type="button" class="opt" data-val="Mobile Home or Other" data-type="mobile">
+                <span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span>
+                <div class="art"><svg viewBox="0 0 160 80" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path class="draw" d="M14 62V36l8-8h116l8 8v26z"/><rect x="30" y="40" width="18" height="11" rx="2"/><rect x="62" y="40" width="22" height="22" rx="2"/><rect x="100" y="40" width="18" height="11" rx="2"/><rect x="126" y="40" width="12" height="11" rx="2"/><path d="M20 62v8M140 62v8M60 62v8M100 62v8M6 70h148"/></svg></div>
+                <b>Mobile Home or Other</b><small>Manufactured &amp; more</small>
+              </button>
+              <button type="button" class="opt" data-val="Commercial Building" data-type="commercial">
+                <span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span>
+                <div class="art"><svg viewBox="0 0 160 80" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path class="draw" d="M22 74V22h116v52z"/><path d="M18 22h124v-6H18z"/><path d="M22 50h116"/><rect x="32" y="30" width="16" height="12" rx="1"/><rect x="58" y="30" width="16" height="12" rx="1"/><rect x="86" y="30" width="16" height="12" rx="1"/><rect x="112" y="30" width="16" height="12" rx="1"/><path d="M68 74V56h24v18M80 56v18"/><path d="M8 74h144"/></svg></div>
+                <b>Commercial Building</b><small>Business property</small>
+              </button>
+            </div>
+          </div>
+
+          <!-- 3 timing -->
+          <div class="step" data-step="3">
+            <h2 class="q">When would you like your new roof?</h2>
+            <p class="hint">No commitment. It helps us plan the right crew for you.</p>
+            <div class="opts" id="timeOpts" style="grid-template-columns:1fr">
+              <button type="button" class="opt row" data-val="ASAP"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span><span><b>As soon as possible <span class="tag">FASTEST</span></b><small>Leaks, damage or storm concerns</small></span><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span></button>
+              <button type="button" class="opt row" data-val="This Month"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/><path d="m9 15 2 2 4-4"/></svg></span><span><b>This month</b><small>Ready to move forward soon</small></span><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span></button>
+              <button type="button" class="opt row" data-val="Next Month"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18M10 15h6M13 12l3 3-3 3"/></svg></span><span><b>Next month</b><small>Planning ahead</small></span><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span></button>
+              <button type="button" class="opt row" data-val="No Preference"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span><b>No preference</b><small>Just exploring my options</small></span><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span></button>
+            </div>
+          </div>
+
+          <!-- 4 address -->
+          <div class="step" data-step="4">
+            <h2 class="q">Which address is the free estimate for?</h2>
+            <p class="hint">We use it to look at your roof before we call.</p>
+            <div class="fields">
+              <div class="f full"><input id="street" name="street" placeholder=" " autocomplete="address-line1" required><label for="street">Street address *</label><span class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span></div>
+              <div class="f"><input id="city" name="city" placeholder=" " autocomplete="address-level2"><label for="city">City</label><span class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span></div>
+              <div class="f"><input id="state" name="state" placeholder=" " value="KY" autocomplete="address-level1"><label for="state">State</label><span class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span></div>
+              <div class="f full"><input id="zip" name="zip" placeholder=" " inputmode="numeric" maxlength="10" autocomplete="postal-code"><label for="zip">ZIP code</label><span class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span></div>
+            </div>
+            <div class="reassure"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>Free estimate. No obligation.</div>
+            <div class="err" id="err4"></div>
+          </div>
+
+          <!-- 5 contact -->
+          <div class="step" data-step="5">
+            <h2 class="q">Last step. Where do we send your estimate?</h2>
+            <p class="hint">Your new roof is almost done. A local specialist will text you.</p>
+            <div class="fields">
+              <div class="f full"><input id="name" name="name" placeholder=" " autocomplete="name" required><label for="name">Full name *</label><span class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span></div>
+              <div class="f full"><input id="phone" name="phone" type="tel" placeholder=" " inputmode="tel" autocomplete="tel-national" required><label for="phone">Best cell to text *</label><span class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span></div>
+              <div class="f full"><input id="email" name="email" type="email" placeholder=" " autocomplete="email" required><label for="email">Email *</label><span class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span></div>
+            </div>
+            <label class="consent"><input type="checkbox" id="consent" checked><span>By submitting, I agree that Elevatus Construction may contact me by call, text or email at the number and address provided, including messages sent with automated technology. Consent is not a condition of purchase. Message and data rates may apply. Reply STOP to opt out.</span></label>
+            <div class="err" id="err5"></div>
+          </div>
+
+          <!-- done -->
+          <div class="step done" data-step="6">
+            <div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></div>
+            <h2 class="q" id="doneTitle">You're all set.</h2>
+            <p class="hint">Your request is in. Here's what happens next.</p>
+            <div class="summary" id="summary"></div>
+            <ol class="next">
+              <li style="animation-delay:.2s"><i>1</i><div><b>We text you shortly</b><span>A local Elevatus specialist confirms your details.</span></div></li>
+              <li style="animation-delay:.35s"><i>2</i><div><b>Free roof inspection</b><span>We inspect and document your roof's condition.</span></div></li>
+              <li style="animation-delay:.5s"><i>3</i><div><b>Clear written estimate</b><span>A transparent scope with your options to start at $1 down.</span></div></li>
+              <li style="animation-delay:.65s"><i>4</i><div><b>Your new roof</b><span>Installed by a GAF Certified Contractor, with a final walkthrough.</span></div></li>
+            </ol>
+            <a class="go big" href="tel:+12705709170" style="text-decoration:none;width:100%"><span>Prefer to talk now? Call (270) 570-9170</span></a>
+          </div>
+
+          <div class="nav" id="nav">
+            <button type="button" class="back" id="back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18 9 12l6-6"/></svg>Back</button>
+            <button type="button" class="go" id="next" disabled><span>Continue</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          </div>
+        </form>
+      </div>
+
+      <div class="trust">
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="m8.5 14-1.5 8 5-3 5 3-1.5-8"/></svg>GAF Certified Contractor</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>BBB Accredited</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M7 10h6M7 14h10"/></svg>Licensed &amp; Insured</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H8l-4 4z"/></svg>English &amp; Español</span>
+      </div>
+    </div>
+    <p class="foot">$1 down financing is subject to credit approval; terms vary. Elevatus Construction · GAF Certified Contractor ID 1164438 · <a href="tel:+12705709170">(270) 570-9170</a></p>
+  </section>
+</div>
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<script>
+/* ---------- Config ----------
+   webhookUrl: GoHighLevel "Inbound Webhook" URL (workflow trigger) so the lead lands in their CRM and triggers notifications.
+   pixelId: Meta Pixel ID for the ad campaigns (fires PageView + Lead). */
+window.ELEVATUS = { webhookUrl: "", pixelId: "" };
+</script>
+
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+
+const canvas = document.getElementById('scene');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.Fog(0x161c3c, 26, 60);
+const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 120);
+
+scene.add(new THREE.HemisphereLight(0xaec4ff, 0x2a1f18, 0.75));
+const sun = new THREE.DirectionalLight(0xffc08a, 2.4);
+sun.position.set(-9, 11, 8);
+sun.castShadow = true;
+sun.shadow.mapSize.set(1024, 1024);
+Object.assign(sun.shadow.camera, { left: -12, right: 12, top: 12, bottom: -12, near: 1, far: 40 });
+sun.shadow.bias = -0.0008;
+scene.add(sun);
+const rim = new THREE.DirectionalLight(0x7d96ff, 1.0);
+rim.position.set(8, 5, -9);
+scene.add(rim);
+
+/* ground + yard */
+const ground = new THREE.Mesh(new THREE.CircleGeometry(18, 72), new THREE.MeshStandardMaterial({ color: 0x2f4a33, roughness: 1 }));
+ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
+const drive = new THREE.Mesh(new THREE.BoxGeometry(2.4, 0.02, 9), new THREE.MeshStandardMaterial({ color: 0x6b6f7a, roughness: .9 }));
+drive.position.set(3.2, 0.01, 6.6); drive.receiveShadow = true; scene.add(drive);
+const walk = new THREE.Mesh(new THREE.BoxGeometry(1.1, 0.02, 4), new THREE.MeshStandardMaterial({ color: 0x9a9286, roughness: .9 }));
+walk.position.set(0, 0.012, 5.2); walk.receiveShadow = true; scene.add(walk);
+function tree(x, z, s) {
+  const g = new THREE.Group();
+  const trunk = new THREE.Mesh(new THREE.CylinderGeometry(.12 * s, .16 * s, 1.1 * s, 8), new THREE.MeshStandardMaterial({ color: 0x5a3c26, roughness: 1 }));
+  trunk.position.y = .55 * s; trunk.castShadow = true; g.add(trunk);
+  const leafMat = new THREE.MeshStandardMaterial({ color: 0x2f6b45, roughness: .9, flatShading: true });
+  [[1.3, .95, 1.4], [1.0, .75, 2.1], [.65, .5, 2.7]].forEach(([h, r, y]) => {
+    const c = new THREE.Mesh(new THREE.ConeGeometry(r * s, h * s, 8), leafMat); c.position.y = y * s; c.castShadow = true; g.add(c);
+  });
+  g.position.set(x, 0, z); scene.add(g); return g;
+}
+const trees = [tree(-7.5, -2, 1.25), tree(-8.6, 2.6, .95), tree(7.8, -3.2, 1.35), tree(8.8, 1.2, .9), tree(-5, -6, 1.1), tree(5.5, -6.5, 1.0)];
+function bush(x, z, s) {
+  const m = new THREE.Mesh(new THREE.IcosahedronGeometry(.45 * s, 0), new THREE.MeshStandardMaterial({ color: 0x3d7a4f, roughness: .9, flatShading: true }));
+  m.position.set(x, .3 * s, z); m.castShadow = true; scene.add(m);
+}
+[[-2.4, 3.2], [-3.2, 3.1], [2.1, 3.2], [-1.2, 3.3]].forEach(([x, z]) => bush(x, z, 1));
+
+/* materials */
+const M = (color, o = {}) => new THREE.MeshStandardMaterial({ color, roughness: .85, ...o });
+const windowMat = new THREE.MeshStandardMaterial({ color: 0x1c2240, emissive: 0xffb45e, emissiveIntensity: .25, roughness: .3, metalness: .1 });
+const trimMat = M(0xf4f1ea);
+const oldRoofMat = M(0x3a3632, { roughness: 1 });
+const shingleMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: .7, metalness: .05 });
+
+function box(w, h, d, mat, x, y, z, parent) {
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
+  m.position.set(x, y, z); m.castShadow = true; m.receiveShadow = true; parent.add(m); return m;
+}
+function gablePrism(width, depth, rise, mat, y, parent) {
+  const s = new THREE.Shape();
+  s.moveTo(-depth / 2, 0); s.lineTo(depth / 2, 0); s.lineTo(0, rise); s.closePath();
+  const g = new THREE.ExtrudeGeometry(s, { depth: width, bevelEnabled: false });
+  const m = new THREE.Mesh(g, mat); m.rotation.y = Math.PI / 2; m.position.set(-width / 2, y, 0);
+  m.castShadow = true; m.receiveShadow = true; parent.add(m); return m;
+}
+function windowAt(x, y, z, w, h, parent, side = 1) {
+  box(w + .14, h + .14, .06, trimMat, x, y, z + .02 * side, parent);
+  box(w, h, .08, windowMat, x, y, z + .05 * side, parent);
+  box(.05, h, .1, trimMat, x, y, z + .07 * side, parent);
+}
+
+/* roof planes -> shingles */
+function slopePlanes(W, D, H, R, o) {
+  const e = D / 2 + o, L = Math.hypot(e, R);
+  return [
+    { origin: new THREE.Vector3(0, H, e), u: new THREE.Vector3(-1, 0, 0), v: new THREE.Vector3(0, R / L, -e / L), n: new THREE.Vector3(0, e / L, R / L), U: W + 2 * o, V: L },
+    { origin: new THREE.Vector3(0, H, -e), u: new THREE.Vector3(1, 0, 0), v: new THREE.Vector3(0, R / L, e / L), n: new THREE.Vector3(0, e / L, -R / L), U: W + 2 * o, V: L },
+  ];
+}
+function flatPlanes(W, D, H) {
+  return [{ origin: new THREE.Vector3(0, H, D / 2), u: new THREE.Vector3(-1, 0, 0), v: new THREE.Vector3(0, 0, -1), n: new THREE.Vector3(0, 1, 0), U: W, V: D }];
+}
+const palette = [0x2c3346, 0x323a50, 0x283044, 0x363e55, 0x2a3142];
+function buildRoof(planes, parent, sw = .46, sl = .34, th = .05) {
+  // old worn underlay
+  planes.forEach(p => {
+    const m = new THREE.Mesh(new THREE.BoxGeometry(p.U, .04, p.V), oldRoofMat);
+    const mat = new THREE.Matrix4().makeBasis(p.u, p.n, p.v);
+    m.quaternion.setFromRotationMatrix(mat);
+    m.position.copy(p.origin).addScaledVector(p.v, p.V / 2).addScaledVector(p.n, .02);
+    m.castShadow = true; m.receiveShadow = true; parent.add(m);
+  });
+  const items = [];
+  planes.forEach((p, pi) => {
+    const rows = Math.ceil(p.V / (sl * .78));
+    const cols = Math.floor(p.U / sw);
+    const q = new THREE.Quaternion().setFromRotationMatrix(new THREE.Matrix4().makeBasis(p.u, p.n, p.v));
+    for (let r = 0; r < rows; r++) {
+      const off = r % 2 ? sw / 2 : 0;
+      for (let c = 0; c < cols; c++) {
+        let uu = -p.U / 2 + (c + .5) * sw + off;
+        if (uu > p.U / 2 - sw / 2) continue;
+        const vv = Math.min(r * sl * .78 + sl / 2, p.V - sl / 2);
+        const pos = p.origin.clone().addScaledVector(p.u, uu).addScaledVector(p.v, vv).addScaledVector(p.n, .06 + r * .003);
+        items.push({ pos, q, n: p.n, order: r * 1000 + pi * 500 + (c * 37 % cols) });
+      }
+    }
+  });
+  items.sort((a, b) => a.order - b.order);
+  const geo = new THREE.BoxGeometry(sw * .97, th, sl);
+  const mesh = new THREE.InstancedMesh(geo, shingleMat, items.length);
+  mesh.castShadow = true; mesh.receiveShadow = true;
+  const col = new THREE.Color();
+  items.forEach((it, i) => { col.setHex(palette[(i * 7 + (i >> 3)) % palette.length]); mesh.setColorAt(i, col); });
+  parent.add(mesh);
+  return { mesh, items, shown: 0 };
+}
+
+/* house types */
+const builders = {
+  single() {
+    const g = new THREE.Group(), W = 6.4, D = 4.6, H = 3.4, R = 2.0, o = .35;
+    box(W, H, D, M(0xe9e4da), 0, H / 2, 0, g);
+    box(W + .1, .25, D + .1, M(0xb9b1a3), 0, .12, 0, g);
+    gablePrism(W, D, R, M(0xe9e4da), H, g);
+    box(.7, 1.6, .7, M(0x8a5a44), 1.6, H + R * .7, -.6, g);
+    box(1.0, 2.0, .12, M(0x1f3a66), 0, 1.0, D / 2 + .06, g);
+    box(1.3, .12, .5, trimMat, 0, 2.15, D / 2 + .25, g);
+    [[-2.1, 1.3], [2.1, 1.3], [-2.1, 2.7], [2.1, 2.7], [0, 2.75]].forEach(([x, y]) => windowAt(x, y, D / 2, .95, .8, g));
+    [[-1.6, 1.6], [1.6, 1.6]].forEach(([x, y]) => windowAt(x, y, -D / 2, .9, .8, g, -1));
+    const roof = buildRoof(slopePlanes(W, D, H, R, o), g);
+    return { g, roof, fit: 15.5, look: 2.6 };
+  },
+  town() {
+    const g = new THREE.Group(), W = 9.6, D = 4.2, H = 3.6, R = 1.7, o = .3;
+    const cols = [0xd9c7b0, 0xc9d3dc, 0xe7ddc8];
+    [-3.2, 0, 3.2].forEach((x, i) => {
+      box(3.2, H, D, M(cols[i]), x, H / 2, 0, g);
+      box(.85, 1.9, .12, M([0x6b2f2a, 0x1f3a66, 0x2f4a33][i]), x - .6, .95, D / 2 + .06, g);
+      windowAt(x + .7, 1.3, D / 2, .8, .75, g); windowAt(x - .1, 2.75, D / 2, 1.3, .7, g);
+      box(.1, H, D + .02, trimMat, x + 1.6, H / 2, 0, g);
+    });
+    gablePrism(W, D, R, M(0xe2dbcd), H, g);
+    const roof = buildRoof(slopePlanes(W, D, H, R, o), g);
+    return { g, roof, fit: 19, look: 2.4 };
+  },
+  mobile() {
+    const g = new THREE.Group(), W = 8.4, D = 3.0, base = .55, H = 1.9, R = .5, o = .2;
+    box(W, base, D - .2, M(0x8f8a80), 0, base / 2, 0, g);
+    box(W, H - base, D, M(0xdfe6e8), 0, base + (H - base) / 2, 0, g);
+    box(W + .02, .1, D + .02, M(0x9fb2bd), 0, base + .7, 0, g);
+    gablePrism(W, D, R, M(0xdfe6e8), H, g);
+    box(.85, 1.15, .1, M(0x1f3a66), -.6, base + .6, D / 2 + .05, g);
+    [[-2.8], [1.2], [2.9]].forEach(([x]) => windowAt(x, base + .75, D / 2, .9, .55, g));
+    box(1.3, .35, .9, M(0x9a9286), -.6, .17, D / 2 + .5, g);
+    const roof = buildRoof(slopePlanes(W, D, H, R, o), g, .5, .32);
+    return { g, roof, fit: 15, look: 1.2 };
+  },
+  commercial() {
+    const g = new THREE.Group(), W = 8.6, D = 6, H = 3.6;
+    box(W, H, D, M(0xc9ccd3), 0, H / 2, 0, g);
+    box(W - .6, 1.8, .1, windowMat, 0, 1.1, D / 2 + .03, g);
+    for (let i = -3; i <= 3; i++) box(.08, 1.8, .14, M(0x2a2f3a), i * 1.2, 1.1, D / 2 + .06, g);
+    box(W + .1, .5, .3, M(0x2f6bff, { roughness: .5 }), 0, 2.4, D / 2 + .12, g);
+    [[-3, 3.05], [-1, 3.05], [1, 3.05], [3, 3.05]].forEach(([x, y]) => windowAt(x, y, D / 2, .9, .45, g));
+    const P = .4;
+    box(W + .2, P, .2, M(0xb4b8c1), 0, H + P / 2, D / 2, g); box(W + .2, P, .2, M(0xb4b8c1), 0, H + P / 2, -D / 2, g);
+    box(.2, P, D, M(0xb4b8c1), W / 2, H + P / 2, 0, g); box(.2, P, D, M(0xb4b8c1), -W / 2, H + P / 2, 0, g);
+    box(1.4, .6, 1, M(0x8b919c), 2, H + .3, -1, g);
+    const roof = buildRoof(flatPlanes(W - .4, D - .4, H + .01), g, .95, .95, .04);
+    return { g, roof, fit: 17.5, look: 2.2 };
+  },
+};
+
+let current = null, leaving = null, targetP = .15, shownP = .15, celebrating = 0;
+function setType(t) {
+  if (current && current.type === t) return;
+  if (current) { leaving = current; leaving.t0 = performance.now(); }
+  const b = builders[t]();
+  b.type = t; b.t0 = performance.now(); b.g.scale.setScalar(.001);
+  b.roof.shown = 0;
+  scene.add(b.g); current = b;
+}
+setType('single');
+
+const dummy = new THREE.Object3D();
+const easeOutBack = x => { const c1 = 1.7, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+function updateRoof(roof, p) {
+  const N = roof.items.length;
+  roof.shown += (p * N - roof.shown) * .06;
+  const S = roof.shown;
+  for (let i = 0; i < N; i++) {
+    const it = roof.items[i];
+    const k = Math.min(1, Math.max(0, (S - i) / 14));
+    const e = k <= 0 ? 0 : easeOutBack(k);
+    dummy.position.copy(it.pos).addScaledVector(it.n, (1 - Math.min(e, 1)) * 1.6);
+    dummy.quaternion.copy(it.q);
+    dummy.scale.setScalar(Math.max(.0001, e));
+    dummy.updateMatrix();
+    roof.mesh.setMatrixAt(i, dummy.matrix);
+  }
+  roof.mesh.instanceMatrix.needsUpdate = true;
+}
+
+/* sparkles for celebration */
+const SP = 160;
+const spGeo = new THREE.BufferGeometry();
+const spPos = new Float32Array(SP * 3), spVel = new Float32Array(SP * 3);
+spGeo.setAttribute('position', new THREE.BufferAttribute(spPos, 3));
+const spMat = new THREE.PointsMaterial({ color: 0xffd27a, size: .12, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false });
+const sparkles = new THREE.Points(spGeo, spMat); scene.add(sparkles);
+function burst() {
+  for (let i = 0; i < SP; i++) {
+    spPos[i * 3] = (Math.random() - .5) * 6; spPos[i * 3 + 1] = 3 + Math.random() * 2; spPos[i * 3 + 2] = (Math.random() - .5) * 4;
+    spVel[i * 3] = (Math.random() - .5) * .08; spVel[i * 3 + 1] = .05 + Math.random() * .09; spVel[i * 3 + 2] = (Math.random() - .5) * .08;
+  }
+  spMat.opacity = 1; celebrating = performance.now();
+}
+
+let mx = 0, my = 0;
+addEventListener('pointermove', e => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; });
+
+function resize() {
+  const r = canvas.parentElement.getBoundingClientRect();
+  renderer.setSize(r.width, r.height, false);
+  camera.aspect = r.width / r.height; camera.updateProjectionMatrix();
+}
+addEventListener('resize', resize); resize();
+
+const clock = new THREE.Clock();
+let camDist = 15.5, camLook = 2.6;
+function tick() {
+  const t = clock.getElapsedTime(), now = performance.now();
+  shownP += (targetP - shownP) * .05;
+  if (current) {
+    const k = Math.min(1, (now - current.t0) / 900);
+    current.g.scale.setScalar(Math.max(.001, easeOutBack(k)));
+    current.g.rotation.y = (1 - k) * -.6;
+    updateRoof(current.roof, shownP);
+    camDist += (current.fit - camDist) * .04; camLook += (current.look - camLook) * .04;
+  }
+  if (leaving) {
+    const k = Math.min(1, (now - leaving.t0) / 450);
+    leaving.g.scale.setScalar(Math.max(.001, 1 - k));
+    leaving.g.position.y = -k * .5;
+    if (k >= 1) { scene.remove(leaving.g); leaving = null; }
+  }
+  windowMat.emissiveIntensity += ((.25 + shownP * .9 + (celebrating ? 1.4 : 0)) - windowMat.emissiveIntensity) * .05;
+  if (celebrating) {
+    for (let i = 0; i < SP; i++) { spPos[i * 3] += spVel[i * 3]; spPos[i * 3 + 1] += spVel[i * 3 + 1]; spPos[i * 3 + 2] += spVel[i * 3 + 2]; spVel[i * 3 + 1] -= .0012; }
+    spGeo.attributes.position.needsUpdate = true;
+    spMat.opacity = Math.max(0, 1 - (now - celebrating) / 3200);
+  }
+  trees.forEach((tr, i) => tr.rotation.z = Math.sin(t * .8 + i) * .015);
+  const portrait = camera.aspect < 1;
+  const d = camDist * (portrait ? 1.45 : 1) * (innerWidth < 900 ? 1.06 : 1);
+  const ang = .62 + Math.sin(t * .12) * .22 + mx * .35;
+  camera.position.set(Math.sin(ang) * d, 5.2 + my * -1.2 + (portrait ? 1 : 0), Math.cos(ang) * d);
+  camera.lookAt(innerWidth < 900 ? 0 : -1.1, camLook - (portrait ? .4 : 0), 0);
+  renderer.render(scene, camera);
+  requestAnimationFrame(tick);
+}
+tick();
+
+window.house = {
+  setProgress(p) { targetP = Math.max(0, Math.min(1, p)); },
+  setType,
+  celebrate() { targetP = 1; burst(); },
+};
+window.dispatchEvent(new Event('house-ready'));
+</script>
+
+<script>
+(function(){
+  const COUNTIES = ["Anderson County, KY","Bath County, KY","Bourbon County, KY","Boyle County, KY","Clark County, KY","Estill County, KY","Fayette County, KY","Fleming County, KY","Franklin County, KY","Jessamine County, KY","Madison County, KY","Menifee County, KY","Mercer County, KY","Montgomery County, KY","Nicholas County, KY","Powell County, KY","Rowan County, KY","Scott County, KY","Woodford County, KY"];
+  const TOTAL = 5;
+  const data = { county:"", home_type:"", timeline:"" };
+  let step = 1;
+  const $ = id => document.getElementById(id);
+  const house = () => window.house;
+  const progressFor = s => .15 + (s - 1) * .17; // endowed progress: starts at 15%
+
+  /* tracking params (ads attribution) */
+  const qs = new URLSearchParams(location.search);
+  const tracking = {};
+  ["utm_source","utm_medium","utm_campaign","utm_content","utm_term","fbclid","gclid"].forEach(k => { if (qs.get(k)) tracking[k] = qs.get(k); });
+
+  /* Meta Pixel */
+  const cfg = window.ELEVATUS || {};
+  if (cfg.pixelId) {
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', cfg.pixelId); fbq('track', 'PageView');
+  }
+
+  /* counties */
+  const wrap = $('counties');
+  [...COUNTIES, "None of the above"].forEach(c => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'county' + (c === "None of the above" ? ' none' : '');
+    b.textContent = c.replace(', KY', ''); b.dataset.val = c; b.setAttribute('role','option');
+    b.onclick = () => { wrap.querySelectorAll('.county').forEach(x => x.classList.remove('sel')); b.classList.add('sel'); data.county = c; validate(); setTimeout(() => go(1), 260); };
+    wrap.appendChild(b);
+  });
+  $('countySearch').addEventListener('input', e => {
+    const q = e.target.value.trim().toLowerCase(); let n = 0;
+    wrap.querySelectorAll('.county').forEach(b => { const show = !q || b.textContent.toLowerCase().includes(q) || b.classList.contains('none'); b.style.display = show ? '' : 'none'; if (show && !b.classList.contains('none')) n++; });
+    $('countyEmpty').style.display = n ? 'none' : 'block';
+  });
+
+  /* option groups */
+  function group(id, key, after) {
+    $(id).querySelectorAll('.opt').forEach(b => b.addEventListener('click', () => {
+      $(id).querySelectorAll('.opt').forEach(x => x.classList.remove('sel')); b.classList.add('sel');
+      data[key] = b.dataset.val; if (after) after(b); validate(); setTimeout(() => go(1), 420);
+    }));
+  }
+  group('homeOpts', 'home_type', b => house() && house().setType(b.dataset.type));
+  group('timeOpts', 'timeline');
+  // preview the house type on hover (desktop)
+  $('homeOpts').querySelectorAll('.opt').forEach(b => b.addEventListener('mouseenter', () => { if (!data.home_type && house()) house().setType(b.dataset.type); }));
+
+  /* fields */
+  const phone = $('phone');
+  phone.addEventListener('input', () => {
+    let d = phone.value.replace(/\D/g, ''); if (d.length === 11 && d[0] === '1') d = d.slice(1); d = d.slice(0, 10);
+    phone.value = d.length > 6 ? `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}` : d.length > 3 ? `(${d.slice(0,3)}) ${d.slice(3)}` : d;
+  });
+  const checks = {
+    street: v => v.trim().length >= 5, city: v => v.trim().length >= 2, state: v => v.trim().length >= 2,
+    zip: v => /^\d{5}(-?\d{4})?$/.test(v.trim()), name: v => v.trim().split(/\s+/).length >= 2 && v.trim().length >= 4,
+    phone: v => v.replace(/\D/g, '').length === 10, email: v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()),
+  };
+  Object.keys(checks).forEach(k => {
+    const el = $(k);
+    el.addEventListener('input', () => { el.parentElement.classList.toggle('good', checks[k](el.value)); el.parentElement.classList.remove('bad'); validate(); bump(); });
+    el.addEventListener('blur', () => { if (el.value && !checks[k](el.value)) el.parentElement.classList.add('bad'); });
+    el.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); if (!$('next').disabled) $('next').click(); } });
+  });
+  // each valid field nudges the roof forward a little: instant reward
+  function bump() {
+    if (step === 4) { const n = ['street','city','state','zip'].filter(k => checks[k]($(k).value)).length; house() && house().setProgress(progressFor(4) + n * .04); }
+    if (step === 5) { const n = ['name','phone','email'].filter(k => checks[k]($(k).value)).length; house() && house().setProgress(progressFor(5) + n * .05); }
+  }
+  $('state').parentElement.classList.add('good');
+
+  function stepValid(s) {
+    if (s === 1) return !!data.county;
+    if (s === 2) return !!data.home_type;
+    if (s === 3) return !!data.timeline;
+    if (s === 4) return checks.street($('street').value);
+    if (s === 5) return checks.name($('name').value) && checks.phone(phone.value) && checks.email($('email').value) && $('consent').checked;
+    return true;
+  }
+  function validate() { $('next').disabled = !stepValid(step); }
+  $('consent').addEventListener('change', validate);
+
+  function render(dir) {
+    document.querySelectorAll('.step').forEach(el => {
+      const on = +el.dataset.step === step;
+      el.classList.toggle('on', on); el.classList.toggle('back', on && dir < 0);
+    });
+    const pct = step > TOTAL ? 100 : Math.round(progressFor(step) * 100);
+    $('bar').style.width = pct + '%';
+    $('stepTxt').textContent = step > TOTAL ? 'Complete' : `Step ${step} of ${TOTAL}`;
+    countTo(pct);
+    $('pctTxt').textContent = step > TOTAL ? 'Your new roof is ready' : step === 1 ? 'Already started for you' : step === TOTAL ? 'One step to finish' : 'Keep going';
+    $('back').classList.toggle('on', step > 1 && step <= TOTAL);
+    $('nav').style.display = step > TOTAL ? 'none' : '';
+    const nx = $('next');
+    nx.classList.toggle('big', step === TOTAL);
+    nx.querySelector('span').textContent = step === TOTAL ? 'Get my free estimate' : 'Continue';
+    if (house()) house().setProgress(step > TOTAL ? 1 : progressFor(step));
+    validate();
+    const f = document.querySelector('.step.on input:not([type=checkbox])');
+    if (f && step >= 4 && matchMedia('(min-width:901px)').matches) setTimeout(() => f.focus(), 350);
+    if (innerWidth < 900 && dir) document.querySelector('.card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  let shown = 15, raf;
+  function countTo(v) {
+    cancelAnimationFrame(raf);
+    const from = shown, t0 = performance.now();
+    const loop = now => { const k = Math.min(1, (now - t0) / 700); shown = Math.round(from + (v - from) * (1 - Math.pow(1 - k, 3))); $('pct').innerHTML = shown + '<sup>%</sup>'; if (k < 1) raf = requestAnimationFrame(loop); };
+    raf = requestAnimationFrame(loop);
+  }
+  function go(d) {
+    if (d > 0 && !stepValid(step)) return;
+    if (d > 0 && step === TOTAL) return submit();
+    step = Math.max(1, Math.min(TOTAL + 1, step + d)); render(d);
+  }
+  $('next').onclick = () => go(1);
+  $('back').onclick = () => go(-1);
+  $('form').addEventListener('submit', e => e.preventDefault());
+
+  async function submit() {
+    const btn = $('next'); btn.classList.add('loading'); btn.disabled = true; $('err5').textContent = '';
+    const full = $('name').value.trim().replace(/\s+/g, ' ');
+    const [first, ...rest] = full.split(' ');
+    const payload = {
+      county: data.county, home_type: data.home_type, timeline: data.timeline,
+      street_address: $('street').value.trim(), city: $('city').value.trim(), state: $('state').value.trim(), postal_code: $('zip').value.trim(),
+      full_name: full, first_name: first, last_name: rest.join(' '),
+      phone: '+1' + phone.value.replace(/\D/g, ''), email: $('email').value.trim(),
+      sms_consent: $('consent').checked ? 'yes' : 'no',
+      source: 'Elevatus roof landing', page_url: location.href, submitted_at: new Date().toISOString(), ...tracking,
+    };
+    try {
+      if (cfg.webhookUrl) {
+        // form-encoded "simple" request: no CORS preflight, accepted by GoHighLevel inbound webhooks
+        await fetch(cfg.webhookUrl, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(payload) });
+      } else {
+        console.info('[Elevatus] demo mode, lead not sent:', payload);
+        await new Promise(r => setTimeout(r, 700));
+      }
+      if (window.fbq) fbq('track', 'Lead', { content_name: 'Roof estimate', content_category: data.home_type });
+      done(first, payload);
+    } catch (e) {
+      $('err5').textContent = 'Something went wrong. Please try again or call (270) 570-9170.';
+      btn.classList.remove('loading'); btn.disabled = false;
+    }
+  }
+  function done(first, p) {
+    step = TOTAL + 1; render(1);
+    $('doneTitle').textContent = `You're all set, ${first}.`;
+    const rows = [["Property", p.street_address + (p.city ? ', ' + p.city : '')], ["Home", p.home_type], ["County", p.county.replace(', KY','')], ["Timing", p.timeline]];
+    $('summary').innerHTML = rows.map(([k, v]) => `<div><small>${k}</small><b></b></div>`).join('');
+    $('summary').querySelectorAll('b').forEach((b, i) => b.textContent = rows[i][1]);
+    if (house()) house().celebrate();
+    confetti();
+  }
+
+  /* confetti (2D overlay) */
+  function confetti() {
+    if (matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+    const c = $('fx'), x = c.getContext('2d'); c.width = innerWidth * devicePixelRatio; c.height = innerHeight * devicePixelRatio; x.scale(devicePixelRatio, devicePixelRatio);
+    const cols = ['#2f6bff','#ffb547','#1fbf75','#ffffff','#7aa2ff'];
+    const P = Array.from({ length: 140 }, () => ({ x: innerWidth * (.3 + Math.random() * .4), y: innerHeight * .55, vx: (Math.random() - .5) * 14, vy: -8 - Math.random() * 12, r: 4 + Math.random() * 6, a: Math.random() * 6, va: (Math.random() - .5) * .3, c: cols[Math.random() * cols.length | 0] }));
+    const t0 = performance.now();
+    (function f(now) {
+      x.clearRect(0, 0, innerWidth, innerHeight);
+      P.forEach(p => { p.vy += .35; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.a += p.va; x.save(); x.translate(p.x, p.y); x.rotate(p.a); x.fillStyle = p.c; x.fillRect(-p.r / 2, -p.r / 4, p.r, p.r / 2); x.restore(); });
+      if (now - t0 < 3500) requestAnimationFrame(f); else x.clearRect(0, 0, innerWidth, innerHeight);
+    })(t0);
+  }
+
+  const start = () => render(0);
+  if (window.house) start(); else addEventListener('house-ready', start, { once: true });
+  setTimeout(() => { if (!window.house) start(); }, 2500);
+})();
+</script>
+</body>
+</html>
