@@ -38,6 +38,7 @@ svg{display:block}
   animation:twinkle 6s ease-in-out infinite alternate;pointer-events:none}
 @keyframes twinkle{to{opacity:.45}}
 #scene{position:absolute;inset:0;width:100%;height:100%;display:block}
+.stage::after{content:"";position:absolute;inset:auto 0 0 0;height:48%;background:linear-gradient(180deg,transparent,rgba(8,12,28,.55) 45%,rgba(8,12,28,.88));pointer-events:none;z-index:2}
 .stage-top{position:absolute;left:0;right:0;top:0;display:flex;align-items:center;justify-content:space-between;padding:22px 28px;z-index:3;color:#fff}
 .logo{display:flex;align-items:baseline;gap:8px;font-family:var(--disp);letter-spacing:.02em}
 .logo b{font-weight:700;font-size:20px}
@@ -371,15 +372,15 @@ const scene = new THREE.Scene();
 scene.fog = new THREE.Fog(0x161c3c, 26, 60);
 const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 120);
 
-scene.add(new THREE.HemisphereLight(0xaec4ff, 0x2a1f18, 0.75));
-const sun = new THREE.DirectionalLight(0xffc08a, 2.4);
+scene.add(new THREE.HemisphereLight(0xd6dcf0, 0x3a2a1e, 0.65));
+const sun = new THREE.DirectionalLight(0xffc896, 2.6);
 sun.position.set(-9, 11, 8);
 sun.castShadow = true;
 sun.shadow.mapSize.set(1024, 1024);
 Object.assign(sun.shadow.camera, { left: -12, right: 12, top: 12, bottom: -12, near: 1, far: 40 });
 sun.shadow.bias = -0.0008;
 scene.add(sun);
-const rim = new THREE.DirectionalLight(0x7d96ff, 1.0);
+const rim = new THREE.DirectionalLight(0x9aa8d6, 0.35);
 rim.position.set(8, 5, -9);
 scene.add(rim);
 
@@ -464,7 +465,7 @@ function buildRoof(planes, parent, sw = .46, sl = .34, th = .05) {
         if (uu > p.U / 2 - sw / 2) continue;
         const vv = Math.min(r * sl * .78 + sl / 2, p.V - sl / 2);
         const pos = p.origin.clone().addScaledVector(p.u, uu).addScaledVector(p.v, vv).addScaledVector(p.n, .06 + r * .003);
-        items.push({ pos, q, n: p.n, order: r * 1000 + pi * 500 + (c * 37 % cols) });
+        items.push({ pos, q, n: p.n, order: r * 1000 + pi * 500 + c });
       }
     }
   });
@@ -488,7 +489,7 @@ const builders = {
     box(.7, 1.6, .7, M(0x8a5a44), 1.6, H + R * .7, -.6, g);
     box(1.0, 2.0, .12, M(0x1f3a66), 0, 1.0, D / 2 + .06, g);
     box(1.3, .12, .5, trimMat, 0, 2.15, D / 2 + .25, g);
-    [[-2.1, 1.3], [2.1, 1.3], [-2.1, 2.7], [2.1, 2.7], [0, 2.75]].forEach(([x, y]) => windowAt(x, y, D / 2, .95, .8, g));
+    [[-2.1, 1.3], [2.1, 1.3], [-2.1, 2.7], [2.1, 2.7], [0, 2.75]].forEach(([x, y]) => windowAt(x, y, D / 2, .8, .7, g));
     [[-1.6, 1.6], [1.6, 1.6]].forEach(([x, y]) => windowAt(x, y, -D / 2, .9, .8, g, -1));
     const roof = buildRoof(slopePlanes(W, D, H, R, o), g);
     return { g, roof, fit: 15.5, look: 2.6 };
@@ -615,10 +616,11 @@ function tick() {
   }
   trees.forEach((tr, i) => tr.rotation.z = Math.sin(t * .8 + i) * .015);
   const portrait = camera.aspect < 1;
-  const d = camDist * (portrait ? 1.45 : 1) * (innerWidth < 900 ? 1.06 : 1);
-  const ang = .62 + Math.sin(t * .12) * .22 + mx * .35;
-  camera.position.set(Math.sin(ang) * d, 5.2 + my * -1.2 + (portrait ? 1 : 0), Math.cos(ang) * d);
-  camera.lookAt(innerWidth < 900 ? 0 : -1.1, camLook - (portrait ? .4 : 0), 0);
+  const mobile = innerWidth < 900;
+  const d = camDist * (portrait ? 1.55 : 1.28) * (mobile ? 1.08 : 1);
+  const ang = .62 + Math.sin(t * .12) * .2 + mx * .3;
+  camera.position.set(Math.sin(ang) * d, 5.6 + my * -1 + (portrait ? 1.2 : 0), Math.cos(ang) * d);
+  camera.lookAt(mobile ? 0 : -.6, camLook - (portrait ? 2.2 : 1.9), 0);
   renderer.render(scene, camera);
   requestAnimationFrame(tick);
 }
