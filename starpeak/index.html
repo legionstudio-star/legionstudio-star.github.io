@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Cotiza tu energía solar · Star Peak Energy</title>
+<meta name="description" content="Responde 5 preguntas y recibe tu cotización gratis de energía solar, cargador para carro eléctrico o respaldo de energía. Instalación certificada RETIE y trámite de beneficios UPME Ley 1715.">
+<meta name="theme-color" content="#060b14">
+<link rel="icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cyan:#2cc4f2; --cyan2:#7fdcff; --navy:#060b14; --navy2:#0b1626; --ink:#0d1a2b; --ink2:#33465b;
+  --paper:#fff; --mist:#eef3f7; --line:#d6e0e8; --mute:#5a6b7c; --green:#18b26b; --red:#d9423f; --sun:#ffc24b;
+  --wide:"Archivo",system-ui,sans-serif; --body:"Archivo",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--navy);color:var(--ink)}
+body{font-family:var(--body);font-stretch:100%;-webkit-font-smoothing:antialiased;min-height:100vh}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+svg{display:block}
+
+/* ---------- Layout ---------- */
+.app{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);min-height:100vh}
+.stage{position:sticky;top:0;height:100vh;height:100svh;min-height:540px;display:flex;flex-direction:column;background:var(--navy);color:#f4f8fb;isolation:isolate}
+.media{position:absolute;inset:0;z-index:-1;overflow:hidden;background:var(--navy)}
+.media>video,.media>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);transition:opacity 1.1s ease,transform 9s cubic-bezier(.2,.6,.2,1)}
+.media>.on{opacity:1;transform:scale(1)}
+.media::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(6,11,20,.94) 0%,rgba(6,11,20,.78) 38%,rgba(6,11,20,.12) 58%,rgba(6,11,20,.12) 76%,rgba(6,11,20,.85) 100%)}
+.stage-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:26px clamp(20px,3.3vw,54px)}
+.logo{display:block;width:clamp(180px,19vw,250px);height:auto}
+.call{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#fff;text-decoration:none;font-weight:600;font-size:14px;backdrop-filter:blur(10px);transition:.25s}
+.call:hover{background:rgba(44,196,242,.22);border-color:var(--cyan)}
+.call svg{width:17px;height:17px}
+.stage-copy{padding:clamp(12px,3vh,34px) clamp(20px,3.3vw,54px) 20px}
+.eyebrow{display:flex;align-items:center;gap:9px;color:var(--cyan2);font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;font-stretch:115%}
+.eyebrow::before{content:"";width:23px;height:2px;background:var(--cyan)}
+.stage-copy h1{font-family:var(--wide);font-stretch:118%;font-weight:800;font-size:clamp(34px,3.7vw,60px);line-height:1.02;letter-spacing:-.02em;margin-top:12px;max-width:15ch;text-wrap:balance;text-transform:uppercase}
+.stage-copy h1 em{font-style:normal;color:var(--cyan)}
+.stage-copy p{margin-top:14px;font-size:16.5px;line-height:1.5;color:#dbe6ee;max-width:44ch;text-shadow:0 1px 12px rgba(0,0,0,.85),0 1px 2px rgba(0,0,0,.7)}
+.model-view{position:relative;flex:1;min-height:0}
+.caption{position:absolute;left:clamp(20px,3.3vw,54px);bottom:16px;display:inline-flex;align-items:center;gap:9px;padding:8px 14px;border-radius:999px;background:rgba(6,11,20,.55);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(8px);font-size:13px;font-weight:600;color:#f4f6f8;transition:opacity .4s}
+.caption i{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 4px rgba(44,196,242,.22)}
+.caption.swap{opacity:0}
+.meter{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px clamp(20px,3.3vw,54px);background:rgba(6,11,20,.84);backdrop-filter:blur(8px);border-top:1px solid rgba(44,196,242,.18)}
+.meter small{font-weight:600;font-size:14px}
+.meter b{font-size:21px;color:var(--cyan);font-variant-numeric:tabular-nums;font-stretch:112%}
+.meter sup{font-size:.65em;vertical-align:baseline}
+.meter span{margin-left:auto;font-size:13px;color:#c3d1dc;text-align:right}
+.meter span strong{color:#fff}
+
+/* ---------- Panel ---------- */
+.panel{background:var(--mist);position:relative;display:flex;flex-direction:column;min-height:100vh}
+.panel-in{flex:1;display:flex;flex-direction:column;justify-content:center;padding:48px clamp(20px,4vw,56px) 28px;max-width:620px;width:100%;margin:0 auto}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:22px;box-shadow:0 20px 50px -30px rgba(6,20,40,.45);padding:28px;position:relative;overflow:hidden}
+.prog{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+.bar{flex:1;height:8px;border-radius:99px;background:#e6edf3;overflow:hidden;position:relative}
+.bar i{position:absolute;inset:0 auto 0 0;width:15%;border-radius:99px;background:linear-gradient(90deg,#1593c9,var(--cyan));transition:width .8s cubic-bezier(.2,.9,.2,1)}
+.prog span{font-size:13px;font-weight:600;color:var(--mute);white-space:nowrap;font-variant-numeric:tabular-nums}
+.step{display:none}
+.step.on{display:block;animation:stepIn .28s cubic-bezier(.2,.9,.2,1) both}
+.step.reverse{animation-name:stepInBack}
+@keyframes stepIn{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:none}}
+@keyframes stepInBack{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:none}}
+.q{font-family:var(--wide);font-stretch:108%;font-weight:750;font-size:clamp(22px,2.3vw,28px);line-height:1.14;letter-spacing:-.015em;text-wrap:balance}
+.hint{color:var(--mute);margin-top:6px;font-size:15px;line-height:1.45}
+
+/* option cards */
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
+.opt{position:relative;text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:16px;padding:12px 12px 14px;transition:transform .25s cubic-bezier(.2,.9,.2,1),border-color .2s,box-shadow .25s;overflow:hidden}
+.opt:hover{transform:translateY(-3px);border-color:var(--cyan);box-shadow:0 18px 30px -20px rgba(21,147,201,.7)}
+.opt.sel{border-color:#1593c9;box-shadow:0 0 0 4px rgba(44,196,242,.18)}
+.opt .ph{height:92px;border-radius:11px;margin-bottom:10px;background:#0b1626 center/cover no-repeat;position:relative;overflow:hidden}
+.opt .ph::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(6,11,20,.45))}
+.opt b{display:block;font-stretch:104%;font-size:15.5px;font-weight:700;line-height:1.2}
+.opt small{display:block;color:var(--mute);font-size:13px;margin-top:3px;line-height:1.35}
+.opt .tick{position:absolute;top:10px;right:10px;z-index:2;width:24px;height:24px;border-radius:50%;background:var(--cyan);color:#05203a;display:grid;place-items:center;transform:scale(0);transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
+.opt.sel .tick{transform:scale(1)}
+.opt .tick svg{width:14px;height:14px}
+.opt.row{display:flex;align-items:center;gap:14px;padding:13px 14px;grid-column:1/-1}
+.opt.row .ico{width:44px;height:44px;flex:none;border-radius:13px;background:#e9f7fd;color:#1593c9;display:grid;place-items:center;transition:.25s}
+.opt.row .ico svg{width:22px;height:22px}
+.opt.row:hover .ico,.opt.row.sel .ico{background:var(--cyan);color:#05203a}
+.opt.row .tick{top:50%;margin-top:-12px;right:14px}
+.tag{display:inline-block;margin-left:6px;padding:2px 8px;border-radius:99px;background:#fff3d6;color:#8a5a00;font-size:11px;font-weight:700;letter-spacing:.04em;vertical-align:2px}
+.one{grid-template-columns:1fr}
+
+/* cities */
+.cities{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.city{padding:10px 14px;min-height:44px;border-radius:12px;border:1.5px solid var(--line);background:#fff;font-weight:600;font-size:14.5px;transition:.18s;color:var(--ink2)}
+.city:hover{border-color:var(--cyan);color:#0f6f99;transform:translateY(-1px)}
+.city.sel{background:var(--ink);border-color:var(--ink);color:#fff}
+.other{margin-top:12px;display:none}
+.other.on{display:block}
+
+/* fields */
+.fields{display:grid;grid-template-columns:1fr;gap:12px;margin-top:20px}
+.f{position:relative}
+.f input{width:100%;height:58px;border-radius:14px;border:1.5px solid var(--line);background:#fafcfe;padding:22px 42px 6px 14px;font-size:16px;outline:none;transition:.2s}
+.f label{position:absolute;left:15px;top:19px;font-size:15px;color:var(--mute);pointer-events:none;transition:.18s}
+.f input:focus{border-color:#1593c9;background:#fff;box-shadow:0 0 0 4px rgba(44,196,242,.15)}
+.f input:focus+label,.f input:not(:placeholder-shown)+label{top:8px;font-size:11.5px;font-weight:600;letter-spacing:.04em;color:#0b6a95}
+.f.bad input{border-color:var(--red);box-shadow:0 0 0 4px rgba(217,66,63,.1)}
+.f.bad input+label{color:#a3302d}
+.f .ok{position:absolute;right:14px;top:29px;transform:translateY(-50%) scale(0);width:22px;height:22px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
+.f.good .ok{transform:translateY(-50%) scale(1)}
+.f .ok svg{width:13px;height:13px}
+.f .pre{position:absolute;left:15px;top:29px;font-size:16px;line-height:1;color:var(--ink2);display:none;opacity:0;transition:opacity .18s}
+.f.tel input{padding-left:52px}.f.tel .pre{display:block}
+.f.tel input:focus~.pre,.f.tel input:not(:placeholder-shown)~.pre{opacity:1}
+.field-help{display:block;margin:5px 3px 0;font-size:12px;line-height:1.4;color:#a3302d}
+.field-help[hidden]{display:none}
+.err{color:var(--red);font-size:13px;margin-top:10px;font-weight:500}
+.err:empty{display:none}
+.consent{display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-size:12px;line-height:1.45;color:var(--mute)}
+.consent input{margin-top:2px;width:18px;height:18px;flex:none;accent-color:#1593c9}
+.reassure{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:13px;color:var(--ink2)}
+.reassure svg{width:16px;height:16px;color:var(--green);flex:none}
+
+/* nav */
+.nav{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:22px}
+.back{display:inline-flex;align-items:center;gap:6px;color:var(--mute);font-weight:600;font-size:14.5px;padding:10px 4px;min-height:44px;visibility:hidden}
+.back.on{visibility:visible}
+.back svg{width:16px;height:16px}
+.go{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;height:54px;padding:0 26px;border-radius:14px;background:var(--ink);color:#fff;font-weight:650;font-size:16px;transition:transform .2s,background .2s,opacity .2s;overflow:hidden;text-decoration:none}
+.go:hover{transform:translateY(-2px);background:#1593c9}
+.go:disabled{opacity:.35;transform:none;background:var(--ink);cursor:not-allowed}
+.go svg{width:18px;height:18px;transition:transform .2s}
+.go:hover svg{transform:translateX(3px)}
+.go.big{flex:1;background:#0b6a95;box-shadow:0 18px 30px -16px rgba(21,147,201,.9)}
+.go.big:disabled{box-shadow:none;background:var(--ink)}
+.go.wa{background:#128c4a;width:100%;margin-top:6px}
+.go.wa:hover{background:#0f7a40}
+.go.loading span{opacity:0}
+.go.loading::after{content:"";position:absolute;width:22px;height:22px;border-radius:50%;border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* success */
+.badge{width:64px;height:64px;border-radius:20px;background:linear-gradient(135deg,#1593c9,var(--cyan));display:grid;place-items:center;color:#fff;box-shadow:0 18px 30px -14px rgba(21,147,201,.8);animation:pop .7s cubic-bezier(.3,1.6,.5,1) both}
+.badge img{width:36px;height:36px;filter:brightness(0) invert(1)}
+@keyframes pop{from{transform:scale(.3) rotate(-20deg);opacity:0}}
+.done .q{margin-top:18px}
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:18px}
+.summary div{background:var(--mist);border-radius:14px;padding:10px 12px;min-width:0}
+.summary small{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);font-weight:600}
+.summary b{font-size:14.5px;font-weight:600;overflow-wrap:anywhere}
+.next{margin-top:20px;display:grid}
+.next li{list-style:none;display:grid;grid-template-columns:30px 1fr;gap:12px;padding:0 0 16px;position:relative;opacity:0;animation:fadeUp .5s ease forwards}
+.next li::before{content:"";position:absolute;left:14px;top:30px;bottom:0;width:2px;background:var(--line)}
+.next li:last-child::before{display:none}
+.next li i{width:30px;height:30px;border-radius:50%;background:#e9f7fd;color:#1593c9;display:grid;place-items:center;font-style:normal;font-weight:700;font-size:13px}
+.next li:first-child i{background:var(--cyan);color:#05203a}
+.next li b{display:block;font-size:15px}
+.next li span{font-size:13.5px;color:var(--mute)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* trust */
+.trust{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:20px}
+.chip{display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:12.5px;font-weight:600;color:var(--ink2)}
+.chip svg{width:15px;height:15px;color:#1593c9}
+.chip img{height:16px;width:auto}
+.foot{padding:16px clamp(20px,4vw,56px) 24px;font-size:11.5px;color:var(--mute);line-height:1.5;max-width:620px;margin:0 auto;width:100%}
+.foot a{color:inherit}
+#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:50}
+.panel,.panel-in{min-width:0}
+.opt:active,.city:active,.go:active:enabled{transform:scale(.98)}
+:focus-visible{outline:3px solid #1593c9;outline-offset:3px}
+.q:focus{outline:none}
+
+@media (max-width:900px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .stage{position:relative;height:auto;min-height:0}
+  .stage-top{padding:12px 16px}
+  .logo{width:168px}
+  .call{min-height:44px;padding:0 6px;font-size:12.5px;border:none;background:none;backdrop-filter:none}
+  .stage-copy{padding:2px 16px 12px}
+  .eyebrow{font-size:11px}
+  .stage-copy h1{font-size:clamp(25px,7vw,34px);max-width:none;margin-top:6px}
+  .stage-copy p{font-size:13.5px;margin-top:6px;max-width:none}
+  .model-view{flex:none;height:clamp(110px,19svh,200px)}
+  .caption{bottom:10px;left:14px;font-size:12px;padding:6px 11px}
+  .meter{padding:7px 16px;gap:8px}.meter b{font-size:17px}.meter span{font-size:12px}
+  .app.started .stage-copy{display:none}
+  .panel{min-height:auto}
+  .panel-in{padding:12px 12px 6px}
+  .card{padding:19px 16px;border-radius:16px}
+  .prog{margin-bottom:14px}
+  .opts,.fields{gap:9px;margin-top:14px}
+  .opt{padding:9px}.opt .ph{height:64px;margin-bottom:7px}
+  .opt b{font-size:14px}.opt small{font-size:12px}
+  .opt.row{padding:10px;gap:10px}.opt.row .ico{width:36px;height:36px}
+  .q{font-size:22px}.hint{font-size:14px}
+  .cities{gap:6px}.city{font-size:13.5px;padding:8px 11px}
+  .nav{margin-top:16px}.go{padding:0 16px;font-size:15px}
+  .trust{gap:5px;margin:13px 2px 0}.chip{padding:5px 8px;font-size:11px}
+  .foot{padding:12px 16px 22px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .next li{opacity:1}
+  .media>video,.media>img{transform:none}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <section class="stage" aria-label="Proyectos reales de Star Peak Energy">
+    <div class="media" aria-hidden="true">
+      <video class="on" data-k="hogar" src="media/hogar.mp4" poster="media/hogar.jpg" autoplay muted loop playsinline preload="auto"></video>
+      <video data-k="empresa" data-src="media/empresa.mp4" poster="media/empresa.jpg" muted loop playsinline preload="none"></video>
+      <video data-k="carro" data-src="media/carro.mp4" poster="media/carro.jpg" muted loop playsinline preload="none"></video>
+      <video data-k="respaldo" data-src="media/respaldo.mp4" poster="media/respaldo.jpg" muted loop playsinline preload="none"></video>
+      <video data-k="mantenimiento" data-src="media/mantenimiento.mp4" poster="media/mantenimiento.jpg" muted loop playsinline preload="none"></video>
+      <img data-k="equipo" src="media/equipo.jpg" alt="" loading="lazy" decoding="async">
+    </div>
+    <div class="stage-top">
+      <img class="logo" alt="Star Peak Energy" width="2102" height="229" src="logo.png">
+      <a class="call" aria-label="Escríbenos por WhatsApp al 318 188 0161" href="https://wa.me/573181880161" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8.6 8.6 0 0 1-12.7 7.6L3 21l1.5-5.1A8.6 8.6 0 1 1 21 12z"/><path d="M8.8 9.2c.2 2.6 2.9 5.4 5.9 6 .6.1 1.4-.4 1.6-1l.2-.7-1.9-.9-.8.9c-1.2-.5-2.2-1.5-2.7-2.6l.9-.8-.8-2h-.8c-.8 0-1.6.4-1.6 1.1z"/></svg><span>318 188 0161</span></a>
+    </div>
+    <div class="stage-copy">
+      <div class="eyebrow">Cotización gratis · Colombia</div>
+      <h1>Convierte tu factura de luz en <em>un activo</em></h1>
+      <p>Responde 5 preguntas y recibe tu propuesta con el ahorro, el retorno y los beneficios tributarios de la Ley 1715. Ingeniería e instalación propias.</p>
+    </div>
+    <div class="model-view"><p class="caption" id="cap"><i></i><span id="capTxt">Proyecto real SPE · La Mesa, Cundinamarca</span></p></div>
+    <div class="meter"><small>Tu cotización</small><b id="pct">15<sup>%</sup></b><span id="pctTxt">Ya empezamos por ti</span></div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-in">
+      <div class="card">
+        <div class="prog"><div class="bar"><i id="bar"></i></div><span aria-live="polite" id="stepTxt">Paso 1 de 5</span></div>
+        <form class="steps" id="form" novalidate>
+
+          <!-- 1 solución -->
+          <div class="step on" data-step="1">
+            <h2 class="q">¿Qué quieres resolver con energía?</h2>
+            <p class="hint">Elige la opción que más se parece a tu caso.</p>
+            <div class="opts" id="solOpts">
+              <button type="button" class="opt" data-val="Energía solar para mi casa o finca" data-k="hogar">
+                <span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span>
+                <div class="ph" style="background-image:url(media/hogar.jpg)"></div>
+                <b>Mi casa o finca</b><small>Bajar la factura de luz</small>
+              </button>
+              <button type="button" class="opt" data-val="Energía solar para empresa o industria" data-k="empresa">
+                <span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span>
+                <div class="ph" style="background-image:url(media/empresa.jpg)"></div>
+                <b>Mi empresa</b><small>Comercio, oficina o industria</small>
+              </button>
+              <button type="button" class="opt" data-val="Cargador para carro eléctrico" data-k="carro">
+                <span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span>
+                <div class="ph" style="background-image:url(media/carro.jpg)"></div>
+                <b>Cargador de carro eléctrico</b><small>En casa, conjunto u oficina</small>
+              </button>
+              <button type="button" class="opt" data-val="Respaldo cuando se va la luz" data-k="respaldo">
+                <span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span>
+                <div class="ph" style="background-image:url(media/respaldo.jpg)"></div>
+                <b>Respaldo si se va la luz</b><small>Baterías e inversor híbrido</small>
+              </button>
+              <button type="button" class="opt row" data-val="Reparar o mantener mi sistema solar" data-k="mantenimiento"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.2L3 17.8V21h3.2l6.3-6.3a4 4 0 0 0 5.2-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg></span><span><b>Ya tengo paneles y quiero repararlos o mantenerlos</b><small>Limpieza, revisión y repotenciación</small></span><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span></button>
+            </div>
+          </div>
+
+          <!-- 2 factura -->
+          <div class="step" data-step="2">
+            <h2 class="q">¿Cuánto pagas de luz al mes?</h2>
+            <p class="hint">Con esto calculamos el tamaño del sistema y tu ahorro.</p>
+            <div class="opts one" id="billOpts">
+              <button type="button" class="opt row" data-val="Menos de $300.000" data-mid="220000"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span><span><b>Menos de $300.000</b><small>Hogar pequeño</small></span><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span></button>
+              <button type="button" class="opt row" data-val="$300.000 a $800.000" data-mid="520000"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V21H3z"/><path d="M9 21v-6h6v6"/></svg></span><span><b>$300.000 a $800.000</b><small>Casa, finca o local</small></span><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span></button>
+              <button type="button" class="opt row" data-val="$800.000 a $3.000.000" data-mid="1700000"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 7h1M14 7h1M9 11h1M14 11h1M9 15h1M14 15h1"/></svg></span><span><b>$800.000 a $3.000.000</b><small>Comercio u oficina</small></span><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span></button>
+              <button type="button" class="opt row" data-val="Más de $3.000.000" data-mid="5000000"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 21h20M4 21V10l5 3V10l5 3V6l6 3v12"/></svg></span><span><b>Más de $3.000.000 <span class="tag">LEY 1715</span></b><small>Industria o empresa grande</small></span><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span></button>
+              <button type="button" class="opt row" data-val="No sé / no aplica" data-mid="0"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14M12 17.5v.01"/></svg></span><span><b>No lo sé todavía</b><small>Lo revisamos contigo</small></span><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span></button>
+            </div>
+          </div>
+
+          <!-- 3 ciudad -->
+          <div class="step" data-step="3">
+            <h2 class="q">¿Dónde está el inmueble?</h2>
+            <p class="hint">Trabajamos en todo el país con equipo propio.</p>
+            <div class="cities" id="cities" role="group" aria-label="Ciudad"></div>
+            <div class="f other" id="otherWrap"><input id="otherCity" placeholder=" " autocomplete="address-level2"><label for="otherCity">Escribe tu ciudad o municipio</label><span class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span></div>
+          </div>
+
+          <!-- 4 plazo -->
+          <div class="step" data-step="4">
+            <h2 class="q">¿Cuándo te gustaría tenerlo funcionando?</h2>
+            <p class="hint">Sin compromiso. Nos ayuda a programar la visita técnica.</p>
+            <div class="opts one" id="timeOpts">
+              <button type="button" class="opt row" data-val="Lo antes posible"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span><span><b>Lo antes posible <span class="tag">PRIORIDAD</span></b><small>Quiero dejar de pagar tanto ya</small></span><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span></button>
+              <button type="button" class="opt row" data-val="Este mes"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/><path d="m9 15 2 2 4-4"/></svg></span><span><b>Este mes</b><small>Listo para avanzar pronto</small></span><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span></button>
+              <button type="button" class="opt row" data-val="En 1 a 3 meses"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18M10 15h6M13 12l3 3-3 3"/></svg></span><span><b>En 1 a 3 meses</b><small>Estoy planeando</small></span><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span></button>
+              <button type="button" class="opt row" data-val="Solo estoy averiguando"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span><span><b>Solo estoy averiguando</b><small>Quiero conocer números</small></span><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span></button>
+            </div>
+          </div>
+
+          <!-- 5 contacto -->
+          <div class="step" data-step="5">
+            <h2 class="q">Último paso. ¿A dónde te enviamos tu propuesta?</h2>
+            <p class="hint">Un asesor de SPE te escribe por WhatsApp. Respondemos en menos de 2 horas en horario laboral.</p>
+            <div class="fields">
+              <div class="f"><input id="name" name="name" placeholder=" " autocomplete="name" required><label for="name">Nombre y apellido *</label><span class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span></div>
+              <div class="f tel"><input id="phone" name="phone" type="tel" placeholder=" " inputmode="tel" autocomplete="tel-national" required><label for="phone">Celular con WhatsApp *</label><span class="pre">+57</span><span class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span></div>
+              <div class="f"><input id="email" name="email" type="email" placeholder=" " autocomplete="email"><label for="email">Correo (opcional)</label><span class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span></div>
+            </div>
+            <label class="consent"><input type="checkbox" id="consent"><span>Autorizo a Star Peak Energy S.A.S. a tratar mis datos personales para contactarme por llamada, WhatsApp o correo sobre esta cotización, según la Ley 1581 de 2012. Puedo pedir que borren mis datos cuando quiera.</span></label>
+            <div class="reassure"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>Cotización y diagnóstico sin costo ni compromiso.</div>
+            <div class="err" role="alert" id="err5"></div>
+          </div>
+
+          <!-- listo -->
+          <div class="step done" data-step="6">
+            <div class="badge"><img src="estrella.png" alt=""></div>
+            <h2 class="q" id="doneTitle">Listo.</h2>
+            <p class="hint" id="doneHint">Recibimos tu solicitud. Esto es lo que sigue.</p>
+            <div class="summary" id="summary"></div>
+            <ol class="next">
+              <li style="animation-delay:.2s"><i>1</i><div><b>Te escribimos por WhatsApp</b><span>Un asesor confirma tus datos y te pide una foto de tu factura.</span></div></li>
+              <li style="animation-delay:.35s"><i>2</i><div><b>Diagnóstico técnico</b><span>Revisamos tu techo, consumo y espacio disponible.</span></div></li>
+              <li style="animation-delay:.5s"><i>3</i><div><b>Tu propuesta con números claros</b><span>Ahorro mensual, retorno de inversión y beneficios Ley 1715.</span></div></li>
+              <li style="animation-delay:.65s"><i>4</i><div><b>Instalación certificada</b><span>Equipo propio, cumplimiento RETIE y acompañamiento después.</span></div></li>
+            </ol>
+            <a class="go wa" id="waBtn" href="https://wa.me/573181880161" target="_blank" rel="noopener"><span>¿Prefieres escribir ya? Abrir WhatsApp</span></a>
+          </div>
+
+          <div class="nav" id="nav">
+            <button type="button" class="back" id="back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18 9 12l6-6"/></svg>Atrás</button>
+            <button type="button" class="go" id="next" disabled><span>Continuar</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          </div>
+        </form>
+      </div>
+
+      <div class="trust">
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>Certificado RETIE</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>Trámite UPME Ley 1715</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Ingeniería e instalación propias</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Respuesta en menos de 2 h</span>
+      </div>
+    </div>
+    <p class="foot">El ahorro mostrado es una estimación referencial y depende del consumo, la radiación de tu zona y el espacio disponible. Los beneficios de la Ley 1715 aplican según evaluación UPME y DIAN. Star Peak Energy S.A.S. · <a href="https://starpeakenergy.co" target="_blank" rel="noopener">starpeakenergy.co</a> · <a href="https://wa.me/573181880161" target="_blank" rel="noopener">318 188 0161</a></p>
+  </section>
+</div>
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<script>
+/* Configuración: los leads se guardan en Supabase y se ven en /leads. pixelId = Meta Pixel de la cuenta SPE (PageView + Lead). */
+window.SPE = {
+  pixelId: "",
+  whatsapp: "573181880161",
+  supabaseUrl: "https://dtaoatlzxqepgisuajbq.supabase.co",
+  supabaseKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR0YW9hdGx6eHFlcGdpc3VhamJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3MTkzMjEsImV4cCI6MjEwNDI5NTMyMX0.q_TkJggVORa4LsfhuHDIRdU8bjJ58Nh3VA47-VmQmaQ"
+};
+</script>
+<script>
+(function(){
+  /* ---------- Fondo con videos reales ---------- */
+  const layers=[...document.querySelectorAll('.media>[data-k]')];
+  const caps={hogar:'Proyecto real SPE · La Mesa, Cundinamarca',empresa:'Proyecto real SPE · Bogotá',carro:'Cargador instalado por SPE',
+    respaldo:'Inversor híbrido instalado por SPE',mantenimiento:'Mantenimiento SPE · Bogotá',equipo:'Nuestro equipo en obra'};
+  let cur=layers[0];
+  function show(k,text){
+    const el=layers.find(l=>l.dataset.k===k); if(!el) return;
+    if(el.tagName==='VIDEO'&&!el.src&&el.dataset.src){el.src=el.dataset.src;}
+    if(el!==cur){cur.classList.remove('on'); if(cur.pause) cur.pause(); el.classList.add('on'); if(el.play) el.play().catch(()=>{}); cur=el;}
+    const cap=document.getElementById('cap'),t=document.getElementById('capTxt'),label=text||caps[k];
+    if(t.textContent!==label){cap.classList.add('swap');setTimeout(()=>{t.textContent=label;cap.classList.remove('swap');},380);}
+  }
+  window.stage={show};
+  if(cur.play) cur.play().catch(()=>{});
+})();
+</script>
+<script>
+(function(){
+  const CITIES=["Bogotá","Medellín","Cali","Barranquilla","Bucaramanga","Girardot","La Mesa","Chía","Villavicencio","Cartagena","Pereira","Otra ciudad"];
+  const TOTAL=5;
+  const data={solucion:"",factura:"",ciudad:"",plazo:"",k:"hogar",mid:0};
+  let step=1,autoTimer,sending=false;
+  const $=id=>document.getElementById(id);
+  const cfg=window.SPE||{};
+  const progressFor=s=>.15+(s-1)*.17;
+  const fmt=n=>'$'+Math.round(n).toLocaleString('es-CO');
+
+  /* atribución de anuncios */
+  const qs=new URLSearchParams(location.search),tracking={};
+  ["utm_source","utm_medium","utm_campaign","utm_content","utm_term","fbclid","gclid"].forEach(k=>{if(qs.get(k)) tracking[k]=qs.get(k);});
+
+  /* Meta Pixel */
+  if(cfg.pixelId){
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init',cfg.pixelId); fbq('track','PageView');
+  }
+
+  function choose(button,container,key){
+    for(const o of container.querySelectorAll('button')){const s=o===button;o.classList.toggle('sel',s);o.setAttribute('aria-pressed',String(s));}
+    data[key]=button.dataset.val;
+    validate(); clearTimeout(autoTimer);
+    const origin=step;
+    if(!(key==='ciudad'&&button.dataset.val==='Otra ciudad')) autoTimer=setTimeout(()=>{if(step===origin) go(1);},240);
+  }
+  function group(id,key,after){
+    $(id).querySelectorAll('.opt').forEach(b=>{b.setAttribute('aria-pressed','false');b.addEventListener('click',()=>{if(after) after(b);choose(b,$(id),key);});});
+  }
+  group('solOpts','solucion',b=>{data.k=b.dataset.k;window.stage.show(data.k);});
+  group('billOpts','factura',b=>{data.mid=+b.dataset.mid||0;});
+  group('timeOpts','plazo');
+
+  /* ciudades */
+  const wrap=$('cities');
+  CITIES.forEach(c=>{const b=document.createElement('button');b.type='button';b.className='city';b.textContent=c;b.dataset.val=c;b.setAttribute('aria-pressed','false');
+    b.onclick=()=>{$('otherWrap').classList.toggle('on',c==='Otra ciudad');choose(b,wrap,'ciudad');if(c==='Otra ciudad')$('otherCity').focus();};wrap.appendChild(b);});
+  $('otherCity').addEventListener('input',e=>{e.target.parentElement.classList.toggle('good',e.target.value.trim().length>=3);validate();});
+  $('otherCity').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();if(!$('next').disabled)$('next').click();}});
+
+  /* campos */
+  const phone=$('phone');
+  const telDigits=v=>{let d=v.replace(/\D/g,'');if(d.length===12&&d.startsWith('57'))d=d.slice(2);return d;};
+  phone.addEventListener('input',()=>{const d=telDigits(phone.value);
+    phone.value=d.length===10?`${d.slice(0,3)} ${d.slice(3,6)} ${d.slice(6)}`:d.slice(0,14);});
+  const checks={name:v=>v.trim().split(/\s+/).length>=2&&v.trim().length>=4,phone:v=>/^3\d{9}$/.test(telDigits(v)),email:v=>!v.trim()||(/^[^\s@]+@[^\s@.]+(\.[^\s@.]+)*\.[a-z]{2,}$/i.test(v.trim()))};
+  const help={name:'Escribe tu nombre y apellido.',phone:'Escribe un celular colombiano de 10 dígitos que empiece por 3.',email:'Revisa el correo, por ejemplo nombre@correo.com.'};
+  Object.keys(checks).forEach(k=>{
+    const el=$(k),m=document.createElement('small');m.id=k+'Help';m.className='field-help';m.textContent=help[k];m.hidden=true;el.parentElement.appendChild(m);el.setAttribute('aria-describedby',m.id);
+    const mark=bad=>{el.parentElement.classList.toggle('bad',bad);el.setAttribute('aria-invalid',String(bad));m.hidden=!bad;};
+    el.addEventListener('input',()=>{el.parentElement.classList.toggle('good',!!el.value.trim()&&checks[k](el.value));mark(false);validate();bump();});
+    el.addEventListener('blur',()=>mark(!!el.value.trim()&&!checks[k](el.value)));
+    el.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();if(!$('next').disabled)$('next').click();}});
+  });
+
+  function cityValue(){return data.ciudad==='Otra ciudad'?$('otherCity').value.trim():data.ciudad;}
+  function stepValid(s){
+    if(s===1) return !!data.solucion;
+    if(s===2) return !!data.factura;
+    if(s===3) return !!data.ciudad&&(data.ciudad!=='Otra ciudad'||$('otherCity').value.trim().length>=3);
+    if(s===4) return !!data.plazo;
+    if(s===5) return checks.name($('name').value)&&checks.phone(phone.value)&&checks.email($('email').value)&&$('consent').checked;
+    return true;
+  }
+  function validate(){$('next').disabled=sending||!stepValid(step);}
+  $('consent').addEventListener('change',validate);
+
+  /* medidor: progreso + ahorro estimado (80% de cobertura, referencial) */
+  function bump(){
+    let p=step>TOTAL?1:progressFor(step);
+    if(step===5) for(const k of ['name','phone']) if(checks[k]($(k).value)) p+=.06;
+    const pct=Math.round(Math.min(p,1)*100);
+    $('bar').style.width=pct+'%';
+    $('pct').innerHTML=pct+'<sup>%</sup>';
+  }
+  function meterText(){
+    if(step>TOTAL) return 'Solicitud recibida';
+    if(data.mid&&step>=3&&(data.k==='hogar'||data.k==='empresa')) return `Ahorro estimado: <strong>hasta ${fmt(data.mid*.8*12)} al año</strong>`;
+    return step===1?'Ya empezamos por ti':step===TOTAL?'Un paso para terminar':'Vas muy bien';
+  }
+
+  function render(dir){
+    document.querySelectorAll('.step').forEach(el=>{const on=+el.dataset.step===step;el.classList.toggle('on',on);el.classList.toggle('reverse',on&&dir<0);});
+    document.querySelector('.app').classList.toggle('started',step>1);
+    $('stepTxt').textContent=step>TOTAL?'Completado':`Paso ${step} de ${TOTAL}`;
+    $('pctTxt').innerHTML=meterText();
+    $('back').classList.toggle('on',step>1&&step<=TOTAL);
+    $('nav').style.display=step>TOTAL?'none':'';
+    const nx=$('next');nx.classList.toggle('big',step===TOTAL);
+    nx.querySelector('span').textContent=step===TOTAL?'Recibir mi cotización gratis':'Continuar';
+    bump();validate();
+    if(dir){const h=document.querySelector('.step.on .q');h.tabIndex=-1;h.focus({preventScroll:true});if(innerWidth<=900)window.scrollTo({top:0,behavior:'instant'});}
+  }
+  function go(d){
+    clearTimeout(autoTimer);
+    if(sending||step>TOTAL) return;
+    if(d>0&&!stepValid(step)) return;
+    if(d>0&&step===TOTAL) return submit();
+    step=Math.max(1,Math.min(TOTAL+1,step+d));render(d);
+  }
+  $('next').onclick=()=>go(1);
+  $('back').onclick=()=>go(-1);
+  $('form').addEventListener('submit',e=>e.preventDefault());
+
+  async function submit(){
+    sending=true;$('back').disabled=true;$('form').setAttribute('aria-busy','true');
+    const btn=$('next');btn.classList.add('loading');btn.disabled=true;$('err5').textContent='';
+    const full=$('name').value.trim().replace(/\s+/g,' '),first=full.split(' ')[0];
+    if(!window.__speId) window.__speId=(crypto.randomUUID?crypto.randomUUID():'10000000-1000-4000-8000-100000000000'.replace(/[018]/g,c=>(c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16)));
+    const row={id:window.__speId,solucion:data.solucion,factura:data.factura,ciudad:cityValue(),plazo:data.plazo,
+      full_name:full,phone:'+57'+telDigits(phone.value),email:$('email').value.trim()||null,acepta_contacto:$('consent').checked,
+      source:'Landing SPE cotizacion',page_url:location.href,tracking};
+    try{
+      if(cfg.supabaseUrl){
+        const res=await fetch(cfg.supabaseUrl+'/rest/v1/spe_leads',{method:'POST',headers:{apikey:cfg.supabaseKey,Authorization:'Bearer '+cfg.supabaseKey,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(row)});
+        if(!res.ok&&res.status!==409) throw new Error('save '+res.status);
+      } else await new Promise(r=>setTimeout(r,700));
+      if(window.fbq){try{fbq('track','Lead',{content_name:'Cotizacion SPE',content_category:data.solucion});}catch{}}
+      done(first,row);
+    }catch(e){
+      $('err5').textContent='No pudimos enviar tu solicitud. Intenta de nuevo o escríbenos al WhatsApp 318 188 0161.';
+    }finally{
+      sending=false;btn.classList.remove('loading');$('back').disabled=false;$('form').removeAttribute('aria-busy');validate();
+    }
+  }
+  function done(first,r){
+    step=TOTAL+1;
+    $('doneTitle').textContent=`Listo, ${first}. Ya tenemos tu solicitud.`;
+    if(!cfg.supabaseUrl) $('doneHint').textContent='Vista previa. Para cotizar escríbenos al WhatsApp 318 188 0161.';
+    const rows=[["Solución",r.solucion],["Factura",r.factura],["Ciudad",r.ciudad],["Plazo",r.plazo]];
+    $('summary').innerHTML=rows.map(()=>'<div><small></small><b></b></div>').join('');
+    $('summary').querySelectorAll('div').forEach((d,i)=>{d.querySelector('small').textContent=rows[i][0];d.querySelector('b').textContent=rows[i][1];});
+    const msg=`Hola, soy ${r.full_name}. Acabo de pedir una cotización en la página: ${r.solucion}, ${r.ciudad}, factura ${r.factura}.`;
+    $('waBtn').href=`https://wa.me/${cfg.whatsapp}?text=${encodeURIComponent(msg)}`;
+    render(1);
+    window.stage.show('equipo','Tu proyecto es el siguiente');
+    confetti();
+  }
+  function confetti(){
+    if(matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+    const c=$('fx'),x=c.getContext('2d'),ratio=Math.min(devicePixelRatio,1.5);if(!x) return;
+    c.width=innerWidth*ratio;c.height=innerHeight*ratio;x.scale(ratio,ratio);
+    const cols=['#2cc4f2','#7fdcff','#ffffff','#ffc24b','#1593c9'];
+    const P=Array.from({length:innerWidth<=900?55:100},()=>({x:innerWidth*(.3+Math.random()*.4),y:innerHeight*.55,vx:(Math.random()-.5)*14,vy:-8-Math.random()*12,r:4+Math.random()*6,a:Math.random()*6,va:(Math.random()-.5)*.3,c:cols[Math.random()*cols.length|0]}));
+    const t0=performance.now();
+    (function f(now){x.clearRect(0,0,innerWidth,innerHeight);
+      P.forEach(p=>{p.vy+=.35;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.a+=p.va;x.save();x.translate(p.x,p.y);x.rotate(p.a);x.fillStyle=p.c;x.fillRect(-p.r/2,-p.r/4,p.r,p.r/2);x.restore();});
+      if(now-t0<3500) requestAnimationFrame(f); else x.clearRect(0,0,innerWidth,innerHeight);})(t0);
+  }
+  render(0);
+})();
+</script>
+</body>
+</html>
