@@ -71,7 +71,12 @@ svg{display:block}
 .pin{display:flex;gap:8px;justify-content:center;margin:24px 0 10px}
 .pin input{width:44px;height:54px;text-align:center;font-size:22px;font-weight:700;border-radius:12px;border:1px solid #2c3a47;background:#16202a;color:#fff;outline:0}
 .pin input:focus{border-color:var(--gold)}
-.err{color:#ff9b8f;font-size:13px;height:18px}
+.err{color:#ff9b8f;font-size:13px;min-height:18px}
+.newpin{display:grid;gap:12px;margin-top:22px;text-align:left}
+.newpin label{font-size:13px;color:#9fb0bb}
+.newpin input{width:100%;height:52px;margin-top:6px;border-radius:12px;border:1px solid #2c3a47;background:#16202a;color:#fff;font-size:22px;letter-spacing:10px;text-align:center;outline:0}
+.newpin input:focus{border-color:var(--gold)}
+.newpin button{height:50px;border-radius:12px;background:var(--gold);color:#0d1620;font-weight:700;font-size:16px;margin-top:6px}
 .hidden{display:none!important}
 @media (max-width:860px){
   .stats{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -90,6 +95,17 @@ svg{display:block}
     <p>Enter your 6-digit access code.</p>
     <div class="pin" id="pin"></div>
     <p class="err" id="gateErr"></p>
+  </form>
+  <form class="gate-card hidden" id="setForm" autocomplete="off">
+    <img src="../logo.png" alt="Elevatus Construction">
+    <h1>Create your access code</h1>
+    <p>Welcome. For security, replace the starter code with your own 6-digit code. Share it only with your team.</p>
+    <div class="newpin">
+      <label>New code<input id="np1" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password"></label>
+      <label>Repeat new code<input id="np2" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password"></label>
+      <button type="submit">Save and open dashboard</button>
+    </div>
+    <p class="err" id="setErr"></p>
   </form>
 </section>
 
@@ -139,10 +155,27 @@ svg{display:block}
   async function tryPin(p){
     const v=p||boxes.map(b=>b.value).join('');
     if(v.length<6) return;
+    let st;
+    try{ st=await rpc('ev_pin_state',{p_pin:v}); }
+    catch{ try{sessionStorage.removeItem('ev_pin');}catch{} $('gateErr').textContent='That code is not valid.'; boxes.forEach(b=>b.value=''); boxes[0].focus(); return; }
+    if(st==='change'){ pin=v; $('gateForm').classList.add('hidden'); $('setForm').classList.remove('hidden'); $('np1').focus(); return; }
+    openApp(v);
+  }
+  async function openApp(v){
     try{ leads=await rpc('ev_leads_list',{p_pin:v}); pin=v; try{sessionStorage.setItem('ev_pin',v);}catch{}
       leads.forEach(l=>seen.add(l.id)); $('gate').classList.add('hidden'); $('app').classList.remove('hidden'); render(); setInterval(poll,20000);
     }catch{ $('gateErr').textContent='That code is not valid.'; boxes.forEach(b=>b.value=''); boxes[0].focus(); }
   }
+  ['np1','np2'].forEach(id=>$(id).addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,6);}));
+  $('setForm').addEventListener('submit',async e=>{
+    e.preventDefault();
+    const a=$('np1').value, b=$('np2').value;
+    if(a.length!==6){ $('setErr').textContent='The code must have 6 digits.'; return; }
+    if(a!==b){ $('setErr').textContent='The two codes do not match.'; return; }
+    if(a==='123456'||a===pin){ $('setErr').textContent='Choose a code different from the starter code.'; return; }
+    try{ await rpc('ev_pin_set',{p_pin:pin,p_new:a}); $('setForm').classList.add('hidden'); $('gateForm').classList.remove('hidden'); openApp(a); }
+    catch{ $('setErr').textContent='Could not save the code. Try again.'; }
+  });
   try{const s=sessionStorage.getItem('ev_pin'); if(s) tryPin(s); else boxes[0].focus();}catch{boxes[0].focus();}
   $('gateForm').addEventListener('submit',e=>e.preventDefault());
 
