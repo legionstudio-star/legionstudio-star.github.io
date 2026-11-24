@@ -120,7 +120,7 @@
 
 <script src="assets/gb.js"></script>
 <script src="assets/booking-model.js"></script>
-<script src="assets/profile-panel.js?v=20261121"></script>
+<script src="assets/profile-panel.js?v=20261124"></script>
 <script>
 const { rpc, esc, money, toMin, fromMin, time12, addDays, parseDate, dateLong, dateShort, telFmt, waLink, modal, alertBox, confirmBox, toast } = GB;
 const TK = 'ghetto_panel_token';
@@ -190,10 +190,10 @@ function arrancar() {
     <nav class="tabs">${tabs.map((t) => `<button type="button" data-t="${t}">${ICON[t] || ICON.ajustes}${label[t]}</button>`).join('')}</nav>`;
   document.getElementById('out').onclick = async () => { try { await rpc('gb_logout', { p_token: TOKEN }); } catch (e) {} logout(); };
   document.querySelector('.tabs').onclick = (e) => { const b = e.target.closest('button'); if (b) ir(b.dataset.t); };
-  if (ME.requiere_configuracion) { TAB = 'perfil'; vistaPerfil(true); } else ir(TAB);
+  if (ME.es_dueno && ME.requiere_configuracion) { TAB = 'perfil'; vistaPerfil(true); } else ir(TAB);
 }
 function ir(t) {
-  if (ME.requiere_configuracion) { TAB = 'perfil'; return vistaPerfil(true); }
+  if (ME.es_dueno && ME.requiere_configuracion) { TAB = 'perfil'; return vistaPerfil(true); }
   if (['numeros', 'ajustes'].includes(t) && !ME.es_dueno) return;
   TAB = t; stopScan(); clearInterval(refreshTimer);
   document.querySelectorAll('.tabs button').forEach((b) => b.classList.toggle('on', b.dataset.t === t));
@@ -206,7 +206,7 @@ function vistaPerfil(onboarding = false, barberId = null) {
   return GhettoProfile.render({ view, call, esc, toast, refresh: async () => {
     ME = await rpc('gb_yo', { p_token: TOKEN }); INFO = await rpc('gb_info');
     loadedAt = Date.now(); TAB = 'agenda'; arrancar();
-  } }, { onboarding: onboarding === true, barberId });
+  } }, { onboarding: onboarding === true && ME.es_dueno, barberId, readOnly: !ME.es_dueno, control: !!(ME.es_dueno && barberId && barberId !== ME.id) });
 }
 
 /* ================= AGENDA ================= */
@@ -525,7 +525,7 @@ async function vistaAjustes() {
       <button class="btn btn-cream btn-sm">Guardar cambios</button>
     </form>
     <h2 class="sec">Equipo</h2>
-    <div class="card"><div id="lBar">${d.barberos.map((b) => `<div class="list-item"><div><b>${esc(b.nombre)}${b.es_dueno ? ' · Dueño' : ''}${b.activo ? '' : ' · inactivo'}</b><span>${esc(b.especialidad)}</span></div><div class="row"><button class="btn btn-ghost btn-sm" data-eb="${b.id}">Acceso</button>${b.es_dueno ? '' : `<button class="btn btn-ghost btn-sm" data-perm="${b.id}">Permisos</button>`}<button class="btn btn-ghost btn-sm" data-pb="${b.id}">Perfil y cortes</button></div></div>`).join('')}</div>
+    <div class="card"><div id="lBar">${d.barberos.map((b) => `<div class="list-item"><div><b>${esc(b.nombre)}${b.es_dueno ? ' · Dueño' : ''}${b.activo ? '' : ' · inactivo'}</b><span>${esc(b.especialidad)}</span></div><div class="row"><button class="btn btn-ghost btn-sm" data-eb="${b.id}">Acceso</button>${b.es_dueno ? '' : `<button class="btn btn-ghost btn-sm" data-perm="${b.id}">Permisos</button>`}<button class="btn btn-ghost btn-sm" data-pb="${b.id}">${b.es_dueno ? 'Mi perfil' : 'Control total'}</button></div></div>`).join('')}</div>
       <button class="btn btn-cream btn-sm" id="addBar" style="margin-top:12px">+ Agregar barbero</button></div>
     <h2 class="sec">Servicios y precios</h2>
     <div class="card"><div id="lSvc">${d.servicios.map((s) => `<div class="list-item"><div><b>${esc(s.nombre)}${s.destacado ? ' ✦' : ''}${s.activo ? '' : ' · oculto'}</b><span>${s.precio != null ? money(s.precio) : 'Se cotiza'} · ${s.duracion} min</span></div><button class="btn btn-ghost btn-sm" data-es="${s.id}">Editar</button></div>`).join('')}</div>
@@ -552,7 +552,7 @@ async function vistaAjustes() {
     const ok = await modal(`<h3>${nuevo ? 'Nuevo barbero' : 'Editar barbero'}</h3>
       <div class="field" style="margin-top:12px"><label for="eb_n">Nombre</label><input id="eb_n" value="${esc(b.nombre)}" maxlength="40"></div>
       <div class="field"><label for="eb_e">Especialidad</label><input id="eb_e" value="${esc(b.especialidad)}" maxlength="60" placeholder="Fades, diseños…"></div>
-      ${nuevo ? '<div class="field"><label for="eb_p">PIN temporal (4 a 6 números)</label><input id="eb_p" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password"></div>' : '<input id="eb_p" type="hidden" value=""><p class="note">Cada barbero cambia su PIN desde Mi perfil.</p>'}
+      ${nuevo ? '<div class="field"><label for="eb_p">PIN temporal (4 a 6 números)</label><input id="eb_p" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password"></div>' : '<input id="eb_p" type="hidden" value=""><p class="note">El PIN lo ves y lo cambias en Control total.</p>'}
       <div class="grid2"><label class="field" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="eb_a" ${b.activo ? 'checked' : ''}> Activo</label>
       <label class="field" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="eb_d" disabled ${b.es_dueno ? 'checked' : ''}> Administrador: solo Santi</label></div>`,
       [{ label: 'Cancelar', value: false }, { label: 'Guardar', value: true, primary: true }]);
@@ -599,7 +599,7 @@ async function editarPermisos(id) {
     ['bloquear', 'Bloquear horarios', 'Cerrar ratos de su agenda (almuerzo, permisos).'],
     ['cancelar', 'Cancelar turnos', 'Marcar Cancelado o No vino, y reactivar.'],
     ['ver_valores', 'Ver precios y lo recaudado', 'Ver cuánto se cobra y cuánto lleva en el día.']];
-  const ok = await modal(`<h3>Permisos de ${esc(b.nombre)}</h3><p class="muted">Tú decides qué puede hacer en su panel. Su perfil, horario y cortes los configura él siempre.</p>
+  const ok = await modal(`<h3>Permisos de ${esc(b.nombre)}</h3><p class="muted">Tú decides qué puede hacer en su panel. Su perfil, horario, cortes y PIN solo los cambias tú, en Control total.</p>
     <div style="display:grid;gap:10px;margin-top:14px">${OP.map(([k, t, d]) => `<label style="display:flex;gap:12px;align-items:flex-start;padding:12px;border:1px solid var(--line);border-radius:12px;text-align:left"><input type="checkbox" data-k="${k}" ${b.permisos[k] ? 'checked' : ''} style="width:20px;height:20px;margin-top:2px;flex:0 0 auto;accent-color:#c8435b"><span><b>${t}</b><br><span class="note" style="margin:0">${d}</span></span></label>`).join('')}
     <div style="display:flex;gap:12px;align-items:flex-start;padding:12px;border:1px dashed var(--line);border-radius:12px;text-align:left;opacity:.75"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex:0 0 auto"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span><b>Ver los WhatsApp de los clientes</b><br><span class="note" style="margin:0">Bloqueado: solo el dueño ve los números.</span></span></div></div>`,
     [{ label: 'Cancelar', value: false }, { label: 'Guardar permisos', value: true, primary: true }]);

@@ -1,21 +1,46 @@
 /* Profile UI. Persistence and authorization belong to the authenticated gb_perfil_* RPCs. */
 window.GhettoProfile = {
-  async render(ctx, { onboarding = false, barberId = null } = {}) {
+  async render(ctx, { onboarding = false, barberId = null, readOnly = false, control = false } = {}) {
     const { view, call, esc, toast, refresh } = ctx;
+    if (readOnly) onboarding = false;
     const host = view();
     host.innerHTML = '<div class="empty"><span class="spin"></span></div>';
     let data;
-    try { data = await call('gb_perfil_obtener', { p_barbero: barberId }); }
-    catch (e) { host.innerHTML = `<div class="card"><h2>No se pudo cargar el perfil</h2><p role="alert">${esc(e.message)}</p><button class="btn btn-cream" id="retryProfile">Reintentar</button></div>`; host.querySelector('button').onclick = () => this.render(ctx, { onboarding, barberId }); return; }
+    let ctl = null;
+    try {
+      data = await call('gb_perfil_obtener', { p_barbero: barberId });
+      if (control) ctl = await call('gb_admin_barbero_control', { p_barbero: barberId });
+    }
+    catch (e) { host.innerHTML = `<div class="card"><h2>No se pudo cargar el perfil</h2><p role="alert">${esc(e.message)}</p><button class="btn btn-cream" id="retryProfile">Reintentar</button></div>`; host.querySelector('button').onclick = () => this.render(ctx, { onboarding, barberId, readOnly, control }); return; }
     const p = data.perfil;
     let photos = [...(p.portafolio || [])], holidays = [...(p.vacaciones || [])], dates = [...(p.fechas_confirmacion || [])];
     let uploading = false;
     const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
     const config = data.config || {};
     const services = p.servicios || [];
-    host.innerHTML = `<form id="profileForm" class="profile-form">
-      <h2 class="sec">${onboarding ? 'Bienvenido a Ghetto' : 'Mi perfil'}</h2>
-      <p class="muted">${onboarding ? 'Completa tu perfil y crea tu PIN personal para empezar.' : 'Tus trabajos, servicios y disponibilidad para tus clientes.'}</p>
+    const money = (n) => (window.GB && GB.money ? GB.money(n || 0) : '$' + Number(n || 0).toLocaleString('es-CO'));
+    const PER = { hoy: 'Hoy', semana: 'Últimos 7 días', mes: 'Este mes', anio: 'Este año', total: 'Desde el inicio' };
+    const ctlHtml = ctl ? `<section class="card ctl-box" style="margin-top:18px;border-color:#5a3a40">
+        <h2 class="sec" style="margin-top:0">Control de ${esc(ctl.nombre)}</h2>
+        <p class="note" style="margin-top:-6px">Solo tú ves esto. ${esc(ctl.nombre)} no puede cambiar nada de su perfil: todo lo modificas tú desde aquí.</p>
+        <div class="ctl-pin" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:14px 0 6px">
+          <span class="note" style="margin:0">PIN de entrada</span>
+          <b id="ctlPin" style="font-family:var(--display);font-size:26px;letter-spacing:.25em">${ctl.pin ? '••••' : '—'}</b>
+          ${ctl.pin ? '<button type="button" class="btn btn-ghost btn-sm" id="ctlVer">Ver PIN</button>' : '<span class="note" style="margin:0">Aún no registrado: ponle uno nuevo abajo.</span>'}
+        </div>
+        <div class="grid2"><div class="field"><label for="ctlPin1">Nuevo PIN</label><input id="ctlPin1" type="text" inputmode="numeric" autocomplete="off" maxlength="6" pattern="[0-9]{4,6}" placeholder="4 a 6 números"></div>
+        <div class="field"><label for="ctlPin2">Repite el PIN</label><input id="ctlPin2" type="text" inputmode="numeric" autocomplete="off" maxlength="6" pattern="[0-9]{4,6}"></div></div>
+        <button type="button" class="btn btn-cream btn-sm" id="ctlPinSave">Cambiar PIN</button>
+        <p id="ctlPinMsg" class="note" role="status"></p>
+        <h3 style="margin:22px 0 4px;font-family:var(--display);text-transform:uppercase;letter-spacing:.06em">Dinero y cortes</h3>
+        <div class="stats">${(ctl.periodos || []).map((x) => `<div class="stat"><small>${PER[x.clave] || x.clave}</small><b>${money(x.recaudado)}</b><span class="note" style="display:block;margin:2px 0 0">${x.atendidos} ${x.atendidos === 1 ? 'corte' : 'cortes'}</span></div>`).join('')}
+          <div class="stat"><small>Turnos por venir</small><b>${ctl.proximos}</b></div><div class="stat"><small>No vinieron</small><b>${ctl.no_vino}</b></div></div>
+        <div style="overflow-x:auto">${ctl.cortes.length ? `<table><tr><th>Fecha</th><th>Cliente</th><th>Servicio</th><th class="n">Valor</th></tr>${ctl.cortes.map((c) => `<tr><td>${esc(c.fecha)} ${esc(c.hora)}</td><td>${esc(c.cliente)}</td><td>${esc(c.servicio)}</td><td class="n">${c.valor == null ? '—' : money(c.valor)}</td></tr>`).join('')}</table>` : `<div class="empty">${esc(ctl.nombre)} todavía no tiene cortes marcados como atendidos.</div>`}</div>
+      </section>` : '';
+    host.innerHTML = `${ctlHtml}<form id="profileForm" class="profile-form">
+      <h2 class="sec">${onboarding ? 'Bienvenido a Ghetto' : control ? 'Perfil de ' + esc(p.nombre) : 'Mi perfil'}</h2>
+      <p class="muted">${onboarding ? 'Completa tu perfil y crea tu PIN personal para empezar.' : control ? 'Todo lo que cambies aquí se ve en la página de reservas.' : 'Tus trabajos, servicios y disponibilidad para tus clientes.'}</p>
+      ${readOnly ? '<div class="card" style="border-color:#5a3a40;margin-bottom:14px"><b>Solo lectura.</b><p class="note" style="margin:4px 0 0">Santi administra tu perfil, tu horario, tus cortes y tu PIN. Si necesitas un cambio, pídeselo a él.</p></div>' : ''}
       <fieldset class="card"><legend>Tu presentación</legend>
         <div class="field"><label for="pfName">Nombre</label><input id="pfName" maxlength="40" required value="${esc(p.nombre)}"></div>
         <div class="field"><label for="pfBio">Especialidad y presentación</label><textarea id="pfBio" maxlength="500" rows="3" required>${esc(p.biografia || p.especialidad || '')}</textarea></div>
@@ -56,12 +81,12 @@ window.GhettoProfile = {
         <div class="field"><label for="pfMaps">Enlace de ubicación de Google Maps</label><input id="pfMaps" type="url" value="${esc(config.mapa || '')}"></div>
         <div class="field"><label for="pfBusinessHours">Horario para mostrar en la página</label><input id="pfBusinessHours" value="${esc(config.horario_texto || '')}" maxlength="100" required placeholder="Días de atención y horario"></div>
       </fieldset>` : ''}
-      <fieldset class="card"><legend>${onboarding ? 'Crea tu PIN personal' : 'Cambiar PIN'}</legend><p class="note">Usa de 4 a 6 números. ${onboarding ? 'El PIN inicial deja de servir cuando termines.' : 'Déjalo vacío para conservar tu PIN.'}</p>
+      <fieldset class="card" ${control || readOnly ? 'hidden' : ''}><legend>${onboarding ? 'Crea tu PIN personal' : 'Cambiar PIN'}</legend><p class="note">Usa de 4 a 6 números. ${onboarding ? 'El PIN inicial deja de servir cuando termines.' : 'Déjalo vacío para conservar tu PIN.'}</p>
         ${onboarding ? '' : '<div class="field"><label for="pfCurrentPin">PIN actual</label><input id="pfCurrentPin" type="password" inputmode="numeric" autocomplete="current-password" minlength="3" maxlength="6" pattern="[0-9]{3,6}"></div>'}
         <div class="grid2"><div class="field"><label for="pfPin">Nuevo PIN</label><input id="pfPin" type="password" inputmode="numeric" autocomplete="new-password" minlength="4" maxlength="6" pattern="[0-9]{4,6}" ${onboarding ? 'required' : ''}></div>
         <div class="field"><label for="pfPinAgain">Repite tu PIN</label><input id="pfPinAgain" type="password" inputmode="numeric" autocomplete="new-password" minlength="4" maxlength="6" pattern="[0-9]{4,6}" ${onboarding ? 'required' : ''}></div></div>
       </fieldset>
-      <p id="pfError" class="msg" role="alert"></p><button id="pfSave" class="btn btn-cream" type="submit">${onboarding ? 'Guardar y empezar' : 'Guardar mi perfil'}</button>
+      <p id="pfError" class="msg" role="alert"></p><button id="pfSave" class="btn btn-cream" type="submit" ${readOnly ? 'hidden' : ''}>${onboarding ? 'Guardar y empezar' : control ? 'Guardar perfil de ' + esc(p.nombre) : 'Guardar mi perfil'}</button>
     </form>`;
     let avatar = p.foto || '';
     const get = (id) => document.getElementById(id);
@@ -74,6 +99,38 @@ window.GhettoProfile = {
     function paintHolidays() { get('pfHolidays').innerHTML = holidays.map((v, i) => `<div class="list-item"><span>${esc(v.desde)} a ${esc(v.hasta)}</span><button type="button" data-delete-holiday="${i}" class="btn btn-ghost btn-sm">Quitar</button></div>`).join(''); }
     function paintDates() { get('pfDates').innerHTML = dates.map((d, i) => `<div class="list-item"><span>${esc(d)}</span><button type="button" data-delete-date="${i}" class="btn btn-ghost btn-sm">Quitar</button></div>`).join(''); }
     paintPhotos(); paintHolidays(); paintDates();
+    if (readOnly) {
+      const form = get('profileForm');
+      const lock = () => {
+        form.querySelectorAll('input,textarea,select').forEach((el) => { el.disabled = true; });
+        form.querySelectorAll('button').forEach((el) => { el.hidden = true; });
+        ['pfAvatar', 'pfUpload', 'pfFrom', 'pfDate'].forEach((id) => { const f = get(id)?.closest('.field'); if (f) f.hidden = true; });
+        form.querySelectorAll('.grid2').forEach((g) => { if (g.contains(get('pfTo'))) g.hidden = true; });
+      };
+      lock();
+      form.onsubmit = (e) => e.preventDefault();
+      return;
+    }
+    if (ctl) {
+      let visible = false;
+      const ver = get('ctlVer');
+      if (ver) ver.onclick = () => { visible = !visible; get('ctlPin').textContent = visible ? ctl.pin : '••••'; ver.textContent = visible ? 'Ocultar' : 'Ver PIN'; };
+      get('ctlPinSave').onclick = async () => {
+        const a = get('ctlPin1').value.trim(), b = get('ctlPin2').value.trim(), msg = get('ctlPinMsg');
+        if (!/^[0-9]{4,6}$/.test(a)) { msg.textContent = 'El PIN debe tener de 4 a 6 números.'; return; }
+        if (a !== b) { msg.textContent = 'Los dos PIN no coinciden.'; return; }
+        get('ctlPinSave').disabled = true;
+        try {
+          await call('gb_admin_cambiar_pin', { p_barbero: p.id, p_pin: a });
+          ctl.pin = a; visible = true; get('ctlPin').textContent = a;
+          if (get('ctlVer')) get('ctlVer').textContent = 'Ocultar';
+          get('ctlPin1').value = ''; get('ctlPin2').value = '';
+          msg.textContent = `Listo. ${p.nombre} ya entra con el PIN ${a}. Si tenía el panel abierto, se le cerró.`;
+          toast('PIN cambiado');
+        } catch (e) { msg.textContent = e.message; }
+        finally { get('ctlPinSave').disabled = false; }
+      };
+    }
     host.onclick = (e) => {
       const b = e.target.closest('button'); if (!b) return;
       const day = b.closest('[data-day]');
