@@ -113,24 +113,52 @@
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
   @media (max-width:520px){.grid2{grid-template-columns:1fr;}}
   .note{font-size:12.5px;color:var(--muted);margin-top:6px;}
+  /* cuadro de horas del día (lo mismo que ve el cliente, con el nombre de quien tomó la hora) */
+  .hgrid-wrap{margin:6px 0 16px;}
+  .hgrid-wrap h3{font-family:var(--display);text-transform:uppercase;letter-spacing:.08em;font-size:14px;margin:12px 0 8px;display:flex;justify-content:space-between;align-items:center;}
+  .hgrid-wrap h3 small{font-family:var(--body);text-transform:none;letter-spacing:0;color:var(--muted);font-size:12px;font-weight:600;}
+  .hgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;}
+  @media (max-width:420px){.hgrid{grid-template-columns:repeat(3,1fr);}}
+  .hgrid button{padding:9px 4px;border-radius:9px;border:1px solid var(--line);background:transparent;font-size:13px;font-weight:700;text-align:center;line-height:1.15;min-width:0;}
+  .hgrid button small{display:block;font-size:10px;font-weight:600;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .hgrid button.free{border-color:#2e4a39;}
+  .hgrid button.free small{color:#5fdc95;}
+  .hgrid button.taken{background:repeating-linear-gradient(135deg,rgba(200,67,91,.16) 0 4px,transparent 4px 8px);border-color:#5a3a40;}
+  .hgrid button.taken .t{text-decoration:line-through;opacity:.7;}
+  .hgrid button.taken small{color:var(--cream);}
+  .hgrid button.done{background:#123222;border-color:#1f5a3a;}
+  .hgrid button.done .t{text-decoration:line-through;opacity:.6;}
+  .hgrid button.blk,.hgrid button.past{opacity:.35;text-decoration:line-through;}
+  .vtoggle{display:flex;gap:8px;align-items:center;margin-top:12px;}
+  .stars-s{color:#f2c14e;letter-spacing:1px;font-size:14px;}
+  .rev{padding:12px 0;border-top:1px solid var(--line);}
+  .rev:first-child{border-top:0;}
+  .rev p{margin:6px 0;font-size:14.5px;}
+  .rev.hid{opacity:.45;}
+  .qrbox{background:#fff;border-radius:14px;padding:12px;width:min(230px,70vw);margin:12px auto;}
+  .qrbox svg{display:block;width:100%;height:auto;}
+  .cli{background:none;border:0;padding:0;color:inherit;font:inherit;font-weight:700;text-decoration:underline dotted;text-underline-offset:3px;cursor:pointer;}
 </style>
 </head>
 <body>
 <div id="root"><div style="text-align:center;padding:90px 0"><span class="spin"></span></div></div>
 
-<script src="assets/gb.js"></script>
-<script src="assets/booking-model.js"></script>
-<script src="assets/profile-panel.js?v=20261124"></script>
+<script src="assets/gb.js?v=20261126"></script>
+<script src="assets/booking-model.js?v=20261126"></script>
+<script src="assets/profile-panel.js?v=20261126"></script>
+<script src="assets/qrcode.js"></script>
 <script>
 const { rpc, esc, money, toMin, fromMin, time12, addDays, parseDate, dateLong, dateShort, telFmt, waLink, modal, alertBox, confirmBox, toast } = GB;
 const TK = 'ghetto_panel_token';
 const root = document.getElementById('root');
 let INFO = null, ME = null, TOKEN = localStorage.getItem(TK), TAB = 'agenda';
 let fecha = null, filtroBarbero = null, refreshTimer = null;
+let VISTA = (() => { try { return localStorage.getItem('ghetto_vista') || 'cuadro'; } catch (_) { return 'cuadro'; } })();
 
 const ICON = {
   agenda: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
   club: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="6" width="18" height="13" rx="2"/><circle cx="9" cy="12.5" r="2.2"/><path d="M14 11h4M14 14h3"/></svg>',
+  resenas: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="m12 2.6 2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.5l-5.9 3.1 1.2-6.5L2.5 9.5l6.6-.9z"/></svg>',
   numeros: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
   ajustes: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>'
 };
@@ -182,8 +210,8 @@ function vistaLogin(err) {
 /* ================= ESTRUCTURA ================= */
 function arrancar() {
   fecha = fecha || INFO.hoy;
-  const tabs = ME.es_dueno ? ['agenda', 'numeros', 'perfil', 'ajustes'] : ['agenda', 'perfil']; /* Club no contratado (18-nov) */
-  const label = { agenda: 'Agenda', club: 'Club', numeros: 'Números', ajustes: 'Ajustes', perfil: 'Mi perfil' };
+  const tabs = ME.es_dueno ? ['agenda', 'resenas', 'numeros', 'perfil', 'ajustes'] : ['agenda', 'resenas', 'perfil']; /* Club no contratado (18-nov) */
+  const label = { agenda: 'Agenda', club: 'Club', numeros: 'Números', ajustes: 'Ajustes', perfil: 'Mi perfil', resenas: 'Reseñas' };
   root.innerHTML = `<div class="bar"><div class="bar-in"><a href="./"><img src="assets/img/logo-ghetto-oscuro.png" alt="Ghetto Barbershop SM"></a>
       <div class="me"><b>${esc(ME.nombre)}${ME.es_dueno ? ' · Dueño' : ''}</b><button type="button" id="out">Salir</button></div></div></div>
     <main class="shell" id="view"></main>
@@ -197,7 +225,7 @@ function ir(t) {
   if (['numeros', 'ajustes'].includes(t) && !ME.es_dueno) return;
   TAB = t; stopScan(); clearInterval(refreshTimer);
   document.querySelectorAll('.tabs button').forEach((b) => b.classList.toggle('on', b.dataset.t === t));
-  ({ agenda: vistaAgenda, club: vistaClub, numeros: vistaNumeros, ajustes: vistaAjustes, perfil: vistaPerfil })[t]();
+  ({ agenda: vistaAgenda, club: vistaClub, numeros: vistaNumeros, ajustes: vistaAjustes, perfil: vistaPerfil, resenas: vistaResenas })[t]();
   scrollTo(0, 0);
 }
 const view = () => document.getElementById('view');
@@ -217,12 +245,15 @@ async function vistaAgenda() {
     <div class="days" id="days"></div>
     ${multi ? `<div class="seg" id="segB" style="margin-top:8px"><button data-b="" class="on">Todos</button>${INFO.barberos.map((b) => `<button data-b="${b.id}">${esc(b.nombre)}</button>`).join('')}</div>` : ''}
     <div class="stats" id="stats"></div>
+    <div class="vtoggle"><div class="seg" id="segV"><button data-v="cuadro" class="${VISTA === 'cuadro' ? 'on' : ''}">Cuadro de horas</button><button data-v="lista" class="${VISTA === 'lista' ? 'on' : ''}">Lista</button></div></div>
+    <div id="hgrid"></div>
     ${P().turnos_silla || P().bloquear ? `<div class="fab-row">${P().turnos_silla ? '<button class="btn btn-cream btn-sm" id="nuevo">+ Turno en silla</button>' : ''}${P().bloquear ? '<button class="btn btn-ghost btn-sm" id="bloq">Bloquear horario</button>' : ''}</div>` : ''}
     <div id="list"><div class="empty"><span class="spin"></span></div></div>`;
   document.getElementById('prev').onclick = () => { fecha = addDays(fecha, -1); cargarAgenda(); };
   document.getElementById('next').onclick = () => { fecha = addDays(fecha, 1); cargarAgenda(); };
   if (document.getElementById('nuevo')) document.getElementById('nuevo').onclick = nuevoTurno;
   if (document.getElementById('bloq')) document.getElementById('bloq').onclick = bloquear;
+  document.getElementById('segV').onclick = (e) => { const b = e.target.closest('button'); if (!b) return; VISTA = b.dataset.v; try { localStorage.setItem('ghetto_vista', VISTA); } catch (_) {} document.querySelectorAll('#segV button').forEach((x) => x.classList.toggle('on', x === b)); cargarAgenda(true); };
   if (multi) document.getElementById('segB').onclick = (e) => { const b = e.target.closest('button'); if (!b) return; filtroBarbero = b.dataset.b || null; document.querySelectorAll('#segB button').forEach((x) => x.classList.toggle('on', x === b)); cargarAgenda(); };
   await cargarAgenda();
   refreshTimer = setInterval(() => { if (!document.hidden && TAB === 'agenda') cargarAgenda(true); }, 30000);
@@ -251,7 +282,9 @@ async function cargarAgenda(silent) {
     <div class="stat"><small>Atendidos</small><b>${hechos.length}</b></div>
     ${P().ver_valores ? `<div class="stat"><small>Recaudado</small><b>${money(hechos.reduce((a, t) => a + (t.valor || 0), 0))}</b></div>` : ''}`;
 
+  pintarCuadro(d);
   const list = document.getElementById('list');
+  list.hidden = VISTA === 'cuadro';
   if (!d.turnos.length && !d.bloqueos.length) { list.innerHTML = '<div class="empty">No hay turnos este día.</div>'; return; }
   const showB = ME.es_dueno && INFO.barberos.length > 1 && !filtroBarbero;
   list.innerHTML = d.bloqueos.map((b) => `<div class="blk"><span>${b.ini ? `${time12(b.ini)} – ${time12(b.fin)}` : 'Todo el día'} · ${esc(b.motivo || 'Bloqueado')}${showB ? ' · ' + esc(b.barbero) : ''}</span>
@@ -264,8 +297,9 @@ async function cargarAgenda(silent) {
       if (t.estado === 'pendiente' || t.estado === 'confirmado') acts += `<button class="ok" data-a="completado">Atendido</button>${P().cancelar ? '<button data-a="no_vino">No vino</button><button data-a="cancelado">Cancelar</button>' : ''}`;
       if ((t.estado === 'cancelado' || t.estado === 'no_vino') && P().cancelar) acts += `<button data-a="confirmado">Reactivar</button>`;
       if (ME.es_dueno && t.tel && t.estado !== 'completado') acts += `<button class="wa" data-wa="${t.id}">${WA_ICON} Avisar por WhatsApp</button>`;
+      if (t.estado === 'completado' && !t.estrellas) acts += `<button data-rate="${t.id}">Pedir calificación</button>`;
       return `<div class="appt ${cls}" data-id="${t.id}"><div class="h">${time12(t.hora).replace(' ', '<small>')}</small><small>hasta ${time12(fin)}</small></div>
-        <div><div class="c">${esc(t.cliente)}<span class="pill p-${t.estado}">${ESTADO[t.estado]}</span></div>
+        <div><div class="c">${ME.es_dueno && t.tel ? `<button type="button" class="cli" data-cli="${t.id}">${esc(t.cliente)}</button>` : esc(t.cliente)}<span class="pill p-${t.estado}">${ESTADO[t.estado]}</span>${t.estrellas ? ` <span class="stars-s" title="Calificación del cliente">${'★'.repeat(t.estrellas)}</span>` : ''}</div>
         <div class="s">${esc(t.servicio)}${t.valor != null ? ' · ' + money(t.valor) : t.precio != null ? ' · ' + money(t.precio) : ''}${showB ? ' · ' + esc(t.barbero) : ''}${ME.es_dueno && t.tel ? ' · ' + esc(telFmt(t.tel)) : ''}${t.origen === 'web' ? ' · reservó en la página' : ''}</div>
         <div class="acts">${acts}</div></div></div>`;
     }).join('');
@@ -274,6 +308,108 @@ async function cargarAgenda(silent) {
   });
   list.querySelectorAll('.appt').forEach((el) => el.querySelectorAll('[data-a]').forEach((b) => b.onclick = () => cambiarEstado(d.turnos.find((t) => t.id === el.dataset.id), b.dataset.a)));
   list.querySelectorAll('[data-wa]').forEach((b) => b.onclick = () => avisarWhatsApp(d.turnos.find((t) => t.id === b.dataset.wa)));
+  list.querySelectorAll('[data-rate]').forEach((b) => b.onclick = () => pedirCalificacion(d.turnos.find((t) => t.id === b.dataset.rate)));
+  list.querySelectorAll('[data-cli]').forEach((b) => b.onclick = () => fichaCliente(d.turnos.find((t) => t.id === b.dataset.cli)));
+}
+
+/* ---------- cuadro de horas: todas las horas del barbero; las tomadas tachadas con el nombre del cliente ---------- */
+let ULTIMA = null;
+function pintarCuadro(d) {
+  ULTIMA = d;
+  const box = document.getElementById('hgrid'); if (!box) return;
+  if (VISTA !== 'cuadro') { box.innerHTML = ''; return; }
+  const ids = ME.es_dueno ? (filtroBarbero ? [filtroBarbero] : INFO.barberos.map((b) => b.id)) : [ME.id];
+  const now = fecha === INFO.hoy ? toMin(INFO.ahora) + Math.floor((Date.now() - loadedAt) / 60000) : (fecha < INFO.hoy ? 1e9 : -1);
+  const step = Number(INFO.config.intervalo || 20);
+  const html = ids.map((id) => {
+    const b = INFO.barberos.find((x) => x.id === id); if (!b) return '';
+    const mios = d.turnos.filter((t) => t.barbero_id === id && t.estado !== 'cancelado' && t.estado !== 'no_vino');
+    const blks = d.bloqueos.filter((k) => k.barbero_id === id);
+    if (blks.some((k) => !k.ini)) return `<div class="hgrid-wrap"><h3>${esc(b.nombre)}<small>Bloqueado todo el día</small></h3></div>`;
+    const busy = [...mios.map((t) => [toMin(t.hora), toMin(t.hora) + t.duracion]), ...blks.map((k) => [toMin(k.ini), toMin(k.fin)])];
+    const grid = GhettoBooking.slotGrid({ barber: b, duration: step, date: fecha, config: INFO.config, busy, now });
+    if (!grid.length) return `<div class="hgrid-wrap"><h3>${esc(b.nombre)}<small>No atiende este día</small></h3></div>`;
+    const libres = grid.filter((g) => g.state === 'free').length;
+    const cells = grid.map((g) => {
+      const m = toMin(g.t), t = mios.find((x) => toMin(x.hora) < m + step && toMin(x.hora) + x.duracion > m);
+      if (t) return `<button type="button" class="${t.estado === 'completado' ? 'done' : 'taken'}" data-turno="${t.id}"><span class="t">${time12(g.t)}</span><small>${esc(t.cliente.split(' ')[0])}${toMin(t.hora) === m ? '' : ' (sigue)'}</small></button>`;
+      const k = blks.find((x) => toMin(x.ini) < m + step && toMin(x.fin) > m);
+      if (k) return `<button type="button" class="blk" disabled><span class="t">${time12(g.t)}</span><small>${esc(k.motivo || 'Bloqueado')}</small></button>`;
+      if (g.state === 'past') return `<button type="button" class="past" disabled><span class="t">${time12(g.t)}</span><small>Pasó</small></button>`;
+      return `<button type="button" class="free" data-libre="${g.t}" data-b="${id}"><span class="t">${time12(g.t)}</span><small>Libre</small></button>`;
+    }).join('');
+    return `<div class="hgrid-wrap"><h3>${esc(b.nombre)}<small>${libres} libre${libres === 1 ? '' : 's'} · ${mios.length} turno${mios.length === 1 ? '' : 's'}</small></h3><div class="hgrid">${cells}</div></div>`;
+  }).join('');
+  box.innerHTML = html + (VISTA === 'cuadro' ? '<p class="note" style="margin-bottom:14px">Toca una hora tomada para ver el turno, o una libre para agendar a alguien ahí.</p>' : '');
+  box.querySelectorAll('[data-turno]').forEach((x) => x.onclick = () => abrirTurno(d.turnos.find((t) => t.id === x.dataset.turno)));
+  box.querySelectorAll('[data-libre]').forEach((x) => x.onclick = () => { if (P().turnos_silla) nuevoTurno({ hora: x.dataset.libre, barbero: x.dataset.b }); else toast('Hora libre'); });
+}
+async function abrirTurno(t) {
+  if (!t) return;
+  const fin = fromMin(toMin(t.hora) + t.duracion);
+  const btns = [{ label: 'Cerrar', value: null }];
+  if (t.estado === 'pendiente' && t.requiere_confirmacion === true) btns.push({ label: 'Confirmar', value: 'confirmado', primary: true });
+  if (t.estado === 'pendiente' || t.estado === 'confirmado') {
+    btns.push({ label: 'Atendido', value: 'completado', primary: true });
+    if (P().cancelar) btns.push({ label: 'No vino', value: 'no_vino' }, { label: 'Cancelar turno', value: 'cancelado', cls: 'btn-red' });
+    if (ME.es_dueno && t.tel) btns.push({ label: 'Avisar por WhatsApp', value: 'wa', cls: 'btn-wa' });
+  }
+  if (t.estado === 'completado' && !t.estrellas) btns.push({ label: 'Pedir calificación', value: 'rate', primary: true });
+  if (ME.es_dueno && t.tel) btns.push({ label: 'Ficha del cliente', value: 'ficha' });
+  const r = await modal(`<h3>${esc(t.cliente)}</h3><p class="muted">${esc(t.servicio)} · ${time12(t.hora)} a ${time12(fin)}${t.barbero ? ' · ' + esc(t.barbero) : ''}</p>
+    <p style="margin-top:8px"><span class="pill p-${t.estado}" style="margin:0">${ESTADO[t.estado]}</span>${t.estrellas ? ` <span class="stars-s">${'★'.repeat(t.estrellas)}</span>` : ''}${ME.es_dueno && t.tel ? ' · ' + esc(telFmt(t.tel)) : ''}</p>`, btns);
+  if (r === 'wa') return avisarWhatsApp(t);
+  if (r === 'rate') return pedirCalificacion(t);
+  if (r === 'ficha') return fichaCliente(t);
+  if (r) return cambiarEstado(t, r);
+}
+
+/* ---------- calificación: QR para que el cliente lo escanee en la silla, o enlace por WhatsApp ---------- */
+function qrSvg(txt) {
+  const q = qrcode(0, 'M'); q.addData(txt); q.make();
+  const n = q.getModuleCount(); let path = '';
+  for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (q.isDark(r, c)) path += `M${c},${r}h1v1h-1z`;
+  return `<svg viewBox="-1 -1 ${n + 2} ${n + 2}" shape-rendering="crispEdges" role="img" aria-label="Código QR para calificar"><path d="${path}" fill="#0a0909"/></svg>`;
+}
+async function pedirCalificacion(t) {
+  if (!t) return;
+  const link = location.origin + location.pathname.replace(/admin\.html$/, '') + '?calificar=' + t.id;
+  const nombre = t.cliente.split(' ')[0];
+  const btns = [{ label: 'Listo', value: true, primary: true }];
+  if (ME.es_dueno && t.tel) btns.unshift({ label: 'Enviar por WhatsApp', value: true, cls: 'btn-wa',
+    href: waLink(t.tel, `Hola ${nombre}! Gracias por venir a Ghetto Barbershop. ¿Nos regalas 10 segundos para calificar tu corte con ${t.barbero || ME.nombre}? ${link}`) });
+  await modal(`<div style="text-align:center"><h3>Que ${esc(nombre)} califique su corte</h3><p class="muted">Que escanee este código con la cámara de su celular. Su calificación sale en la página.</p>
+    <div class="qrbox">${qrSvg(link)}</div></div>`, btns);
+}
+
+/* ---------- ficha del cliente (solo dueño) ---------- */
+async function fichaCliente(t) {
+  if (!t || !t.tel) return;
+  let f; try { f = await call('gb_admin_cliente', { p_tel: t.tel }); } catch (e) { return alertBox(esc(e.message)); }
+  const filas = f.historial.map((h) => `<div class="list-item" style="align-items:flex-start"><div><b>${esc(dateShort(h.fecha))} · ${time12(h.hora)}</b><span>${esc(h.servicio)} · ${esc(h.barbero)}${h.valor != null ? ' · ' + money(h.valor) : ''}${h.comentario ? ' · “' + esc(h.comentario) + '”' : ''}</span></div><div style="text-align:right;white-space:nowrap"><span class="pill p-${h.estado}" style="margin:0">${ESTADO[h.estado]}</span>${h.estrellas ? `<div class="stars-s">${'★'.repeat(h.estrellas)}</div>` : ''}</div></div>`).join('');
+  await modal(`<h3>${esc(t.cliente)}</h3><p class="muted">${esc(telFmt(t.tel))}</p>
+    <div class="stats" style="grid-template-columns:repeat(3,1fr)"><div class="stat"><small>Visitas</small><b>${f.visitas}</b></div><div class="stat"><small>No vino</small><b>${f.no_vino}</b></div><div class="stat"><small>Gastado</small><b style="font-size:18px">${money(f.gastado)}</b></div></div>
+    <div style="max-height:46vh;overflow:auto;text-align:left">${filas || '<p class="muted">Sin historial.</p>'}</div>`,
+    [{ label: 'Escribirle', value: true, cls: 'btn-wa', href: waLink(t.tel, `Hola ${t.cliente.split(' ')[0]}! Te escribimos de Ghetto Barbershop.`) }, { label: 'Cerrar', value: true, primary: true }]);
+}
+
+/* ================= RESEÑAS ================= */
+async function vistaResenas() {
+  const v = view();
+  v.innerHTML = '<h2 class="sec">Reseñas</h2><div id="revs"><div class="empty"><span class="spin"></span></div></div>';
+  let r; try { r = await call('gb_admin_resenas'); } catch (e) { document.getElementById('revs').innerHTML = `<div class="empty">${esc(e.message)}</div>`; return; }
+  if (TAB !== 'resenas') return;
+  const vis = r.filter((x) => x.visible), prom = vis.length ? (vis.reduce((a, x) => a + x.estrellas, 0) / vis.length).toFixed(1) : '—';
+  const porB = {}; vis.forEach((x) => { (porB[x.barbero] = porB[x.barbero] || []).push(x.estrellas); });
+  document.getElementById('revs').innerHTML = `<div class="stats"><div class="stat"><small>Promedio</small><b>${prom} <span class="stars-s">★</span></b></div><div class="stat"><small>Reseñas</small><b>${vis.length}</b></div>
+    ${ME.es_dueno ? Object.entries(porB).map(([n, a]) => `<div class="stat"><small>${esc(n)}</small><b>${(a.reduce((x, y) => x + y, 0) / a.length).toFixed(1)} <span class="stars-s">★</span></b></div>`).join('') : ''}</div>
+    <p class="note">Al marcar un turno como <b>Atendido</b> sale el código QR para que el cliente califique. También desde el botón "Pedir calificación".</p>
+    <div class="card" style="margin-top:12px">${r.length ? r.map((x) => `<div class="rev ${x.visible ? '' : 'hid'}"><div class="row"><span class="stars-s">${'★'.repeat(x.estrellas)}${'☆'.repeat(5 - x.estrellas)}</span><span class="spacer"></span><small class="muted">${esc(dateShort(x.fecha))}</small></div>
+      ${x.comentario ? `<p>“${esc(x.comentario)}”</p>` : ''}<small class="muted">${esc(x.cliente || 'Cliente')} · ${esc(x.servicio)}${ME.es_dueno ? ' · con ' + esc(x.barbero) : ''}${x.visible ? '' : ' · oculta en la página'}</small>
+      ${ME.es_dueno ? `<div><button type="button" class="linkbtn" data-vis="${x.id}" data-v="${x.visible ? '0' : '1'}" style="background:none;border:0;color:var(--rose);text-decoration:underline;font-weight:700;padding:6px 0 0">${x.visible ? 'Ocultar de la página' : 'Mostrar en la página'}</button></div>` : ''}</div>`).join('') : '<p class="muted">Todavía no hay reseñas. Cuando marques un corte como Atendido, muéstrale el QR al cliente.</p>'}</div>`;
+  v.querySelectorAll('[data-vis]').forEach((b) => b.onclick = async () => {
+    try { await call('gb_admin_resena_visible', { p_id: b.dataset.vis, p_visible: b.dataset.v === '1' }); toast('Listo'); vistaResenas(); } catch (e) { alertBox(esc(e.message)); }
+  });
 }
 
 /* Avisos rapidos por WhatsApp (solo el dueno: es quien ve los numeros). Abre WhatsApp con el mensaje listo; solo se le da enviar. */
@@ -319,18 +455,21 @@ async function cambiarEstado(t, estado) {
       toast(c.ok ? `Sello puesto: ${c.sellos} de ${c.meta}${c.lleno ? ' · ¡tarjeta llena!' : ''}` : `Club: ${c.motivo}`);
     } else toast(ESTADO[estado]);
     cargarAgenda();
+    if (estado === 'completado' && t.estado !== 'completado') pedirCalificacion(t);
   } catch (e) { alertBox(esc(e.message)); }
 }
 
 
-async function nuevoTurno() {
+async function nuevoTurno(pre) {
+  pre = pre && pre.hora ? pre : {};
   const barbs = ME.es_dueno ? INFO.barberos : INFO.barberos.filter((b) => b.id === ME.id);
-  const selectedBarber = () => barbs.find((b) => b.id === document.getElementById('nb')?.value) || barbs.find((b) => b.id === (filtroBarbero || ME.id)) || barbs[0];
+  const bInicial = pre.barbero || filtroBarbero || ME.id;
+  const selectedBarber = () => barbs.find((b) => b.id === document.getElementById('nb')?.value) || barbs.find((b) => b.id === bInicial) || barbs[0];
   const result = modal(`<h3>Turno en silla</h3><p class="muted">Para clientes que llegan o llaman. Se guarda como confirmado.</p>
-    ${barbs.length > 1 ? `<div class="field" style="margin-top:14px"><label for="nb">Barbero</label><select id="nb">${barbs.map((b) => `<option value="${b.id}" ${b.id === (filtroBarbero || ME.id) ? 'selected' : ''}>${esc(b.nombre)}</option>`).join('')}</select></div>` : ''}
+    ${barbs.length > 1 ? `<div class="field" style="margin-top:14px"><label for="nb">Barbero</label><select id="nb">${barbs.map((b) => `<option value="${b.id}" ${b.id === bInicial ? 'selected' : ''}>${esc(b.nombre)}</option>`).join('')}</select></div>` : ''}
     <div class="field" style="margin-top:14px"><label for="ns">Servicio</label><select id="ns">${GhettoBooking.catalog(selectedBarber(), INFO.servicios).map((s) => `<option value="${s.id}">${esc(s.nombre)} · ${s.duracion} min · ${s.precio == null ? 'Se cotiza' : money(s.precio)}</option>`).join('')}</select></div>
     <div class="grid2"><div class="field"><label for="nf">Día</label><input id="nf" type="date" value="${fecha}"></div>
-    <div class="field"><label for="nh">Hora</label><input id="nh" type="time" step="300" value="${fecha === INFO.hoy ? fromMin(Math.ceil((toMin(INFO.ahora) + Math.floor((Date.now() - loadedAt) / 60000)) / 10) * 10 % 1440) : INFO.config.hora_abre}"></div></div>
+    <div class="field"><label for="nh">Hora</label><input id="nh" type="time" step="300" value="${pre.hora ? pre.hora : fecha === INFO.hoy ? fromMin(Math.ceil((toMin(INFO.ahora) + Math.floor((Date.now() - loadedAt) / 60000)) / 10) * 10 % 1440) : INFO.config.hora_abre}"></div></div>
     <div class="field"><label for="nn">Nombre del cliente</label><input id="nn" maxlength="60"></div>
     <div class="field"><label for="nt">WhatsApp</label><input id="nt" type="tel" inputmode="numeric" maxlength="14"></div>`,
     [{ label: 'Cancelar', value: false }, { label: 'Guardar turno', value: true, primary: true }]);

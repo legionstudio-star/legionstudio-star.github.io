@@ -50,7 +50,31 @@
     }
     return [...result].sort();
   }
-  const api = { minutes, clock, catalog, needsConfirmation, safeImage, portfolio, workRanges, freeSlots };
+  /* Cuadro de horas del día: TODAS las horas del barbero; las tomadas o pasadas salen tachadas.
+     Las horas dentro de un descanso fijo (almuerzo, día libre) no se muestran. */
+  function breaksOf(barber, date) {
+    const dow = String(new Date(`${date}T12:00:00-05:00`).getUTCDay());
+    return (barber.descansos || []).filter((r) => !r.fecha && (r.dia == null || String(r.dia) === dow) || r.fecha === date)
+      .map((r) => [minutes(r.inicio), minutes(r.fin)]).filter(([a, b]) => Number.isFinite(a) && Number.isFinite(b) && b > a);
+  }
+  function slotGrid({ barber, duration, date, config, busy = [], now = -1 }) {
+    const step = Number(config.intervalo || 20), dur = Number(duration) || step;
+    if (!barber || !Number.isInteger(step) || step < 5) return [];
+    const rests = breaksOf(barber, date), out = new Map();
+    const hit = (list, start, len) => list.some(([a, b]) => Number(a) < start + len && Number(b) > start);
+    for (const [open, close] of workRanges(barber, date, config)) {
+      for (let start = open; start + Math.min(dur, step) <= close; start += step) {
+        if (hit(rests, start, Math.min(dur, step))) continue;
+        let state = 'free';
+        if (start <= now) state = 'past';
+        else if (hit(busy, start, Math.min(dur, step))) state = 'taken';
+        else if (start + dur > close || hit(busy, start, dur) || hit(rests, start, dur)) state = 'short';
+        out.set(clock(start), state);
+      }
+    }
+    return [...out.entries()].sort().map(([t, state]) => ({ t, state }));
+  }
+  const api = { minutes, clock, catalog, needsConfirmation, safeImage, portfolio, workRanges, freeSlots, slotGrid, breaksOf };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.GhettoBooking = api;
 })(typeof window === 'undefined' ? globalThis : window);

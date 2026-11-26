@@ -48,11 +48,11 @@ window.GhettoProfile = {
         <div class="field"><label for="pfAvatar">Foto de perfil</label><input id="pfAvatar" type="file" accept="image/jpeg,image/png,image/webp"><div id="avatarPreview"></div></div>
       </fieldset>
       <fieldset class="card"><legend>Catálogo de servicios</legend>
-        <p class="note">El nombre, el precio y la duración que indiques aquí son los que ven tus clientes al reservar contigo.</p>
+        <p class="note">El nombre y el precio que indiques aquí son los que ven los clientes al reservar con este barbero. La duración de cada servicio es una sola para todos y se cambia en Ajustes &gt; Servicios.</p>
         <div id="pfServices">${services.map((s, i) => `<div class="profile-service" data-service="${esc(s.id)}">
           <div class="field"><label for="pfSvcName${i}">Nombre del servicio</label><input id="pfSvcName${i}" data-svcname data-base="${esc(s.nombre_base || s.nombre)}" maxlength="40" value="${esc(s.nombre_propio != null ? (s.nombre_propio || s.nombre_base || s.nombre) : s.nombre)}" placeholder="${esc(s.nombre_base || s.nombre)}"></div><label class="profile-inline"><input type="checkbox" data-enabled ${s.activo !== false ? 'checked' : ''}> Ofrecer este servicio</label>
           <div class="grid2"><div class="field"><label for="pfPrice${i}">Precio (COP)</label><input id="pfPrice${i}" data-price type="number" min="0" max="10000000" step="1000" value="${s.precio == null ? '' : Number(s.precio)}" placeholder="Vacío: se cotiza"></div>
-          <div class="field"><label for="pfDuration${i}">Duración (minutos)</label><input id="pfDuration${i}" data-duration type="number" min="10" max="240" step="5" required value="${Number(s.duracion || 40)}"></div></div></div>`).join('')}</div>
+          <div class="field"><label for="pfDuration${i}">Duración (minutos)</label><input id="pfDuration${i}" data-duration type="number" readonly tabindex="-1" style="opacity:.6" value="${Number(s.duracion || 40)}"><small class="note">Se cambia en Ajustes &gt; Servicios (igual para todos)</small></div></div></div>`).join('')}</div>
         ${services.length ? '' : '<p class="note">Santi debe crear los servicios del negocio en Ajustes para poder configurar tu catálogo.</p>'}
       </fieldset>
       <fieldset class="card"><legend>Tu portafolio de cortes</legend><p class="note">Se muestra cuando el cliente te elige. Sube hasta 12 fotos de tus trabajos.</p>

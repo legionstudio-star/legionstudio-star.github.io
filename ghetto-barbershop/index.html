@@ -149,6 +149,48 @@
   .day-msg{margin:-6px 0 14px;font-size:13px;color:var(--rose);}
   .day-msg[hidden]{display:none;}
   .req{color:var(--rose);font-weight:700;}
+  /* cuadro de horas (como al principio): todas las horas, las tomadas tachadas */
+  .daystrip{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 8px;scrollbar-width:none;scroll-snap-type:x proximity;}
+  .daystrip::-webkit-scrollbar{display:none;}
+  .daystrip button{flex:0 0 auto;width:62px;padding:9px 0;border-radius:12px;border:1px solid var(--line);background:transparent;text-align:center;scroll-snap-align:start;}
+  .daystrip button small{display:block;font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
+  .daystrip button b{display:block;font-family:var(--display);font-size:22px;margin-top:2px;}
+  .daystrip button em{display:block;font-style:normal;font-size:10px;color:var(--muted);}
+  .daystrip button.on{border-color:var(--cream);background:var(--cream);color:#111;}
+  .daystrip button.on small,.daystrip button.on em{color:#444;}
+  .daystrip button:disabled{opacity:.3;text-decoration:line-through;cursor:not-allowed;}
+  .daystrip .otra{width:78px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;font-weight:700;color:var(--rose);position:relative;}
+  .daystrip .otra input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;}
+  .slot-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin:2px 0 10px;}
+  .slot-legend i{display:inline-block;width:12px;height:12px;border-radius:3px;border:1px solid var(--line);vertical-align:-2px;margin-right:5px;}
+  .slot-legend i.x{background:repeating-linear-gradient(135deg,#2b2524 0 3px,transparent 3px 6px);}
+  .slot-legend i.s{background:var(--cream);border-color:var(--cream);}
+  .slots .slot.taken,.slots .slot.past,.slots .slot.short{opacity:.38;text-decoration:line-through;cursor:not-allowed;background:repeating-linear-gradient(135deg,rgba(255,255,255,.04) 0 4px,transparent 4px 8px);}
+  .slots .slot small{display:block;font-size:9.5px;font-weight:600;color:var(--muted);text-decoration:none;}
+  /* reputación */
+  .rep{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;}
+  .rep span{display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border-radius:999px;background:rgba(10,9,9,.55);border:1px solid rgba(245,238,225,.2);backdrop-filter:blur(6px);font-size:13px;font-weight:600;}
+  .rep b{font-family:var(--display);font-size:16px;color:#fff;}
+  .rep svg{width:15px;height:15px;color:#f2c14e;}
+  .pick-bar .rt{display:inline-flex;align-items:center;gap:3px;color:#f2c14e;font-weight:700;}
+  .pick-bar .rt svg{width:11px;height:11px;}
+  .reviews{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(260px,82%);gap:12px;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x mandatory;scrollbar-width:none;}
+  .reviews::-webkit-scrollbar{display:none;}
+  @media (min-width:900px){.reviews{grid-auto-columns:calc((100% - 24px)/3);}}
+  .review{scroll-snap-align:start;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;}
+  .review .st{display:flex;gap:2px;color:#f2c14e;}
+  .review .st svg{width:16px;height:16px;}
+  .review p{margin:10px 0 12px;font-size:15px;color:rgba(245,238,225,.9);}
+  .review small{color:var(--muted);font-size:12.5px;}
+  .big-score{display:flex;align-items:center;gap:14px;}
+  .big-score b{font-family:var(--display);font-size:54px;line-height:1;}
+  .big-score small{display:block;color:var(--muted);font-size:13px;}
+  .rate-stars{display:flex;gap:6px;justify-content:center;margin:16px 0 8px;}
+  .rate-stars button{background:none;border:0;padding:4px;color:#4a4240;}
+  .rate-stars button svg{width:40px;height:40px;}
+  .rate-stars button.on{color:#f2c14e;}
+  .mine-row .acts2{display:flex;gap:12px;}
+  .rate-cta{background:linear-gradient(120deg,#2a1218,var(--surface));border:1px solid rgba(200,67,91,.5);border-radius:14px;padding:14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
   /* agenda (estilos del ticket) */
   .booking{background:var(--surface);border-block:1px solid var(--line);}
   .book-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:40px;align-items:start;}
@@ -217,7 +259,8 @@
   .visit a,.visit div{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px;display:block;transition:border-color .2s;}
   .visit a:hover{border-color:var(--rose);}
   .visit small{font-family:var(--display);letter-spacing:.2em;text-transform:uppercase;color:var(--rose);font-size:12px;}
-  .visit b{display:block;font-size:17px;margin-top:6px;}
+  .visit b{display:block;font-size:17px;margin-top:6px;overflow-wrap:anywhere;}
+  .visit>*{min-width:0;}
 
   footer{padding:60px 0 46px;text-align:center;color:var(--muted);font-size:13px;border-top:1px solid var(--line);}
   footer img{width:150px;margin:0 auto 16px;}
@@ -251,11 +294,12 @@
 </header>
 
 <section class="hero" style="padding:0">
-  <img class="poster" id="heroPoster" src="assets/img/poster-pixar-v.jpg" alt="">
+  <img class="poster" id="heroPoster" src="assets/img/poster-pixar-v.jpg?v=20261126" alt="">
   <video id="heroVideo" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
   <div class="hero-content">
     <span class="live"><span class="dot" id="liveDot"></span><span id="liveTxt">Bogotá · Agenda en línea</span></span>
     <h1>Ghetto Barbershop<small>Since the streets · SM</small></h1>
+    <div class="rep" id="rep" hidden></div>
     <div class="hero-actions">
       <a href="#agenda" class="btn btn-cream">Agendar turno</a>
     </div>
@@ -276,11 +320,11 @@
         <div class="tras-barbero" id="trasBarbero" hidden>
           <div id="barberPortfolio" class="barber-portfolio" hidden></div>
           <div id="bookingService" class="booking-stage" hidden><div class="field"><label id="lblSvc">2 · Servicio</label><div class="chips" id="svcChips" role="radiogroup" aria-labelledby="lblSvc"></div></div></div>
-          <div class="two fecha-hora">
-            <div class="field"><label for="dayInput">3 · Día</label><input type="date" id="dayInput" required></div>
-            <div class="field"><label for="slotSel">4 · Hora</label><select id="slotSel" disabled required><option value="">Primero elige el servicio</option></select></div>
-          </div>
+          <div class="field"><label id="lblDay">3 · Día</label><div class="daystrip" id="dayStrip" role="radiogroup" aria-labelledby="lblDay"></div></div>
           <p class="day-msg" id="dayMsg" role="status" hidden></p>
+          <div class="field"><label id="lblSlot">4 · Hora</label>
+            <div class="slot-legend"><span><i class="s"></i>Libre</span><span><i class="x"></i>Ocupada (tachada)</span></div>
+            <div class="slots" id="slotGrid" role="radiogroup" aria-labelledby="lblSlot"><p class="hint">Primero elige el servicio.</p></div></div>
           <div class="two">
             <div class="field"><label for="name">Tu nombre <span class="req">*</span></label><input id="name" autocomplete="name" placeholder="¿Cómo te llamas?" maxlength="60" required></div>
             <div class="field"><label for="tel">Tu WhatsApp <span class="req">* obligatorio</span></label><input id="tel" type="tel" inputmode="numeric" autocomplete="tel" placeholder="300 000 0000" maxlength="14" required></div>
@@ -296,6 +340,13 @@
       </div>
       </div>
     </form>
+  </div>
+</section>
+
+<section id="resenas" hidden style="padding:56px 0 40px">
+  <div class="wrap">
+    <div class="head"><div><span class="tag">Reseñas reales</span><h2 class="title">Lo que dicen</h2></div><div class="big-score" id="bigScore"></div></div>
+    <div class="reviews" id="reviews"></div>
   </div>
 </section>
 
@@ -338,8 +389,8 @@
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.3zM12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2z"/></svg>
 </a>
 
-<script src="assets/gb.js"></script>
-<script src="assets/booking-model.js"></script>
+<script src="assets/gb.js?v=20261126"></script>
+<script src="assets/booking-model.js?v=20261126"></script>
 <script>
 const { rpc, esc, money, toMin, fromMin, time12, addDays, parseDate, dateLong, dateShort, telFmt, waLink, alertBox, confirmBox, toast } = GB;
 document.getElementById('year').textContent = new Date().getFullYear();
@@ -360,9 +411,9 @@ document.getElementById('year').textContent = new Date().getFullYear();
 (function () {
   const v = document.getElementById('heroVideo'), poster = document.getElementById('heroPoster');
   const wide = matchMedia('(min-aspect-ratio: 1/1)').matches;
-  poster.src = wide ? 'assets/img/poster-pixar-h.jpg?v=20261121b' : 'assets/img/poster-pixar-v.jpg';
+  poster.src = wide ? 'assets/img/poster-pixar-h.jpg?v=20261121b' : 'assets/img/poster-pixar-v.jpg?v=20261126';
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  v.src = wide ? 'assets/banner-pixar-h.mp4?v=20261121b' : 'assets/banner-pixar-v.mp4?v=20261120';
+  v.src = wide ? 'assets/banner-pixar-h.mp4?v=20261121b' : 'assets/banner-pixar-v.mp4?v=20261126';
   v.addEventListener('playing', () => { poster.style.opacity = 0; });
   v.play().catch(() => {});
 })();
@@ -421,7 +472,9 @@ async function init() {
     document.getElementById('barChips').innerHTML = `<div class="hint">${esc(e.message)}</div>`;
     return;
   }
-  paintInfo(); paintServices(); paintBarbers(); paintDays(); paintSummary(); paintMine();
+  paintInfo(); paintRep(); paintServices(); paintBarbers(); paintDays(); paintSummary(); paintMine(); prefill();
+  const q = new URLSearchParams(location.search).get('calificar');
+  if (q) calificar(q);
 }
 
 function paintInfo() {
@@ -436,10 +489,13 @@ function paintInfo() {
   document.getElementById('dirTxt').textContent = CFG.direccion || 'Calle 86 #95d-06';
   const vDir = document.getElementById('vDir');
   vDir.href = CFG.mapa || `https://www.google.com/maps/search/${encodeURIComponent((CFG.nombre || 'Ghetto Barbershop') + ' ' + (CFG.direccion || 'Calle 86 #95d-06, Bogotá'))}`;
-  if (CFG.instagram) {
-    const ig = `https://www.instagram.com/${CFG.instagram.replace('@', '')}/`;
-    document.getElementById('vIg').href = ig;
-    document.getElementById('igTxt').textContent = '@' + CFG.instagram.replace('@', '');
+  if (CFG.instagram) {   // acepta "usuario", "@usuario" o el enlace completo de Instagram
+    const raw = String(CFG.instagram).trim(), m = raw.match(/instagram\.com\/([A-Za-z0-9_.]+)/i);
+    const user = (m ? m[1] : raw.replace(/^@/, '')).replace(/[^A-Za-z0-9_.]/g, '');
+    if (user) {
+      document.getElementById('vIg').href = `https://www.instagram.com/${user}/`;
+      document.getElementById('igTxt').textContent = '@' + user;
+    }
   }
   if (CFG.whatsapp) {
     const w = document.getElementById('waFloat'); w.hidden = false;
@@ -487,7 +543,7 @@ function paintBarbers() {
     card.innerHTML = `<div class="ph">${url ? `<img src="${esc(url)}" alt="${esc(b.nombre)}">` : esc(b.nombre[0])}</div><div><h3>${esc(b.nombre)}</h3><p>${esc(b.especialidad || b.biografia || '')}</p><button type="button" class="btn btn-ghost btn-sm">Ver cortes y agendar</button></div>`;
     card.querySelector('button').onclick = () => { pickBar(b.id); document.getElementById('agenda').scrollIntoView({ behavior: 'smooth' }); }; box.appendChild(card);
     const chip = document.createElement('button'); chip.type = 'button'; chip.dataset.id = b.id;
-    chip.innerHTML = `<div class="ph">${url ? `<img src="${esc(url)}" alt="">` : esc(b.nombre[0])}</div><div class="nm"><b>${esc(b.nombre)}</b><small>${esc(b.especialidad || 'Ver sus cortes')}</small></div><span class="ok"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>`;
+    chip.innerHTML = `<div class="ph">${url ? `<img src="${esc(url)}" alt="">` : esc(b.nombre[0])}</div><div class="nm"><b>${esc(b.nombre)}</b><small>${b.num_resenas ? `<span class="rt">${STAR}${Number(b.rating).toFixed(1)}</span> (${b.num_resenas}) · ` : ''}${b.cortes ? `${b.cortes} cortes` : esc(b.especialidad || 'Ver sus cortes')}</small></div><span class="ok"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>`;
     chip.setAttribute('role', 'radio'); chip.setAttribute('aria-checked', 'false'); chip.setAttribute('aria-label', b.nombre); chip.onclick = () => pickBar(b.id); chips.appendChild(chip);
   });
 }
@@ -507,43 +563,71 @@ function pickBar(id) {
   setTimeout(() => host.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
 }
 
-/* ---------- día: campo de fecha (abre el calendario pequeño del celular) ---------- */
-const dayInput = document.getElementById('dayInput'), dayMsg = document.getElementById('dayMsg'), slotSel = document.getElementById('slotSel');
+/* ---------- día: tira de días (y "otra fecha" con el calendario del celular) ---------- */
+const dayStrip = document.getElementById('dayStrip'), dayMsg = document.getElementById('dayMsg'), slotGrid = document.getElementById('slotGrid');
+const STAR = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2.6 2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.5l-5.9 3.1 1.2-6.5L2.5 9.5l6.6-.9z"/></svg>';
+let dayMin = '', dayMax = '';
 function paintDays() {
   const max = Number(CFG.dias_adelante || 21);
   const hoyCerro = nowMinBogota() >= toMin(CFG.hora_cierra || '20:00') - 20;
-  dayInput.min = hoyCerro ? addDays(INFO.hoy, 1) : INFO.hoy;
-  dayInput.max = addDays(INFO.hoy, max);
-  dayInput.value = ''; day = ''; dayMsg.hidden = true;
+  dayMin = hoyCerro ? addDays(INFO.hoy, 1) : INFO.hoy; dayMax = addDays(INFO.hoy, max);
+  day = ''; dayMsg.hidden = true;
+  const DOW = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'], MES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+  let html = '';
+  for (let i = 0; i < 14; i++) {
+    const d = addDays(dayMin, i); if (d > dayMax) break;
+    const dt = parseDate(d), works = !bar || (GhettoBooking.workRanges(bar, d, CFG).length && !fullRest(d));
+    html += `<button type="button" data-d="${d}" role="radio" aria-checked="false" ${works ? '' : 'disabled title="No atiende"'}><small>${d === INFO.hoy ? 'Hoy' : d === addDays(INFO.hoy, 1) ? 'Mañ' : DOW[dt.getDay()]}</small><b>${dt.getDate()}</b><em>${MES[dt.getMonth()]}</em></button>`;
+  }
+  html += `<label class="otra" id="otraLbl"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span id="otraTxt">Otra fecha</span><input type="date" id="dayInput" min="${dayMin}" max="${dayMax}" aria-label="Elegir otra fecha"></label>`;
+  dayStrip.innerHTML = html;
+  dayStrip.querySelectorAll('button[data-d]').forEach((b) => b.onclick = () => pickDay(b.dataset.d));
+  document.getElementById('dayInput').onchange = (e) => pickDay(e.target.value);
 }
-dayInput.addEventListener('change', () => {
-  const d = dayInput.value; let aviso = '';
-  if (d && (d < dayInput.min || d > dayInput.max)) aviso = `Puedes agendar desde ${dateShort(dayInput.min)} hasta ${dateShort(dayInput.max)}.`;
-  else if (d && bar && !GhettoBooking.workRanges(bar, d, CFG).length) aviso = `${bar.nombre} no atiende ese día. Elige otro.`;
-  day = d && !aviso ? d : '';
+function fullRest(d) {   // descanso que cubre todo su horario (día libre)
+  const work = GhettoBooking.workRanges(bar, d, CFG), rests = GhettoBooking.breaksOf(bar, d);
+  return work.length > 0 && work.every(([a, b]) => rests.some(([x, y]) => x <= a && y >= b));
+}
+function pickDay(d) {
+  let aviso = '';
+  if (!d) return;
+  if (d < dayMin || d > dayMax) aviso = `Puedes agendar desde ${dateShort(dayMin)} hasta ${dateShort(dayMax)}.`;
+  else if (bar && (!GhettoBooking.workRanges(bar, d, CFG).length || fullRest(d))) aviso = `${bar.nombre} no atiende ese día. Elige otro.`;
+  day = aviso ? '' : d;
   dayMsg.textContent = aviso; dayMsg.hidden = !aviso;
+  let inStrip = false;
+  dayStrip.querySelectorAll('button[data-d]').forEach((b) => { const on = b.dataset.d === day; if (on) inStrip = true; b.classList.toggle('on', on); b.setAttribute('aria-checked', on); });
+  document.getElementById('otraLbl').classList.toggle('on', !!day && !inStrip);
+  document.getElementById('otraTxt').textContent = day && !inStrip ? dateShort(day) : 'Otra fecha';
   refreshSlots();
-});
+}
 
-/* ---------- hora: lista desplegable solo con las horas libres ---------- */
-slotSel.addEventListener('change', () => { slot = slotSel.value; paintSummary(); });
+/* ---------- hora: cuadro con TODAS las horas; las ocupadas salen tachadas ---------- */
 let slotReq = 0;
 async function refreshSlots() {
   const my = ++slotReq;
   slot = ''; paintSummary();
-  const off = (txt) => { slotSel.innerHTML = `<option value="">${esc(txt)}</option>`; slotSel.disabled = true; };
-  if (!svc) return off('Primero elige el servicio');
-  if (!bar || !day) return off('Primero elige el día');
+  const off = (txt) => { slotGrid.innerHTML = `<p class="hint">${esc(txt)}</p>`; };
+  if (!svc) return off('Primero elige el servicio.');
+  if (!bar || !day) return off('Ahora elige el día.');
   off('Buscando horas…');
   let occ;
   try { occ = await rpc('gb_ocupado', { p_barbero: bar.id, p_fecha: day }); }
   catch (e) { if (my === slotReq) off(e.message); return; }
   if (my !== slotReq) return;
-  if (occ.todo_dia) { dayMsg.textContent = `${bar.nombre} no atiende ese día. Elige otro.`; dayMsg.hidden = false; return off('Sin horas ese día'); }
-  const options = GhettoBooking.freeSlots({ barber: bar, service: svc, date: day, config: CFG, occupied: occ, now: day === INFO.hoy ? nowMinBogota() : -1 });
-  if (!options.length) return off('Sin horas libres ese día');
-  slotSel.innerHTML = `<option value="">Elige la hora</option>` + options.map((t) => `<option value="${t}">${time12(t)}</option>`).join('');
-  slotSel.disabled = false;
+  if (occ.todo_dia) { dayMsg.textContent = `${bar.nombre} no atiende ese día. Elige otro.`; dayMsg.hidden = false; return off('Sin horas ese día.'); }
+  const grid = GhettoBooking.slotGrid({ barber: bar, duration: svc.duracion, date: day, config: CFG, busy: occ.rangos || [], now: day === INFO.hoy ? nowMinBogota() : -1 });
+  if (!grid.length) return off(`${bar.nombre} no atiende ese día.`);
+  const libres = grid.filter((g) => g.state === 'free').length;
+  const LBL = { taken: 'Ocupada', past: 'Ya pasó', short: 'No alcanza' };
+  slotGrid.innerHTML = grid.map((g) => `<button type="button" class="slot ${g.state === 'free' ? '' : g.state}" data-t="${g.t}" role="radio" aria-checked="false" ${g.state === 'free' ? '' : `disabled aria-label="${time12(g.t)} ${LBL[g.state]}"`}>${time12(g.t)}${g.state === 'free' ? '' : `<small>${LBL[g.state]}</small>`}</button>`).join('')
+    + (libres ? '' : '<p class="hint">Este día ya está lleno. Prueba otro día.</p>');
+  slotGrid.querySelectorAll('.slot:not(:disabled)').forEach((b) => b.onclick = () => {
+    slot = b.dataset.t;
+    slotGrid.querySelectorAll('.slot').forEach((x) => { const on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-checked', on); });
+    paintSummary();
+    document.getElementById(document.getElementById('name').value.trim() ? 'submit' : 'name').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
 }
 
 function paintSummary() {
@@ -580,14 +664,16 @@ form.addEventListener('submit', async (e) => {
     const r = await rpc('gb_agendar', { p_barbero: bar.id, p_servicio: svc.id, p_nombre: name, p_tel: tel, p_fecha: day, p_hora: slot });
     const mine = JSON.parse(localStorage.getItem(MINE_KEY) || '[]');
     mine.push({ id: r.id, tel }); localStorage.setItem(MINE_KEY, JSON.stringify(mine.slice(-10)));
+    try { localStorage.setItem('ghetto_yo', JSON.stringify({ name, tel })); } catch (_) {}
+    if (REAG) { try { await rpc('gb_cancelar', { p_id: REAG.id, p_tel: REAG.tel }); } catch (_) {} REAG = null; }
     const resumen = `${dateLong(day)} · ${time12(slot)}`;
-    const btns = [{ label: 'Listo', value: true, primary: true }];
+    const btns = [{ label: 'Listo', value: true, primary: true }, { label: 'Agregar a mi calendario', value: true, href: calLink(day, slot, svc, bar) }];
     if (CFG.whatsapp) btns.push({ label: 'Avisar por WhatsApp', value: true, cls: 'btn-wa',
       href: waLink(CFG.whatsapp, `Hola ${bar.nombre}! Soy ${name}. Aparté turno en Ghetto Barbershop:\n${resumen}\n${svc.nombre}`) });
     await GB.modal(`<h3>${r.estado === 'confirmado' ? 'Cita confirmada' : r.estado === 'pendiente' ? 'Solicitud recibida' : 'Reserva registrada'} ✦</h3><p><b>${esc(svc.nombre)}</b> con <b>${esc(bar.nombre)}</b></p>
       <p style="font-size:18px;margin:8px 0">${esc(resumen)}</p>
       <p class="muted">Llega 5 minutos antes. Si no puedes venir, cancélalo aquí mismo en "Tus próximos turnos".</p>`, btns);
-    document.getElementById('name').value = '';
+    if (INFO.stats) { INFO.stats.reservas++; paintRep(); }
     refreshSlots(); paintMine();
   } catch (err) {
     fail(err.message); refreshSlots();
@@ -596,7 +682,8 @@ form.addEventListener('submit', async (e) => {
   }
 });
 
-/* ---------- mis turnos (guardados en este celular) ---------- */
+/* ---------- mis turnos (guardados en este celular): cancelar, cambiar hora y calificar ---------- */
+let REAG = null;
 async function paintMine() {
   const mine = JSON.parse(localStorage.getItem(MINE_KEY) || '[]');
   const box = document.getElementById('mine');
@@ -610,18 +697,95 @@ async function paintMine() {
       r.forEach((x) => rows.push({ ...x, tel }));
     }
   } catch (e) { return; }
-  rows = rows.filter((r) => r.estado === 'pendiente' || r.estado === 'confirmado');
-  const keep = new Set(rows.map((r) => r.id));
+  const porCalificar = rows.filter((r) => r.estado === 'completado' && !r.calificado);
+  rows = rows.filter((r) => (r.estado === 'pendiente' || r.estado === 'confirmado') && r.fecha >= INFO.hoy);
+  const keep = new Set([...rows, ...porCalificar].map((r) => r.id));
   localStorage.setItem(MINE_KEY, JSON.stringify(mine.filter((m) => keep.has(m.id))));
-  if (!rows.length) { box.hidden = true; return; }
+  if (!rows.length && !porCalificar.length) { box.hidden = true; return; }
   box.hidden = false;
-  document.getElementById('mineList').innerHTML = rows.map((r) => `<div class="mine-row"><div><b>${esc(dateShort(r.fecha))} · ${time12(r.hora)}</b>
-    <span>${esc(r.servicio)} · ${esc(r.barbero)}</span></div><button type="button" class="linkbtn" data-id="${r.id}" data-tel="${r.tel}">Cancelar</button></div>`).join('');
-  document.querySelectorAll('#mineList .linkbtn').forEach((b) => b.onclick = async () => {
+  box.querySelector('h4').textContent = rows.length ? 'Tus próximos turnos' : 'Tu último corte';
+  document.getElementById('mineList').innerHTML = porCalificar.map((r) => `<div class="rate-cta"><div><b>¿Cómo te fue con ${esc(r.barbero)}?</b><span class="muted" style="display:block;font-size:12.5px">${esc(r.servicio)} · ${esc(dateShort(r.fecha))}</span></div><button type="button" class="btn btn-cream btn-sm" data-rate="${r.id}">Calificar</button></div>`).join('')
+    + rows.map((r) => `<div class="mine-row"><div><b>${esc(dateShort(r.fecha))} · ${time12(r.hora)}</b>
+    <span>${esc(r.servicio)} · ${esc(r.barbero)}</span></div><div class="acts2"><button type="button" class="linkbtn" data-mv="${r.id}">Cambiar hora</button><button type="button" class="linkbtn" data-id="${r.id}" data-tel="${r.tel}">Cancelar</button></div></div>`).join('');
+  document.querySelectorAll('#mineList [data-rate]').forEach((b) => b.onclick = () => calificar(b.dataset.rate));
+  document.querySelectorAll('#mineList [data-id]').forEach((b) => b.onclick = async () => {
     if (!(await confirmBox('¿Seguro que quieres cancelar este turno?', 'Sí, cancelar', 'No', true))) return;
     try { await rpc('gb_cancelar', { p_id: b.dataset.id, p_tel: b.dataset.tel }); toast('Turno cancelado'); paintMine(); refreshSlots(); }
     catch (e) { alertBox(esc(e.message)); }
   });
+  document.querySelectorAll('#mineList [data-mv]').forEach((b) => b.onclick = () => {
+    const r = rows.find((x) => x.id === b.dataset.mv), br = INFO.barberos.find((x) => x.nombre === r.barbero);
+    REAG = { id: r.id, tel: r.tel };
+    if (br) { pickBar(br.id); const s2 = GhettoBooking.catalog(br, INFO.servicios).find((x) => x.nombre === r.servicio); if (s2) pickSvc(s2.id); }
+    toast('Elige el nuevo día y hora. Al apartar, el turno anterior se cancela solo.');
+  });
+}
+
+/* ---------- reputación: estrellas + turnos agendados en el banner, y reseñas ---------- */
+function starsHtml(n) { return Array.from({ length: 5 }, (_, i) => `<span style="opacity:${i < n ? 1 : .2}">${STAR}</span>`).join(''); }
+function paintRep() {
+  const st = INFO.stats || {}, rep = document.getElementById('rep');
+  const parts = [];
+  if (st.resenas) parts.push(`<span>${STAR}<b>${Number(st.promedio).toFixed(1)}</b> · ${st.resenas} reseña${st.resenas === 1 ? '' : 's'}</span>`);
+  if (st.reservas) parts.push(`<span><b>${st.reservas}</b> turnos agendados</span>`);
+  if (st.atendidos) parts.push(`<span><b>${st.atendidos}</b> cortes hechos</span>`);
+  rep.innerHTML = parts.join(''); rep.hidden = !parts.length;
+  const sec = document.getElementById('resenas');
+  if (!st.resenas) { sec.hidden = true; return; }
+  sec.hidden = false;
+  document.getElementById('bigScore').innerHTML = `<b>${Number(st.promedio).toFixed(1)}</b><div><div class="review" style="background:none;border:0;padding:0"><div class="st">${starsHtml(Math.round(st.promedio))}</div></div><small>${st.resenas} reseña${st.resenas === 1 ? '' : 's'} de clientes que vinieron</small></div>`;
+  document.getElementById('reviews').innerHTML = (st.ultimas || []).map((r) => `<article class="review"><div class="st">${starsHtml(r.estrellas)}</div>
+    <p>${r.comentario ? '“' + esc(r.comentario) + '”' : 'Calificó su corte con ' + r.estrellas + ' estrella' + (r.estrellas === 1 ? '' : 's') + '.'}</p>
+    <small><b style="color:var(--cream)">${esc(r.cliente || 'Cliente')}</b> · con ${esc(r.barbero)} · ${esc(dateShort(String(r.creado).slice(0, 10)))}</small></article>`).join('');
+}
+
+/* ---------- calificar el corte (link ?calificar=ID o botón en "Tu último corte") ---------- */
+async function calificar(id) {
+  const limpiar = () => { if (new URLSearchParams(location.search).has('calificar')) history.replaceState(null, '', location.pathname); };
+  let t;
+  try { t = await rpc('gb_resena_info', { p_turno: id }); } catch (e) { limpiar(); return alertBox('No encontramos ese corte.'); }
+  if (!t.ok) { limpiar(); return alertBox('No encontramos ese corte.'); }
+  if (t.calificado) { limpiar(); paintMine(); return alertBox('<h3>Ya calificaste este corte</h3><p>¡Gracias por tu opinión!</p>'); }
+  if (t.estado !== 'completado') { limpiar(); return alertBox('Podrás calificar cuando el barbero marque tu corte como terminado.'); }
+  if (t.vencido) { limpiar(); return alertBox('Ya pasó el tiempo para calificar este corte.'); }
+  document.getElementById('preloader')?.classList.add('hidden');
+  let n = 0;
+  const foto = GhettoBooking.safeImage(t.foto);
+  const p = GB.modal(`<div style="text-align:center">${foto ? `<img src="${esc(foto)}" alt="" style="width:76px;height:76px;border-radius:50%;object-fit:cover;margin:0 auto 10px">` : ''}
+    <h3>¿Cómo te fue con ${esc(t.barbero)}?</h3><p class="muted">${esc(t.servicio)} · ${esc(dateShort(t.fecha))}</p>
+    <div class="rate-stars" id="rateStars">${[1, 2, 3, 4, 5].map((i) => `<button type="button" data-n="${i}" aria-label="${i} estrella${i > 1 ? 's' : ''}">${STAR}</button>`).join('')}</div>
+    <div class="field" style="text-align:left"><label for="rateTxt">Cuéntanos (opcional)</label><textarea id="rateTxt" maxlength="300" rows="3" placeholder="¿Qué tal el corte y la atención?" style="width:100%;resize:vertical"></textarea></div></div>`,
+    [{ label: 'Ahora no', value: false }, { label: 'Enviar calificación', value: true, primary: true }]);
+  const box = document.getElementById('rateStars');
+  box.onclick = (e) => { const b = e.target.closest('button'); if (!b) return; n = Number(b.dataset.n); box.querySelectorAll('button').forEach((x) => x.classList.toggle('on', Number(x.dataset.n) <= n)); };
+  let txt = '';
+  document.getElementById('rateTxt').oninput = (e) => { txt = e.target.value; };
+  const ok = await p;
+  limpiar();
+  if (!ok) return;
+  if (!n) { await alertBox('Toca las estrellas para calificar.'); return calificar(id); }
+  try {
+    await rpc('gb_calificar', { p_turno: id, p_estrellas: n, p_comentario: txt });
+    INFO = await rpc('gb_info'); loadedAt = Date.now(); paintRep(); paintBarbers(); paintMine();
+    await GB.modal('<h3>¡Gracias!</h3><p>Tu calificación ya sale en la página de Ghetto Barbershop.</p>', [{ label: 'Listo', value: true, primary: true }]);
+  } catch (e) { alertBox(esc(e.message)); }
+}
+
+/* ---------- utilidades: calendario y datos recordados ---------- */
+function calLink(d, h, s, b) {
+  const st = d.replace(/-/g, '') + 'T' + h.replace(':', '') + '00';
+  const en = d.replace(/-/g, '') + 'T' + fromMin(toMin(h) + Number(s.duracion)).replace(':', '') + '00';
+  return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(`Corte en Ghetto Barbershop con ${b.nombre}`)
+    + `&dates=${st}/${en}&ctz=America/Bogota&details=` + encodeURIComponent(`${s.nombre}. Llega 5 minutos antes.\n${location.origin + location.pathname}`)
+    + '&location=' + encodeURIComponent(CFG.direccion || 'Ghetto Barbershop SM, Bogotá');
+}
+function prefill() {
+  try {
+    const y = JSON.parse(localStorage.getItem('ghetto_yo') || 'null'); if (!y) return;
+    const n = document.getElementById('name'), t = document.getElementById('tel');
+    if (!n.value) n.value = y.name || '';
+    if (!t.value) t.value = telFmt(y.tel || '');
+  } catch (_) {}
 }
 
 init();
