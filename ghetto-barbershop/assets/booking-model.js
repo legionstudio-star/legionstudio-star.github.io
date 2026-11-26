@@ -37,18 +37,9 @@
     if (!barber || !service || occupied.todo_dia) return [];
     const duration = Number(service.duracion), step = Number(config.intervalo || 20);
     if (!Number.isInteger(duration) || duration < 10 || duration > 240 || !Number.isInteger(step) || step < 5) return [];
-    const dow = String(new Date(`${date}T12:00:00-05:00`).getUTCDay());
-    const breaks = (barber.descansos || []).filter((r) => !r.fecha && (r.dia == null || String(r.dia) === dow) || r.fecha === date)
-      .map((r) => [minutes(r.inicio), minutes(r.fin)]).filter(([a, b]) => Number.isFinite(a) && Number.isFinite(b) && b > a);
-    const busy = [...(occupied.rangos || []), ...breaks];
-    const result = new Set();
-    for (const [open, close] of workRanges(barber, date, config)) {
-      for (let start = open; start + duration <= close; start += step) {
-        if (start <= now || busy.some(([a, b]) => Number(a) < start + duration && Number(b) > start)) continue;
-        result.add(clock(start));
-      }
-    }
-    return [...result].sort();
+    // Mismas horas encadenadas que el cuadro (slotGrid), solo las libres.
+    return slotGrid({ barber, duration, date, config, busy: occupied.rangos || [], now })
+      .filter((g) => g.state === 'free').map((g) => g.t);
   }
   /* Cuadro de horas del día: TODAS las horas del barbero; las tomadas o pasadas salen tachadas.
      Las horas dentro de un descanso fijo (almuerzo, día libre) no se muestran. */
@@ -57,19 +48,32 @@
     return (barber.descansos || []).filter((r) => !r.fecha && (r.dia == null || String(r.dia) === dow) || r.fecha === date)
       .map((r) => [minutes(r.inicio), minutes(r.fin)]).filter(([a, b]) => Number.isFinite(a) && Number.isFinite(b) && b > a);
   }
+  /* Turnos ENCADENADOS (pedido de Santi, 26-nov): el siguiente turno empieza cuando
+     termina el anterior. Corte 8:00-8:50 -> siguiente 8:50, luego cada "intervalo"
+     (8:50, 9:30, 10:10...). Igual que gb_validar_espacio en el servidor: la cuadrícula
+     se mide desde el fin del último turno/descanso/bloqueo, o desde la apertura. */
   function slotGrid({ barber, duration, date, config, busy = [], now = -1 }) {
     const step = Number(config.intervalo || 20), dur = Number(duration) || step;
     if (!barber || !Number.isInteger(step) || step < 5) return [];
     const rests = breaksOf(barber, date), out = new Map();
-    const hit = (list, start, len) => list.some(([a, b]) => Number(a) < start + len && Number(b) > start);
+    const busyN = busy.map(([a, b]) => [Number(a), Number(b)]).filter(([a, b]) => Number.isFinite(a) && Number.isFinite(b) && b > a);
+    const obstacles = [...rests.map(([a, b]) => [a, b, 'rest']), ...busyN.map(([a, b]) => [a, b, 'busy'])].sort((x, y) => x[0] - y[0]);
+    const hit = (list, start, len) => list.some(([a, b]) => a < start + len && b > start);
     for (const [open, close] of workRanges(barber, date, config)) {
-      for (let start = open; start + Math.min(dur, step) <= close; start += step) {
-        if (hit(rests, start, Math.min(dur, step))) continue;
+      let t = open, guard = 0;
+      while (t < close && guard++ < 500) {
+        const ob = obstacles.find(([a, b]) => a <= t && b > t);
+        if (ob) {
+          if (ob[2] === 'busy' && !out.has(clock(Math.max(ob[0], open)))) out.set(clock(Math.max(ob[0], open)), 'taken');
+          t = ob[1]; continue;
+        }
+        if (t + Math.min(dur, step) > close) break;
         let state = 'free';
-        if (start <= now) state = 'past';
-        else if (hit(busy, start, Math.min(dur, step))) state = 'taken';
-        else if (start + dur > close || hit(busy, start, dur) || hit(rests, start, dur)) state = 'short';
-        out.set(clock(start), state);
+        if (t <= now) state = 'past';
+        else if (t + dur > close || hit(busyN, t, dur) || hit(rests, t, dur)) state = 'short';
+        out.set(clock(t), state);
+        const next = t + step, mid = obstacles.find(([a]) => a > t && a < next);
+        t = mid ? mid[0] : next;
       }
     }
     return [...out.entries()].sort().map(([t, state]) => ({ t, state }));
