@@ -35,7 +35,7 @@
   }
   function freeSlots({ barber, service, date, config, occupied, now = -1 }) {
     if (!barber || !service || occupied.todo_dia) return [];
-    const duration = Number(service.duracion), step = Number(config.intervalo || 20);
+    const duration = Number(service.duracion), step = stepFor(barber, config);
     if (!Number.isInteger(duration) || duration < 10 || duration > 240 || !Number.isInteger(step) || step < 5) return [];
     // Mismas horas encadenadas que el cuadro (slotGrid), solo las libres.
     return slotGrid({ barber, duration, date, config, busy: occupied.rangos || [], now })
@@ -52,8 +52,13 @@
      termina el anterior. Corte 8:00-8:50 -> siguiente 8:50, luego cada "intervalo"
      (8:50, 9:30, 10:10...). Igual que gb_validar_espacio en el servidor: la cuadrícula
      se mide desde el fin del último turno/descanso/bloqueo, o desde la apertura. */
+  /* Intervalo propio de cada barbero (Santi 40, Abraham 50...); si no tiene, el general. */
+  function stepFor(barber, config) {
+    const own = barber && config.intervalos && config.intervalos[barber.id];
+    return Number(own || config.intervalo || 20);
+  }
   function slotGrid({ barber, duration, date, config, busy = [], now = -1 }) {
-    const step = Number(config.intervalo || 20), dur = Number(duration) || step;
+    const step = stepFor(barber, config), dur = Number(duration) || step;
     if (!barber || !Number.isInteger(step) || step < 5) return [];
     const rests = breaksOf(barber, date), out = new Map();
     const busyN = busy.map(([a, b]) => [Number(a), Number(b)]).filter(([a, b]) => Number.isFinite(a) && Number.isFinite(b) && b > a);
@@ -78,7 +83,7 @@
     }
     return [...out.entries()].sort().map(([t, state]) => ({ t, state }));
   }
-  const api = { minutes, clock, catalog, needsConfirmation, safeImage, portfolio, workRanges, freeSlots, slotGrid, breaksOf };
+  const api = { minutes, clock, catalog, needsConfirmation, safeImage, portfolio, workRanges, freeSlots, slotGrid, stepFor, breaksOf };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.GhettoBooking = api;
 })(typeof window === 'undefined' ? globalThis : window);

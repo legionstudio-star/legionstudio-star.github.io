@@ -144,7 +144,7 @@
 <div id="root"><div style="text-align:center;padding:90px 0"><span class="spin"></span></div></div>
 
 <script src="assets/gb.js?v=20261126"></script>
-<script src="assets/booking-model.js?v=20261126b"></script>
+<script src="assets/booking-model.js?v=20261126c"></script>
 <script src="assets/profile-panel.js?v=20261126"></script>
 <script src="assets/qrcode.js"></script>
 <script>
@@ -320,14 +320,16 @@ function pintarCuadro(d) {
   if (VISTA !== 'cuadro') { box.innerHTML = ''; return; }
   const ids = ME.es_dueno ? (filtroBarbero ? [filtroBarbero] : INFO.barberos.map((b) => b.id)) : [ME.id];
   const now = fecha === INFO.hoy ? toMin(INFO.ahora) + Math.floor((Date.now() - loadedAt) / 60000) : (fecha < INFO.hoy ? 1e9 : -1);
-  const step = Number(INFO.config.intervalo || 20);
   const html = ids.map((id) => {
     const b = INFO.barberos.find((x) => x.id === id); if (!b) return '';
+    const step = GhettoBooking.stepFor(b, INFO.config);
+    // la última hora antes del almuerzo/cierre sale libre si cabe al menos el servicio más corto (barba, cejas)
+    const corto = Math.min(step, ...(b.servicios || []).filter((s) => s.activo !== false).map((s) => Number(s.duracion)).filter((n) => n >= 10));
     const mios = d.turnos.filter((t) => t.barbero_id === id && t.estado !== 'cancelado' && t.estado !== 'no_vino');
     const blks = d.bloqueos.filter((k) => k.barbero_id === id);
     if (blks.some((k) => !k.ini)) return `<div class="hgrid-wrap"><h3>${esc(b.nombre)}<small>Bloqueado todo el día</small></h3></div>`;
     const busy = [...mios.map((t) => [toMin(t.hora), toMin(t.hora) + t.duracion]), ...blks.map((k) => [toMin(k.ini), toMin(k.fin)])];
-    const grid = GhettoBooking.slotGrid({ barber: b, duration: step, date: fecha, config: INFO.config, busy, now });
+    const grid = GhettoBooking.slotGrid({ barber: b, duration: corto, date: fecha, config: INFO.config, busy, now });
     if (!grid.length) return `<div class="hgrid-wrap"><h3>${esc(b.nombre)}<small>No atiende este día</small></h3></div>`;
     const libres = grid.filter((g) => g.state === 'free').length;
     const cells = grid.map((g) => {
@@ -657,8 +659,8 @@ async function vistaAjustes() {
       <div class="field"><label for="c_ig">Instagram</label><input id="c_ig" value="${esc(c.instagram || '')}" placeholder="usuario sin @"></div></div>
       <div class="field"><label for="c_dir">Dirección</label><input id="c_dir" value="${esc(c.direccion || '')}" maxlength="120"></div>
       <div class="field"><label for="c_map">Enlace de Google Maps (opcional)</label><input id="c_map" value="${esc(c.mapa || '')}" placeholder="https://maps.app.goo.gl/…"></div>
-      <div class="grid2"><div class="field"><label for="c_int">Turnos cada (minutos)</label><select id="c_int">${[15, 20, 30, 40, 60].map((n) => `<option ${Number(c.intervalo) === n ? 'selected' : ''}>${n}</option>`).join('')}</select></div>
-      <div class="field"><label for="c_adel">Se puede reservar con (días)</label><input id="c_adel" type="number" min="1" max="60" value="${esc(c.dias_adelante)}"></div></div>
+      <div class="field"><label>Turnos cada (minutos), cada barbero el suyo</label><div class="grid2">${d.barberos.filter((b) => b.activo).map((b) => { const v = Number((c.intervalos || {})[b.id] || c.intervalo || 40); return `<div class="field"><label for="c_int_${b.id}">${esc(b.nombre)}</label><select id="c_int_${b.id}" data-int="${b.id}">${[15, 20, 30, 40, 45, 50, 60].map((n) => `<option ${v === n ? 'selected' : ''}>${n}</option>`).join('')}</select></div>`; }).join('')}</div></div>
+      <div class="grid2"><div class="field"><label for="c_adel">Se puede reservar con (días)</label><input id="c_adel" type="number" min="1" max="60" value="${esc(c.dias_adelante)}"></div></div>
       <div class="grid2"><div class="field"><label for="c_meta">Sellos para el premio</label><input id="c_meta" type="number" min="3" max="12" value="${esc(c.meta_sellos)}"></div>
       <div class="field"><label for="c_pre">Premio del Club</label><input id="c_pre" value="${esc(c.premio || '')}" maxlength="40"></div></div>
       <button class="btn btn-cream btn-sm">Guardar cambios</button>
@@ -679,7 +681,7 @@ async function vistaAjustes() {
     const g = (id) => document.getElementById(id).value.trim();
     const cambios = {
       hora_abre: g('c_abre'), hora_cierra: g('c_cierra'), horario_texto: g('c_ht'), whatsapp: g('c_wa').replace(/\D/g, ''),
-      instagram: g('c_ig').replace('@', ''), direccion: g('c_dir'), mapa: g('c_map'), intervalo: Number(g('c_int')),
+      instagram: g('c_ig').replace('@', ''), direccion: g('c_dir'), mapa: g('c_map'), intervalos: Object.fromEntries([...document.querySelectorAll('[data-int]')].map((x) => [x.dataset.int, Number(x.value)])),
       dias_adelante: Math.max(1, Math.min(60, Number(g('c_adel')) || 21)), meta_sellos: Math.max(3, Math.min(12, Number(g('c_meta')) || 8)), premio: g('c_pre') || 'Corte gratis',
       dias_cerrados: [...document.querySelectorAll('.dow input:checked')].map((x) => x.value)
     };
