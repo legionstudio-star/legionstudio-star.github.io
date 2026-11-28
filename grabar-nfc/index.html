@@ -338,7 +338,7 @@
   $('tGrabar').onclick = () => cambiar('grabar');
   $('tLeer').onclick = () => cambiar('leer');
   $('bSaltar').onclick = () => {
-    abortar?.abort(); pendiente = null;
+    abortar?.abort(); if (pendiente) ultimoGrabado = pendiente; pendiente = null;
     if (modo === 'grabar') { $('visor').classList.remove('oculto'); estado('go', 'Apunta al QR del carnet', 'Carnet saltado.'); }
   };
   $('bExportar').onclick = () => {
