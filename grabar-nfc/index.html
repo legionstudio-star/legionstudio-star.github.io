@@ -23,7 +23,11 @@
   .dato small { color:var(--mut); font-size:12px; }
   .visor { position:relative; aspect-ratio:4/3; background:#000; border-radius:14px; overflow:hidden; border:1px solid var(--line); }
   video { width:100%; height:100%; object-fit:cover; display:block; }
-  .mira { position:absolute; inset:18% 22%; border:3px solid rgba(255,255,255,.7); border-radius:12px; pointer-events:none; }
+  .mira { position:absolute; left:25%; right:25%; top:17%; bottom:17%; border:3px solid rgba(255,255,255,.75); border-radius:12px; pointer-events:none; transition:border-color .15s; }
+  .mira.leyendo { border-color:var(--acc); }
+  .barra { position:absolute; left:25%; right:25%; bottom:9%; height:8px; background:rgba(255,255,255,.2); border-radius:6px; overflow:hidden; }
+  .barra i { display:block; height:100%; width:0; background:var(--acc); }
+  .pista { position:absolute; left:0; right:0; top:5%; text-align:center; font-size:14px; font-weight:700; text-shadow:0 1px 3px #000; }
   .visor.oculto video, .visor.oculto .mira { visibility:hidden; }
   .estado { border-radius:14px; padding:16px; border:2px solid var(--line); background:var(--card); display:flex; gap:14px; align-items:center; min-height:96px; }
   .estado svg { flex:none; width:44px; height:44px; }
@@ -59,7 +63,7 @@
   <div class="dato"><b id="nTotal">0</b><small>grabados en este celular</small></div>
 </div>
 
-<div class="visor oculto" id="visor"><video id="video" playsinline muted></video><div class="mira"></div></div>
+<div class="visor oculto" id="visor"><video id="video" playsinline muted></video><div class="mira" id="mira"></div><div class="pista" id="pista">Centra UN solo QR en el recuadro</div><div class="barra"><i id="barra"></i></div></div>
 
 <div class="estado go" id="estado">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" id="ico"></svg>
@@ -86,7 +90,7 @@
   <h3>Paso a paso</h3>
   <ol>
     <li>Toca <b>Empezar</b> y acepta los permisos de <b>cámara</b> y <b>NFC</b>.</li>
-    <li>Apunta la cámara al <b>QR impreso del carnet</b>, dentro del recuadro.</li>
+    <li>Apunta la cámara al <b>QR impreso del carnet</b>, con <b>un solo QR dentro del recuadro</b>, y quédate quieto hasta que la barra amarilla se llene (1 segundo).</li>
     <li>Cuando diga <b>"Pega el carnet al celular"</b>, pon el chip del carnet contra la parte de atrás del celular y déjalo quieto.</li>
     <li>Suena un <b>pito</b> y vibra: aparece <b>"Grabado y verificado"</b> en verde. Retira el carnet.</li>
     <li>Toma el siguiente carnet y repite desde el paso 2. El contador de arriba va sumando.</li>
@@ -178,24 +182,55 @@
     $('visor').classList.remove('oculto');
     bucleQR();
   }
+  // Solo se mira el centro de la imagen (lo que está dentro del recuadro); los QR de los lados no cuentan.
+  const ZONA = { x: 0.25, y: 0.17, w: 0.5, h: 0.66 };
   async function leerQR() {
     const v = $('video');
     if (!v.videoWidth) return null;
-    if (detector) { try { const r = await detector.detect(v); return r[0]?.rawValue || null; } catch {} }
-    if (!window.jsQR) return null;
-    const w = 640, h = Math.round(v.videoHeight * 640 / v.videoWidth);
-    canvas.width = w; canvas.height = h; ctx.drawImage(v, 0, 0, w, h);
-    const r = jsQR(ctx.getImageData(0, 0, w, h).data, w, h, { inversionAttempts: 'dontInvert' });
-    return r?.data || null;
+    // Parte visible del video (object-fit: cover recorta los bordes)
+    const vw = v.videoWidth, vh = v.videoHeight, ew = v.clientWidth, eh = v.clientHeight;
+    const esc = Math.max(ew / vw, eh / vh);
+    const visW = ew / esc, visH = eh / esc, offX = (vw - visW) / 2, offY = (vh - visH) / 2;
+    const sx = offX + ZONA.x * visW, sy = offY + ZONA.y * visH, sw = ZONA.w * visW, sh = ZONA.h * visH;
+    const w = 480, h = Math.round(sh * 480 / sw);
+    canvas.width = w; canvas.height = h; ctx.drawImage(v, sx, sy, sw, sh, 0, 0, w, h);
+    let codigos = [];
+    if (detector) { try { codigos = (await detector.detect(canvas)).map((c) => c.rawValue); } catch {} }
+    else if (window.jsQR) { const r = jsQR(ctx.getImageData(0, 0, w, h).data, w, h, { inversionAttempts: 'dontInvert' }); if (r?.data) codigos = [r.data]; }
+    if (codigos.length !== 1) return codigos.length > 1 ? 'VARIOS' : null; // dos QR en el recuadro = no se acepta
+    return codigos[0];
   }
+  const QUIETO_MS = 1100;   // tiempo que el mismo QR debe verse fijo antes de aceptarlo
+  const TOLERANCIA_MS = 350; // perder el QR menos de esto no reinicia la cuenta
+  let cand = null, desde = 0, visto = 0, ultimoGrabado = null;
+  function progreso(p, texto) {
+    $('barra').style.width = Math.round(p * 100) + '%';
+    $('mira').classList.toggle('leyendo', p > 0);
+    $('pista').textContent = texto;
+  }
+  let bucleCorriendo = false;
   async function bucleQR() {
-    while (activo && modo === 'grabar') {
-      if (!pendiente) {
-        const txt = (await leerQR())?.trim();
-        if (txt) alQR(txt);
+    if (bucleCorriendo) return;
+    bucleCorriendo = true;
+    try {
+      while (activo && modo === 'grabar') {
+        if (!pendiente) {
+          const ahora = Date.now();
+          const txt = (await leerQR())?.trim() || null;
+          if (txt === 'VARIOS') { cand = null; progreso(0, 'Hay más de un QR en el recuadro: acerca más la cámara'); }
+          else if (txt && txt === ultimoGrabado) { cand = null; progreso(0, 'Ese carnet ya quedó: pasa al siguiente'); }
+          else if (txt) {
+            if (txt !== cand) { cand = txt; desde = ahora; }
+            visto = ahora;
+            const p = Math.min(1, (ahora - desde) / QUIETO_MS);
+            progreso(p, 'Leyendo... mantén quieto');
+            if (p >= 1) { cand = null; progreso(0, 'Centra UN solo QR en el recuadro'); alQR(txt); }
+          } else if (cand && ahora - visto > TOLERANCIA_MS) { cand = null; progreso(0, 'Centra UN solo QR en el recuadro'); }
+          else if (!cand) progreso(0, 'Centra UN solo QR en el recuadro');
+        }
+        await new Promise((r) => setTimeout(r, pendiente ? 400 : 120));
       }
-      await new Promise((r) => setTimeout(r, pendiente ? 400 : 150));
-    }
+    } finally { bucleCorriendo = false; }
   }
 
   function alQR(txt) {
@@ -231,6 +266,7 @@
     // Verificación: leer lo que quedó en el chip
     const verificado = await verificar(url);
     registro[url] = { t: Date.now(), v: verificado };
+    ultimoGrabado = url;
     guardar(); hoy++; pintar();
     pito(true);
     estado(verificado ? 'ok' : 'warn', verificado ? 'Grabado y verificado' : 'Grabado (sin verificar)', (verificado ? '' : 'No alcancé a leerlo de vuelta; revísalo en "Solo leer". ') + corto(url) + ' · retira el carnet y apunta al siguiente QR');
