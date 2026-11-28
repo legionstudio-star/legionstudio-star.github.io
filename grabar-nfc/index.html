@@ -41,6 +41,11 @@
   .lista div:last-child { border:0; }
   .aviso { color:var(--mut); font-size:12px; line-height:1.5; }
   .oculto { display:none !important; }
+  details.guia { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px 14px; }
+  details.guia summary { font-weight:700; font-size:15px; cursor:pointer; color:var(--acc); }
+  details.guia ol, details.guia ul { margin:10px 0 4px 20px; font-size:14px; line-height:1.55; }
+  details.guia li { margin-bottom:6px; }
+  details.guia h3 { font-size:13px; color:var(--mut); margin-top:12px; text-transform:uppercase; letter-spacing:.6px; }
 </style>
 </head>
 <body>
@@ -68,6 +73,45 @@
 </div>
 
 <div class="lista oculto" id="lista"></div>
+
+<details class="guia" id="guia">
+  <summary>Cómo se usa</summary>
+  <h3>Antes de empezar</h3>
+  <ul>
+    <li>Celular <b>Android</b> con <b>NFC encendido</b> (Ajustes &gt; Conexiones &gt; NFC). En iPhone no funciona.</li>
+    <li>Abrir este link en <b>Google Chrome</b> (no en el navegador de WhatsApp ni en otro).</li>
+    <li>Buena luz para que la cámara lea el QR. Quitar el forro grueso o metálico del celular si no lee el chip.</li>
+    <li>Ubicar dónde está la antena NFC del celular (casi siempre en la mitad de atrás, cerca de la cámara).</li>
+  </ul>
+  <h3>Paso a paso</h3>
+  <ol>
+    <li>Toca <b>Empezar</b> y acepta los permisos de <b>cámara</b> y <b>NFC</b>.</li>
+    <li>Apunta la cámara al <b>QR impreso del carnet</b>, dentro del recuadro.</li>
+    <li>Cuando diga <b>"Pega el carnet al celular"</b>, pon el chip del carnet contra la parte de atrás del celular y déjalo quieto.</li>
+    <li>Suena un <b>pito</b> y vibra: aparece <b>"Grabado y verificado"</b> en verde. Retira el carnet.</li>
+    <li>Toma el siguiente carnet y repite desde el paso 2. El contador de arriba va sumando.</li>
+  </ol>
+  <h3>Mensajes</h3>
+  <ul>
+    <li><b>Verde "Grabado y verificado":</b> listo, ese carnet ya quedó.</li>
+    <li><b>Amarillo "Ya se grabó antes":</b> ese carnet ya estaba hecho. Usa <b>Saltar este carnet</b> o pégalo si lo quieres regrabar.</li>
+    <li><b>Amarillo "Grabado (sin verificar)":</b> grabó pero no alcanzó a comprobarlo. Revísalo en <b>Solo leer</b>.</li>
+    <li><b>Amarillo "Ese QR no es de un carné":</b> la cámara leyó otro QR. Apunta solo al QR del carnet.</li>
+    <li><b>Rojo "No se pudo grabar":</b> se movió el carnet. Vuelve a pegarlo quieto; reintenta solo.</li>
+  </ul>
+  <h3>Revisar un carnet</h3>
+  <ul>
+    <li>Toca la pestaña <b>Solo leer</b> y pega el carnet: muestra el link que tiene. Verde = correcto.</li>
+    <li>También se puede probar con cualquier celular: al acercar el carnet debe abrir la ficha del vehículo.</li>
+  </ul>
+  <h3>Consejos</h3>
+  <ul>
+    <li>Prueba primero con 2 o 3 carnets y revísalos antes de hacer todos.</li>
+    <li>Separa los grabados de los que faltan en dos montones para no confundirte.</li>
+    <li>El registro queda guardado en ese celular: si cierras la página, al volver sigue contando. Usa siempre el mismo celular.</li>
+    <li>Al terminar, toca <b>Descargar registro</b> y envía el archivo para tener el control.</li>
+  </ul>
+</details>
 
 <p class="aviso" id="aviso">Funciona en Chrome para Android con el NFC encendido. Por cada carnet: apunta al QR, y cuando diga "Pega el carnet", acerca el chip a la parte de atrás del celular hasta que suene.</p>
 
